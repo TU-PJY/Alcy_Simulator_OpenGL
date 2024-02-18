@@ -18,7 +18,7 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
-#define IMAGE_COUNT 5
+#define IMAGE_COUNT 6
 
 using namespace std;
 

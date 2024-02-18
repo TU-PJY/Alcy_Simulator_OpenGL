@@ -39,6 +39,7 @@ void main(int argc, char** argv) {
 		glutInitWindowSize(WIDTH, HEIGHT);
 		glutCreateWindow("Totally Cute Alcy Simulator");
 		glutFullScreen();  // 전체화면으로 전환한다
+		glutSetCursor(GLUT_CURSOR_NONE);
 
 		glewExperimental = GL_TRUE;
 		if (glewInit() != GLEW_OK) {
@@ -64,7 +65,8 @@ void main(int argc, char** argv) {
 	glutKeyboardFunc(keyDown);
 	glutKeyboardUpFunc(keyUp);
 	glutMouseFunc(Mouse);
-	glutPassiveMotionFunc(Motion);
+	glutMotionFunc(Motion);
+	glutPassiveMotionFunc(pMotion);
 
 	glutTimerFunc(10, timerOperation, 1);
 	glutMainLoop();

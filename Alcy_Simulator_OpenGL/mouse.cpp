@@ -16,10 +16,18 @@ void Mouse(int button, int state, int x, int y) {
 	glutPostRedisplay();
 }
 
+void pMotion(int x, int y) {
+	convert_to_gl(x, y);
+	camX = (0.0 - mx) / 10;
+	camY = (0.0 - my) / 10;
+
+	glutPostRedisplay();
+}
+
 void Motion(int x, int y) {
 	convert_to_gl(x, y);
-	camX = (0.0 - mx) / 30;
-	camY = (0.0 - my) / 30;
+	camX = (0.0 - mx) / 10;
+	camY = (0.0 - my) / 10;
 
 	glutPostRedisplay();
 }
