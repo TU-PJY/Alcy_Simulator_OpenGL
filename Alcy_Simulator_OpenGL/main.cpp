@@ -21,11 +21,11 @@ GLvoid displayOutput() {
 
 	setWindowView();
 
-	// MODEL_COUNT는 config.h에 정의되어있음
-	for (int i = 0; i < IMAGE_COUNT; i++) {  // MODEL_COUNT 만큼 반복문을 돌며 변환과 출력 반복
+	// IMAGE_COUNT는 config.h에 정의되어있음
+	for (int i = 0; i < IMAGE_COUNT; i++) {  // IMAGE_COUNT 만큼 반복문을 돌며 변환과 출력 반복
 		setTransform(i);  // 변환 세팅
 		finishTransform(i); // 변환을 glsl로 전달
-		modelOutput(i);  // 최종 출력, 3개 함수 모두 modelOutput.cpp에 있음
+		modelOutput(i);  // 최종 출력, 3개 함수 모두 imageOutput.cpp에 있음
 	}
 	
 	glutSwapBuffers();

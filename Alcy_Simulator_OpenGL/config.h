@@ -18,8 +18,12 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
-#define IMAGE_COUNT 6
+#define IMAGE_COUNT 8
 
 using namespace std;
+
+enum dir {  // 알키 바라보는 방향
+	l, m, r
+};
 
 #endif

@@ -1,9 +1,11 @@
 ﻿// 키보드 조작
 #include "gl_func.h"
 
+//카메라
 extern bool camR, camL;
 extern GLfloat camRot;
 
+// 커서
 extern bool cursorEnable;
 
 void keyDown(unsigned char KEY, int x, int y) {

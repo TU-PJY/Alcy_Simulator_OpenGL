@@ -7,19 +7,26 @@ extern GLuint ID;
 extern GLuint VAO[IMAGE_COUNT];  // MODEL_COUNT는 config.h에 정의되어있음
 
 // 카메라 
+extern GLfloat ratio;  //  종횡비
 extern GLfloat camX, camY;  // 카메라 위치
 extern GLfloat camRot;  // 카메라 각도
 extern GLfloat mx, my;  // 마우스 위치, mx에는 ratio를 곱해야 올바른 값이 나옴
-extern bool camR, camL;
+extern bool camR, camL;  // 방향 별 카메라 회전 여부
 
 // 커서
 extern bool cursorEnable;
 
+// 알키 바라보는 방향
+extern int dir;
+
+// 알키 머리 움직임
+extern GLfloat headPos;
+
+GLfloat transparent;
 
 glm::vec3 cameraPos, cameraDirection, cameraUp, lightPos, objColor;
 glm::mat4 transformMatrix, view, projection, lightMatrix, scaleMatrix, rotateMatrix, translateMatrix, camMaxtrix;
 glm::vec3 selectedColor, threshold;
-GLfloat ratio, transparent;
 
 unsigned int projectionLocation, viewLocation, modelLocation, viewPosLocation;
 unsigned int lightPosLocation, lightColorLocation, objColorLocation;
@@ -55,7 +62,6 @@ void finishTransform(int idx) {  // 변환 전달
 	glBindVertexArray(VAO[idx]);  // 각 모델마다 지정된 VAO만 사용
 }
 
-
 void setWindowView() {  // 시점 세팅
 	using namespace glm;
 	view = mat4(1.0f);
@@ -64,11 +70,11 @@ void setWindowView() {  // 시점 세팅
 	cameraUp = vec3(0.0f, 1.0f, 0.0f);
 	projection = mat4(1.0f);
 	ratio = 1.0 * WIDTH / HEIGHT;  // 화면 비율을 구하여 모델이 제대로 나오도록 함
+	// X축 변환에 곱해야함.
 
 	view = lookAt(cameraPos, cameraDirection, cameraUp);
-	view = translate(view, vec3(camX * ratio, camY, 0.0));
+	view = translate(view, vec3(camX * ratio, camY, 0));
 	view = rotate(view, radians(camRot), vec3(0.0, 0.0, 1.0));
-	glViewport(0, 0, WIDTH, HEIGHT);
 	projection = ortho(-1.0 * ratio, 1.0 * ratio, -1.0, 1.0, -100.0, 100.0);
 }
 
@@ -86,38 +92,51 @@ void setTransform(int idx) {  // 변환 세팅
 
 	switch (idx) {  // 변환 추가 
 	case 0: // background
-		scaleMatrix = scale(scaleMatrix, vec3(4.0, 2.0, -0.01));
+		scaleMatrix = scale(scaleMatrix, vec3(2.0 * ratio, 2.0, 0.0));
+		translateMatrix = translate(translateMatrix, vec3(-camX * ratio / 4, -camY / 4, 0.0));
 		selectedColor = vec3(0.0, 1.0, 0.0);
 		threshold = vec3(0.0, 0.8, 0.0);
 		break;
 
 	case 1:  // tail
-		translateMatrix = translate(translateMatrix, vec3(-0.2 * ratio, -0.75, -0.0003));
+		translateMatrix = translate(translateMatrix, vec3(-0.2 * ratio, -0.75, -0.00003));
 		selectedColor = vec3(0.0, 1.0, 0.0);
 		threshold = vec3(0.0, 0.75, 0.0);
 		break;
 
 	case 2:  // body
-		translateMatrix = translate(translateMatrix, vec3(0.0, -0.75, -0.0002));
+		translateMatrix = translate(translateMatrix, vec3(0.0, -0.75, -0.00002));
 		selectedColor = vec3(0.0, 1.0, 0.0);
 		threshold = vec3(0.0, 0.75, 0.0);
 		break;
 
 	case 3:  // hair
-		translateMatrix = translate(translateMatrix, vec3(0.0, -0.75, -0.0001));
+		translateMatrix = translate(translateMatrix, vec3(0.0, -0.75, -0.00001));
 		selectedColor = vec3(0.0, 1.0, 0.0);
 		threshold = vec3(0.0, 0.75, 0.0);
 		break;
 
 	case 4:  // head
-		translateMatrix = translate(translateMatrix, vec3(0.0, 0.12, 0.0));
+		translateMatrix = translate(translateMatrix, vec3(headPos * ratio, 0.12, 0.0));
+		selectedColor = vec3(0.0, 1.0, 0.0);
+		threshold = vec3(0.0, 0.7, 0.0);
+		break;
+
+	case 5:  // eye
+		translateMatrix = translate(translateMatrix, vec3((headPos - (camX / 4)) * ratio, 0.12 - (camY / 4), 0.00001));
 		selectedColor = vec3(0.0, 1.0, 0.0);
 		threshold = vec3(0.0, 0.7, 0.0);
 		break;
 	
-	case IMAGE_COUNT - 1:  // cursor
+	case 6:  // dot
+		translateMatrix = translate(translateMatrix, vec3((headPos - (camX / 2.5)) * ratio, 0.12 - (camY / 2), 0.00003));
+		selectedColor = vec3(0.0, 1.0, 0.0);
+		threshold = vec3(0.0, 0.7, 0.0);
+		break;
+	
+	case IMAGE_COUNT - 1:  // cursor, 항상 맨 마지막에 출력
 		scaleMatrix = scale(scaleMatrix, vec3(0.1, 0.1, 1.0));
-		translateMatrix = translate(translateMatrix, vec3(mx * ratio - camX * ratio, my - camY, 0.8));
+		translateMatrix = translate(translateMatrix, vec3(mx * ratio - camX * ratio, my - camY, 0.001));
 		selectedColor = vec3(0.0, 1.0, 0.0);
 		threshold = vec3(0.0, 0.8, 0.0);
 		break;
@@ -128,40 +147,87 @@ void setTransform(int idx) {  // 변환 세팅
 
 void modelOutput(int idx) {  // 모델 출력 
 	switch (idx) {
-	case 0:
+	case 0:  // background
 		glBindTexture(GL_TEXTURE_2D, back);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
 		break;
 
-	case 1:
+	case 1:  // tail
 		glBindTexture(GL_TEXTURE_2D, alcyTail);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
 		break;
 
-	case 2:
+	case 2:  // body
 		glBindTexture(GL_TEXTURE_2D, alcyBody);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
 		break;
 
-	case 3:
+	case 3:  // hair
 		glBindTexture(GL_TEXTURE_2D, alcyHair);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
 		break;
 
-	case 4:
+	case 4:  // head
 		if (camRot == 0 && !camR && !camL) {
-			if (mx * ratio < -0.5 * ratio)
+			switch (dir) {
+			case l:
 				glBindTexture(GL_TEXTURE_2D, alcyHead[1]);  // head left
-			else if (mx * ratio > 0.5 * ratio)
+				break;
+			case r:
 				glBindTexture(GL_TEXTURE_2D, alcyHead[2]);  // head right
-			else
-				glBindTexture(GL_TEXTURE_2D, alcyHead[0]);  // head_middle
+				break;
+			case m:
+				glBindTexture(GL_TEXTURE_2D, alcyHead[0]);  // head middle
+				break;
+			}
 		}
-		else
-			glBindTexture(GL_TEXTURE_2D, alcyHead[0]);  // head_middle
+		else   // 카메라 회전 시 앞을 보도록 함
+			glBindTexture(GL_TEXTURE_2D, alcyHead[0]);  // head middle
+		glDrawArrays(GL_TRIANGLES, 0, 6);
 		break;
 
-	case IMAGE_COUNT - 1:
+	case 5:  // eye
+		if (camRot == 0 && !camR && !camL) {
+			switch (dir) {
+			case l:
+				glBindTexture(GL_TEXTURE_2D, eye[1]);  // eye left
+				break;
+			case r:
+				glBindTexture(GL_TEXTURE_2D, eye[2]);  // eye right
+				break;
+			case m:
+				glBindTexture(GL_TEXTURE_2D, eye[0]);  // eye middle
+				break;
+			}
+		}
+		else  // 카메라 회전 시 앞을 보도록 함
+			glBindTexture(GL_TEXTURE_2D, eye[0]);  // eye middle
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+		break;
+
+	case 6:
+		if (camRot == 0 && !camR && !camL) {
+			switch (dir) {
+			case l:
+				glBindTexture(GL_TEXTURE_2D, dot[1]);  // eye left
+				break;
+			case r:
+				glBindTexture(GL_TEXTURE_2D, dot[2]);  // eye right
+				break;
+			case m:
+				glBindTexture(GL_TEXTURE_2D, dot[0]);  // eye middle
+				break;
+			}
+		}
+		else  // 카메라 회전 시 앞을 보도록 함
+			glBindTexture(GL_TEXTURE_2D, dot[0]);  // eye middle
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+		break;
+
+	case IMAGE_COUNT - 1:  // cursor
 		glBindTexture(GL_TEXTURE_2D, cursor);
+		if(camRot == 0 && !camR && !camL)  // 카메라 회전 시 커서를 숨김
+			glDrawArrays(GL_TRIANGLES, 0, 6);
 		break;
 	}
-
-	if((idx == IMAGE_COUNT - 1 && cursorEnable) || idx != IMAGE_COUNT - 1)
-		glDrawArrays(GL_TRIANGLES, 0, 6);
 }

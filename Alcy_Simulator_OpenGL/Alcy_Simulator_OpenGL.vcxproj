@@ -128,7 +128,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="gameValue.cpp" />
+    <ClCompile Include="gameVariable.cpp" />
     <ClCompile Include="imageBuffer.cpp" />
     <ClCompile Include="imageOutput.cpp" />
     <ClCompile Include="key.cpp" />

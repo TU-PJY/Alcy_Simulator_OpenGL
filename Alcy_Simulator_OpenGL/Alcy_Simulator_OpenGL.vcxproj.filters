@@ -39,7 +39,7 @@
     <ClCompile Include="imageOutput.cpp">
       <Filter>소스 파일\imageControl</Filter>
     </ClCompile>
-    <ClCompile Include="gameValue.cpp">
+    <ClCompile Include="gameVariable.cpp">
       <Filter>소스 파일\gameControl</Filter>
     </ClCompile>
     <ClCompile Include="key.cpp">
