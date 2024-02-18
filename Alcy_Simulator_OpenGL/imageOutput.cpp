@@ -11,13 +11,14 @@ extern GLfloat ratio;  //  종횡비
 extern GLfloat camX, camY;  // 카메라 위치
 extern GLfloat camRot;  // 카메라 각도
 extern GLfloat mx, my;  // 마우스 위치, mx에는 ratio를 곱해야 올바른 값이 나옴
+extern GLfloat zoom;
 extern bool camR, camL;  // 방향 별 카메라 회전 여부
 
 // 커서
 extern bool cursorEnable;
 extern bool handEnable;
 
-// 알키 관련 변스
+// 알키 관련 변수
 extern int dir;  // 알키 바라보는 방향
 extern bool blinkEnable;  // 알키 눈 깜빡임 여부
 
@@ -78,7 +79,7 @@ void setWindowView() {  // 시점 세팅
 	view = lookAt(cameraPos, cameraDirection, cameraUp);
 	view = translate(view, vec3(camX * ratio, camY, 0));
 	view = rotate(view, radians(camRot), vec3(0.0, 0.0, 1.0));
-	projection = ortho(-1.0 * ratio, 1.0 * ratio, -1.0, 1.0, -100.0, 100.0);
+	projection = ortho(-1.0 * ratio / zoom, 1.0 * ratio / zoom, -1.0 / zoom, 1.0 / zoom, -100.0, 100.0);
 }
 
 void setTransform(int idx) {  // 변환 세팅
@@ -95,34 +96,34 @@ void setTransform(int idx) {  // 변환 세팅
 
 	switch (idx) {  // 변환 추가 
 	case 0: // background
-		scaleMatrix = scale(scaleMatrix, vec3(2.0 * ratio, 2.0, 0.0));
+		scaleMatrix = scale(scaleMatrix, vec3(2.0 * ratio / zoom, 2.0 / zoom, 0.0));
 		translateMatrix = translate(translateMatrix, vec3(-camX * ratio / 4, -camY / 4, 0.0));
 		selectedColor = vec3(0.0, 1.0, 0.0);
-		threshold = vec3(0.0, 0.8, 0.0);
+		threshold = vec3(0.0, 0.85, 0.0);
 		break;
 
 	case 1:  // tail
 		translateMatrix = translate(translateMatrix, vec3(-0.2 * ratio, -0.75, -0.00003));
 		selectedColor = vec3(0.0, 1.0, 0.0);
-		threshold = vec3(0.0, 0.75, 0.0);
+		threshold = vec3(0.0, 0.8, 0.0);
 		break;
 
 	case 2:  // body
 		translateMatrix = translate(translateMatrix, vec3(0.0, -0.75, -0.00002));
 		selectedColor = vec3(0.0, 1.0, 0.0);
-		threshold = vec3(0.0, 0.75, 0.0);
+		threshold = vec3(0.0, 0.8, 0.0);
 		break;
 
 	case 3:  // hair
 		translateMatrix = translate(translateMatrix, vec3(0.0, -0.75, -0.00001));
 		selectedColor = vec3(0.0, 1.0, 0.0);
-		threshold = vec3(0.0, 0.75, 0.0);
+		threshold = vec3(0.0, 0.8, 0.0);
 		break;
 
 	case 4:  // head
 		translateMatrix = translate(translateMatrix, vec3(headPos * ratio, 0.12, 0.0));
 		selectedColor = vec3(0.0, 1.0, 0.0);
-		threshold = vec3(0.0, 0.7, 0.0);
+		threshold = vec3(0.0, 0.8, 0.0);
 		break;
 
 	case 5:  // eye
@@ -131,7 +132,7 @@ void setTransform(int idx) {  // 변환 세팅
 		else
 			translateMatrix = translate(translateMatrix, vec3(headPos * ratio, 0.12, 0.00001));
 		selectedColor = vec3(0.0, 1.0, 0.0);
-		threshold = vec3(0.0, 0.7, 0.0);
+		threshold = vec3(0.0, 0.9, 0.0);
 		break;
 	
 	case 6:  // dot
@@ -140,7 +141,7 @@ void setTransform(int idx) {  // 변환 세팅
 		else
 			translateMatrix = translate(translateMatrix, vec3(headPos * ratio, 0.12, 0.00003));
 		selectedColor = vec3(0.0, 1.0, 0.0);
-		threshold = vec3(0.0, 0.7, 0.0);
+		threshold = vec3(0.0, 1.0, 0.0);
 		break;
 	
 	case 7:  // brow
@@ -149,20 +150,20 @@ void setTransform(int idx) {  // 변환 세팅
 		else
 			translateMatrix = translate(translateMatrix, vec3(headPos * ratio, 0.12, 0.00003));
 		selectedColor = vec3(0.0, 1.0, 0.0);
-		threshold = vec3(0.0, 0.7, 0.0);
+		threshold = vec3(0.0, 0.9, 0.0);
 		break;
 
-	case 8:
+	case 8:  // blink
 		translateMatrix = translate(translateMatrix, vec3(headPos * ratio, 0.12, 0.00004));
 		selectedColor = vec3(0.0, 1.0, 0.0);
 		threshold = vec3(0.0, 0.7, 0.0);
 		break;
 
 	case PLATE_COUNT - 1:  // cursor, 항상 맨 마지막에 출력
-		scaleMatrix = scale(scaleMatrix, vec3(0.1, 0.1, 1.0));
+		scaleMatrix = scale(scaleMatrix, vec3(0.1 / zoom, 0.1 / zoom, 1.0));
 		translateMatrix = translate(translateMatrix, vec3(mx * ratio - camX * ratio, my - camY, 0.001));
 		selectedColor = vec3(0.0, 1.0, 0.0);
-		threshold = vec3(0.0, 0.8, 0.0);
+		threshold = vec3(0.0, 0.85, 0.0);
 		break;
 	}
 

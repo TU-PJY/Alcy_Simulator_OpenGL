@@ -37,7 +37,7 @@ void main(int argc, char** argv) {
 		glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GL_MULTISAMPLE);
 		glutInitWindowPosition(0, 0);
 		glutInitWindowSize(WIDTH, HEIGHT);
-		glutCreateWindow("Totally Cute Alcy Simulator");
+		glutCreateWindow("Totally Smoll Alcy Simulator");
 		glutFullScreen();  // 전체화면으로 전환한다
 		glutSetCursor(GLUT_CURSOR_NONE);
 
@@ -67,6 +67,7 @@ void main(int argc, char** argv) {
 	glutMouseFunc(Mouse);
 	glutMotionFunc(Motion);
 	glutPassiveMotionFunc(pMotion);
+	glutMouseWheelFunc(Wheel);
 
 	glutTimerFunc(10, timerOperation, 1);
 	glutMainLoop();

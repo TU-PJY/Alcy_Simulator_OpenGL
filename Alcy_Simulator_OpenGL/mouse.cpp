@@ -9,6 +9,8 @@ extern bool handEnable;
 extern GLfloat ratio;
 extern GLfloat camX, camY;
 extern GLfloat camRot;
+extern GLfloat zoom, zoomAcc;
+extern bool zoomEnable;
 
 // 알키 바라보는 방향
 extern int dir;
@@ -64,4 +66,18 @@ void Motion(int x, int y) {  // 클릭 할 때의 모션
 	updateCursor();
 
 	glutPostRedisplay();
+}
+
+void Wheel(int button, int dir, int x, int y) {  // 마우스 휠
+	if (dir > 0) {
+		zoomAcc = 0.2;
+		zoomEnable = true;
+	}
+	else if (dir < 0) {
+		if (zoom > 1.0) {
+			zoomAcc = -0.2;
+			zoomEnable = true;
+		}
+	}
+	return;
 }

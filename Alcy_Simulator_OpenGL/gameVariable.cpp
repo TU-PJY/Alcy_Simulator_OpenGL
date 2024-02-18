@@ -8,6 +8,9 @@ GLfloat mx, my;
 GLfloat ratio;  // 화면 종횡비;
 GLfloat camX, camY;  // 게임 화면 카메라
 GLfloat camRot;  // 카메라 회전 각도
+GLfloat zoom = 1.0;  // 카메라 줌
+GLfloat zoomAcc = 0;  // 줌 가속도
+bool zoomEnable = false;  // 줌 여부
 bool camR, camL;  // 카메라 좌우 회전
 
 // 커서

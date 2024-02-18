@@ -27,6 +27,9 @@ extern GLfloat blinkInterval; // 눈 깜빡임 간격
 extern GLfloat keepTimer; // 눈 감은 상태를 유지한다
 extern bool blinkEnable;  // 눈 깜빡임 여부
 
+extern GLfloat zoomAcc, zoom;
+extern bool zoomEnable;
+
 
 void syncFrame() {  // 프레임 동기화
     elapsedTime = glutGet(GLUT_ELAPSED_TIME);
@@ -127,12 +130,40 @@ void updateAlcyBlink() {  // 알키 눈 깜빡임 업데이트
     }
 }
 
+void updateZoom() {  // 카메라 줌
+    if (zoomEnable) {
+        zoom += zoomAcc * fs;
+
+        if (zoomAcc > 0) {  // 줌 인
+            zoomAcc -= fs / 10;
+            if (zoomAcc < 0 || zoom > 3.0) {  // 최대 줌 값 위로 올라가면 줌 인을 중단한다. 
+                zoomAcc = 0;
+                if (zoom > 3.0)
+                    zoom = 3.0;
+                zoomEnable = false;
+            }
+        }
+
+        else if (zoomAcc < 0) {  // 줌 아웃
+            zoomAcc += fs / 10;
+            if (zoomAcc > 0 || zoom < 1.0) {  // 최소 줌 값 밑으로 내려가면 줌 아웃을 중단한다.
+                zoomAcc = 0;
+                if (zoom < 1.0)
+                    zoom = 1.0;
+                zoomEnable = false;
+            }
+        }
+        
+    }
+}
+
 void timerOperation(int value) {
     syncFrame();
 
     rotateCam();
     moveAlcyHead();
     updateAlcyBlink();
+    updateZoom();
 
     glutTimerFunc(10, timerOperation, 1);
     if (glutGetWindow() != 0)
