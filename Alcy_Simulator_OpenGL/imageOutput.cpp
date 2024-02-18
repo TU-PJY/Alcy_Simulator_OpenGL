@@ -141,7 +141,7 @@ void setTransform(int idx) {  // 변환 세팅
 		break;
 	
 	case 7:  // brow
-		translateMatrix = translate(translateMatrix, vec3(headPos * ratio, 0.13, 0.00003));
+		translateMatrix = translate(translateMatrix, vec3(headPos * ratio, 0.13 - (camY / 4), 0.00003));
 		selectedColor = vec3(0.0, 1.0, 0.0);
 		threshold = vec3(0.0, 0.7, 0.0);
 		break;
