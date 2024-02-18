@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="GLSL">
+      <UniqueIdentifier>{931f4ec3-49e7-48b0-b47b-ad9ea8f77f94}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\imageControl">
+      <UniqueIdentifier>{27bcb282-610a-45e3-ba95-ac62cda65f46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\gameControl">
+      <UniqueIdentifier>{cee54dbd-5b44-4ade-99e9-dd4514261662}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\shaderCode">
+      <UniqueIdentifier>{a2fc8178-acc8-46b6-a1c0-1f300cdc0979}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\gameHeader">
+      <UniqueIdentifier>{e8b98558-de81-43a3-88c0-579ad51fd444}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="imageBuffer.cpp">
+      <Filter>소스 파일\imageControl</Filter>
+    </ClCompile>
+    <ClCompile Include="imageOutput.cpp">
+      <Filter>소스 파일\imageControl</Filter>
+    </ClCompile>
+    <ClCompile Include="gameValue.cpp">
+      <Filter>소스 파일\gameControl</Filter>
+    </ClCompile>
+    <ClCompile Include="key.cpp">
+      <Filter>소스 파일\gameControl</Filter>
+    </ClCompile>
+    <ClCompile Include="timer.cpp">
+      <Filter>소스 파일\gameControl</Filter>
+    </ClCompile>
+    <ClCompile Include="shaderSet.cpp">
+      <Filter>소스 파일\shaderCode</Filter>
+    </ClCompile>
+    <ClCompile Include="mouse.cpp">
+      <Filter>소스 파일\gameControl</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="GLSL_vertex.glsl">
+      <Filter>GLSL</Filter>
+    </None>
+    <None Include="GLSL_fragment.glsl">
+      <Filter>GLSL</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="config.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="translate.h">
+      <Filter>헤더 파일\gameHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="texture.h">
+      <Filter>헤더 파일\gameHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="shader.h">
+      <Filter>헤더 파일\gameHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="screen.h">
+      <Filter>헤더 파일\gameHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="gl_func.h">
+      <Filter>헤더 파일\gameHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="buffer.h">
+      <Filter>헤더 파일\gameHeader</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
