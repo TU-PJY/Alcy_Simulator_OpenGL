@@ -6,12 +6,14 @@
 extern GLuint ID;
 extern GLuint VAO[IMAGE_COUNT];  // MODEL_COUNT는 config.h에 정의되어있음
 
-// 카메라 컨트롤 변수
+// 카메라 
 extern GLfloat camX, camY;  // 카메라 위치
 extern GLfloat camRot;  // 카메라 각도
 extern GLfloat mx, my;  // 마우스 위치, mx에는 ratio를 곱해야 올바른 값이 나옴
+extern bool camR, camL;
 
-// 이미지 컨트롤 변수
+// 커서
+extern bool cursorEnable;
 
 
 glm::vec3 cameraPos, cameraDirection, cameraUp, lightPos, objColor;
@@ -143,10 +145,14 @@ void modelOutput(int idx) {  // 모델 출력
 		break;
 
 	case 4:
-		if (mx * ratio < -0.5 * ratio) 
-			glBindTexture(GL_TEXTURE_2D, alcyHead[1]);  // head left
-		else if (mx * ratio > 0.5 * ratio)
-			glBindTexture(GL_TEXTURE_2D, alcyHead[2]);  // head right
+		if (camRot == 0 && !camR && !camL) {
+			if (mx * ratio < -0.5 * ratio)
+				glBindTexture(GL_TEXTURE_2D, alcyHead[1]);  // head left
+			else if (mx * ratio > 0.5 * ratio)
+				glBindTexture(GL_TEXTURE_2D, alcyHead[2]);  // head right
+			else
+				glBindTexture(GL_TEXTURE_2D, alcyHead[0]);  // head_middle
+		}
 		else
 			glBindTexture(GL_TEXTURE_2D, alcyHead[0]);  // head_middle
 		break;
@@ -156,5 +162,6 @@ void modelOutput(int idx) {  // 모델 출력
 		break;
 	}
 
-	glDrawArrays(GL_TRIANGLES, 0, 6);
+	if((idx == IMAGE_COUNT - 1 && cursorEnable) || idx != IMAGE_COUNT - 1)
+		glDrawArrays(GL_TRIANGLES, 0, 6);
 }

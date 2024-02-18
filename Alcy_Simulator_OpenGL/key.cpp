@@ -4,6 +4,8 @@
 extern bool camR, camL;
 extern GLfloat camRot;
 
+extern bool cursorEnable;
+
 void keyDown(unsigned char KEY, int x, int y) {
 	switch (KEY) {
 	case 27:  // ESC
@@ -12,10 +14,12 @@ void keyDown(unsigned char KEY, int x, int y) {
 
 	case 'q':  // 카메라 좌측 회전
 		camL = true;
+		cursorEnable = false;
 		break;
 
 	case 'e':  // 카메라 우측 회전
 		camR = true;
+		cursorEnable = false;
 		break;
 	}
 	if (glutGetWindow() != 0)

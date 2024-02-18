@@ -7,6 +7,8 @@ GLfloat fs;  // frame sync, 프레임 동기화
 extern GLfloat camRot;
 extern bool camR, camL;
 
+extern bool cursorEnable;
+
 void syncFrame() {
     elapsedTime = glutGet(GLUT_ELAPSED_TIME);
     fs = (elapsedTime - lastElapsedTime) / 10.0; // Convert milliseconds to seconds
@@ -29,13 +31,17 @@ void rotateCam() {
     if (!camR && !camL) {  // 카메라 회전 조작이 없을 시
         if (camRot > 0) {
             camRot -= fs / 2;
-            if (camRot < 0)
+            if (camRot < 0) {
                 camRot = 0;
+                cursorEnable = true;
+            }
         }
         if (camRot < 0) {
             camRot += fs / 2;
-            if (camRot > 0)
+            if (camRot > 0) {
                 camRot = 0;
+                cursorEnable = true;
+            }
         }
     }
 }
