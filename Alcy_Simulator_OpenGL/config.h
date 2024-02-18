@@ -15,10 +15,7 @@
 #include <gl/freeglut.h>
 #include <gl/freeglut_ext.h>
 #include <iostream>
-#include <vector>
-#include <fstream>
-#include <sstream>
-#define IMAGE_COUNT 8
+#define IMAGE_COUNT 20
 
 using namespace std;
 

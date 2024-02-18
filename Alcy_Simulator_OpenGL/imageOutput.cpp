@@ -22,7 +22,7 @@ extern int dir;
 // 알키 머리 움직임
 extern GLfloat headPos;
 
-GLfloat transparent;
+extern GLfloat transparent;
 
 glm::vec3 cameraPos, cameraDirection, cameraUp, lightPos, objColor;
 glm::mat4 transformMatrix, view, projection, lightMatrix, scaleMatrix, rotateMatrix, translateMatrix, camMaxtrix;
@@ -123,13 +123,19 @@ void setTransform(int idx) {  // 변환 세팅
 		break;
 
 	case 5:  // eye
-		translateMatrix = translate(translateMatrix, vec3((headPos - (camX / 4)) * ratio, 0.12 - (camY / 4), 0.00001));
+		if(camRot == 0 && !camR && !camL)
+			translateMatrix = translate(translateMatrix, vec3((headPos - (camX / 4)) * ratio, 0.12 - (camY / 4), 0.00001));
+		else
+			translateMatrix = translate(translateMatrix, vec3(headPos * ratio, 0.12, 0.00001));
 		selectedColor = vec3(0.0, 1.0, 0.0);
 		threshold = vec3(0.0, 0.7, 0.0);
 		break;
 	
 	case 6:  // dot
-		translateMatrix = translate(translateMatrix, vec3((headPos - (camX / 2.5)) * ratio, 0.12 - (camY / 2), 0.00003));
+		if (camRot == 0 && !camR && !camL)
+			translateMatrix = translate(translateMatrix, vec3((headPos - (camX / 2.5)) * ratio, 0.12 - (camY / 2), 0.00003));
+		else
+			translateMatrix = translate(translateMatrix, vec3(headPos * ratio, 0.12, 0.00003));
 		selectedColor = vec3(0.0, 1.0, 0.0);
 		threshold = vec3(0.0, 0.7, 0.0);
 		break;

@@ -16,5 +16,8 @@ bool cursorEnable = true;
 // 알키 바라보는 방향
 int dir = m;  // 초기값 m
 
+// 이미지 투명도
+GLfloat transparent;
+
 //알키 머리, 얼굴 파츠 움직임
 GLfloat headPos;  // 방향 전환 시 전환한 방향으로 움직임
