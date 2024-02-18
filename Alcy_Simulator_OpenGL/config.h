@@ -10,6 +10,7 @@
 #include <windows.h>
 #include <time.h>
 #include <iostream>
+#include <random>
 #include <gl/glm/glm.hpp> //  이 include들을 다른데로 옮기지 말 것!
 #include <gl/glm/ext.hpp> 
 #include <gl/glm/gtc/matrix_transform.hpp>

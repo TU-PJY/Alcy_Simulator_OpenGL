@@ -1,6 +1,10 @@
 ﻿// 타이머
 #include "gl_func.h"
 
+random_device rd;  mt19937 gen(rd());
+uniform_real_distribution <GLfloat> dis(0, 3);
+
+
 // 프레임
 int lastElapsedTime, elapsedTime;
 GLfloat fs;  // frame sync, 프레임 동기화
@@ -20,7 +24,7 @@ extern int dir; // 알키 바라보는 방향
 extern GLfloat headPos; // 알키 머리 움직임
 extern time_t startTime, endTime, blinkTime; // 눈 깜빡임 타이머
 extern GLfloat blinkInterval; // 눈 깜빡임 간격
-extern int keepTimer; // 눈 감은 상태를 유지한다
+extern GLfloat keepTimer; // 눈 감은 상태를 유지한다
 extern bool blinkEnable;  // 눈 깜빡임 여부
 
 
@@ -113,14 +117,16 @@ void updateAlcyBlink() {  // 알키 눈 깜빡임 업데이트
     }
 
     else {
-        keepTimer += 8 * fs;  // 아주 짧은 시간 동안 눈 감은 상태를 유지하다가 다시 눈을 뜬다.
-        if (keepTimer > 10) {
+        keepTimer += fs;  // 아주 짧은 시간 동안 눈 감은 상태를 유지하다가 다시 눈을 뜬다.
+        if (keepTimer > 1.5) {
             startTime = time(NULL);
             keepTimer = 0;
+            blinkInterval = dis(gen);  // 눈 깜빡이는 시간을 랜덤으로 설정한다
             blinkEnable = false;
         }
     }
 }
+
 void timerOperation(int value) {
     syncFrame();
 

@@ -59,7 +59,7 @@ GLuint VAO[PLATE_COUNT], VBO;  // MODEL_COUNT는 config.h에 정의되어있음
 BITMAPINFO* bmp;
 
 // 알키 외의 리소스
-unsigned int back, cursor;
+unsigned int back, cursor[2];
 
 // 알키 리소스
 unsigned int alcyTail, alcyBody, alcyHair, alcyHead[3];
@@ -103,10 +103,17 @@ void parameteri() {
 
 void setTexture() {
 	// cursor
-	glGenTextures(1, &cursor);  
-	glBindTexture(GL_TEXTURE_2D, cursor);
+	glGenTextures(1, &cursor[0]);
+	glBindTexture(GL_TEXTURE_2D, cursor[0]);
 	parameteri();
 	texture_data = LoadDIBitmap("res//alcy//cursor.bmp", &bmp);
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, 100, 100, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+
+	// cursor hand
+	glGenTextures(1, &cursor[1]);
+	glBindTexture(GL_TEXTURE_2D, cursor[1]);
+	parameteri();
+	texture_data = LoadDIBitmap("res//alcy//cursor_hand.bmp", &bmp);
 	glTexImage2D(GL_TEXTURE_2D, 0, 3, 100, 100, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
 
 	// background
