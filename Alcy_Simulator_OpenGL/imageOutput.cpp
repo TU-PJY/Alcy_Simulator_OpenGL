@@ -140,6 +140,12 @@ void setTransform(int idx) {  // 변환 세팅
 		threshold = vec3(0.0, 0.7, 0.0);
 		break;
 	
+	case 7:  // brow
+		translateMatrix = translate(translateMatrix, vec3(headPos * ratio, 0.22, 0.00003));
+		selectedColor = vec3(0.0, 1.0, 0.0);
+		threshold = vec3(0.0, 0.7, 0.0);
+		break;
+
 	case IMAGE_COUNT - 1:  // cursor, 항상 맨 마지막에 출력
 		scaleMatrix = scale(scaleMatrix, vec3(0.1, 0.1, 1.0));
 		translateMatrix = translate(translateMatrix, vec3(mx * ratio - camX * ratio, my - camY, 0.001));
@@ -227,6 +233,25 @@ void modelOutput(int idx) {  // 모델 출력
 		}
 		else  // 카메라 회전 시 앞을 보도록 함
 			glBindTexture(GL_TEXTURE_2D, dot[0]);  // eye middle
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+		break;
+
+	case 7:
+		if (camRot == 0 && !camR && !camL) {
+			switch (dir) {
+			case l:
+				glBindTexture(GL_TEXTURE_2D, brow[1]);  // brow left
+				break;
+			case r:
+				glBindTexture(GL_TEXTURE_2D, brow[2]);  // brow right
+				break;
+			case m:
+				glBindTexture(GL_TEXTURE_2D, brow[0]);  // brow middle
+				break;
+			}
+		}
+		else  // 카메라 회전 시 앞을 보도록 함
+			glBindTexture(GL_TEXTURE_2D, brow[0]);  // brow middle
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 		break;
 

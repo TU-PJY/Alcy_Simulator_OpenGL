@@ -63,7 +63,7 @@ unsigned int back, cursor;
 
 // 알키 리소스
 unsigned int alcyTail, alcyBody, alcyHair, alcyHead[3];
-unsigned int eye[3], dot[3], eyeClose[3];
+unsigned int eye[3], dot[3], eyeClose[3], brow[3];
 
 unsigned char* texture_data;
 
@@ -198,6 +198,27 @@ void setTexture() {
 	glBindTexture(GL_TEXTURE_2D, dot[2]);
 	parameteri();
 	texture_data = LoadDIBitmap("res//alcy//alcy//face//dot_right.bmp", &bmp);
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, 1500, 1500, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+
+	//brow middle
+	glGenTextures(1, &brow[0]);
+	glBindTexture(GL_TEXTURE_2D, brow[0]);
+	parameteri();
+	texture_data = LoadDIBitmap("res//alcy//alcy//face//brow_middle.bmp", &bmp);
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, 1500, 1500, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+
+	//brow left
+	glGenTextures(1, &brow[1]);
+	glBindTexture(GL_TEXTURE_2D, brow[1]);
+	parameteri();
+	texture_data = LoadDIBitmap("res//alcy//alcy//face//brow_left.bmp", &bmp);
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, 1500, 1500, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+
+	//brow right
+	glGenTextures(1, &brow[2]);
+	glBindTexture(GL_TEXTURE_2D, brow[2]);
+	parameteri();
+	texture_data = LoadDIBitmap("res//alcy//alcy//face//brow_right.bmp", &bmp);
 	glTexImage2D(GL_TEXTURE_2D, 0, 3, 1500, 1500, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
 }
 //
