@@ -15,11 +15,14 @@ extern bool cursorEnable;
 // 이미지 투명도
 extern GLfloat transparent;
 
-// 알키 바라보는 방향
-extern int dir;
+// 알키 관련 변수
+extern int dir; // 알키 바라보는 방향
+extern GLfloat headPos; // 알키 머리 움직임
+extern time_t startTime, endTime, blinkTime; // 눈 깜빡임 타이머
+extern GLfloat blinkInterval; // 눈 깜빡임 간격
+extern int keepTimer; // 눈 감은 상태를 유지한다
+extern bool blinkEnable;  // 눈 깜빡임 여부
 
-// 알키 머리 움직임
-extern GLfloat headPos;
 
 void syncFrame() {  // 프레임 동기화
     elapsedTime = glutGet(GLUT_ELAPSED_TIME);
@@ -101,11 +104,29 @@ void moveAlcyHead() {  // 바라보는 방향 전환 시 알키 머리 움직임
     }
 }
 
+void updateAlcyBlink() {  // 알키 눈 깜빡임 업데이트
+    if (!blinkEnable) {
+        endTime = time(NULL);  // 시간을 실시간으로 측정하여 아래의 조건에 맞는지 검사한다
+        if (GLfloat(endTime - startTime) > blinkInterval) {  // 지정된 간격보다 시간이 지나면 눈 깜빡임이 활성화 된다.
+            blinkEnable = true;
+        }
+    }
+
+    else {
+        keepTimer += 8 * fs;  // 아주 짧은 시간 동안 눈 감은 상태를 유지하다가 다시 눈을 뜬다.
+        if (keepTimer > 10) {
+            startTime = time(NULL);
+            keepTimer = 0;
+            blinkEnable = false;
+        }
+    }
+}
 void timerOperation(int value) {
     syncFrame();
 
     rotateCam();
     moveAlcyHead();
+    updateAlcyBlink();
 
     glutTimerFunc(10, timerOperation, 1);
     if (glutGetWindow() != 0)

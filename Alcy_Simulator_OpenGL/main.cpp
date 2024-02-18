@@ -22,7 +22,7 @@ GLvoid displayOutput() {
 	setWindowView();
 
 	// IMAGE_COUNT는 config.h에 정의되어있음
-	for (int i = 0; i < IMAGE_COUNT; i++) {  // IMAGE_COUNT 만큼 반복문을 돌며 변환과 출력 반복
+	for (int i = 0; i < PLATE_COUNT; i++) {  // IMAGE_COUNT 만큼 반복문을 돌며 변환과 출력 반복
 		setTransform(i);  // 변환 세팅
 		finishTransform(i); // 변환을 glsl로 전달
 		modelOutput(i);  // 최종 출력, 3개 함수 모두 imageOutput.cpp에 있음
@@ -56,7 +56,7 @@ void main(int argc, char** argv) {
 	}
 
 	// MODEL_COUNT는 config.h에 정의되어있음
-	for (int i = 0; i < IMAGE_COUNT; i++) // IMAGE_COUNT만큼 버퍼 초기화
+	for (int i = 0; i < PLATE_COUNT; i++) // IMAGE_COUNT만큼 버퍼 초기화
 		setBuffer(i);  // imageBuffer.cpp에 있음
 	setTexture();  // 텍스처 설정
 	

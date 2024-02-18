@@ -4,7 +4,7 @@
 #include "screen.h"
 
 extern GLuint ID;
-extern GLuint VAO[IMAGE_COUNT];  // MODEL_COUNT는 config.h에 정의되어있음
+extern GLuint VAO[PLATE_COUNT];  // MODEL_COUNT는 config.h에 정의되어있음
 
 // 카메라 
 extern GLfloat ratio;  //  종횡비
@@ -16,12 +16,14 @@ extern bool camR, camL;  // 방향 별 카메라 회전 여부
 // 커서
 extern bool cursorEnable;
 
-// 알키 바라보는 방향
-extern int dir;
+// 알키 관련 변스
+extern int dir;  // 알키 바라보는 방향
+extern bool blinkEnable;  // 알키 눈 깜빡임 여부\
 
 // 알키 머리 움직임
 extern GLfloat headPos;
 
+// 이미지 투명 값
 extern GLfloat transparent;
 
 glm::vec3 cameraPos, cameraDirection, cameraUp, lightPos, objColor;
@@ -30,8 +32,8 @@ glm::vec3 selectedColor, threshold;
 
 unsigned int projectionLocation, viewLocation, modelLocation, viewPosLocation;
 unsigned int lightPosLocation, lightColorLocation, objColorLocation;
-int transparencyLocation;
 unsigned int colorLocation, thresholdLocation;
+int transparencyLocation;
 
 
 void finishTransform(int idx) {  // 변환 전달 
@@ -70,7 +72,7 @@ void setWindowView() {  // 시점 세팅
 	cameraUp = vec3(0.0f, 1.0f, 0.0f);
 	projection = mat4(1.0f);
 	ratio = 1.0 * WIDTH / HEIGHT;  // 화면 비율을 구하여 모델이 제대로 나오도록 함
-	// X축 변환에 곱해야함.
+	// 신축, 회전 변환 및 X축 변환에 곱해야함.
 
 	view = lookAt(cameraPos, cameraDirection, cameraUp);
 	view = translate(view, vec3(camX * ratio, camY, 0));
@@ -146,7 +148,13 @@ void setTransform(int idx) {  // 변환 세팅
 		threshold = vec3(0.0, 0.7, 0.0);
 		break;
 
-	case IMAGE_COUNT - 1:  // cursor, 항상 맨 마지막에 출력
+	case 8:
+		translateMatrix = translate(translateMatrix, vec3(headPos * ratio, 0.12, 0.00004));
+		selectedColor = vec3(0.0, 1.0, 0.0);
+		threshold = vec3(0.0, 0.7, 0.0);
+		break;
+
+	case PLATE_COUNT - 1:  // cursor, 항상 맨 마지막에 출력
 		scaleMatrix = scale(scaleMatrix, vec3(0.1, 0.1, 1.0));
 		translateMatrix = translate(translateMatrix, vec3(mx * ratio - camX * ratio, my - camY, 0.001));
 		selectedColor = vec3(0.0, 1.0, 0.0);
@@ -214,10 +222,11 @@ void modelOutput(int idx) {  // 모델 출력
 		}
 		else  // 카메라 회전 시 앞을 보도록 함
 			glBindTexture(GL_TEXTURE_2D, eye[0]);  // eye middle
-		glDrawArrays(GL_TRIANGLES, 0, 6);
+		if (!blinkEnable)  // 눈을 깝빡이지 않을 때만 출력한다.
+			glDrawArrays(GL_TRIANGLES, 0, 6);
 		break;
 
-	case 6:
+	case 6:  // dot
 		if (camRot == 0 && !camR && !camL) {
 			switch (dir) {
 			case l:
@@ -233,10 +242,11 @@ void modelOutput(int idx) {  // 모델 출력
 		}
 		else  // 카메라 회전 시 앞을 보도록 함
 			glBindTexture(GL_TEXTURE_2D, dot[0]);  // eye middle
-		glDrawArrays(GL_TRIANGLES, 0, 6);
+		if (!blinkEnable)  // 눈을 깜빡이지 않을 때만 출력한다.
+			glDrawArrays(GL_TRIANGLES, 0, 6);
 		break;
 
-	case 7:
+	case 7:  // brow
 		if (camRot == 0 && !camR && !camL) {
 			switch (dir) {
 			case l:
@@ -255,7 +265,27 @@ void modelOutput(int idx) {  // 모델 출력
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 		break;
 
-	case IMAGE_COUNT - 1:  // cursor
+	case 8:  // blink
+		if (camRot == 0 && !camR && !camL) {
+			switch (dir) {
+			case l:
+				glBindTexture(GL_TEXTURE_2D, blink[1]);  // blink left
+				break;
+			case r:
+				glBindTexture(GL_TEXTURE_2D, blink[2]);  // blink right
+				break;
+			case m:
+				glBindTexture(GL_TEXTURE_2D, blink[0]);  // blink middle
+				break;
+			}
+		}
+		else 
+			glBindTexture(GL_TEXTURE_2D, blink[0]);  // blink middle
+		if(blinkEnable)  // true일 때만 출력
+			glDrawArrays(GL_TRIANGLES, 0, 6);
+		break;
+
+	case PLATE_COUNT - 1:  // cursor
 		glBindTexture(GL_TEXTURE_2D, cursor);
 		if(camRot == 0 && !camR && !camL)  // 카메라 회전 시 커서를 숨김
 			glDrawArrays(GL_TRIANGLES, 0, 6);

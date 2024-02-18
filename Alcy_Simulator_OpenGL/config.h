@@ -8,14 +8,15 @@
 #pragma warning(disable: 4326)
 #pragma warning(disable: 4244)
 #include <windows.h>
+#include <time.h>
+#include <iostream>
 #include <gl/glm/glm.hpp> //  이 include들을 다른데로 옮기지 말 것!
 #include <gl/glm/ext.hpp> 
 #include <gl/glm/gtc/matrix_transform.hpp>
 #include <gl/glew.h>
 #include <gl/freeglut.h>
 #include <gl/freeglut_ext.h>
-#include <iostream>
-#define IMAGE_COUNT 20
+#define PLATE_COUNT 20  // 사용하는 전체 plate 개수
 
 using namespace std;
 
