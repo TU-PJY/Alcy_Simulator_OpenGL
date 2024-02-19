@@ -29,10 +29,11 @@ bool blinkEnable = false; // 눈 깜빡임 여부, true일 시 깜빡임 활성�
 time_t startTime = time(NULL), endTime;  // 눈 깜빡임 간격 타이머
 GLfloat blinkInterval = 3;  // 눈 깜빡임 간격, 기본 3초
 GLfloat keepTimer;  // 눈을 감은 상태를 아주 짧게 유지한다
-GLfloat alcyHeight;  // 일시정지 시 알키이미지가 위로 조금 올라간다
 
 bool touchEnable;  // 알키 머리 쓰다듬기 여부
 
 //알키 머리, 얼굴 파츠 움직임
 GLfloat headPos;  // 방향 전환 시 전환한 방향으로 움직임
 GLfloat headRot;  // 쓰다듬기 시 머리 회전 각도
+GLfloat tailRot;  // 쓰다듬기 시 꼬리 회전 각도
+GLfloat tailNum; // 꼬리 회전에 사용되는 수치

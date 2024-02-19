@@ -32,7 +32,10 @@ extern GLfloat blinkInterval; // 눈 깜빡임 간격
 extern GLfloat keepTimer; // 눈 감은 상태를 유지한다
 extern bool blinkEnable;  // 눈 깜빡임 여부
 extern bool touchEnable;  // 쓰다듬기 여부
+
 extern GLfloat headRot;  // 쓰다듬기 시 머리 회전 각도
+extern GLfloat tailRot;
+extern GLfloat tailNum;
 
 
 
@@ -95,10 +98,11 @@ void updateZoom() {  // 카메라 줌
 
         if (zoomAcc > 0) {  // 줌 인
             zoomAcc -= fs / 10;
-            if (zoomAcc < 0 || zoom > 3.0) {  // 최대 줌 값 위로 올라가면 줌 인을 중단한다. 
+            cout << zoom << endl;
+            if (zoomAcc < 0 || zoom > 2.7) {  // 최대 줌 값 위로 올라가면 줌 인을 중단한다. 
                 zoomAcc = 0;
-                if (zoom > 3.0)
-                    zoom = 3.0;
+                if (zoom > 2.7)
+                    zoom = 2.7;
                 zoomEnable = false;
             }
         }
@@ -179,8 +183,10 @@ void moveAlcyHead() {  // 바라보는 방향 전환 시 알키 머리 움직임
 void updateAlcyTouch() {  // 알키 머리 쓰다듬기
     if (cursorEnable && handEnable && touchEnable) {  // 손 커서인 상태로 머리를 쓰다듬을 수 있다
         handX = sin(handNum) * 0.2;  // 쓰다듬는 중에는 손 커서가 좌우로 부드럽게 움직인다.
+        tailRot = sin(tailNum) * 10;
         handNum += fs / 4;
-        headRot = -handX * 30;  // 손의 움직임에 따라 머리도 같이 움직인다.
+        tailNum += fs / 10;  // 꼬리는 느린 속도로 별도로 움직인다.
+        headRot = -handX * 20;  // 손의 움직임에 따라 머리도 같이 움직인다.
     }
 }
 

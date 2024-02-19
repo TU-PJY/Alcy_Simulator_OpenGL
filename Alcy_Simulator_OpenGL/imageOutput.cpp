@@ -25,6 +25,7 @@ extern bool blinkEnable;  // 알키 눈 깜빡임 여부
 extern GLfloat headPos; // 알키 머리 움직임
 extern bool touchEnable;
 extern GLfloat headRot;
+extern GLfloat tailRot;
 
 // 나가기 아이콘 투명도
 extern GLfloat exitTransparent;
@@ -107,25 +108,27 @@ void setTransform(int idx) {  // 변환 세팅
 
 	case 1:  // tail
 		translateMatrix = translate(translateMatrix, vec3(-0.2 * ratio, -0.75, -0.00003));
+		translateMatrix = rotate(translateMatrix, radians(tailRot), vec3(0.0, 0.0, 1.0));
 		selectedColor = vec3(0.0, 1.0, 0.0);
 		threshold = vec3(0.0, 0.8, 0.0);
 		break;
 
 	case 2:  // body
 		translateMatrix = translate(translateMatrix, vec3(0.0, -0.75, -0.00002));
+		translateMatrix = rotate(translateMatrix, radians(-headRot / 4), vec3(0.0, 0.0, 1.0));
 		selectedColor = vec3(0.0, 1.0, 0.0);
 		threshold = vec3(0.0, 0.8, 0.0);
 		break;
 
 	case 3:  // hair
-		translateMatrix = translate(translateMatrix, vec3(0.0, -0.75 - headRot / 100, -0.00001));
+		translateMatrix = translate(translateMatrix, vec3(0.0, -0.75 - headRot / 200, -0.00001));
 		selectedColor = vec3(0.0, 1.0, 0.0);
 		threshold = vec3(0.0, 0.8, 0.0);
 		break;
 
 	case 4:  // head
 		translateMatrix = translate(translateMatrix, vec3(headPos * ratio, 0.12, 0.0));
-		rotateMatrix = rotate(rotateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
+		translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
 		selectedColor = vec3(0.0, 1.0, 0.0);
 		threshold = vec3(0.0, 0.8, 0.0);
 		break;
@@ -153,16 +156,16 @@ void setTransform(int idx) {  // 변환 세팅
 			translateMatrix = translate(translateMatrix, vec3(headPos * ratio, 0.13 - (camY / 4), 0.00003));
 		else
 			translateMatrix = translate(translateMatrix, vec3(headPos * ratio, 0.12, 0.00003));
-		rotateMatrix = rotate(rotateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
+		translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
 		selectedColor = vec3(0.0, 1.0, 0.0);
-		threshold = vec3(0.0, 0.9, 0.0);
+		threshold = vec3(0.0, 0.8, 0.0);
 		break;
 
 	case 8:  // blink
 		translateMatrix = translate(translateMatrix, vec3(headPos * ratio, 0.12, 0.00004));
-		rotateMatrix = rotate(rotateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
+		translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
 		selectedColor = vec3(0.0, 1.0, 0.0);
-		threshold = vec3(0.0, 0.7, 0.0);
+		threshold = vec3(0.0, 0.8, 0.0);
 		break;
 
 	case PLATE_COUNT - 2:  // 나가기 표시

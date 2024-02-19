@@ -13,6 +13,7 @@ extern GLfloat camX, camY;
 extern GLfloat camRot;
 extern GLfloat zoom, zoomAcc;
 extern bool zoomEnable;
+extern GLfloat zoom;
 
 // 알키 바라보는 방향
 extern int dir;
@@ -21,6 +22,7 @@ extern int dir;
 extern GLfloat headPos;
 extern bool touchEnable;
 extern GLfloat headRot;
+extern GLfloat tailRot, tailNum;
 
 void convert_to_gl(int x, int y) {  //GL좌표계로 변환
 	mx = (GLfloat)(x - (GLfloat)WIDTH / 2.0) * (GLfloat)(1.0 / (GLfloat)(WIDTH / 2.0));
@@ -52,6 +54,8 @@ void Mouse(int button, int state, int x, int y) {  // 마우스 클릭
 		if (handEnable && cursorEnable && touchEnable) {
 			handNum = 0;
 			headRot = 0;
+			tailNum = 0;
+			tailRot = 0;
 			touchEnable = false;
 		}
 	}
@@ -84,12 +88,12 @@ void Motion(int x, int y) {  // 클릭 할 때의 모션
 
 void Wheel(int button, int dir, int x, int y) {  // 마우스 휠
 	if (dir > 0) {
-		zoomAcc = 0.2;
+		zoomAcc = 0.2 + (zoom - 1.0) / 10;
 		zoomEnable = true;
 	}
 	else if (dir < 0) {
 		if (zoom > 1.0) {
-			zoomAcc = -0.2;
+			zoomAcc = -0.2 - (zoom - 1.0) / 10;
 			zoomEnable = true;
 		}
 	}
