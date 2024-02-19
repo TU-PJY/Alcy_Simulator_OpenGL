@@ -4,11 +4,6 @@
 random_device rd;  mt19937 gen(rd());
 uniform_real_distribution <GLfloat> dis(0, 3);
 
-// 일시정지
-extern bool pause;
-extern GLfloat alcyHeight;
-extern GLfloat pauseAcc;
-
 // 프레임
 int lastElapsedTime, elapsedTime;
 GLfloat fs;  // frame sync, 프레임 동기화
@@ -20,8 +15,9 @@ extern bool camR, camL;
 // 커서
 extern bool cursorEnable;
 
-// 이미지 투명도
-extern GLfloat transparent;
+// 나가기 아이콘 투명도
+extern bool exitEnable;
+extern GLfloat exitTransparent;
 
 // 알키 관련 변수
 extern int dir; // 알키 바라보는 방향
@@ -39,6 +35,22 @@ void syncFrame() {  // 프레임 동기화
     elapsedTime = glutGet(GLUT_ELAPSED_TIME);
     fs = (elapsedTime - lastElapsedTime) / 100.0; // Convert milliseconds to seconds
     lastElapsedTime = elapsedTime;
+}
+
+void exitGame() {  // esc를 길게 눌러 게임 종료
+    if (exitEnable) {
+        exitTransparent += fs / 6;
+        if (exitTransparent > 1.0) {
+            exitTransparent = 1.0;
+            glutDestroyWindow(1);
+        }
+    }
+    else {
+        exitTransparent -= fs / 6;
+        if (exitTransparent < 0) {
+            exitTransparent = 0;
+        }
+    }
 }
 
 void rotateCam() {  // 카메라 회전
@@ -157,38 +169,17 @@ void updateZoom() {  // 카메라 줌
                 zoomEnable = false;
             }
         }
-        
-    }
-}
-
-void updatePause() {
-    if (pause) {  // 일시정지 활성화
-        alcyHeight += pauseAcc * fs;
-        pauseAcc -= fs / 10;
-        if (pauseAcc < 0) {
-            pauseAcc = 0;
-        }
-        cout << alcyHeight << endl;
-    }
-
-    else if (!pause) {  // 일시정지 비활성화
-        alcyHeight -= pauseAcc * fs;
-        pauseAcc -= fs / 10;
-        if (pauseAcc < 0) {
-            alcyHeight = 0;
-            pauseAcc = 0;
-        }
     }
 }
 
 void timerOperation(int value) {
     syncFrame();
 
+    exitGame();
     rotateCam();
     moveAlcyHead();
     updateAlcyBlink();
     updateZoom();
-    updatePause();
 
     glutTimerFunc(10, timerOperation, 1);
     if (glutGetWindow() != 0)

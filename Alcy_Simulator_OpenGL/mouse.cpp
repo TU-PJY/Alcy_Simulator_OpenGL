@@ -19,10 +19,6 @@ extern int dir;
 extern GLfloat headPos;
 extern GLfloat alcyHeight;
 
-// 일시정지
-extern bool pause;
-
-
 void convert_to_gl(int x, int y) {  //GL좌표계로 변환
 	mx = (GLfloat)(x - (GLfloat)WIDTH / 2.0) * (GLfloat)(1.0 / (GLfloat)(WIDTH / 2.0));
 	my = -(GLfloat)(y - (GLfloat)HEIGHT / 2.0) * (GLfloat)(1.0 / (GLfloat)(HEIGHT / 2.0));
@@ -74,17 +70,16 @@ void Motion(int x, int y) {  // 클릭 할 때의 모션
 }
 
 void Wheel(int button, int dir, int x, int y) {  // 마우스 휠
-	if (!pause && alcyHeight == 0) {
-		if (dir > 0) {
-			zoomAcc = 0.2;
+	if (dir > 0) {
+		zoomAcc = 0.2;
+		zoomEnable = true;
+	}
+	else if (dir < 0) {
+		if (zoom > 1.0) {
+			zoomAcc = -0.2;
 			zoomEnable = true;
 		}
-		else if (dir < 0) {
-			if (zoom > 1.0) {
-				zoomAcc = -0.2;
-				zoomEnable = true;
-			}
-		}
 	}
+	
 	return;
 }

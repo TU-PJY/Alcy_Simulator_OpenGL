@@ -60,6 +60,8 @@ BITMAPINFO* bmp;
 
 // 알키 외의 리소스
 unsigned int back, cursor[2];
+unsigned int button[3];
+unsigned int buttonBack;
 
 // 알키 리소스
 unsigned int alcyTail, alcyBody, alcyHair, alcyHead[3];
@@ -115,6 +117,13 @@ void setTexture() {
 	parameteri();
 	texture_data = LoadDIBitmap("res//alcy//cursor_hand.bmp", &bmp);
 	glTexImage2D(GL_TEXTURE_2D, 0, 3, 100, 100, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+
+	// exit button
+	glGenTextures(1, &button[0]);
+	glBindTexture(GL_TEXTURE_2D, button[0]);
+	parameteri();
+	texture_data = LoadDIBitmap("res//alcy//icon_exit.bmp", &bmp);
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, 512, 512, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
 
 	// background
 	glGenTextures(1, &back);  
