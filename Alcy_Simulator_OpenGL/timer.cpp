@@ -11,6 +11,8 @@ GLfloat fs;  // frame sync, 프레임 동기화
 // 카메라
 extern GLfloat camRot;
 extern bool camR, camL;
+extern GLfloat zoomAcc, zoom;
+extern bool zoomEnable;
 
 // 커서
 extern bool cursorEnable;
@@ -30,9 +32,8 @@ extern GLfloat blinkInterval; // 눈 깜빡임 간격
 extern GLfloat keepTimer; // 눈 감은 상태를 유지한다
 extern bool blinkEnable;  // 눈 깜빡임 여부
 extern bool touchEnable;  // 쓰다듬기 여부
+extern GLfloat headRot;  // 쓰다듬기 시 머리 회전 각도
 
-extern GLfloat zoomAcc, zoom;
-extern bool zoomEnable;
 
 
 void syncFrame() {  // 프레임 동기화
@@ -179,6 +180,7 @@ void updateAlcyTouch() {  // 알키 머리 쓰다듬기
     if (cursorEnable && handEnable && touchEnable) {  // 손 커서인 상태로 머리를 쓰다듬을 수 있다
         handX = sin(handNum) * 0.2;  // 쓰다듬는 중에는 손 커서가 좌우로 부드럽게 움직인다.
         handNum += fs / 4;
+        headRot = -handX * 30;  // 손의 움직임에 따라 머리도 같이 움직인다.
     }
 }
 

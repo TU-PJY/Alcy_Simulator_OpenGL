@@ -20,6 +20,7 @@ extern int dir;
 // 알키 관련 변수
 extern GLfloat headPos;
 extern bool touchEnable;
+extern GLfloat headRot;
 
 void convert_to_gl(int x, int y) {  //GL좌표계로 변환
 	mx = (GLfloat)(x - (GLfloat)WIDTH / 2.0) * (GLfloat)(1.0 / (GLfloat)(WIDTH / 2.0));
@@ -50,6 +51,7 @@ void Mouse(int button, int state, int x, int y) {  // 마우스 클릭
 	else if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
 		if (handEnable && cursorEnable && touchEnable) {
 			handNum = 0;
+			headRot = 0;
 			touchEnable = false;
 		}
 	}
