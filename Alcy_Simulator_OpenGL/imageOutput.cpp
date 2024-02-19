@@ -78,7 +78,7 @@ void setWindowView() {  // 시점 세팅
 	cameraUp = vec3(0.0f, 1.0f, 0.0f);
 	projection = mat4(1.0f);
 	ratio = 1.0 * WIDTH / HEIGHT;  // 화면 비율을 구하여 모델이 제대로 나오도록 함
-	// 신축, 회전 변환 및 X축 변환에 곱해야함.
+	// X축 변환에 곱해야함.
 
 	view = lookAt(cameraPos, cameraDirection, cameraUp);
 	view = translate(view, vec3(camX * ratio, camY, 0));
