@@ -21,6 +21,7 @@ extern bool handEnable;
 // 알키 관련 변수
 extern int dir;  // 알키 바라보는 방향
 extern bool blinkEnable;  // 알키 눈 깜빡임 여부
+extern GLfloat alcyHeight;  // 일시정지 시 알키이미지가 위로 조금 올라간다
 
 // 알키 머리 움직임
 extern GLfloat headPos;
@@ -97,38 +98,38 @@ void setTransform(int idx) {  // 변환 세팅
 	switch (idx) {  // 변환 추가 
 	case 0: // background
 		scaleMatrix = scale(scaleMatrix, vec3(2.0 * ratio / zoom, 2.0 / zoom, 0.0));
-		translateMatrix = translate(translateMatrix, vec3(-camX * ratio / 4, -camY / 4, 0.0));
+		translateMatrix = translate(translateMatrix, vec3(-camX * ratio / 4, -camY / 4 + alcyHeight / 2, 0.0));
 		selectedColor = vec3(0.0, 1.0, 0.0);
 		threshold = vec3(0.0, 0.85, 0.0);
 		break;
 
 	case 1:  // tail
-		translateMatrix = translate(translateMatrix, vec3(-0.2 * ratio, -0.75, -0.00003));
+		translateMatrix = translate(translateMatrix, vec3(-0.2 * ratio, -0.75 + alcyHeight, -0.00003));
 		selectedColor = vec3(0.0, 1.0, 0.0);
 		threshold = vec3(0.0, 0.8, 0.0);
 		break;
 
 	case 2:  // body
-		translateMatrix = translate(translateMatrix, vec3(0.0, -0.75, -0.00002));
+		translateMatrix = translate(translateMatrix, vec3(0.0, -0.75 + alcyHeight, -0.00002));
 		selectedColor = vec3(0.0, 1.0, 0.0);
 		threshold = vec3(0.0, 0.8, 0.0);
 		break;
 
 	case 3:  // hair
-		translateMatrix = translate(translateMatrix, vec3(0.0, -0.75, -0.00001));
+		translateMatrix = translate(translateMatrix, vec3(0.0, -0.75 + alcyHeight, -0.00001));
 		selectedColor = vec3(0.0, 1.0, 0.0);
 		threshold = vec3(0.0, 0.8, 0.0);
 		break;
 
 	case 4:  // head
-		translateMatrix = translate(translateMatrix, vec3(headPos * ratio, 0.12, 0.0));
+		translateMatrix = translate(translateMatrix, vec3(headPos * ratio, 0.12 + alcyHeight, 0.0));
 		selectedColor = vec3(0.0, 1.0, 0.0);
 		threshold = vec3(0.0, 0.8, 0.0);
 		break;
 
 	case 5:  // eye
 		if(camRot == 0 && !camR && !camL)
-			translateMatrix = translate(translateMatrix, vec3((headPos - (camX / 4)) * ratio, 0.12 - (camY / 4), 0.00001));
+			translateMatrix = translate(translateMatrix, vec3((headPos - (camX / 4)) * ratio, 0.12 - (camY / 4) + alcyHeight, 0.00001));
 		else
 			translateMatrix = translate(translateMatrix, vec3(headPos * ratio, 0.12, 0.00001));
 		selectedColor = vec3(0.0, 1.0, 0.0);
@@ -137,7 +138,7 @@ void setTransform(int idx) {  // 변환 세팅
 	
 	case 6:  // dot
 		if (camRot == 0 && !camR && !camL)
-			translateMatrix = translate(translateMatrix, vec3((headPos - (camX / 2.5)) * ratio, 0.12 - (camY / 2), 0.00003));
+			translateMatrix = translate(translateMatrix, vec3((headPos - (camX / 2.5)) * ratio, 0.12 - (camY / 2) + alcyHeight, 0.00003));
 		else
 			translateMatrix = translate(translateMatrix, vec3(headPos * ratio, 0.12, 0.00003));
 		selectedColor = vec3(0.0, 1.0, 0.0);
@@ -146,7 +147,7 @@ void setTransform(int idx) {  // 변환 세팅
 	
 	case 7:  // brow
 		if (camRot == 0 && !camR && !camL)
-			translateMatrix = translate(translateMatrix, vec3(headPos * ratio, 0.13 - (camY / 4), 0.00003));
+			translateMatrix = translate(translateMatrix, vec3(headPos * ratio, 0.13 - (camY / 4) + alcyHeight, 0.00003));
 		else
 			translateMatrix = translate(translateMatrix, vec3(headPos * ratio, 0.12, 0.00003));
 		selectedColor = vec3(0.0, 1.0, 0.0);
@@ -154,7 +155,7 @@ void setTransform(int idx) {  // 변환 세팅
 		break;
 
 	case 8:  // blink
-		translateMatrix = translate(translateMatrix, vec3(headPos * ratio, 0.12, 0.00004));
+		translateMatrix = translate(translateMatrix, vec3(headPos * ratio, 0.12 + alcyHeight, 0.00004));
 		selectedColor = vec3(0.0, 1.0, 0.0);
 		threshold = vec3(0.0, 0.7, 0.0);
 		break;

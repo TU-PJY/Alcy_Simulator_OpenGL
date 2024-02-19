@@ -15,8 +15,13 @@ extern bool zoomEnable;
 // 알키 바라보는 방향
 extern int dir;
 
-// 알키 머리 움직임
+// 알키 관련 변수
 extern GLfloat headPos;
+extern GLfloat alcyHeight;
+
+// 일시정지
+extern bool pause;
+
 
 void convert_to_gl(int x, int y) {  //GL좌표계로 변환
 	mx = (GLfloat)(x - (GLfloat)WIDTH / 2.0) * (GLfloat)(1.0 / (GLfloat)(WIDTH / 2.0));
@@ -49,7 +54,7 @@ void Mouse(int button, int state, int x, int y) {  // 마우스 클릭
 void pMotion(int x, int y) {  // 클릭 안할 때의 모션
 	convert_to_gl(x, y);
 	camX = (0.0 - mx) / 10;
-	camY = (0.0 - my) / 10;
+	camY = (0.0 + alcyHeight - my) / 10;
 
 	setDir();
 	updateCursor();
@@ -60,7 +65,7 @@ void pMotion(int x, int y) {  // 클릭 안할 때의 모션
 void Motion(int x, int y) {  // 클릭 할 때의 모션
 	convert_to_gl(x, y);
 	camX = (0.0 - mx) / 10;
-	camY = (0.0 - my) / 10;
+	camY = (0.0 + alcyHeight - my) / 10;
 
 	setDir();
 	updateCursor();
@@ -69,14 +74,16 @@ void Motion(int x, int y) {  // 클릭 할 때의 모션
 }
 
 void Wheel(int button, int dir, int x, int y) {  // 마우스 휠
-	if (dir > 0) {
-		zoomAcc = 0.2;
-		zoomEnable = true;
-	}
-	else if (dir < 0) {
-		if (zoom > 1.0) {
-			zoomAcc = -0.2;
+	if (!pause && alcyHeight == 0) {
+		if (dir > 0) {
+			zoomAcc = 0.2;
 			zoomEnable = true;
+		}
+		else if (dir < 0) {
+			if (zoom > 1.0) {
+				zoomAcc = -0.2;
+				zoomEnable = true;
+			}
 		}
 	}
 	return;

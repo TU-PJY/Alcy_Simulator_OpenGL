@@ -4,6 +4,10 @@
 random_device rd;  mt19937 gen(rd());
 uniform_real_distribution <GLfloat> dis(0, 3);
 
+// 일시정지
+extern bool pause;
+extern GLfloat alcyHeight;
+extern GLfloat pauseAcc;
 
 // 프레임
 int lastElapsedTime, elapsedTime;
@@ -157,6 +161,26 @@ void updateZoom() {  // 카메라 줌
     }
 }
 
+void updatePause() {
+    if (pause) {  // 일시정지 활성화
+        alcyHeight += pauseAcc * fs;
+        pauseAcc -= fs / 10;
+        if (pauseAcc < 0) {
+            pauseAcc = 0;
+        }
+        cout << alcyHeight << endl;
+    }
+
+    else if (!pause) {  // 일시정지 비활성화
+        alcyHeight -= pauseAcc * fs;
+        pauseAcc -= fs / 10;
+        if (pauseAcc < 0) {
+            alcyHeight = 0;
+            pauseAcc = 0;
+        }
+    }
+}
+
 void timerOperation(int value) {
     syncFrame();
 
@@ -164,6 +188,7 @@ void timerOperation(int value) {
     moveAlcyHead();
     updateAlcyBlink();
     updateZoom();
+    updatePause();
 
     glutTimerFunc(10, timerOperation, 1);
     if (glutGetWindow() != 0)

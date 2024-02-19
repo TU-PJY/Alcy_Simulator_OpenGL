@@ -4,6 +4,10 @@
 // 마우스
 GLfloat mx, my; 
 
+// 일시정지
+bool pause = false;
+GLfloat pauseAcc;  // 일시정지 애니메이션 가속
+
 // 카메라
 GLfloat ratio;  // 화면 종횡비;
 GLfloat camX, camY;  // 게임 화면 카메라
@@ -23,6 +27,7 @@ bool blinkEnable = false; // 눈 깜빡임 여부, true일 시 깜빡임 활성�
 time_t startTime = time(NULL), endTime;  // 눈 깜빡임 간격 타이머
 GLfloat blinkInterval = 3;  // 눈 깜빡임 간격, 기본 3초
 GLfloat keepTimer;  // 눈을 감은 상태를 아주 짧게 유지한다
+GLfloat alcyHeight;  // 일시정지 시 알키이미지가 위로 조금 올라간다
 
 // 이미지 투명도
 GLfloat transparent;
