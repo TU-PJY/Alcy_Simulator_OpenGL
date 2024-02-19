@@ -36,4 +36,6 @@ bool touchEnable;  // 알키 머리 쓰다듬기 여부
 GLfloat headPos;  // 방향 전환 시 전환한 방향으로 움직임
 GLfloat headRot;  // 쓰다듬기 시 머리 회전 각도
 GLfloat tailRot;  // 쓰다듬기 시 꼬리 회전 각도
+GLfloat bodyRot;  // 쓰다듬기 시 몸통 회전 각도
 GLfloat tailNum; // 꼬리 회전에 사용되는 수치
+bool headTiltR, headTiltL;  // 카메라 기울였을 때 알키 머리 기울이기 여부

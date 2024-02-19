@@ -26,6 +26,7 @@ extern GLfloat headPos; // 알키 머리 움직임
 extern bool touchEnable;
 extern GLfloat headRot;
 extern GLfloat tailRot;
+extern GLfloat bodyRot;
 
 // 나가기 아이콘 투명도
 extern GLfloat exitTransparent;
@@ -115,7 +116,7 @@ void setTransform(int idx) {  // 변환 세팅
 
 	case 2:  // body
 		translateMatrix = translate(translateMatrix, vec3(0.0, -0.75, -0.00002));
-		translateMatrix = rotate(translateMatrix, radians(-headRot / 4), vec3(0.0, 0.0, 1.0));
+		translateMatrix = rotate(translateMatrix, radians(bodyRot), vec3(0.0, 0.0, 1.0));
 		selectedColor = vec3(0.0, 1.0, 0.0);
 		threshold = vec3(0.0, 0.8, 0.0);
 		break;
@@ -127,43 +128,50 @@ void setTransform(int idx) {  // 변환 세팅
 		break;
 
 	case 4:  // head
-		translateMatrix = translate(translateMatrix, vec3(headPos * ratio, 0.12, 0.0));
+		translateMatrix = translate(translateMatrix, vec3(0.0, -0.1, 0.0));
 		translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
+		translateMatrix = translate(translateMatrix, vec3((headPos - headRot / 300) * ratio, 0.22, 0.0));
 		selectedColor = vec3(0.0, 1.0, 0.0);
 		threshold = vec3(0.0, 0.8, 0.0);
 		break;
 
 	case 5:  // eye
+		translateMatrix = translate(translateMatrix, vec3(0.0, -0.1, 0.0));
+		translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
 		if(camRot == 0 && !camR && !camL)
-			translateMatrix = translate(translateMatrix, vec3((headPos - (camX / 4)) * ratio, 0.12 - (camY / 4), 0.00001));
+			translateMatrix = translate(translateMatrix, vec3(((headPos - headRot / 300) - (camX / 4)) * ratio, 0.22 - (camY / 4), 0.00001));
 		else
-			translateMatrix = translate(translateMatrix, vec3(headPos * ratio, 0.12, 0.00001));
+			translateMatrix = translate(translateMatrix, vec3((headPos - headRot / 300) * ratio, 0.22, 0.00001));
 		selectedColor = vec3(0.0, 1.0, 0.0);
 		threshold = vec3(0.0, 0.9, 0.0);
 		break;
 	
 	case 6:  // dot
+		translateMatrix = translate(translateMatrix, vec3(0.0, -0.1, 0.0));
+		translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
 		if (camRot == 0 && !camR && !camL)
-			translateMatrix = translate(translateMatrix, vec3((headPos - (camX / 2.5)) * ratio, 0.12 - (camY / 2), 0.00003));
+			translateMatrix = translate(translateMatrix, vec3(((headPos - headRot / 300) - (camX / 2.5)) * ratio, 0.22 - (camY / 2), 0.00003));
 		else
-			translateMatrix = translate(translateMatrix, vec3(headPos * ratio, 0.12, 0.00003));
+			translateMatrix = translate(translateMatrix, vec3((headPos - headRot / 300) * ratio, 0.22, 0.00003));
 		selectedColor = vec3(0.0, 1.0, 0.0);
 		threshold = vec3(0.0, 1.0, 0.0);
 		break;
 	
 	case 7:  // brow
-		if (camRot == 0 && !camR && !camL && !touchEnable)
-			translateMatrix = translate(translateMatrix, vec3(headPos * ratio, 0.13 - (camY / 4), 0.00003));
-		else
-			translateMatrix = translate(translateMatrix, vec3(headPos * ratio, 0.12, 0.00003));
+		translateMatrix = translate(translateMatrix, vec3(0.0, -0.1, 0.0));
 		translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
+		if (camRot == 0 && !camR && !camL && !touchEnable)
+			translateMatrix = translate(translateMatrix, vec3((headPos - headRot / 300) * ratio, 0.23 - (camY / 4), 0.00003));
+		else
+			translateMatrix = translate(translateMatrix, vec3((headPos - headRot / 300) * ratio, 0.22, 0.00003));
 		selectedColor = vec3(0.0, 1.0, 0.0);
 		threshold = vec3(0.0, 0.8, 0.0);
 		break;
 
 	case 8:  // blink
-		translateMatrix = translate(translateMatrix, vec3(headPos * ratio, 0.12, 0.00004));
+		translateMatrix = translate(translateMatrix, vec3(0.0, -0.1, 0.0));
 		translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
+		translateMatrix = translate(translateMatrix, vec3((headPos - headRot / 300) * ratio, 0.22, 0.00004));
 		selectedColor = vec3(0.0, 1.0, 0.0);
 		threshold = vec3(0.0, 0.8, 0.0);
 		break;

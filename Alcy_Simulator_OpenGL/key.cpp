@@ -12,6 +12,7 @@ extern bool cursorEnable;
 // 나가기 아이콘
 extern bool exitEnable;
 
+// 알키 관련 변수
 extern bool touchEnable;
 
 void keyDown(unsigned char KEY, int x, int y) {

@@ -36,7 +36,8 @@ extern bool touchEnable;  // 쓰다듬기 여부
 extern GLfloat headRot;  // 쓰다듬기 시 머리 회전 각도
 extern GLfloat tailRot;
 extern GLfloat tailNum;
-
+extern GLfloat bodyRot;
+extern bool headTiltR, headTiltL;
 
 
 void syncFrame() {  // 프레임 동기화
@@ -64,13 +65,13 @@ void exitGame() {  // esc를 길게 눌러 게임 종료
 void rotateCam() {  // 카메라 회전
     if (camR) {  // 카메라 우측 회전 시
         camRot -= 3 * fs;
-        if (camRot < -10)
+        if (camRot < -10) 
             camRot = -10;
     }
 
     if (camL) {  // 카메라 좌측 회전 시
         camRot += 3 * fs;
-        if (camRot > 10)
+        if (camRot > 10) 
             camRot = 10;
     }
 
@@ -98,7 +99,6 @@ void updateZoom() {  // 카메라 줌
 
         if (zoomAcc > 0) {  // 줌 인
             zoomAcc -= fs / 10;
-            cout << zoom << endl;
             if (zoomAcc < 0 || zoom > 2.7) {  // 최대 줌 값 위로 올라가면 줌 인을 중단한다. 
                 zoomAcc = 0;
                 if (zoom > 2.7)
@@ -186,7 +186,60 @@ void updateAlcyTouch() {  // 알키 머리 쓰다듬기
         tailRot = sin(tailNum) * 10;
         handNum += fs / 4;
         tailNum += fs / 10;  // 꼬리는 느린 속도로 별도로 움직인다.
-        headRot = -handX * 20;  // 손의 움직임에 따라 머리도 같이 움직인다.
+        headRot = -handX * 25;  // 손의 움직임에 따라 머리도 같이 움직인다.
+        bodyRot = -headRot / 4;  // 몸통도 같이 움직인다.
+    }
+}
+
+void tiltAlcyHead() {
+    if (camRot < -9.9) {  // 카메라가 완전히 기울어진 후  알키가 머리를 기울인다.
+        headTiltL = false;
+        headTiltR = true;
+    }
+
+    if (camRot > 9.9) {
+        headTiltL = true;
+        headTiltR = false;
+    }
+
+    if (headTiltR) {  // 머리를 오른쪽으로 기울일경우
+        headRot -= fs * 2;
+        tailRot -= fs * 2;
+        if (headRot < -10) {
+            headRot = -10;
+            tailRot = -10;
+        }
+    }
+
+    if (headTiltL) { // 머리를 왼쪽으로 기울일경우
+        headRot += fs * 2;
+        tailRot += fs * 2;
+        if (headRot > 10) {
+            headRot = 10;
+            tailRot = 10;
+        }
+    }
+    
+    if(camRot == 0 && !camR && !camL && !touchEnable) {  // 카메라가 처음으로 되돌아가면 머리를 다시 가운데로 세운다.
+        headTiltR = false;
+        headTiltL = false;
+
+        if (headRot > 0) {
+            headRot -= fs * 2;
+            tailRot -= fs * 2;
+            if (headRot < 0) {
+                headRot = 0;
+                tailRot = 0;
+            }
+        }
+        if (headRot < 0) {
+            headRot += fs * 2;
+            tailRot += fs * 2;
+            if (headRot > 0) {
+                headRot = 0;
+                tailRot = 0;
+            }
+        }
     }
 }
 
@@ -200,6 +253,7 @@ void timerOperation(int value) {
     updateAlcyBlink();
     moveAlcyHead();
     updateAlcyTouch();
+    tiltAlcyHead();
 
     glutTimerFunc(10, timerOperation, 1);
     if (glutGetWindow() != 0)
