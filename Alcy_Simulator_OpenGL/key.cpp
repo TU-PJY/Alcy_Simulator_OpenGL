@@ -1,24 +1,20 @@
 ﻿// 키보드 조작
 #include "gl_func.h"
-
-//카메라
-extern bool camR, camL;
-extern GLfloat camRot;
-extern GLfloat zoom;
-
-// 커서
-extern bool cursorEnable;
-
-// 나가기 아이콘
-extern bool exitEnable;
-
-// 알키 관련 변수
-extern bool touchEnable;
+#include "gameVariable.h"
 
 void keyDown(unsigned char KEY, int x, int y) {
 	switch (KEY) {
 	case 27:  // ESC
 		exitEnable = true;
+		break;
+
+	case 9:  // tab
+		if (!tipEnable) {
+			tipEnable = true;
+			break;
+		}
+		else 
+			tipEnable = false;
 		break;
 
 	case 'q':  // 카메라 좌측 회전

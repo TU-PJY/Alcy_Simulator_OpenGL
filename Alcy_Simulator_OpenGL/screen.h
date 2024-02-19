@@ -1,2 +1,6 @@
-#pragma once
-extern int WIDTH, HEIGHT;
+#ifndef SCERRN_H
+#define SCREEN_H
+
+extern int WIDTH, HEIGHT;  // 윈도우 사이즈
+
+#endif

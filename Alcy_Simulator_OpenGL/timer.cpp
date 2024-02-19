@@ -1,5 +1,6 @@
 ﻿// 타이머
 #include "gl_func.h"
+#include "gameVariable.h"
 
 random_device rd;  mt19937 gen(rd());
 uniform_real_distribution <GLfloat> dis(0, 3);
@@ -8,43 +9,13 @@ uniform_real_distribution <GLfloat> dis(0, 3);
 int lastElapsedTime, elapsedTime;
 GLfloat fs;  // frame sync, 프레임 동기화
 
-// 카메라
-extern GLfloat camRot;
-extern bool camR, camL;
-extern GLfloat zoomAcc, zoom;
-extern bool zoomEnable;
-
-// 커서
-extern bool cursorEnable;
-extern bool handEnable;
-extern GLfloat handX;  // 손커서 x좌표, 쓰다듬기 시 사용
-extern GLfloat handNum;  // 손 커서 애니메이션에 사용되는 수치
-
-// 나가기 아이콘 투명도
-extern bool exitEnable;
-extern GLfloat exitTransparent;
-
-// 알키 관련 변수
-extern int dir; // 알키 바라보는 방향
-extern GLfloat headPos; // 알키 머리 움직임
-extern time_t startTime, endTime, blinkTime; // 눈 깜빡임 타이머
-extern GLfloat blinkInterval; // 눈 깜빡임 간격
-extern GLfloat keepTimer; // 눈 감은 상태를 유지한다
-extern bool blinkEnable;  // 눈 깜빡임 여부
-extern bool touchEnable;  // 쓰다듬기 여부
-
-extern GLfloat headRot;  // 쓰다듬기 시 머리 회전 각도
-extern GLfloat tailRot;
-extern GLfloat tailNum;
-extern GLfloat bodyRot;
-extern bool headTiltR, headTiltL;
-
-
 void syncFrame() {  // 프레임 동기화
     elapsedTime = glutGet(GLUT_ELAPSED_TIME);
     fs = (elapsedTime - lastElapsedTime) / 100.0; // Convert milliseconds to seconds
     lastElapsedTime = elapsedTime;
 }
+
+// ui
 
 void exitGame() {  // esc를 길게 눌러 게임 종료
     if (exitEnable) {
@@ -118,6 +89,22 @@ void updateZoom() {  // 카메라 줌
         }
     }
 }
+
+void updateTip() {  // 팁 on/off
+    if (tipEnable) {
+        tipTransparent += fs / 3;
+        if (tipTransparent > 1.0)
+            tipTransparent = 1.0;
+    }
+    else {
+        tipTransparent -= fs / 3;
+        if (tipTransparent < 0.0)
+            tipTransparent = 0.0;
+    }
+}
+
+
+// in game
 
 void updateAlcyBlink() {  // 알키 눈 깜빡임 업데이트
     if (!blinkEnable) {
@@ -250,6 +237,8 @@ void timerOperation(int value) {
     exitGame();
     rotateCam();
     updateZoom();
+    updateTip();
+
     updateAlcyBlink();
     moveAlcyHead();
     updateAlcyTouch();

@@ -1,5 +1,5 @@
-﻿#include "gl_func.h"
-// 여기에 게임 변수 선언
+﻿#include "gameVariable.h"
+// 여기에 게임 변수 선언하고 사용
 
 // 마우스
 GLfloat mx, my; 
@@ -22,6 +22,10 @@ GLfloat handNum;  // 손 커서 애니메이션에 사용되는 수치
 // 나가기 아이콘
 bool exitEnable;
 GLfloat exitTransparent; // 나가기 아이콘 투명도
+
+//팁
+bool tipEnable = true;
+GLfloat tipTransparent = 1.0f;
 
 // 알키 관련 변수
 int dir = m;  // 알키 바라보는 방향, 초기값 m

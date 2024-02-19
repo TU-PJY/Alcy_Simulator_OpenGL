@@ -22,6 +22,7 @@
 
 using namespace std;
 
+// 열거형 여기에 작성
 enum dir {  // 알키 바라보는 방향
 	l, m, r
 };

@@ -2,46 +2,9 @@
 #include "translate.h"
 #include "texture.h"
 #include "screen.h"
-
-extern GLuint ID;
-extern GLuint VAO[PLATE_COUNT];  // MODEL_COUNT는 config.h에 정의되어있음
-
-// 카메라 
-extern GLfloat ratio;  //  종횡비
-extern GLfloat camX, camY;  // 카메라 위치
-extern GLfloat camRot;  // 카메라 각도
-extern GLfloat mx, my;  // 마우스 위치, mx에는 ratio를 곱해야 올바른 값이 나옴
-extern GLfloat zoom;
-extern bool camR, camL;  // 방향 별 카메라 회전 여부
-
-// 커서
-extern bool cursorEnable;
-extern bool handEnable;
-extern GLfloat handX;
-
-// 알키 관련 변수
-extern int dir;  // 알키 바라보는 방향
-extern bool blinkEnable;  // 알키 눈 깜빡임 여부
-extern GLfloat headPos; // 알키 머리 움직임
-extern bool touchEnable;
-extern GLfloat headRot;
-extern GLfloat tailRot;
-extern GLfloat bodyRot;
-
-// 나가기 아이콘 투명도
-extern GLfloat exitTransparent;
-
-// 이미지 투명 값
-GLfloat transparent;
-glm::vec3 cameraPos, cameraDirection, cameraUp, lightPos, objColor;
-glm::mat4 transformMatrix, view, projection, lightMatrix, scaleMatrix, rotateMatrix, translateMatrix, camMaxtrix;
-glm::vec3 selectedColor, threshold;
-
-unsigned int projectionLocation, viewLocation, modelLocation, viewPosLocation;
-unsigned int lightPosLocation, lightColorLocation, objColorLocation;
-unsigned int colorLocation, thresholdLocation;
-int transparencyLocation;
-
+#include "shader.h"
+#include "buffer.h"
+#include "gameVariable.h"
 
 void finishTransform(int idx) {  // 변환 전달 
 	colorLocation = glGetUniformLocation(ID, "targetColor");
@@ -102,7 +65,7 @@ void setTransform(int idx) {  // 변환 세팅
 	switch (idx) {  // 변환 추가 
 	case 0: // background
 		scaleMatrix = scale(scaleMatrix, vec3(2.0 * ratio / zoom, 2.0 / zoom, 0.0));
-		translateMatrix = translate(translateMatrix, vec3(-camX * ratio / 4, -camY / 4, 0.0));
+		translateMatrix = translate(translateMatrix, vec3(-camX * ratio / 4, -camY / 4, -0.001));
 		selectedColor = vec3(0.0, 1.0, 0.0);
 		threshold = vec3(0.0, 0.85, 0.0);
 		break;
@@ -174,6 +137,15 @@ void setTransform(int idx) {  // 변환 세팅
 		translateMatrix = translate(translateMatrix, vec3((headPos - headRot / 300) * ratio, 0.22, 0.00004));
 		selectedColor = vec3(0.0, 1.0, 0.0);
 		threshold = vec3(0.0, 0.8, 0.0);
+		break;
+
+	case PLATE_COUNT - 3:  // 팁
+		scaleMatrix = scale(scaleMatrix, vec3(0.5 / zoom, 0.5 / zoom, 0.0));
+		translateMatrix = translate(translateMatrix, vec3((-0.7 - camX) * ratio, 0.5 - camY, 0.0005));
+		rotateMatrix = rotate(rotateMatrix, radians(-camRot), vec3(0.0, 0.0, 1.0));
+		selectedColor = vec3(0.0, 1.0, 0.0);
+		threshold = vec3(0.0, 0.8, 0.0);
+		transparent = tipTransparent;
 		break;
 
 	case PLATE_COUNT - 2:  // 나가기 표시
@@ -320,6 +292,11 @@ void modelOutput(int idx) {  // 모델 출력
 			glBindTexture(GL_TEXTURE_2D, blink[0]);  // blink middle
 		if(blinkEnable || touchEnable)  // true일 때만 출력
 			glDrawArrays(GL_TRIANGLES, 0, 6);
+		break;
+
+	case PLATE_COUNT - 3:  // tip
+		glBindTexture(GL_TEXTURE_2D, tip);
+		glDrawArrays(GL_TRIANGLES, 0, 6);
 		break;
 
 	case PLATE_COUNT - 2:  // icon

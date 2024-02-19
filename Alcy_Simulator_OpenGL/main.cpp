@@ -5,8 +5,6 @@
 #include "gl_func.h"  // GL 기능 함수
 #include "screen.h"  // 윈도우 사이즈
 
-extern GLuint ID;
-
 int WIDTH = GetSystemMetrics(SM_CXSCREEN);
 int HEIGHT = GetSystemMetrics(SM_CYSCREEN);  // 화면 사이즈에 맞추어 창을 출력한다
 

@@ -6,4 +6,8 @@
 char* loadBuffer(const char* file);
 void makeShaderProgram();
 
+extern GLchar* vertexSource, * fragmentSource;
+extern GLuint vertexShader, fragmentShader;
+extern GLuint ID;
+
 #endif

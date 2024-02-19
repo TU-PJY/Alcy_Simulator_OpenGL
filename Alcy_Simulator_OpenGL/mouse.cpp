@@ -1,28 +1,6 @@
 #include "gl_func.h"
+#include "gameVariable.h"
 #include "screen.h"
-
-// 커서
-extern GLfloat mx, my;  // 커서 위치
-extern bool handEnable;
-extern bool cursorEnable;
-extern GLfloat handNum;
-
-// 카메라
-extern GLfloat ratio;
-extern GLfloat camX, camY;
-extern GLfloat camRot;
-extern GLfloat zoom, zoomAcc;
-extern bool zoomEnable;
-extern GLfloat zoom;
-
-// 알키 바라보는 방향
-extern int dir;
-
-// 알키 관련 변수
-extern GLfloat headPos;
-extern bool touchEnable;
-extern GLfloat headRot;
-extern GLfloat tailRot, tailNum;
 
 void convert_to_gl(int x, int y) {  //GL좌표계로 변환
 	mx = (GLfloat)(x - (GLfloat)WIDTH / 2.0) * (GLfloat)(1.0 / (GLfloat)(WIDTH / 2.0));

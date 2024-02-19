@@ -54,13 +54,13 @@ GLubyte* LoadDIBitmap(const char* filename, BITMAPINFO** info) {
 	return bits;
 }
 
-
 GLuint VAO[PLATE_COUNT], VBO;  // MODEL_COUNT는 config.h에 정의되어있음
 BITMAPINFO* bmp;
 
-// 알키 외의 리소스
+// ui 리소스
 unsigned int back, cursor[2];
 unsigned int icon[3];
+unsigned int tip;
 
 // 알키 리소스
 unsigned int alcyTail, alcyBody, alcyHair, alcyHead[3];
@@ -69,12 +69,12 @@ unsigned int eye[3], dot[3], eyeClose[3], brow[3], blink[3];
 unsigned char* texture_data;
 
 GLfloat plate[][48] = {  // 이미지 출력에 사용할 plate
-	-0.8f, -0.8f, 0.8f, 0.0f, 0.0f, 1.0f, 0.0, 0.0,
-	0.8f, -0.8f, 0.8f, 0.0f, 0.0f, 1.0f, 1.0, 0.0,
-	0.8f, 0.8f, 0.8f, 0.0f, 0.0f, 1.0f, 1.0, 1.0,
-	0.8f, 0.8f, 0.8f, 0.0f, 0.0f, 1.0f, 1.0, 1.0,
-	-0.8f, 0.8f, 0.8f, 0.0f, 0.0f, 1.0f, 0.0, 1.0,
-	-0.8f, -0.8f, 0.8f, 0.0f, 0.0f, 1.0f, 0.0, 0.0
+	-0.8f, -0.8f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0, 0.0,
+	0.8f, -0.8f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0, 0.0,
+	0.8f, 0.8f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0, 1.0,
+	0.8f, 0.8f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0, 1.0,
+	-0.8f, 0.8f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0, 1.0,
+	-0.8f, -0.8f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0, 0.0
 };
 
 void vertexInput(int idx) {  // vertex
@@ -123,6 +123,13 @@ void setTexture() {
 	parameteri();
 	texture_data = LoadDIBitmap("res//ui//icon_exit.bmp", &bmp);
 	glTexImage2D(GL_TEXTURE_2D, 0, 3, 512, 512, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+
+	// tip
+	glGenTextures(1, &tip);
+	glBindTexture(GL_TEXTURE_2D, tip);
+	parameteri();
+	texture_data = LoadDIBitmap("res//ui//tip.bmp", &bmp);
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, 500, 500, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
 
 	// background
 	glGenTextures(1, &back);  

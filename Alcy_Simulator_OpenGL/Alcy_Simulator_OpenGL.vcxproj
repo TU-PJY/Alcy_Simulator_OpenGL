@@ -136,10 +136,12 @@
     <ClCompile Include="mouse.cpp" />
     <ClCompile Include="shaderSet.cpp" />
     <ClCompile Include="timer.cpp" />
+    <ClCompile Include="translateVariable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="buffer.h" />
     <ClInclude Include="config.h" />
+    <ClInclude Include="gameVariable.h" />
     <ClInclude Include="gl_func.h" />
     <ClInclude Include="screen.h" />
     <ClInclude Include="shader.h" />
