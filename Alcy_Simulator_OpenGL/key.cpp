@@ -12,6 +12,8 @@ extern bool cursorEnable;
 // 나가기 아이콘
 extern bool exitEnable;
 
+extern bool touchEnable;
+
 void keyDown(unsigned char KEY, int x, int y) {
 	switch (KEY) {
 	case 27:  // ESC
@@ -19,13 +21,17 @@ void keyDown(unsigned char KEY, int x, int y) {
 		break;
 
 	case 'q':  // 카메라 좌측 회전
-		camL = true;
-		cursorEnable = false;
+		if (!touchEnable) {
+			camL = true;
+			cursorEnable = false;
+		}
 		break;
 
 	case 'e':  // 카메라 우측 회전
-		camR = true;
-		cursorEnable = false;
+		if (!touchEnable) {
+			camR = true;
+			cursorEnable = false;
+		}
 		break;
 	}
 	if (glutGetWindow() != 0)

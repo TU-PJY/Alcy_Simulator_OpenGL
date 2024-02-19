@@ -14,6 +14,9 @@ extern bool camR, camL;
 
 // 커서
 extern bool cursorEnable;
+extern bool handEnable;
+extern GLfloat handX;  // 손커서 x좌표, 쓰다듬기 시 사용
+extern GLfloat handNum;  // 손 커서 애니메이션에 사용되는 수치
 
 // 나가기 아이콘 투명도
 extern bool exitEnable;
@@ -26,6 +29,7 @@ extern time_t startTime, endTime, blinkTime; // 눈 깜빡임 타이머
 extern GLfloat blinkInterval; // 눈 깜빡임 간격
 extern GLfloat keepTimer; // 눈 감은 상태를 유지한다
 extern bool blinkEnable;  // 눈 깜빡임 여부
+extern bool touchEnable;  // 쓰다듬기 여부
 
 extern GLfloat zoomAcc, zoom;
 extern bool zoomEnable;
@@ -84,6 +88,50 @@ void rotateCam() {  // 카메라 회전
     }
 }
 
+void updateZoom() {  // 카메라 줌
+    if (zoomEnable) {
+        zoom += zoomAcc * fs;
+
+        if (zoomAcc > 0) {  // 줌 인
+            zoomAcc -= fs / 10;
+            if (zoomAcc < 0 || zoom > 3.0) {  // 최대 줌 값 위로 올라가면 줌 인을 중단한다. 
+                zoomAcc = 0;
+                if (zoom > 3.0)
+                    zoom = 3.0;
+                zoomEnable = false;
+            }
+        }
+
+        else if (zoomAcc < 0) {  // 줌 아웃
+            zoomAcc += fs / 10;
+            if (zoomAcc > 0 || zoom < 1.0) {  // 최소 줌 값 밑으로 내려가면 줌 아웃을 중단한다.
+                zoomAcc = 0;
+                if (zoom < 1.0)
+                    zoom = 1.0;
+                zoomEnable = false;
+            }
+        }
+    }
+}
+
+void updateAlcyBlink() {  // 알키 눈 깜빡임 업데이트
+    if (!blinkEnable) {
+        endTime = time(NULL);  // 시간을 실시간으로 측정하여 아래의 조건에 맞는지 검사한다
+        if (GLfloat(endTime - startTime) > blinkInterval)  // 지정된 간격보다 시간이 지나면 눈 깜빡임이 활성화 된다.
+            blinkEnable = true;
+    }
+
+    else {
+        keepTimer += fs;  // 아주 짧은 시간 동안 눈 감은 상태를 유지하다가 다시 눈을 뜬다.
+        if (keepTimer > 1.5) {
+            startTime = time(NULL);
+            keepTimer = 0;
+            blinkInterval = dis(gen);  // 눈 깜빡이는 간격을 랜덤으로 설정한다
+            blinkEnable = false;
+        }
+    }
+}
+
 void moveAlcyHead() {  // 바라보는 방향 전환 시 알키 머리 움직임
     if (!camR && !camL && camRot == 0) {
         switch (dir) {
@@ -113,7 +161,7 @@ void moveAlcyHead() {  // 바라보는 방향 전환 시 알키 머리 움직임
             break;
         }
     }
-    else {
+    else {  // 아무 조작 없을 때
         if (headPos < 0) {
             headPos += 0.03 * fs;
             if (headPos > 0)
@@ -127,59 +175,23 @@ void moveAlcyHead() {  // 바라보는 방향 전환 시 알키 머리 움직임
     }
 }
 
-void updateAlcyBlink() {  // 알키 눈 깜빡임 업데이트
-    if (!blinkEnable) {
-        endTime = time(NULL);  // 시간을 실시간으로 측정하여 아래의 조건에 맞는지 검사한다
-        if (GLfloat(endTime - startTime) > blinkInterval) {  // 지정된 간격보다 시간이 지나면 눈 깜빡임이 활성화 된다.
-            blinkEnable = true;
-        }
-    }
-
-    else {
-        keepTimer += fs;  // 아주 짧은 시간 동안 눈 감은 상태를 유지하다가 다시 눈을 뜬다.
-        if (keepTimer > 1.5) {
-            startTime = time(NULL);
-            keepTimer = 0;
-            blinkInterval = dis(gen);  // 눈 깜빡이는 시간을 랜덤으로 설정한다
-            blinkEnable = false;
-        }
+void updateAlcyTouch() {  // 알키 머리 쓰다듬기
+    if (cursorEnable && handEnable && touchEnable) {  // 손 커서인 상태로 머리를 쓰다듬을 수 있다
+        handX = sin(handNum) * 0.2;  // 쓰다듬는 중에는 손 커서가 좌우로 부드럽게 움직인다.
+        handNum += fs / 4;
     }
 }
 
-void updateZoom() {  // 카메라 줌
-    if (zoomEnable) {
-        zoom += zoomAcc * fs;
-
-        if (zoomAcc > 0) {  // 줌 인
-            zoomAcc -= fs / 10;
-            if (zoomAcc < 0 || zoom > 3.0) {  // 최대 줌 값 위로 올라가면 줌 인을 중단한다. 
-                zoomAcc = 0;
-                if (zoom > 3.0)
-                    zoom = 3.0;
-                zoomEnable = false;
-            }
-        }
-
-        else if (zoomAcc < 0) {  // 줌 아웃
-            zoomAcc += fs / 10;
-            if (zoomAcc > 0 || zoom < 1.0) {  // 최소 줌 값 밑으로 내려가면 줌 아웃을 중단한다.
-                zoomAcc = 0;
-                if (zoom < 1.0)
-                    zoom = 1.0;
-                zoomEnable = false;
-            }
-        }
-    }
-}
 
 void timerOperation(int value) {
     syncFrame();
 
     exitGame();
     rotateCam();
-    moveAlcyHead();
-    updateAlcyBlink();
     updateZoom();
+    updateAlcyBlink();
+    moveAlcyHead();
+    updateAlcyTouch();
 
     glutTimerFunc(10, timerOperation, 1);
     if (glutGetWindow() != 0)

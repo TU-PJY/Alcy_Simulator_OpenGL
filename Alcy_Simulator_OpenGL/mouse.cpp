@@ -4,6 +4,8 @@
 // 커서
 extern GLfloat mx, my;  // 커서 위치
 extern bool handEnable;
+extern bool cursorEnable;
+extern GLfloat handNum;
 
 // 카메라
 extern GLfloat ratio;
@@ -17,7 +19,7 @@ extern int dir;
 
 // 알키 관련 변수
 extern GLfloat headPos;
-extern GLfloat alcyHeight;
+extern bool touchEnable;
 
 void convert_to_gl(int x, int y) {  //GL좌표계로 변환
 	mx = (GLfloat)(x - (GLfloat)WIDTH / 2.0) * (GLfloat)(1.0 / (GLfloat)(WIDTH / 2.0));
@@ -42,29 +44,38 @@ void updateCursor() {  // 알키 머리에 커서를 가져다대면 커서가 바뀐다
 
 void Mouse(int button, int state, int x, int y) {  // 마우스 클릭
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-
+		if (handEnable && cursorEnable && camRot == 0) 
+			touchEnable = true;
+	}
+	else if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
+		if (handEnable && cursorEnable && touchEnable) {
+			handNum = 0;
+			touchEnable = false;
+		}
 	}
 	glutPostRedisplay();
 }
 
 void pMotion(int x, int y) {  // 클릭 안할 때의 모션
-	convert_to_gl(x, y);
-	camX = (0.0 - mx) / 10;
-	camY = (0.0 + alcyHeight - my) / 10;
+		convert_to_gl(x, y);
+		camX = (0.0 - mx) / 10;
+		camY = (0.0 - my) / 10;
 
-	setDir();
-	updateCursor();
+		setDir();
+		updateCursor();
 
 	glutPostRedisplay();
 }
 
 void Motion(int x, int y) {  // 클릭 할 때의 모션
-	convert_to_gl(x, y);
-	camX = (0.0 - mx) / 10;
-	camY = (0.0 + alcyHeight - my) / 10;
+	if (!touchEnable) {
+		convert_to_gl(x, y);
+		camX = (0.0 - mx) / 10;
+		camY = (0.0 - my) / 10;
 
-	setDir();
-	updateCursor();
+		setDir();
+		updateCursor();
+	}
 
 	glutPostRedisplay();
 }

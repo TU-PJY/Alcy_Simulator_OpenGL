@@ -9,6 +9,7 @@
 #pragma warning(disable: 4244)
 #include <windows.h>
 #include <time.h>
+#include <cmath>
 #include <iostream>
 #include <random>
 #include <gl/glm/glm.hpp> //  이 include들을 다른데로 옮기지 말 것!

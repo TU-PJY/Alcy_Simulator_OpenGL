@@ -17,13 +17,13 @@ extern bool camR, camL;  // 방향 별 카메라 회전 여부
 // 커서
 extern bool cursorEnable;
 extern bool handEnable;
+extern GLfloat handX;
 
 // 알키 관련 변수
 extern int dir;  // 알키 바라보는 방향
 extern bool blinkEnable;  // 알키 눈 깜빡임 여부
-
-// 알키 머리 움직임
-extern GLfloat headPos;
+extern GLfloat headPos; // 알키 머리 움직임
+extern bool touchEnable;
 
 // 나가기 아이콘 투명도
 extern GLfloat exitTransparent;
@@ -130,8 +130,7 @@ void setTransform(int idx) {  // 변환 세팅
 
 	case 5:  // eye
 		if(camRot == 0 && !camR && !camL)
-			translateMatrix = translate
-			(translateMatrix, vec3((headPos - (camX / 4)) * ratio, 0.12 - (camY / 4), 0.00001));
+			translateMatrix = translate(translateMatrix, vec3((headPos - (camX / 4)) * ratio, 0.12 - (camY / 4), 0.00001));
 		else
 			translateMatrix = translate
 			(translateMatrix, vec3(headPos * ratio, 0.12, 0.00001));
@@ -142,8 +141,7 @@ void setTransform(int idx) {  // 변환 세팅
 	
 	case 6:  // dot
 		if (camRot == 0 && !camR && !camL)
-			translateMatrix = translate
-			(translateMatrix, vec3((headPos - (camX / 2.5)) * ratio, 0.12 - (camY / 2), 0.00003));
+			translateMatrix = translate(translateMatrix, vec3((headPos - (camX / 2.5)) * ratio, 0.12 - (camY / 2), 0.00003));
 		else
 			translateMatrix = translate(translateMatrix, vec3(headPos * ratio, 0.12, 0.00003));
 
@@ -153,8 +151,7 @@ void setTransform(int idx) {  // 변환 세팅
 	
 	case 7:  // brow
 		if (camRot == 0 && !camR && !camL)
-			translateMatrix = translate
-			(translateMatrix, vec3(headPos * ratio, 0.13 - (camY / 4), 0.00003));
+			translateMatrix = translate(translateMatrix, vec3(headPos * ratio, 0.13 - (camY / 4), 0.00003));
 		else
 			translateMatrix = translate(translateMatrix, vec3(headPos * ratio, 0.12, 0.00003));
 
@@ -170,8 +167,7 @@ void setTransform(int idx) {  // 변환 세팅
 
 	case PLATE_COUNT - 2:  // 나가기 표시
 		scaleMatrix = scale(scaleMatrix, vec3(0.5 / zoom, 0.5 / zoom, 1.0));
-		translateMatrix = translate
-		(translateMatrix, vec3((0.0 - camX) * ratio, 0.0 - camY, 0.0005));
+		translateMatrix = translate(translateMatrix, vec3((0.0 - camX) * ratio, 0.0 - camY, 0.0005));
 		rotateMatrix = rotate(rotateMatrix, radians(-camRot), vec3(0.0, 0.0, 1.0));
 
 		selectedColor = vec3(0.0, 1.0, 0.0);
@@ -181,7 +177,10 @@ void setTransform(int idx) {  // 변환 세팅
 
 	case PLATE_COUNT - 1:  // cursor, 항상 맨 마지막에 출력
 		scaleMatrix = scale(scaleMatrix, vec3(0.1 / zoom, 0.1 / zoom, 1.0));
-		translateMatrix = translate(translateMatrix, vec3((mx - camX) * ratio, my - camY, 0.001));
+		if(!touchEnable)
+			translateMatrix = translate(translateMatrix, vec3((mx - camX) * ratio, my - camY, 0.001));
+		else if(touchEnable)
+			translateMatrix = translate(translateMatrix, vec3((handX - camX) * ratio, 0.3 - camY, 0.001));
 		selectedColor = vec3(0.0, 1.0, 0.0);
 		threshold = vec3(0.0, 0.85, 0.0);
 		break;
