@@ -322,8 +322,8 @@ void modelOutput(int idx) {  // 모델 출력
 			glDrawArrays(GL_TRIANGLES, 0, 6);
 		break;
 
-	case PLATE_COUNT - 2:  // button
-		glBindTexture(GL_TEXTURE_2D, button[0]);  // exit button
+	case PLATE_COUNT - 2:  // icon
+		glBindTexture(GL_TEXTURE_2D, icon[0]);  // exit button
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 		break;
 
