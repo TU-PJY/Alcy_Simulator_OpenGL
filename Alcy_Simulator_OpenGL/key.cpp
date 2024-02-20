@@ -59,10 +59,12 @@ void keyUp(unsigned char KEY, int x, int y) {
 
 	case 'q':  // 카메라 우측 회전 해제
 		cam.camL = false;
+		alcy.tiltSoundPlayed = false;
 		break;
 
 	case 'e':  // 카메라 좌측 회전 해제
 		cam.camR = false;
+		alcy.tiltSoundPlayed = false;
 		break;
 	}
 	if (glutGetWindow() != 0)

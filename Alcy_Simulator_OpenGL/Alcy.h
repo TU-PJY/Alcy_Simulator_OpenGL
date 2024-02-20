@@ -7,6 +7,7 @@
 #include "texture.h"
 #include "screen.h"
 #include "globalVar.h"
+#include "sound.h"
 #include "Camera.h"
 #include "UI.h"
 
@@ -46,8 +47,18 @@ public:
     time_t squeakStartTime;  // 코 눌림 상태 시작 시간
     time_t squeakTime;  // 코 눌림 상태동안의 시간
 
+    bool tiltSoundPlayed;  // 알키 머리 기울이는 소리 재생 여부, 중복 재생 방지
+
     Alcy() {
         dir = m;
+    }
+
+    void playTiltSound() {
+        if (!tiltSoundPlayed) {
+            channelTilt->stop();
+            ssystem->playSound(tilt, 0, false, &channelTilt);
+            tiltSoundPlayed = true;
+        }
     }
 
     void updateAlcyBlink() {  // 알키 눈 깜빡임 업데이트
@@ -128,14 +139,16 @@ public:
 
     void tiltAlcyHead() {
         if (!squeak) {
-            if (cam.camRot < -9.9) {  // 카메라가 완전히 기울어진 후  알키가 머리를 기울인다.
+            if (cam.camRot < -9.9) {  // 카메라가 완전히 기울어진 후  알키가 머리를 기울인다
                 headTiltL = false;
                 headTiltR = true;
+                playTiltSound();
             }
 
             if (cam.camRot > 9.9) {
                 headTiltL = true;
                 headTiltR = false;
+                playTiltSound();
             }
 
             if (headTiltR) {  // 머리를 오른쪽으로 기울일경우
@@ -162,19 +175,23 @@ public:
             headTiltL = false;
 
             if (headRot > 0) {
+                playTiltSound();
                 headRot -= fs * 2;
                 tailRot -= fs * 2;
                 if (headRot < 0) {
                     headRot = 0;
                     tailRot = 0;
+                    tiltSoundPlayed = false;
                 }
             }
             if (headRot < 0) {
+                playTiltSound();
                 headRot += fs * 2;
                 tailRot += fs * 2;
                 if (headRot > 0) {
                     headRot = 0;
                     tailRot = 0;
+                    tiltSoundPlayed = false;
                 }
             }
         }

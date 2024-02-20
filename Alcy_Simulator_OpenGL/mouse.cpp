@@ -36,10 +36,13 @@ void Mouse(int button, int state, int x, int y) {  // 마우스 클릭
 	int randomSound = 0;
 
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-		if (ui.handEnable && mouseClickEnable && cam.camRot == 0) {
+		if (ui.handEnable && mouseClickEnable && cam.camRot == 0 && !alcy.squeak) {
+			channelTouch->stop();
+			ssystem->playSound(touch, 0, false, &channelTouch);
 			alcy.touchEnable = true;
 			lButtonDown = true;
 		}
+
 		if (ui.fingerEnable && mouseClickEnable && cam.camRot == 0 && !alcy.squeak) {
 			random_device rd;  mt19937 gen(rd());
 			uniform_int_distribution <int> dis(1, 3);
@@ -72,6 +75,7 @@ void Mouse(int button, int state, int x, int y) {  // 마우스 클릭
 			alcy.tailRot = 0;
 			alcy.bodyRot = 0;
 			alcy.touchEnable = false;
+			channelTouch->stop();
 		}
 		lButtonDown = false;
 	}
@@ -104,12 +108,18 @@ void Motion(int x, int y) {  // 클릭 할 때의 모션
 
 void Wheel(int button, int dir, int x, int y) {  // 마우스 휠
 	if (dir > 0) {
+		channelScroll->stop();
+		ssystem->playSound(scroll, 0, false, &channelScroll);
+
 		cam.zoomAcc = 0.2 + (cam.zoom - 1.0) / 10;
 		cam.zoomEnable = true;
 	}
 	else if (dir < 0) {
+		channelScroll->stop();
+		ssystem->playSound(scroll, 0, false, &channelScroll);
+
 		if (cam.zoom > 1.0) {
-			cam.zoomAcc = -0.2 - (cam.zoom - 1.0) / 10;
+			cam.zoomAcc = -0.2 - (cam.zoom - 1.0) / 15;
 			cam.zoomEnable = true;
 		}
 	}
