@@ -128,28 +128,27 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="gameVariable.cpp" />
-    <ClCompile Include="imageBuffer.cpp" />
-    <ClCompile Include="UIOutput.cpp" />
+    <ClCompile Include="globalVar.cpp" />
+    <ClCompile Include="bufferSet.cpp" />
+    <ClCompile Include="transform.cpp" />
     <ClCompile Include="key.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mouse.cpp" />
     <ClCompile Include="shaderSet.cpp" />
     <ClCompile Include="timer.cpp" />
-    <ClCompile Include="translateVariable.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="buffer.h" />
     <ClInclude Include="Alcy.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="config.h" />
-    <ClInclude Include="gameVariable.h" />
+    <ClInclude Include="globalVar.h" />
     <ClInclude Include="gl_func.h" />
     <ClInclude Include="screen.h" />
     <ClInclude Include="shader.h" />
-    <ClInclude Include="Super.h" />
     <ClInclude Include="texture.h" />
-    <ClInclude Include="translate.h" />
+    <ClInclude Include="transform.h" />
+    <ClInclude Include="UI.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="glsl\GLSL_fragment.glsl" />

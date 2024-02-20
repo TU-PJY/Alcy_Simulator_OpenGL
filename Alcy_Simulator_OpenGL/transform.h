@@ -4,9 +4,8 @@
 #include "config.h"
 
 void setWindowView();
-void setTransformUI(int idx);
-void finishTransformUI(int idx);
-void modelOutputUI(int idx);
+void initTransform();
+void transmit();
 
 extern GLfloat transparent;
 extern glm::vec3 cameraPos, cameraDirection, cameraUp, lightPos, objColor;
@@ -16,6 +15,6 @@ extern glm::vec3 selectedColor, threshold;
 extern unsigned int projectionLocation, viewLocation, modelLocation, viewPosLocation;
 extern unsigned int lightPosLocation, lightColorLocation, objColorLocation;
 extern unsigned int colorLocation, thresholdLocation;
-extern int transparencyLocation;
+extern unsigned int transparencyLocation;
 
 #endif

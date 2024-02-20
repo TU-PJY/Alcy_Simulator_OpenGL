@@ -1,8 +1,9 @@
 #include "gl_func.h"
-#include "gameVariable.h"
+#include "globalVar.h"
 #include "screen.h"
 #include "Alcy.h"
 #include "Camera.h"
+#include "UI.h"
 
 void convert_to_gl(int x, int y) {  //GL좌표계로 변환
 	mx = (GLfloat)(x - (GLfloat)WIDTH / 2.0) * (GLfloat)(1.0 / (GLfloat)(WIDTH / 2.0));
@@ -20,20 +21,20 @@ void setDir() {  // 알키 바라보는 방향을 결정한다
 
 void updateCursor() {  // 알키 머리에 커서를 가져다대면 커서가 바뀐다
 	if ((mx * ratio >= -0.4 && mx * ratio <= 0.4) && (my >= 0.1 && my <= 0.5))
-		handEnable = true;
+		ui.handEnable = true;
 	else
-		handEnable = false;
+		ui.handEnable = false;
 }
 
 void Mouse(int button, int state, int x, int y) {  // 마우스 클릭
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-		if (handEnable && cursorEnable && cam.camRot == 0) 
+		if (ui.handEnable && mouseClickEnable && cam.camRot == 0)
 			alcy.touchEnable = true;
 		lButtonDown = true;
 	}
 	else if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
-		if (handEnable && cursorEnable && alcy.touchEnable) {
-			handNum = 0;
+		if (ui.handEnable && mouseClickEnable && alcy.touchEnable) {
+			ui.handNum = 0;
 			alcy.headRot = 0;
 			alcy.tailNum = 0;
 			alcy.tailRot = 0;
@@ -56,7 +57,7 @@ void pMotion(int x, int y) {  // 클릭 안할 때의 모션
 }
 
 void Motion(int x, int y) {  // 클릭 할 때의 모션
-	if (!alcy.touchEnable) {
+	if (!alcy.touchEnable) {  // 알키를 쓰다듬는 도중에는 마우스 업데이트를 하지 않는다.
 		convert_to_gl(x, y);
 		cam.camX = (0.0 - mx) / 10;
 		cam.camY = (0.0 - my) / 10;

@@ -1,8 +1,8 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 #include "config.h"
-#include "gameVariable.h"
-
+#include "globalVar.h"
+// Alcy  <-- Camera -->  UI
 class Camera {
 public:
 	GLfloat camX, camY;  // 게임 화면 카메라
@@ -34,14 +34,14 @@ public:
                 camRot -= 3 * fs;
                 if (camRot < 0) {
                     camRot = 0;
-                    cursorEnable = true;  // 카메라 각도가 0이 되면 다시 커서가 활성화 된다
+                    mouseClickEnable = true;  // 카메라 각도가 0이 되면 다시 커서가 활성화 된다
                 }
             }
             if (camRot < 0) {
                 camRot += 3 * fs;
                 if (camRot > 0) {
                     camRot = 0;
-                    cursorEnable = true;
+                    mouseClickEnable = true;
                 }
             }
         }

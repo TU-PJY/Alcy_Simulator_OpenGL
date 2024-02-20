@@ -1,35 +1,36 @@
 ﻿// 키보드 조작
 #include "gl_func.h"
-#include "gameVariable.h"
+#include "globalVar.h"
 #include "Alcy.h"
 #include "Camera.h"
+#include "UI.h"
 
 void keyDown(unsigned char KEY, int x, int y) {
 	switch (KEY) {
 	case 27:  // ESC
-		exitEnable = true;
+		ui.exitEnable = true;
 		break;
 
 	case 9:  // tab
-		if (!tipEnable) {
-			tipEnable = true;
+		if (!ui.tipEnable) {
+			ui.tipEnable = true;
 			break;
 		}
 		else 
-			tipEnable = false;
+			ui.tipEnable = false;
 		break;
 
 	case 'q':  // 카메라 좌측 회전
 		if (!alcy.touchEnable) {
 			cam.camL = true;
-			cursorEnable = false;
+			mouseClickEnable = false;
 		}
 		break;
 
 	case 'e':  // 카메라 우측 회전
 		if (!alcy.touchEnable) {
 			cam.camR = true;
-			cursorEnable = false;
+			mouseClickEnable = false;
 		}
 		break;
 	}
@@ -40,7 +41,7 @@ void keyDown(unsigned char KEY, int x, int y) {
 void keyUp(unsigned char KEY, int x, int y) {
 	switch (KEY) {
 	case 27:
-		exitEnable = false;
+		ui.exitEnable = false;
 		break;
 
 	case 'q':  // 카메라 우측 회전 해제

@@ -1,10 +1,11 @@
 ﻿#include "config.h"  // 중요 헤더 파일
 #include "shader.h"  // 셰이더 생성
 #include "buffer.h"  // 버퍼
-#include "translate.h"  // 변환
+#include "transform.h"  // 변환
 #include "gl_func.h"  // GL 기능 함수
 #include "screen.h"  // 윈도우 사이즈
 #include "Alcy.h"
+#include "UI.h"
 
 int WIDTH = GetSystemMetrics(SM_CXSCREEN);
 int HEIGHT = GetSystemMetrics(SM_CYSCREEN);  // 화면 사이즈에 맞추어 창을 출력한다
@@ -22,16 +23,20 @@ GLvoid displayOutput() {
 
 	// Alcy
 	for (int i = 0; i < ALCY_PART; i++) {
+		initTransform();
 		alcy.setTransform(i);
-		alcy.finishTransform(i);
+		transmit();
+		alcy.bindVertex(i);
 		alcy.modelOutput(i);
 	}
 
 	// UI
 	for (int i = 0; i < UI_PART; i++) { 
-		setTransformUI(i);
-		finishTransformUI(i);
-		modelOutputUI(i);
+		initTransform();
+		ui.setTransform(i);
+		transmit();
+		ui.bindVertex(i);
+		ui.modelOutput(i);
 	}
 	
 	glutSwapBuffers();
