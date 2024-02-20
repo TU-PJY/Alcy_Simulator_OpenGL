@@ -4,9 +4,10 @@
 #include "screen.h"
 #include "shader.h"
 #include "buffer.h"
+#include "Alcy.h"
 #include "gameVariable.h"
 
-void finishTransform(int idx) {  // 변환 전달 
+void finishTransformUI(int idx) {  // 변환 전달 
 	colorLocation = glGetUniformLocation(ID, "targetColor");
 	glUniform3f(colorLocation, selectedColor.r, selectedColor.g, selectedColor.b);
 
@@ -31,7 +32,7 @@ void finishTransform(int idx) {  // 변환 전달
 	modelLocation = glGetUniformLocation(ID, "model"); // 버텍스 세이더에서 모델링 변환 위치 가져오기
 	glUniformMatrix4fv(modelLocation, 1, GL_FALSE, value_ptr(transformMatrix)); // modelTransform 변수에 변환 값 적용하기
 
-	glBindVertexArray(VAO[idx]);  // 각 모델마다 지정된 VAO만 사용
+	glBindVertexArray(VAO_UI[idx]);  // 각 모델마다 지정된 VAO만 사용
 }
 
 void setWindowView() {  // 시점 세팅
@@ -50,7 +51,7 @@ void setWindowView() {  // 시점 세팅
 	projection = ortho(-1.0 * ratio / zoom, 1.0 * ratio / zoom, -1.0 / zoom, 1.0 / zoom, -100.0, 100.0);
 }
 
-void setTransform(int idx) {  // 변환 세팅
+void setTransformUI(int idx) {  // 변환 세팅
 	using namespace glm;
 	transformMatrix = mat4(1.0f);  // 최종 행렬
 
@@ -63,83 +64,14 @@ void setTransform(int idx) {  // 변환 세팅
 	transparent = 1.0f;
 
 	switch (idx) {  // 변환 추가 
-	case 0: // background
+	case 0:
 		scaleMatrix = scale(scaleMatrix, vec3(2.0 * ratio / zoom, 2.0 / zoom, 0.0));
 		translateMatrix = translate(translateMatrix, vec3(-camX * ratio / 4, -camY / 4, -0.001));
 		selectedColor = vec3(0.0, 1.0, 0.0);
 		threshold = vec3(0.0, 0.85, 0.0);
 		break;
 
-	case 1:  // tail
-		translateMatrix = translate(translateMatrix, vec3(-0.2 * ratio, -0.75, -0.00003));
-		translateMatrix = rotate(translateMatrix, radians(tailRot), vec3(0.0, 0.0, 1.0));
-		selectedColor = vec3(0.0, 1.0, 0.0);
-		threshold = vec3(0.0, 0.8, 0.0);
-		break;
-
-	case 2:  // body
-		translateMatrix = translate(translateMatrix, vec3(0.0, -0.75, -0.00002));
-		translateMatrix = rotate(translateMatrix, radians(bodyRot), vec3(0.0, 0.0, 1.0));
-		selectedColor = vec3(0.0, 1.0, 0.0);
-		threshold = vec3(0.0, 0.8, 0.0);
-		break;
-
-	case 3:  // hair
-		translateMatrix = translate(translateMatrix, vec3(0.0, -0.75 - headRot / 200, -0.00001));
-		selectedColor = vec3(0.0, 1.0, 0.0);
-		threshold = vec3(0.0, 0.8, 0.0);
-		break;
-
-	case 4:  // head
-		translateMatrix = translate(translateMatrix, vec3(0.0, -0.1, 0.0));
-		translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
-		translateMatrix = translate(translateMatrix, vec3((headPos - headRot / 300) * ratio, 0.22, 0.0));
-		selectedColor = vec3(0.0, 1.0, 0.0);
-		threshold = vec3(0.0, 0.8, 0.0);
-		break;
-
-	case 5:  // eye
-		translateMatrix = translate(translateMatrix, vec3(0.0, -0.1, 0.0));
-		translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
-		if(camRot == 0 && !camR && !camL)
-			translateMatrix = translate(translateMatrix, vec3(((headPos - headRot / 300) - (camX / 4)) * ratio, 0.22 - (camY / 4), 0.00001));
-		else
-			translateMatrix = translate(translateMatrix, vec3((headPos - headRot / 300) * ratio, 0.22, 0.00001));
-		selectedColor = vec3(0.0, 1.0, 0.0);
-		threshold = vec3(0.0, 0.9, 0.0);
-		break;
-	
-	case 6:  // dot
-		translateMatrix = translate(translateMatrix, vec3(0.0, -0.1, 0.0));
-		translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
-		if (camRot == 0 && !camR && !camL)
-			translateMatrix = translate(translateMatrix, vec3(((headPos - headRot / 300) - (camX / 2.5)) * ratio, 0.22 - (camY / 2), 0.00003));
-		else
-			translateMatrix = translate(translateMatrix, vec3((headPos - headRot / 300) * ratio, 0.22, 0.00003));
-		selectedColor = vec3(0.0, 1.0, 0.0);
-		threshold = vec3(0.0, 1.0, 0.0);
-		break;
-	
-	case 7:  // brow
-		translateMatrix = translate(translateMatrix, vec3(0.0, -0.1, 0.0));
-		translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
-		if (camRot == 0 && !camR && !camL && !touchEnable)
-			translateMatrix = translate(translateMatrix, vec3((headPos - headRot / 300) * ratio, 0.23 - (camY / 4), 0.00003));
-		else
-			translateMatrix = translate(translateMatrix, vec3((headPos - headRot / 300) * ratio, 0.22, 0.00003));
-		selectedColor = vec3(0.0, 1.0, 0.0);
-		threshold = vec3(0.0, 0.8, 0.0);
-		break;
-
-	case 8:  // blink
-		translateMatrix = translate(translateMatrix, vec3(0.0, -0.1, 0.0));
-		translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
-		translateMatrix = translate(translateMatrix, vec3((headPos - headRot / 300) * ratio, 0.22, 0.00004));
-		selectedColor = vec3(0.0, 1.0, 0.0);
-		threshold = vec3(0.0, 0.8, 0.0);
-		break;
-
-	case PLATE_COUNT - 3:  // 팁
+	case 1:  // 팁
 		scaleMatrix = scale(scaleMatrix, vec3(0.5 / zoom, 0.5 / zoom, 0.0));
 		translateMatrix = translate(translateMatrix, vec3((-0.7 - camX) * ratio, 0.5 - camY, 0.0005));
 		rotateMatrix = rotate(rotateMatrix, radians(-camRot), vec3(0.0, 0.0, 1.0));
@@ -148,7 +80,7 @@ void setTransform(int idx) {  // 변환 세팅
 		transparent = tipTransparent;
 		break;
 
-	case PLATE_COUNT - 2:  // 나가기 표시
+	case 2:  // 나가기 표시
 		scaleMatrix = scale(scaleMatrix, vec3(0.5 / zoom, 0.5 / zoom, 1.0));
 		translateMatrix = translate(translateMatrix, vec3((0.0 - camX) * ratio, 0.0 - camY, 0.0005));
 		rotateMatrix = rotate(rotateMatrix, radians(-camRot), vec3(0.0, 0.0, 1.0));
@@ -158,11 +90,11 @@ void setTransform(int idx) {  // 변환 세팅
 		transparent = exitTransparent;
 		break;
 
-	case PLATE_COUNT - 1:  // cursor, 항상 맨 마지막에 출력
+	case 3:  // cursor, 항상 맨 마지막에 출력
 		scaleMatrix = scale(scaleMatrix, vec3(0.1 / zoom, 0.1 / zoom, 1.0));
-		if(!touchEnable)
+		if(!alcy.touchEnable)
 			translateMatrix = translate(translateMatrix, vec3((mx - camX) * ratio, my - camY, 0.001));
-		else if(touchEnable)
+		else if(alcy.touchEnable)
 			translateMatrix = translate(translateMatrix, vec3((handX - camX) * ratio, 0.3 - camY, 0.001));
 		selectedColor = vec3(0.0, 1.0, 0.0);
 		threshold = vec3(0.0, 0.85, 0.0);
@@ -172,139 +104,24 @@ void setTransform(int idx) {  // 변환 세팅
 	transformMatrix = rotateMatrix * translateMatrix * scaleMatrix;  // 최종 변환
 }
 
-void modelOutput(int idx) {  // 모델 출력 
+void modelOutputUI(int idx) {  // 모델 출력 
 	switch (idx) {
-	case 0:  // background
+	case 0:
 		glBindTexture(GL_TEXTURE_2D, back);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 		break;
 
-	case 1:  // tail
-		glBindTexture(GL_TEXTURE_2D, alcyTail);
-		glDrawArrays(GL_TRIANGLES, 0, 6);
-		break;
-
-	case 2:  // body
-		glBindTexture(GL_TEXTURE_2D, alcyBody);
-		glDrawArrays(GL_TRIANGLES, 0, 6);
-		break;
-
-	case 3:  // hair
-		glBindTexture(GL_TEXTURE_2D, alcyHair);
-		glDrawArrays(GL_TRIANGLES, 0, 6);
-		break;
-
-	case 4:  // head
-		if (camRot == 0 && !camR && !camL) {
-			switch (dir) {
-			case l:
-				glBindTexture(GL_TEXTURE_2D, alcyHead[1]);  // head left
-				break;
-			case r:
-				glBindTexture(GL_TEXTURE_2D, alcyHead[2]);  // head right
-				break;
-			case m:
-				glBindTexture(GL_TEXTURE_2D, alcyHead[0]);  // head middle
-				break;
-			}
-		}
-		else   // 카메라 회전 시 앞을 보도록 함
-			glBindTexture(GL_TEXTURE_2D, alcyHead[0]);  // head middle
-		glDrawArrays(GL_TRIANGLES, 0, 6);
-		break;
-
-	case 5:  // eye
-		if (camRot == 0 && !camR && !camL) {
-			switch (dir) {
-			case l:
-				glBindTexture(GL_TEXTURE_2D, eye[1]);  // eye left
-				break;
-			case r:
-				glBindTexture(GL_TEXTURE_2D, eye[2]);  // eye right
-				break;
-			case m:
-				glBindTexture(GL_TEXTURE_2D, eye[0]);  // eye middle
-				break;
-			}
-		}
-		else  // 카메라 회전 시 앞을 보도록 함
-			glBindTexture(GL_TEXTURE_2D, eye[0]);  // eye middle
-
-		if (!blinkEnable && !touchEnable)  // 눈을 깝빡이지 않을 때만 출력한다.
-			glDrawArrays(GL_TRIANGLES, 0, 6);
-		break;
-
-	case 6:  // dot
-		if (camRot == 0 && !camR && !camL) {
-			switch (dir) {
-			case l:
-				glBindTexture(GL_TEXTURE_2D, dot[1]);  // eye left
-				break;
-			case r:
-				glBindTexture(GL_TEXTURE_2D, dot[2]);  // eye right
-				break;
-			case m:
-				glBindTexture(GL_TEXTURE_2D, dot[0]);  // eye middle
-				break;
-			}
-		}
-		else  // 카메라 회전 시 앞을 보도록 함
-			glBindTexture(GL_TEXTURE_2D, dot[0]);  // eye middle
-
-		if (!blinkEnable && !touchEnable)  // 눈을 깜빡이지 않을 때만 출력한다.
-			glDrawArrays(GL_TRIANGLES, 0, 6);
-		break;
-
-	case 7:  // brow
-		if (camRot == 0 && !camR && !camL) {
-			switch (dir) {
-			case l:
-				glBindTexture(GL_TEXTURE_2D, brow[1]);  // brow left
-				break;
-			case r:
-				glBindTexture(GL_TEXTURE_2D, brow[2]);  // brow right
-				break;
-			case m:
-				glBindTexture(GL_TEXTURE_2D, brow[0]);  // brow middle
-				break;
-			}
-		}
-		else  // 카메라 회전 시 앞을 보도록 함
-			glBindTexture(GL_TEXTURE_2D, brow[0]);  // brow middle
-		glDrawArrays(GL_TRIANGLES, 0, 6);
-		break;
-
-	case 8:  // blink
-		if (camRot == 0 && !camR && !camL) {
-			switch (dir) {
-			case l:
-				glBindTexture(GL_TEXTURE_2D, blink[1]);  // blink left
-				break;
-			case r:
-				glBindTexture(GL_TEXTURE_2D, blink[2]);  // blink right
-				break;
-			case m:
-				glBindTexture(GL_TEXTURE_2D, blink[0]);  // blink middle
-				break;
-			}
-		}
-		else 
-			glBindTexture(GL_TEXTURE_2D, blink[0]);  // blink middle
-		if(blinkEnable || touchEnable)  // true일 때만 출력
-			glDrawArrays(GL_TRIANGLES, 0, 6);
-		break;
-
-	case PLATE_COUNT - 3:  // tip
+	case 1:  // tip
 		glBindTexture(GL_TEXTURE_2D, tip);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 		break;
 
-	case PLATE_COUNT - 2:  // icon
+	case 2:  // icon
 		glBindTexture(GL_TEXTURE_2D, icon[0]);  // exit button
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 		break;
 
-	case PLATE_COUNT - 1:  // cursor
+	case 3:  // cursor
 		if(!handEnable)
 			glBindTexture(GL_TEXTURE_2D, cursor[0]);
 		else

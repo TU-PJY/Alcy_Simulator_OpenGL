@@ -1,6 +1,7 @@
 ﻿// 키보드 조작
 #include "gl_func.h"
 #include "gameVariable.h"
+#include "Alcy.h"
 
 void keyDown(unsigned char KEY, int x, int y) {
 	switch (KEY) {
@@ -18,14 +19,14 @@ void keyDown(unsigned char KEY, int x, int y) {
 		break;
 
 	case 'q':  // 카메라 좌측 회전
-		if (!touchEnable) {
+		if (!alcy.touchEnable) {
 			camL = true;
 			cursorEnable = false;
 		}
 		break;
 
 	case 'e':  // 카메라 우측 회전
-		if (!touchEnable) {
+		if (!alcy.touchEnable) {
 			camR = true;
 			cursorEnable = false;
 		}

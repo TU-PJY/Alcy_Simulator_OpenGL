@@ -4,9 +4,9 @@
 #include "config.h"
 
 void setWindowView();
-void setTransform(int idx);
-void finishTransform(int idx);
-void modelOutput(int idx);
+void setTransformUI(int idx);
+void finishTransformUI(int idx);
+void modelOutputUI(int idx);
 
 extern GLfloat transparent;
 extern glm::vec3 cameraPos, cameraDirection, cameraUp, lightPos, objColor;

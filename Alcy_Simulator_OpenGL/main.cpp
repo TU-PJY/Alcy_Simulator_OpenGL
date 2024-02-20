@@ -4,6 +4,7 @@
 #include "translate.h"  // 변환
 #include "gl_func.h"  // GL 기능 함수
 #include "screen.h"  // 윈도우 사이즈
+#include "Alcy.h"
 
 int WIDTH = GetSystemMetrics(SM_CXSCREEN);
 int HEIGHT = GetSystemMetrics(SM_CYSCREEN);  // 화면 사이즈에 맞추어 창을 출력한다
@@ -19,11 +20,18 @@ GLvoid displayOutput() {
 
 	setWindowView();
 
-	// IMAGE_COUNT는 config.h에 정의되어있음
-	for (int i = 0; i < PLATE_COUNT; i++) {  // IMAGE_COUNT 만큼 반복문을 돌며 변환과 출력 반복
-		setTransform(i);  // 변환 세팅
-		finishTransform(i); // 변환을 glsl로 전달
-		modelOutput(i);  // 최종 출력, 3개 함수 모두 imageOutput.cpp에 있음
+	// Alcy
+	for (int i = 0; i < ALCY_PART; i++) {
+		alcy.setTransform(i);
+		alcy.finishTransform(i);
+		alcy.modelOutput(i);
+	}
+
+	// UI
+	for (int i = 0; i < UI_PART; i++) { 
+		setTransformUI(i);
+		finishTransformUI(i);
+		modelOutputUI(i);
 	}
 	
 	glutSwapBuffers();
@@ -53,9 +61,12 @@ void main(int argc, char** argv) {
 		makeShaderProgram();
 	}
 
-	// MODEL_COUNT는 config.h에 정의되어있음
-	for (int i = 0; i < PLATE_COUNT; i++) // IMAGE_COUNT만큼 버퍼 초기화
-		setBuffer(i);  // imageBuffer.cpp에 있음
+
+	for (int i = 0; i < UI_PART; i++) // UI 버퍼 초기화
+		setBufferUI(i); 
+	for (int i = 0; i < ALCY_PART; i++)
+		setBufferAlcy(i);  // 알키 버퍼 초기화
+
 	setTexture();  // 텍스처 설정
 	
 	glutDisplayFunc(displayOutput);

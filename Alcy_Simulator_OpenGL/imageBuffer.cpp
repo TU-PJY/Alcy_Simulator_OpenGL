@@ -54,7 +54,7 @@ GLubyte* LoadDIBitmap(const char* filename, BITMAPINFO** info) {
 	return bits;
 }
 
-GLuint VAO[PLATE_COUNT], VBO;  // MODEL_COUNT는 config.h에 정의되어있음
+GLuint VAO_ALCY[ALCY_PART], VAO_UI[UI_PART], VBO;  // MODEL_COUNT는 config.h에 정의되어있음
 BITMAPINFO* bmp;
 
 // ui 리소스
@@ -81,9 +81,23 @@ void vertexInput(int idx) {  // vertex
 	glBufferData(GL_ARRAY_BUFFER, 8 * sizeof(plate), plate, GL_STATIC_DRAW);
 }
 
-void setBuffer(int idx) {
-	glGenVertexArrays(1, &VAO[idx]);
-	glBindVertexArray(VAO[idx]);
+void setBufferUI(int idx) {
+	glGenVertexArrays(1, &VAO_UI[idx]);
+	glBindVertexArray(VAO_UI[idx]);
+	glGenBuffers(1, &VBO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, VBO);
+	vertexInput(idx);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)0); // 위치 속성
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(6 * sizeof(GLfloat))); // 텍스처 좌표 속성 
+	glEnableVertexAttribArray(2);
+}
+
+void setBufferAlcy(int idx) {  // 알키 버퍼 초기화
+	glGenVertexArrays(1, &VAO_ALCY[idx]);
+	glBindVertexArray(VAO_ALCY[idx]);
 	glGenBuffers(1, &VBO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -270,9 +284,3 @@ void setTexture() {
 	texture_data = LoadDIBitmap("res//alcy//face//blink_right.bmp", &bmp);
 	glTexImage2D(GL_TEXTURE_2D, 0, 3, 1500, 1500, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
 }
-//
-//glGenTextures(1, &);
-//glBindTexture(GL_TEXTURE_2D, );
-//parameteri();
-//texture_data = LoadDIBitmap(".bmp", &bmp);
-//glTexImage2D(GL_TEXTURE_2D, 0, 3, , , 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);

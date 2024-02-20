@@ -140,6 +140,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="buffer.h" />
+    <ClInclude Include="Alcy.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="gameVariable.h" />
     <ClInclude Include="gl_func.h" />

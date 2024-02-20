@@ -1,9 +1,7 @@
 ﻿// 타이머
 #include "gl_func.h"
 #include "gameVariable.h"
-
-random_device rd;  mt19937 gen(rd());
-uniform_real_distribution <GLfloat> dis(0, 3);
+#include "Alcy.h"
 
 // 프레임
 int lastElapsedTime, elapsedTime;
@@ -104,133 +102,6 @@ void updateTip() {  // 팁 on/off
 }
 
 
-// in game
-
-void updateAlcyBlink() {  // 알키 눈 깜빡임 업데이트
-    if (!blinkEnable) {
-        endTime = time(NULL);  // 시간을 실시간으로 측정하여 아래의 조건에 맞는지 검사한다
-        if (GLfloat(endTime - startTime) > blinkInterval)  // 지정된 간격보다 시간이 지나면 눈 깜빡임이 활성화 된다.
-            blinkEnable = true;
-    }
-
-    else {
-        keepTimer += fs;  // 아주 짧은 시간 동안 눈 감은 상태를 유지하다가 다시 눈을 뜬다.
-        if (keepTimer > 1.5) {
-            startTime = time(NULL);
-            keepTimer = 0;
-            blinkInterval = dis(gen);  // 눈 깜빡이는 간격을 랜덤으로 설정한다
-            blinkEnable = false;
-        }
-    }
-}
-
-void moveAlcyHead() {  // 바라보는 방향 전환 시 알키 머리 움직임
-    if (!camR && !camL && camRot == 0) {
-        switch (dir) {
-        case l:  // 좌측 바라볼 시
-            headPos -= 0.03 * fs;
-            if (headPos < -0.05)
-                headPos = -0.05;
-            break;
-
-        case r:  // 우측 바라볼 시
-            headPos += 0.03 * fs;
-            if (headPos > 0.05)
-                headPos = 0.05;
-            break;
-
-        default:  // 가운데 바라볼 시
-            if (headPos < 0) {
-                headPos += 0.03 * fs;
-                if (headPos > 0)
-                    headPos = 0;
-            }
-            if (headPos > 0) {
-                headPos -= 0.03 * fs;
-                if (headPos < 0)
-                    headPos = 0;
-            }
-            break;
-        }
-    }
-    else {  // 아무 조작 없을 때
-        if (headPos < 0) {
-            headPos += 0.03 * fs;
-            if (headPos > 0)
-                headPos = 0;
-        }
-        if (headPos > 0) {
-            headPos -= 0.03 * fs;
-            if (headPos < 0)
-                headPos = 0;
-        }
-    }
-}
-
-void updateAlcyTouch() {  // 알키 머리 쓰다듬기
-    if (cursorEnable && handEnable && touchEnable) {  // 손 커서인 상태로 머리를 쓰다듬을 수 있다
-        handX = sin(handNum) * 0.2;  // 쓰다듬는 중에는 손 커서가 좌우로 부드럽게 움직인다.
-        tailRot = sin(tailNum) * 10;
-        handNum += fs / 4;
-        tailNum += fs / 10;  // 꼬리는 느린 속도로 별도로 움직인다.
-        headRot = -handX * 25;  // 손의 움직임에 따라 머리도 같이 움직인다.
-        bodyRot = -headRot / 4;  // 몸통도 같이 움직인다.
-    }
-}
-
-void tiltAlcyHead() {
-    if (camRot < -9.9) {  // 카메라가 완전히 기울어진 후  알키가 머리를 기울인다.
-        headTiltL = false;
-        headTiltR = true;
-    }
-
-    if (camRot > 9.9) {
-        headTiltL = true;
-        headTiltR = false;
-    }
-
-    if (headTiltR) {  // 머리를 오른쪽으로 기울일경우
-        headRot -= fs * 2;
-        tailRot -= fs * 2;
-        if (headRot < -10) {
-            headRot = -10;
-            tailRot = -10;
-        }
-    }
-
-    if (headTiltL) { // 머리를 왼쪽으로 기울일경우
-        headRot += fs * 2;
-        tailRot += fs * 2;
-        if (headRot > 10) {
-            headRot = 10;
-            tailRot = 10;
-        }
-    }
-    
-    if(camRot == 0 && !camR && !camL && !touchEnable) {  // 카메라가 처음으로 되돌아가면 머리를 다시 가운데로 세운다.
-        headTiltR = false;
-        headTiltL = false;
-
-        if (headRot > 0) {
-            headRot -= fs * 2;
-            tailRot -= fs * 2;
-            if (headRot < 0) {
-                headRot = 0;
-                tailRot = 0;
-            }
-        }
-        if (headRot < 0) {
-            headRot += fs * 2;
-            tailRot += fs * 2;
-            if (headRot > 0) {
-                headRot = 0;
-                tailRot = 0;
-            }
-        }
-    }
-}
-
-
 void timerOperation(int value) {
     syncFrame();
 
@@ -239,10 +110,10 @@ void timerOperation(int value) {
     updateZoom();
     updateTip();
 
-    updateAlcyBlink();
-    moveAlcyHead();
-    updateAlcyTouch();
-    tiltAlcyHead();
+    alcy.updateAlcyBlink();
+    alcy.moveAlcyHead();
+    alcy.updateAlcyTouch();
+    alcy.tiltAlcyHead();
 
     glutTimerFunc(10, timerOperation, 1);
     if (glutGetWindow() != 0)

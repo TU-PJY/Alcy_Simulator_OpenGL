@@ -3,10 +3,13 @@
 #define MODEL_BUFFER_H
 #include "config.h"
 
-void setBuffer(int idx);
+void setBufferUI(int idx);
+void setBufferAlcy(int idx);
 void vertexInput(int idx);
 void setTexture();
 
-extern GLuint VAO[PLATE_COUNT], VBO;  // MODEL_COUNT는 config.h에 정의되어있음
+extern GLuint VBO;  // MODEL_COUNT는 config.h에 정의되어있음
+extern GLuint VAO_ALCY[ALCY_PART];  // 알키 전용 독립 VAO
+extern GLuint VAO_UI[UI_PART]; // UI 전용 독립 VAO
 
 #endif

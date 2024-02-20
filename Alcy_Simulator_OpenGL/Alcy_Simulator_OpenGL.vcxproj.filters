@@ -28,6 +28,9 @@
     <Filter Include="헤더 파일\gameHeader">
       <UniqueIdentifier>{e8b98558-de81-43a3-88c0-579ad51fd444}</UniqueIdentifier>
     </Filter>
+    <Filter Include="헤더 파일\classes">
+      <UniqueIdentifier>{ef1ac4b7-25c4-43fa-9a13-aedf1d7ca365}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -54,6 +57,9 @@
     <ClCompile Include="mouse.cpp">
       <Filter>소스 파일\gameControl</Filter>
     </ClCompile>
+    <ClCompile Include="translateVariable.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h">
@@ -76,6 +82,12 @@
     </ClInclude>
     <ClInclude Include="buffer.h">
       <Filter>헤더 파일\gameHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="gameVariable.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="Alcy.h">
+      <Filter>헤더 파일\classes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
