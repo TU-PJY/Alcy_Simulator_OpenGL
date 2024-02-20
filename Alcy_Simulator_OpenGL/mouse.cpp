@@ -1,6 +1,7 @@
 #include "gl_func.h"
 #include "globalVar.h"
 #include "screen.h"
+#include "sound.h"
 #include "Alcy.h"
 #include "Camera.h"
 #include "UI.h"
@@ -20,17 +21,48 @@ void setDir() {  // 알키 바라보는 방향을 결정한다
 }
 
 void updateCursor() {  // 알키 머리에 커서를 가져다대면 커서가 바뀐다
-	if ((mx * ratio >= -0.4 && mx * ratio <= 0.4) && (my >= 0.1 && my <= 0.5))
+	if ((mx * ratio >= -0.4 && mx * ratio <= 0.4) && (my >= 0.1 && my <= 0.5)) // 쓰다듬기
 		ui.handEnable = true;
 	else
 		ui.handEnable = false;
+
+	if ((mx * ratio >= -0.03 && mx * ratio <= 0.05) && (my >= -0.2 && my <= -0.15))  // 코 누르가
+		ui.fingerEnable = true;
+	else
+		ui.fingerEnable = false;
 }
 
 void Mouse(int button, int state, int x, int y) {  // 마우스 클릭
+	int randomSound = 0;
+
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-		if (ui.handEnable && mouseClickEnable && cam.camRot == 0)
+		if (ui.handEnable && mouseClickEnable && cam.camRot == 0) {
 			alcy.touchEnable = true;
-		lButtonDown = true;
+			lButtonDown = true;
+		}
+		if (ui.fingerEnable && mouseClickEnable && cam.camRot == 0 && !alcy.squeak) {
+			random_device rd;  mt19937 gen(rd());
+			uniform_int_distribution <int> dis(1, 3);
+			randomSound = dis(gen);
+
+			channelSqueak->stop();
+
+			switch(randomSound) {  // 3가지 중 하나를 재생한다.
+			case 1:
+				ssystem->playSound(squeak1, 0, false, &channelSqueak);
+				break;
+			case 2:
+				ssystem->playSound(squeak2, 0, false, &channelSqueak);
+				break;
+			case 3:
+				ssystem->playSound(squeak3, 0, false, &channelSqueak);
+				break;
+			}
+			
+			alcy.squeakStartTime = time(NULL);
+			alcy.squeak = true;
+			lButtonDown = true;
+		}
 	}
 	else if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
 		if (ui.handEnable && mouseClickEnable && alcy.touchEnable) {

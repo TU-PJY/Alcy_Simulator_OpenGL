@@ -58,13 +58,13 @@ GLuint VAO_ALCY[ALCY_PART], VAO_UI[UI_PART], VBO;  // MODEL_COUNT는 config.h에
 BITMAPINFO* bmp;
 
 // ui 리소스
-unsigned int back, cursor[2];
+unsigned int back, cursor[3];
 unsigned int icon[3];
 unsigned int tip;
 
 // 알키 리소스
 unsigned int alcyTail, alcyBody, alcyHair, alcyHead[3];
-unsigned int eye[3], dot[3], eyeClose[3], brow[3], blink[3];
+unsigned int eye[4], dot[3], eyeClose[3], brow[3], blink[3];
 
 unsigned char* texture_data;
 
@@ -130,6 +130,13 @@ void setTexture() {
 	parameteri();
 	texture_data = LoadDIBitmap("res//ui//cursor_hand.bmp", &bmp);
 	glTexImage2D(GL_TEXTURE_2D, 0, 3, 100, 100, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+
+	// cursor finger
+	glGenTextures(1, &cursor[2]);
+	glBindTexture(GL_TEXTURE_2D, cursor[2]);
+	parameteri();
+	texture_data = LoadDIBitmap("res//ui//cursor_finger.bmp", &bmp);
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, 512, 512, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
 
 	// exit icon
 	glGenTextures(1, &icon[0]);
@@ -217,6 +224,13 @@ void setTexture() {
 	glBindTexture(GL_TEXTURE_2D, eye[2]);
 	parameteri();
 	texture_data = LoadDIBitmap("res//alcy//face//eye_right.bmp", &bmp);
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, 1500, 1500, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+
+	// eye squeak
+	glGenTextures(1, &eye[3]);
+	glBindTexture(GL_TEXTURE_2D, eye[3]);
+	parameteri();
+	texture_data = LoadDIBitmap("res//alcy//face//eye_squeak.bmp", &bmp);
 	glTexImage2D(GL_TEXTURE_2D, 0, 3, 1500, 1500, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
 
 	// dot middle

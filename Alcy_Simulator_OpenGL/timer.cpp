@@ -28,6 +28,7 @@ void timerOperation(int value) {
     alcy.moveAlcyHead();
     alcy.updateAlcyTouch();
     alcy.tiltAlcyHead();
+    alcy.squeakAlcyNose();
 
     glutTimerFunc(10, timerOperation, 1);
     if (glutGetWindow() != 0)

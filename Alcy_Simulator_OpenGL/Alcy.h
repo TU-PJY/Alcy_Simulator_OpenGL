@@ -42,6 +42,10 @@ public:
 	GLfloat tailNum; // 꼬리 회전에 사용되는 수치
 	bool headTiltR, headTiltL;  // 카메라 기울였을 때 알키 머리 기울이기 여부
 
+    bool squeak; // 알키 코 누름 여부
+    time_t squeakStartTime;  // 코 눌림 상태 시작 시간
+    time_t squeakTime;  // 코 눌림 상태동안의 시간
+
     Alcy() {
         dir = m;
     }
@@ -68,7 +72,7 @@ public:
     }
 
     void moveAlcyHead() {  // 바라보는 방향 전환 시 알키 머리 움직임
-        if (!cam.camR && !cam.camL && cam.camRot == 0) {
+        if (!cam.camR && !cam.camL && cam.camRot == 0 && !squeak) {
             switch (dir) {
             case l:  // 좌측 바라볼 시
                 headPos -= 0.03 * fs;
@@ -123,31 +127,33 @@ public:
     }
 
     void tiltAlcyHead() {
-        if (cam.camRot < -9.9) {  // 카메라가 완전히 기울어진 후  알키가 머리를 기울인다.
-            headTiltL = false;
-            headTiltR = true;
-        }
-
-        if (cam.camRot > 9.9) {
-            headTiltL = true;
-            headTiltR = false;
-        }
-
-        if (headTiltR) {  // 머리를 오른쪽으로 기울일경우
-            headRot -= fs * 2;
-            tailRot -= fs * 2;
-            if (headRot < -10) {
-                headRot = -10;
-                tailRot = -10;
+        if (!squeak) {
+            if (cam.camRot < -9.9) {  // 카메라가 완전히 기울어진 후  알키가 머리를 기울인다.
+                headTiltL = false;
+                headTiltR = true;
             }
-        }
 
-        if (headTiltL) { // 머리를 왼쪽으로 기울일경우
-            headRot += fs * 2;
-            tailRot += fs * 2;
-            if (headRot > 10) {
-                headRot = 10;
-                tailRot = 10;
+            if (cam.camRot > 9.9) {
+                headTiltL = true;
+                headTiltR = false;
+            }
+
+            if (headTiltR) {  // 머리를 오른쪽으로 기울일경우
+                headRot -= fs * 2;
+                tailRot -= fs * 2;
+                if (headRot < -10) {
+                    headRot = -10;
+                    tailRot = -10;
+                }
+            }
+
+            if (headTiltL) { // 머리를 왼쪽으로 기울일경우
+                headRot += fs * 2;
+                tailRot += fs * 2;
+                if (headRot > 10) {
+                    headRot = 10;
+                    tailRot = 10;
+                }
             }
         }
 
@@ -170,6 +176,16 @@ public:
                     headRot = 0;
                     tailRot = 0;
                 }
+            }
+        }
+    }
+
+    void squeakAlcyNose() {  // 코 누르기
+        if (squeak) {  // 일정시간동안 알키는 자기 코를 바라본다
+            squeakTime = time(NULL);
+            if (squeakTime - squeakStartTime > 1) {
+                squeakStartTime = time(NULL);
+                squeak = false;
             }
         }
     }
@@ -213,7 +229,7 @@ public:
         case eye_:
             translateMatrix = translate(translateMatrix, vec3(0.0, -0.1, 0.0));
             translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
-            if (cam.camRot == 0 && !cam.camR && !cam.camL)
+            if (cam.camRot == 0 && !cam.camR && !cam.camL && !squeak)
                 translateMatrix = translate(translateMatrix,
                     vec3(((headPos - headRot / 300) - (cam.camX / 4)) * ratio, 0.22 - (cam.camY / 4), 0.00001));
             else
@@ -230,8 +246,7 @@ public:
                 translateMatrix = translate(translateMatrix,
                     vec3(((headPos - headRot / 300) - (cam.camX / 2.5)) * ratio, 0.22 - (cam.camY / 2), 0.00003));
             else
-                translateMatrix = translate(translateMatrix,
-                    vec3((headPos - headRot / 300) * ratio, 0.22, 0.00003));
+                translateMatrix = translate(translateMatrix,vec3((headPos - headRot / 300) * ratio, 0.22, 0.00003));
             selectedColor = vec3(0.0, 1.0, 0.0);
             threshold = vec3(0.0, 1.0, 0.0);
             break;
@@ -239,12 +254,10 @@ public:
         case brow_:
             translateMatrix = translate(translateMatrix, vec3(0.0, -0.1, 0.0));
             translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
-            if (cam.camRot == 0 && !cam.camR && !cam.camL && !touchEnable)
-                translateMatrix = translate(translateMatrix,
-                    vec3((headPos - headRot / 300) * ratio, 0.23 - (cam.camY / 4), 0.00003));
+            if (cam.camRot == 0 && !cam.camR && !cam.camL && !touchEnable && !squeak)
+                translateMatrix = translate(translateMatrix,vec3((headPos - headRot / 300) * ratio, 0.23 - (cam.camY / 4), 0.00003));
             else
-                translateMatrix = translate(translateMatrix,
-                    vec3((headPos - headRot / 300) * ratio, 0.22, 0.00003));
+                translateMatrix = translate(translateMatrix,vec3((headPos - headRot / 300) * ratio, 0.22, 0.00003));
             selectedColor = vec3(0.0, 1.0, 0.0);
             threshold = vec3(0.0, 0.8, 0.0);
             break;
@@ -279,7 +292,7 @@ public:
             break;
 
         case head_:
-            if (cam.camRot == 0 && !cam.camR && !cam.camL) {
+            if (cam.camRot == 0 && !cam.camR && !cam.camL && !squeak) {
                 switch (dir) {
                 case l:
                     glBindTexture(GL_TEXTURE_2D, alcyHead[1]);  // head left
@@ -298,21 +311,30 @@ public:
             break;
 
         case eye_:
-            if (cam.camRot == 0 && !cam.camR && !cam.camL) {
-                switch (dir) {
-                case l:
-                    glBindTexture(GL_TEXTURE_2D, eye[1]);  // eye left
-                    break;
-                case r:
-                    glBindTexture(GL_TEXTURE_2D, eye[2]);  // eye right
-                    break;
-                case m:
-                    glBindTexture(GL_TEXTURE_2D, eye[0]);  // eye middle
-                    break;
+                if (cam.camRot == 0 && !cam.camR && !cam.camL) {
+                    if (squeak)
+                        glBindTexture(GL_TEXTURE_2D, eye[3]);  // eye squeak
+                    else {
+                        switch (dir) {
+                        case l:
+                            glBindTexture(GL_TEXTURE_2D, eye[1]);  // eye left
+                            break;
+                        case r:
+                            glBindTexture(GL_TEXTURE_2D, eye[2]);  // eye right
+                            break;
+                        case m:
+                            glBindTexture(GL_TEXTURE_2D, eye[0]);  // eye middle
+                            break;
+                        }
+                    }
                 }
-            }
-            else  // 카메라 회전 시 앞을 보도록 함
-                glBindTexture(GL_TEXTURE_2D, eye[0]);  // eye middle
+
+                else { // 카메라 회전 시 앞을 보도록 함
+                    if(squeak)
+                        glBindTexture(GL_TEXTURE_2D, eye[3]);  // eye squeak
+                    else
+                        glBindTexture(GL_TEXTURE_2D, eye[0]);  // eye middle
+                }
 
             if (!blinkEnable && !touchEnable)  // 눈을 깜빡이지 않을 때만 출력한다.
                 glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -335,12 +357,12 @@ public:
             else  // 카메라 회전 시 앞을 보도록 함
                 glBindTexture(GL_TEXTURE_2D, dot[0]);  // eye middle
 
-            if (!blinkEnable && !touchEnable)  // 눈을 깜빡이지 않을 때만 출력한다.
+            if (!blinkEnable && !touchEnable && !squeak)  // 눈을 깜빡이지 않을 때만 출력한다.
                 glDrawArrays(GL_TRIANGLES, 0, 6);
             break;
 
         case brow_:
-            if (cam.camRot == 0 && !cam.camR && !cam.camL) {
+            if (cam.camRot == 0 && !cam.camR && !cam.camL && !squeak) {
                 switch (dir) {
                 case l:
                     glBindTexture(GL_TEXTURE_2D, brow[1]);  // brow left
@@ -359,7 +381,7 @@ public:
             break;
 
         case blink_:
-            if (cam.camRot == 0 && !cam.camR && !cam.camL) {
+            if (cam.camRot == 0 && !cam.camR && !cam.camL && !squeak) {
                 switch (dir) {
                 case l:
                     glBindTexture(GL_TEXTURE_2D, blink[1]);  // blink left

@@ -14,6 +14,7 @@ public:
 	bool handEnable;  // 손커서 전환 여부
 	GLfloat handX;  // 손커서 x좌표, 쓰다듬기 시 사용
 	GLfloat handNum;  // 손 커서 애니메이션에 사용되는 수치
+	bool fingerEnable; // 손가락 커서 전환 여부
 
 	// 나가기 아이콘
 	bool exitEnable;
@@ -93,11 +94,15 @@ public:
 			break;
 
 		case 3:  // cursor, 항상 맨 마지막에 출력
-			scaleMatrix = scale(scaleMatrix, vec3(0.1 / cam.zoom, 0.1 / cam.zoom, 1.0));
-			if (!lButtonDown)
-				translateMatrix = translate(translateMatrix, vec3((mx - cam.camX) * ratio, my - cam.camY, 0.001));
-			else if (lButtonDown)
+			if(fingerEnable) 
+				scaleMatrix = scale(scaleMatrix, vec3(0.15 / cam.zoom, 0.15 / cam.zoom, 1.0));
+			else
+				scaleMatrix = scale(scaleMatrix, vec3(0.1 / cam.zoom, 0.1 / cam.zoom, 1.0));
+
+			if (lButtonDown && handEnable)
 				translateMatrix = translate(translateMatrix, vec3((handX - cam.camX) * ratio, 0.3 - cam.camY, 0.001));
+			else
+				translateMatrix = translate(translateMatrix, vec3((mx - cam.camX) * ratio, my - cam.camY, 0.001));
 			selectedColor = vec3(0.0, 1.0, 0.0);
 			threshold = vec3(0.0, 0.85, 0.0);
 			break;
@@ -124,10 +129,13 @@ public:
 			break;
 
 		case 3:  // cursor
-			if (!handEnable)
-				glBindTexture(GL_TEXTURE_2D, cursor[0]);
-			else
+			if (handEnable)
 				glBindTexture(GL_TEXTURE_2D, cursor[1]);
+			else if (fingerEnable)
+				glBindTexture(GL_TEXTURE_2D, cursor[2]);
+			else
+				glBindTexture(GL_TEXTURE_2D, cursor[0]);
+
 			if (cam.camRot == 0 && !cam.camR && !cam.camL)  // 카메라 회전 시 커서를 숨김
 				glDrawArrays(GL_TRIANGLES, 0, 6);
 			break;
