@@ -89,6 +89,9 @@
     <ClInclude Include="Alcy.h">
       <Filter>헤더 파일\classes</Filter>
     </ClInclude>
+    <ClInclude Include="Camera.h">
+      <Filter>헤더 파일\classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="glsl\GLSL_fragment.glsl">

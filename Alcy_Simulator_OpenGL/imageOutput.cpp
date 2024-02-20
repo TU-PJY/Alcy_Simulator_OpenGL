@@ -5,6 +5,7 @@
 #include "shader.h"
 #include "buffer.h"
 #include "Alcy.h"
+#include "Camera.h"
 #include "gameVariable.h"
 
 void finishTransformUI(int idx) {  // 변환 전달 
@@ -46,9 +47,9 @@ void setWindowView() {  // 시점 세팅
 	// X축 변환에 곱해야함.
 
 	view = lookAt(cameraPos, cameraDirection, cameraUp);
-	view = translate(view, vec3(camX * ratio, camY, 0));
-	view = rotate(view, radians(camRot), vec3(0.0, 0.0, 1.0));
-	projection = ortho(-1.0 * ratio / zoom, 1.0 * ratio / zoom, -1.0 / zoom, 1.0 / zoom, -100.0, 100.0);
+	view = translate(view, vec3(cam.camX * ratio, cam.camY, 0));
+	view = rotate(view, radians(cam.camRot), vec3(0.0, 0.0, 1.0));
+	projection = ortho(-1.0 * ratio / cam.zoom, 1.0 * ratio / cam.zoom, -1.0 / cam.zoom, 1.0 / cam.zoom, -100.0, 100.0);
 }
 
 void setTransformUI(int idx) {  // 변환 세팅
@@ -65,25 +66,25 @@ void setTransformUI(int idx) {  // 변환 세팅
 
 	switch (idx) {  // 변환 추가 
 	case 0:
-		scaleMatrix = scale(scaleMatrix, vec3(2.0 * ratio / zoom, 2.0 / zoom, 0.0));
-		translateMatrix = translate(translateMatrix, vec3(-camX * ratio / 4, -camY / 4, -0.001));
+		scaleMatrix = scale(scaleMatrix, vec3(2.0 * ratio / cam.zoom, 2.0 / cam.zoom, 0.0));
+		translateMatrix = translate(translateMatrix, vec3(-cam.camX * ratio / 4, -cam.camY / 4, -0.001));
 		selectedColor = vec3(0.0, 1.0, 0.0);
 		threshold = vec3(0.0, 0.85, 0.0);
 		break;
 
 	case 1:  // 팁
-		scaleMatrix = scale(scaleMatrix, vec3(0.5 / zoom, 0.5 / zoom, 0.0));
-		translateMatrix = translate(translateMatrix, vec3((-0.7 - camX) * ratio, 0.5 - camY, 0.0005));
-		rotateMatrix = rotate(rotateMatrix, radians(-camRot), vec3(0.0, 0.0, 1.0));
+		scaleMatrix = scale(scaleMatrix, vec3(0.5 / cam.zoom, 0.5 / cam.zoom, 0.0));
+		translateMatrix = translate(translateMatrix, vec3((-0.7 - cam.camX) * ratio, 0.5 - cam.camY, 0.0005));
+		rotateMatrix = rotate(rotateMatrix, radians(-cam.camRot), vec3(0.0, 0.0, 1.0));
 		selectedColor = vec3(0.0, 1.0, 0.0);
 		threshold = vec3(0.0, 0.8, 0.0);
 		transparent = tipTransparent;
 		break;
 
 	case 2:  // 나가기 표시
-		scaleMatrix = scale(scaleMatrix, vec3(0.5 / zoom, 0.5 / zoom, 1.0));
-		translateMatrix = translate(translateMatrix, vec3((0.0 - camX) * ratio, 0.0 - camY, 0.0005));
-		rotateMatrix = rotate(rotateMatrix, radians(-camRot), vec3(0.0, 0.0, 1.0));
+		scaleMatrix = scale(scaleMatrix, vec3(0.5 / cam.zoom, 0.5 / cam.zoom, 1.0));
+		translateMatrix = translate(translateMatrix, vec3((0.0 - cam.camX) * ratio, 0.0 - cam.camY, 0.0005));
+		rotateMatrix = rotate(rotateMatrix, radians(-cam.camRot), vec3(0.0, 0.0, 1.0));
 
 		selectedColor = vec3(0.0, 1.0, 0.0);
 		threshold = vec3(0.0, 0.8, 0.0);
@@ -91,11 +92,11 @@ void setTransformUI(int idx) {  // 변환 세팅
 		break;
 
 	case 3:  // cursor, 항상 맨 마지막에 출력
-		scaleMatrix = scale(scaleMatrix, vec3(0.1 / zoom, 0.1 / zoom, 1.0));
+		scaleMatrix = scale(scaleMatrix, vec3(0.1 / cam.zoom, 0.1 / cam.zoom, 1.0));
 		if(!alcy.touchEnable)
-			translateMatrix = translate(translateMatrix, vec3((mx - camX) * ratio, my - camY, 0.001));
+			translateMatrix = translate(translateMatrix, vec3((mx - cam.camX) * ratio, my - cam.camY, 0.001));
 		else if(alcy.touchEnable)
-			translateMatrix = translate(translateMatrix, vec3((handX - camX) * ratio, 0.3 - camY, 0.001));
+			translateMatrix = translate(translateMatrix, vec3((handX - cam.camX) * ratio, 0.3 - cam.camY, 0.001));
 		selectedColor = vec3(0.0, 1.0, 0.0);
 		threshold = vec3(0.0, 0.85, 0.0);
 		break;
@@ -126,7 +127,7 @@ void modelOutputUI(int idx) {  // 모델 출력
 			glBindTexture(GL_TEXTURE_2D, cursor[0]);
 		else
 			glBindTexture(GL_TEXTURE_2D, cursor[1]);
-		if(camRot == 0 && !camR && !camL)  // 카메라 회전 시 커서를 숨김
+		if(cam.camRot == 0 && !cam.camR && !cam.camL)  // 카메라 회전 시 커서를 숨김
 			glDrawArrays(GL_TRIANGLES, 0, 6);
 		break;
 	}

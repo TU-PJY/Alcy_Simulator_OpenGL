@@ -6,18 +6,11 @@
 // 마우스
 extern GLfloat mx, my;
 
+extern GLfloat ratio;
+
 // 프레임
 extern int lastElapsedTime, elapsedTime;
 extern GLfloat fs;  // frame sync, 프레임 동기화
-
-// 카메라
-extern GLfloat ratio;  // 화면 종횡비;
-extern GLfloat camX, camY;  // 게임 화면 카메라
-extern GLfloat camRot;  // 카메라 회전 각도
-extern GLfloat zoom;  // 카메라 줌
-extern GLfloat zoomAcc;  // 줌 가속도
-extern bool zoomEnable;  // 줌 여부
-extern bool camR, camL;  // 카메라 좌우 회전
 
 // 커서
 extern bool cursorEnable;  // 커서 보임 여부

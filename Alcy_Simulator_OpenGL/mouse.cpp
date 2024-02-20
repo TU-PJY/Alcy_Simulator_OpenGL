@@ -2,6 +2,7 @@
 #include "gameVariable.h"
 #include "screen.h"
 #include "Alcy.h"
+#include "Camera.h"
 
 void convert_to_gl(int x, int y) {  //GL좌표계로 변환
 	mx = (GLfloat)(x - (GLfloat)WIDTH / 2.0) * (GLfloat)(1.0 / (GLfloat)(WIDTH / 2.0));
@@ -26,7 +27,7 @@ void updateCursor() {  // 알키 머리에 커서를 가져다대면 커서가 바뀐다
 
 void Mouse(int button, int state, int x, int y) {  // 마우스 클릭
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-		if (handEnable && cursorEnable && camRot == 0) 
+		if (handEnable && cursorEnable && cam.camRot == 0) 
 			alcy.touchEnable = true;
 	}
 	else if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
@@ -43,8 +44,8 @@ void Mouse(int button, int state, int x, int y) {  // 마우스 클릭
 
 void pMotion(int x, int y) {  // 클릭 안할 때의 모션
 		convert_to_gl(x, y);
-		camX = (0.0 - mx) / 10;
-		camY = (0.0 - my) / 10;
+		cam.camX = (0.0 - mx) / 10;
+		cam.camY = (0.0 - my) / 10;
 
 		setDir();
 		updateCursor();
@@ -55,8 +56,8 @@ void pMotion(int x, int y) {  // 클릭 안할 때의 모션
 void Motion(int x, int y) {  // 클릭 할 때의 모션
 	if (!alcy.touchEnable) {
 		convert_to_gl(x, y);
-		camX = (0.0 - mx) / 10;
-		camY = (0.0 - my) / 10;
+		cam.camX = (0.0 - mx) / 10;
+		cam.camY = (0.0 - my) / 10;
 
 		setDir();
 		updateCursor();
@@ -67,13 +68,13 @@ void Motion(int x, int y) {  // 클릭 할 때의 모션
 
 void Wheel(int button, int dir, int x, int y) {  // 마우스 휠
 	if (dir > 0) {
-		zoomAcc = 0.2 + (zoom - 1.0) / 10;
-		zoomEnable = true;
+		cam.zoomAcc = 0.2 + (cam.zoom - 1.0) / 10;
+		cam.zoomEnable = true;
 	}
 	else if (dir < 0) {
-		if (zoom > 1.0) {
-			zoomAcc = -0.2 - (zoom - 1.0) / 10;
-			zoomEnable = true;
+		if (cam.zoom > 1.0) {
+			cam.zoomAcc = -0.2 - (cam.zoom - 1.0) / 10;
+			cam.zoomEnable = true;
 		}
 	}
 	

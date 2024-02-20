@@ -2,6 +2,7 @@
 #include "gl_func.h"
 #include "gameVariable.h"
 #include "Alcy.h"
+#include "Camera.h"
 
 void keyDown(unsigned char KEY, int x, int y) {
 	switch (KEY) {
@@ -20,14 +21,14 @@ void keyDown(unsigned char KEY, int x, int y) {
 
 	case 'q':  // 카메라 좌측 회전
 		if (!alcy.touchEnable) {
-			camL = true;
+			cam.camL = true;
 			cursorEnable = false;
 		}
 		break;
 
 	case 'e':  // 카메라 우측 회전
 		if (!alcy.touchEnable) {
-			camR = true;
+			cam.camR = true;
 			cursorEnable = false;
 		}
 		break;
@@ -43,11 +44,11 @@ void keyUp(unsigned char KEY, int x, int y) {
 		break;
 
 	case 'q':  // 카메라 우측 회전 해제
-		camL = false;
+		cam.camL = false;
 		break;
 
 	case 'e':  // 카메라 좌측 회전 해제
-		camR = false;
+		cam.camR = false;
 		break;
 	}
 	if (glutGetWindow() != 0)

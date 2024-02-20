@@ -5,6 +5,7 @@
 #include "texture.h"
 #include "shader.h"
 #include "buffer.h"
+#include "Camera.h"
 #include "gameVariable.h"
 
 enum dir {  // 알키 바라보는 방향
@@ -65,7 +66,7 @@ public:
     }
 
     void moveAlcyHead() {  // 바라보는 방향 전환 시 알키 머리 움직임
-        if (!camR && !camL && camRot == 0) {
+        if (!cam.camR && !cam.camL && cam.camRot == 0) {
             switch (dir) {
             case l:  // 좌측 바라볼 시
                 headPos -= 0.03 * fs;
@@ -119,12 +120,12 @@ public:
     }
 
     void tiltAlcyHead() {
-        if (camRot < -9.9) {  // 카메라가 완전히 기울어진 후  알키가 머리를 기울인다.
+        if (cam.camRot < -9.9) {  // 카메라가 완전히 기울어진 후  알키가 머리를 기울인다.
             headTiltL = false;
             headTiltR = true;
         }
 
-        if (camRot > 9.9) {
+        if (cam.camRot > 9.9) {
             headTiltL = true;
             headTiltR = false;
         }
@@ -147,7 +148,7 @@ public:
             }
         }
 
-        if (camRot == 0 && !camR && !camL && !touchEnable) {  // 카메라가 처음으로 되돌아가면 머리를 다시 가운데로 세운다.
+        if (cam.camRot == 0 && !cam.camR && !cam.camL && !touchEnable) {  // 카메라가 처음으로 되돌아가면 머리를 다시 가운데로 세운다.
             headTiltR = false;
             headTiltL = false;
 
@@ -242,9 +243,9 @@ public:
         case eye_:
             translateMatrix = translate(translateMatrix, vec3(0.0, -0.1, 0.0));
             translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
-            if (camRot == 0 && !camR && !camL)
+            if (cam.camRot == 0 && !cam.camR && !cam.camL)
                 translateMatrix = translate(translateMatrix,
-                    vec3(((headPos - headRot / 300) - (camX / 4)) * ratio, 0.22 - (camY / 4), 0.00001));
+                    vec3(((headPos - headRot / 300) - (cam.camX / 4)) * ratio, 0.22 - (cam.camY / 4), 0.00001));
             else
                 translateMatrix = translate(translateMatrix,
                     vec3((headPos - headRot / 300) * ratio, 0.22, 0.00001));
@@ -255,9 +256,9 @@ public:
         case dot_:
             translateMatrix = translate(translateMatrix, vec3(0.0, -0.1, 0.0));
             translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
-            if (camRot == 0 && !camR && !camL)
+            if (cam.camRot == 0 && !cam.camR && !cam.camL)
                 translateMatrix = translate(translateMatrix,
-                    vec3(((headPos - headRot / 300) - (camX / 2.5)) * ratio, 0.22 - (camY / 2), 0.00003));
+                    vec3(((headPos - headRot / 300) - (cam.camX / 2.5)) * ratio, 0.22 - (cam.camY / 2), 0.00003));
             else
                 translateMatrix = translate(translateMatrix,
                     vec3((headPos - headRot / 300) * ratio, 0.22, 0.00003));
@@ -268,9 +269,9 @@ public:
         case brow_:
             translateMatrix = translate(translateMatrix, vec3(0.0, -0.1, 0.0));
             translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
-            if (camRot == 0 && !camR && !camL && !touchEnable)
+            if (cam.camRot == 0 && !cam.camR && !cam.camL && !touchEnable)
                 translateMatrix = translate(translateMatrix,
-                    vec3((headPos - headRot / 300) * ratio, 0.23 - (camY / 4), 0.00003));
+                    vec3((headPos - headRot / 300) * ratio, 0.23 - (cam.camY / 4), 0.00003));
             else
                 translateMatrix = translate(translateMatrix,
                     vec3((headPos - headRot / 300) * ratio, 0.22, 0.00003));
@@ -308,7 +309,7 @@ public:
             break;
 
         case head_:
-            if (camRot == 0 && !camR && !camL) {
+            if (cam.camRot == 0 && !cam.camR && !cam.camL) {
                 switch (dir) {
                 case l:
                     glBindTexture(GL_TEXTURE_2D, alcyHead[1]);  // head left
@@ -327,7 +328,7 @@ public:
             break;
 
         case eye_:
-            if (camRot == 0 && !camR && !camL) {
+            if (cam.camRot == 0 && !cam.camR && !cam.camL) {
                 switch (dir) {
                 case l:
                     glBindTexture(GL_TEXTURE_2D, eye[1]);  // eye left
@@ -348,7 +349,7 @@ public:
             break;
 
         case dot_:
-            if (camRot == 0 && !camR && !camL) {
+            if (cam.camRot == 0 && !cam.camR && !cam.camL) {
                 switch (dir) {
                 case l:
                     glBindTexture(GL_TEXTURE_2D, dot[1]);  // eye left
@@ -369,7 +370,7 @@ public:
             break;
 
         case brow_:
-            if (camRot == 0 && !camR && !camL) {
+            if (cam.camRot == 0 && !cam.camR && !cam.camL) {
                 switch (dir) {
                 case l:
                     glBindTexture(GL_TEXTURE_2D, brow[1]);  // brow left
@@ -388,7 +389,7 @@ public:
             break;
 
         case blink_:
-            if (camRot == 0 && !camR && !camL) {
+            if (cam.camRot == 0 && !cam.camR && !cam.camL) {
                 switch (dir) {
                 case l:
                     glBindTexture(GL_TEXTURE_2D, blink[1]);  // blink left
