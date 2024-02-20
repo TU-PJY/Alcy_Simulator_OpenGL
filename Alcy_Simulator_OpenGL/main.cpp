@@ -4,6 +4,7 @@
 #include "transform.h"  // 변환
 #include "gl_func.h"  // GL 기능 함수
 #include "screen.h"  // 윈도우 사이즈
+#include "sound.h"
 #include "Alcy.h"
 #include "UI.h"
 
@@ -64,6 +65,12 @@ void main(int argc, char** argv) {
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		makeShaderProgram();
+
+		result = FMOD::System_Create(&ssystem);
+		if (result != FMOD_OK)
+			exit(0);
+
+		initFmod();
 	}
 
 

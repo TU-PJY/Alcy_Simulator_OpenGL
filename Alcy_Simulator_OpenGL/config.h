@@ -15,6 +15,8 @@
 #include <gl/glew.h>
 #include <gl/freeglut.h>
 #include <gl/freeglut_ext.h>
+#include "fmod.hpp"
+#include "fmod_errors.h"
 #define ALCY_PART 8  // 알키 파트 개수
 #define UI_PART 4  // ui 파트 개수
 

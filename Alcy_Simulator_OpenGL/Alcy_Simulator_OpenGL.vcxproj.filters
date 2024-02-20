@@ -16,34 +16,37 @@
     <Filter Include="GLSL">
       <UniqueIdentifier>{931f4ec3-49e7-48b0-b47b-ad9ea8f77f94}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\imageControl">
-      <UniqueIdentifier>{27bcb282-610a-45e3-ba95-ac62cda65f46}</UniqueIdentifier>
-    </Filter>
     <Filter Include="소스 파일\gameControl">
       <UniqueIdentifier>{cee54dbd-5b44-4ade-99e9-dd4514261662}</UniqueIdentifier>
     </Filter>
     <Filter Include="소스 파일\shaderCode">
       <UniqueIdentifier>{a2fc8178-acc8-46b6-a1c0-1f300cdc0979}</UniqueIdentifier>
     </Filter>
-    <Filter Include="헤더 파일\gameHeader">
-      <UniqueIdentifier>{e8b98558-de81-43a3-88c0-579ad51fd444}</UniqueIdentifier>
-    </Filter>
     <Filter Include="헤더 파일\classes">
       <UniqueIdentifier>{ef1ac4b7-25c4-43fa-9a13-aedf1d7ca365}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\image">
+      <UniqueIdentifier>{27bcb282-610a-45e3-ba95-ac62cda65f46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\global">
+      <UniqueIdentifier>{5d31d82d-63b2-4ef1-9642-b7f75fbc6fb8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\sound">
+      <UniqueIdentifier>{2864b2c5-44bd-4ef4-8938-88f44b0940ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\glHeader">
+      <UniqueIdentifier>{e8b98558-de81-43a3-88c0-579ad51fd444}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\sound">
+      <UniqueIdentifier>{e2021303-d7dd-4bda-b034-4b66964889d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\global">
+      <UniqueIdentifier>{58375472-a3df-43f0-9709-8157cfa61e2d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
       <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="imageBuffer.cpp">
-      <Filter>소스 파일\imageControl</Filter>
-    </ClCompile>
-    <ClCompile Include="imageOutput.cpp">
-      <Filter>소스 파일\imageControl</Filter>
-    </ClCompile>
-    <ClCompile Include="gameVariable.cpp">
-      <Filter>소스 파일\gameControl</Filter>
     </ClCompile>
     <ClCompile Include="key.cpp">
       <Filter>소스 파일\gameControl</Filter>
@@ -57,40 +60,55 @@
     <ClCompile Include="mouse.cpp">
       <Filter>소스 파일\gameControl</Filter>
     </ClCompile>
-    <ClCompile Include="translateVariable.cpp">
-      <Filter>소스 파일</Filter>
+    <ClCompile Include="bufferSet.cpp">
+      <Filter>소스 파일\image</Filter>
+    </ClCompile>
+    <ClCompile Include="transform.cpp">
+      <Filter>소스 파일\image</Filter>
+    </ClCompile>
+    <ClCompile Include="globalVar.cpp">
+      <Filter>소스 파일\global</Filter>
+    </ClCompile>
+    <ClCompile Include="sound.cpp">
+      <Filter>소스 파일\sound</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
-    <ClInclude Include="translate.h">
-      <Filter>헤더 파일\gameHeader</Filter>
-    </ClInclude>
     <ClInclude Include="texture.h">
-      <Filter>헤더 파일\gameHeader</Filter>
+      <Filter>헤더 파일\glHeader</Filter>
     </ClInclude>
     <ClInclude Include="shader.h">
-      <Filter>헤더 파일\gameHeader</Filter>
+      <Filter>헤더 파일\glHeader</Filter>
     </ClInclude>
     <ClInclude Include="screen.h">
-      <Filter>헤더 파일\gameHeader</Filter>
+      <Filter>헤더 파일\glHeader</Filter>
     </ClInclude>
     <ClInclude Include="gl_func.h">
-      <Filter>헤더 파일\gameHeader</Filter>
+      <Filter>헤더 파일\glHeader</Filter>
     </ClInclude>
     <ClInclude Include="buffer.h">
-      <Filter>헤더 파일\gameHeader</Filter>
-    </ClInclude>
-    <ClInclude Include="gameVariable.h">
-      <Filter>헤더 파일</Filter>
+      <Filter>헤더 파일\glHeader</Filter>
     </ClInclude>
     <ClInclude Include="Alcy.h">
       <Filter>헤더 파일\classes</Filter>
     </ClInclude>
     <ClInclude Include="Camera.h">
       <Filter>헤더 파일\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="sound.h">
+      <Filter>헤더 파일\sound</Filter>
+    </ClInclude>
+    <ClInclude Include="transform.h">
+      <Filter>헤더 파일\glHeader</Filter>
+    </ClInclude>
+    <ClInclude Include="UI.h">
+      <Filter>헤더 파일\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="globalVar.h">
+      <Filter>헤더 파일\global</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
