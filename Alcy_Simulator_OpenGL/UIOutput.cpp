@@ -4,7 +4,6 @@
 #include "screen.h"
 #include "shader.h"
 #include "buffer.h"
-#include "Alcy.h"
 #include "Camera.h"
 #include "gameVariable.h"
 
@@ -93,9 +92,9 @@ void setTransformUI(int idx) {  // 변환 세팅
 
 	case 3:  // cursor, 항상 맨 마지막에 출력
 		scaleMatrix = scale(scaleMatrix, vec3(0.1 / cam.zoom, 0.1 / cam.zoom, 1.0));
-		if(!alcy.touchEnable)
+		if(!lButtonDown)
 			translateMatrix = translate(translateMatrix, vec3((mx - cam.camX) * ratio, my - cam.camY, 0.001));
-		else if(alcy.touchEnable)
+		else if(lButtonDown)
 			translateMatrix = translate(translateMatrix, vec3((handX - cam.camX) * ratio, 0.3 - cam.camY, 0.001));
 		selectedColor = vec3(0.0, 1.0, 0.0);
 		threshold = vec3(0.0, 0.85, 0.0);

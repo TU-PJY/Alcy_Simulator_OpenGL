@@ -130,7 +130,7 @@
   <ItemGroup>
     <ClCompile Include="gameVariable.cpp" />
     <ClCompile Include="imageBuffer.cpp" />
-    <ClCompile Include="imageOutput.cpp" />
+    <ClCompile Include="UIOutput.cpp" />
     <ClCompile Include="key.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mouse.cpp" />
@@ -147,6 +147,7 @@
     <ClInclude Include="gl_func.h" />
     <ClInclude Include="screen.h" />
     <ClInclude Include="shader.h" />
+    <ClInclude Include="Super.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="translate.h" />
   </ItemGroup>

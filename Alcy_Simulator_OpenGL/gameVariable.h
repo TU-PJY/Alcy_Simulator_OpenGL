@@ -13,6 +13,7 @@ extern int lastElapsedTime, elapsedTime;
 extern GLfloat fs;  // frame sync, 프레임 동기화
 
 // 커서
+extern bool lButtonDown;  // 마우스 클릭 여부
 extern bool cursorEnable;  // 커서 보임 여부
 extern bool handEnable;  // 손커서 전환 여부
 extern GLfloat handX;  // 손커서 x좌표, 쓰다듬기 시 사용

@@ -9,6 +9,7 @@ GLfloat mx, my;
 GLfloat ratio;  // 화면 종횡비;
 
 // 커서
+bool lButtonDown;
 bool cursorEnable = true;  // 커서 보임 여부
 bool handEnable = false;  // 손커서 전환 여부
 GLfloat handX;  // 손커서 x좌표, 쓰다듬기 시 사용

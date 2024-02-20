@@ -29,6 +29,7 @@ void Mouse(int button, int state, int x, int y) {  // 마우스 클릭
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
 		if (handEnable && cursorEnable && cam.camRot == 0) 
 			alcy.touchEnable = true;
+		lButtonDown = true;
 	}
 	else if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
 		if (handEnable && cursorEnable && alcy.touchEnable) {
@@ -38,6 +39,7 @@ void Mouse(int button, int state, int x, int y) {  // 마우스 클릭
 			alcy.tailRot = 0;
 			alcy.touchEnable = false;
 		}
+		lButtonDown = false;
 	}
 	glutPostRedisplay();
 }
