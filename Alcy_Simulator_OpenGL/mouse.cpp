@@ -70,6 +70,7 @@ void Mouse(int button, int state, int x, int y) {  // 마우스 클릭
 			alcy.headRot = 0;
 			alcy.tailNum = 0;
 			alcy.tailRot = 0;
+			alcy.bodyRot = 0;
 			alcy.touchEnable = false;
 		}
 		lButtonDown = false;
