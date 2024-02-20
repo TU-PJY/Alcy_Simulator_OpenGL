@@ -19,9 +19,6 @@
     <Filter Include="소스 파일\gameControl">
       <UniqueIdentifier>{cee54dbd-5b44-4ade-99e9-dd4514261662}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\shaderCode">
-      <UniqueIdentifier>{a2fc8178-acc8-46b6-a1c0-1f300cdc0979}</UniqueIdentifier>
-    </Filter>
     <Filter Include="헤더 파일\classes">
       <UniqueIdentifier>{ef1ac4b7-25c4-43fa-9a13-aedf1d7ca365}</UniqueIdentifier>
     </Filter>
@@ -34,14 +31,17 @@
     <Filter Include="소스 파일\sound">
       <UniqueIdentifier>{2864b2c5-44bd-4ef4-8938-88f44b0940ea}</UniqueIdentifier>
     </Filter>
-    <Filter Include="헤더 파일\glHeader">
-      <UniqueIdentifier>{e8b98558-de81-43a3-88c0-579ad51fd444}</UniqueIdentifier>
-    </Filter>
     <Filter Include="헤더 파일\sound">
       <UniqueIdentifier>{e2021303-d7dd-4bda-b034-4b66964889d3}</UniqueIdentifier>
     </Filter>
     <Filter Include="헤더 파일\global">
       <UniqueIdentifier>{58375472-a3df-43f0-9709-8157cfa61e2d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\gl_header">
+      <UniqueIdentifier>{e8b98558-de81-43a3-88c0-579ad51fd444}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\shader">
+      <UniqueIdentifier>{a2fc8178-acc8-46b6-a1c0-1f300cdc0979}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -55,7 +55,7 @@
       <Filter>소스 파일\gameControl</Filter>
     </ClCompile>
     <ClCompile Include="shaderSet.cpp">
-      <Filter>소스 파일\shaderCode</Filter>
+      <Filter>소스 파일\shader</Filter>
     </ClCompile>
     <ClCompile Include="mouse.cpp">
       <Filter>소스 파일\gameControl</Filter>
@@ -78,19 +78,16 @@
       <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="texture.h">
-      <Filter>헤더 파일\glHeader</Filter>
+      <Filter>헤더 파일\gl_header</Filter>
     </ClInclude>
     <ClInclude Include="shader.h">
-      <Filter>헤더 파일\glHeader</Filter>
-    </ClInclude>
-    <ClInclude Include="screen.h">
-      <Filter>헤더 파일\glHeader</Filter>
+      <Filter>헤더 파일\gl_header</Filter>
     </ClInclude>
     <ClInclude Include="gl_func.h">
-      <Filter>헤더 파일\glHeader</Filter>
+      <Filter>헤더 파일\gl_header</Filter>
     </ClInclude>
     <ClInclude Include="buffer.h">
-      <Filter>헤더 파일\glHeader</Filter>
+      <Filter>헤더 파일\gl_header</Filter>
     </ClInclude>
     <ClInclude Include="Alcy.h">
       <Filter>헤더 파일\classes</Filter>
@@ -102,12 +99,15 @@
       <Filter>헤더 파일\sound</Filter>
     </ClInclude>
     <ClInclude Include="transform.h">
-      <Filter>헤더 파일\glHeader</Filter>
+      <Filter>헤더 파일\gl_header</Filter>
     </ClInclude>
     <ClInclude Include="UI.h">
       <Filter>헤더 파일\classes</Filter>
     </ClInclude>
     <ClInclude Include="globalVar.h">
+      <Filter>헤더 파일\global</Filter>
+    </ClInclude>
+    <ClInclude Include="screen.h">
       <Filter>헤더 파일\global</Filter>
     </ClInclude>
   </ItemGroup>

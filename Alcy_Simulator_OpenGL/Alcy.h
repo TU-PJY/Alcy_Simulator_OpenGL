@@ -29,6 +29,7 @@ enum name {  // 각 이미지 출력 케이스 네임
 class Alcy {
 public:
 	int dir;  // 알키 바라보는 방향, 초기값 m
+
 	bool blinkEnable; // 눈 깜빡임 여부, true일 시 깜빡임 활성화
 	time_t startTime, endTime, blinkTime;  // 눈 깜빡임 간격 타이머
 	GLfloat blinkInterval;  // 눈 깜빡임 간격, 기본 3초
@@ -53,7 +54,7 @@ public:
         dir = m;
     }
 
-    void playTiltSound() {
+    void playTiltSound() {  // 머리 기울이는 소리 재생
         if (!tiltSoundPlayed) {
             channelTilt->stop();
             ssystem->playSound(tilt, 0, false, &channelTilt);
@@ -138,7 +139,7 @@ public:
     }
 
     void tiltAlcyHead() {
-        if (!squeak) {
+        if (!squeak) {  // 코를 누르는 상태가 아닐 때 머리 각도를 업데이트 한다.
             if (cam.camRot < -9.9) {  // 카메라가 완전히 기울어진 후  알키가 머리를 기울인다
                 headTiltL = false;
                 headTiltR = true;
@@ -200,7 +201,7 @@ public:
     void squeakAlcyNose() {  // 코 누르기
         if (squeak) {  // 일정시간동안 알키는 자기 코를 바라본다
             squeakTime = time(NULL);
-            if (squeakTime - squeakStartTime > 1) {
+            if (squeakTime - squeakStartTime > 1) {  // 1초 후 해제
                 squeakStartTime = time(NULL);
                 squeak = false;
             }
@@ -308,17 +309,14 @@ public:
             glDrawArrays(GL_TRIANGLES, 0, 6);
             break;
 
-        case head_:
+        case head_:  // 카메라가 초기 상태일 때 이미지를 업데이트 한다.
             if (cam.camRot == 0 && !cam.camR && !cam.camL && !squeak) {
                 switch (dir) {
-                case l:
-                    glBindTexture(GL_TEXTURE_2D, alcyHead[1]);  // head left
+                case l: glBindTexture(GL_TEXTURE_2D, alcyHead[1]);  // head left
                     break;
-                case r:
-                    glBindTexture(GL_TEXTURE_2D, alcyHead[2]);  // head right
+                case r: glBindTexture(GL_TEXTURE_2D, alcyHead[2]);  // head right
                     break;
-                case m:
-                    glBindTexture(GL_TEXTURE_2D, alcyHead[0]);  // head middle
+                case m: glBindTexture(GL_TEXTURE_2D, alcyHead[0]);  // head middle
                     break;
                 }
             }
@@ -327,68 +325,60 @@ public:
             glDrawArrays(GL_TRIANGLES, 0, 6);
             break;
 
-        case eye_:
+        case eye_:  // 카메라가 초기 상태일 때 이미지를 업데이트 한다.
                 if (cam.camRot == 0 && !cam.camR && !cam.camL) {
                     if (squeak)
                         glBindTexture(GL_TEXTURE_2D, eye[3]);  // eye squeak
+
                     else {
                         switch (dir) {
-                        case l:
-                            glBindTexture(GL_TEXTURE_2D, eye[1]);  // eye left
+                        case l: glBindTexture(GL_TEXTURE_2D, eye[1]);  // eye left
                             break;
-                        case r:
-                            glBindTexture(GL_TEXTURE_2D, eye[2]);  // eye right
+                        case r: glBindTexture(GL_TEXTURE_2D, eye[2]);  // eye right
                             break;
-                        case m:
-                            glBindTexture(GL_TEXTURE_2D, eye[0]);  // eye middle
+                        case m: glBindTexture(GL_TEXTURE_2D, eye[0]);  // eye middle
                             break;
                         }
                     }
                 }
 
-                else { // 카메라 회전 시 앞을 보도록 함
+                else { // 카메라 회전 시 앞을 보도록 하고, 코를 누를 때는 특정한 이미지로 고정되어 출력된다.
                     if(squeak)
                         glBindTexture(GL_TEXTURE_2D, eye[3]);  // eye squeak
                     else
                         glBindTexture(GL_TEXTURE_2D, eye[0]);  // eye middle
                 }
 
-            if (!blinkEnable && !touchEnable)  // 눈을 깜빡이지 않을 때만 출력한다.
+            if (!blinkEnable && !touchEnable)  // 눈을 깜빡이지 않을 때, 쓰다듬지 않을 때 출력한다.
                 glDrawArrays(GL_TRIANGLES, 0, 6);
             break;
 
-        case dot_:
+        case dot_:  // 카메라가 초기 상태일 때만 이미지를 업데이트 한다.
             if (cam.camRot == 0 && !cam.camR && !cam.camL) {
                 switch (dir) {
-                case l:
-                    glBindTexture(GL_TEXTURE_2D, dot[1]);  // eye left
+                case l: glBindTexture(GL_TEXTURE_2D, dot[1]);  // eye left
                     break;
-                case r:
-                    glBindTexture(GL_TEXTURE_2D, dot[2]);  // eye right
+                case r: glBindTexture(GL_TEXTURE_2D, dot[2]);  // eye right
                     break;
-                case m:
-                    glBindTexture(GL_TEXTURE_2D, dot[0]);  // eye middle
+                case m: glBindTexture(GL_TEXTURE_2D, dot[0]);  // eye middle
                     break;
                 }
             }
             else  // 카메라 회전 시 앞을 보도록 함
                 glBindTexture(GL_TEXTURE_2D, dot[0]);  // eye middle
 
-            if (!blinkEnable && !touchEnable && !squeak)  // 눈을 깜빡이지 않을 때만 출력한다.
+            if (!blinkEnable && !touchEnable && !squeak)  // 눈을 깜빡이지 않을 때, 쓰다듬지 않을 때, 코를 누르지 않을 때 출력한다.
                 glDrawArrays(GL_TRIANGLES, 0, 6);
             break;
 
-        case brow_:
+        case brow_:  // 카메라가 초기 상태이면서 코를 누르지 않을 때만 이미지를 업데이트 한다.
             if (cam.camRot == 0 && !cam.camR && !cam.camL && !squeak) {
                 switch (dir) {
-                case l:
-                    glBindTexture(GL_TEXTURE_2D, brow[1]);  // brow left
+                case l: glBindTexture(GL_TEXTURE_2D, brow[1]);  // brow left
                     break;
-                case r:
-                    glBindTexture(GL_TEXTURE_2D, brow[2]);  // brow right
+                case r: glBindTexture(GL_TEXTURE_2D, brow[2]);  // brow right
                     break;
-                case m:
-                    glBindTexture(GL_TEXTURE_2D, brow[0]);  // brow middle
+                case m: glBindTexture(GL_TEXTURE_2D, brow[0]);  // brow middle
                     break;
                 }
             }
@@ -397,23 +387,20 @@ public:
             glDrawArrays(GL_TRIANGLES, 0, 6);
             break;
 
-        case blink_:
+        case blink_:  // 카메라가 초기 상태이면서 코를 누르지 않을 때만 이미지를 업데이트 한다.
             if (cam.camRot == 0 && !cam.camR && !cam.camL && !squeak) {
                 switch (dir) {
-                case l:
-                    glBindTexture(GL_TEXTURE_2D, blink[1]);  // blink left
+                case l: glBindTexture(GL_TEXTURE_2D, blink[1]);  // blink left
                     break;
-                case r:
-                    glBindTexture(GL_TEXTURE_2D, blink[2]);  // blink right
+                case r: glBindTexture(GL_TEXTURE_2D, blink[2]);  // blink right
                     break;
-                case m:
-                    glBindTexture(GL_TEXTURE_2D, blink[0]);  // blink middle
+                case m: glBindTexture(GL_TEXTURE_2D, blink[0]);  // blink middle
                     break;
                 }
             }
             else
                 glBindTexture(GL_TEXTURE_2D, blink[0]);  // blink middle
-            if (blinkEnable || touchEnable)  // true일 때만 출력
+            if (blinkEnable || touchEnable)  // 둘 중 하나가 true일 때만 출력
                 glDrawArrays(GL_TRIANGLES, 0, 6);
             break;
         }

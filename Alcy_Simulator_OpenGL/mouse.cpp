@@ -38,7 +38,7 @@ void Mouse(int button, int state, int x, int y) {  // 마우스 클릭
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
 		if (ui.handEnable && mouseClickEnable && cam.camRot == 0 && !alcy.squeak) {
 			channelTouch->stop();
-			ssystem->playSound(touch, 0, false, &channelTouch);
+			ssystem->playSound(touch, 0, false, &channelTouch);   // 쓰다듬기 시작한 순간부터 소리를 반복 재생한다.
 			alcy.touchEnable = true;
 			lButtonDown = true;
 		}
@@ -75,7 +75,7 @@ void Mouse(int button, int state, int x, int y) {  // 마우스 클릭
 			alcy.tailRot = 0;
 			alcy.bodyRot = 0;
 			alcy.touchEnable = false;
-			channelTouch->stop();
+			channelTouch->stop();  // 쓰다듬기를 중단할 경우 소리를 정지한다.
 		}
 		lButtonDown = false;
 	}
