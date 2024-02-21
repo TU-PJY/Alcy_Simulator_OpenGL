@@ -43,15 +43,88 @@ public:
 	GLfloat bodyRot;  // 쓰다듬기 시 몸통 회전 각도
 	GLfloat tailNum; // 꼬리 회전에 사용되는 수치
 	bool headTiltR, headTiltL;  // 카메라 기울였을 때 알키 머리 기울이기 여부
+    bool tiltSoundPlayed;  // 알키 머리 기울이는 소리 재생 여부, 중복 재생 방지
 
     bool squeak; // 알키 코 누름 여부
     time_t squeakStartTime;  // 코 눌림 상태 시작 시간
     time_t squeakTime;  // 코 눌림 상태동안의 시간
 
-    bool tiltSoundPlayed;  // 알키 머리 기울이는 소리 재생 여부, 중복 재생 방지
+    bool measureTime, isLeave, confirmLeave;
+    time_t checkStartTime1, checkEndTime1, checkStartTime2, checkEndTime2;
+    bool tired, sleeping;
+    time_t sleepReadyTime, sleepCheckTime;
+    GLfloat sleepHeight, sleepNum;  // 잠을 잘 때 위 아래로 조금씩 움직인다.
+    
 
     Alcy() {
         dir = m;
+    }
+
+    void checkControl() {
+        if (!tired) {
+            if (!measureTime) {
+                checkStartTime1 = time(NULL);
+                isLeave = true;  // 컨트롤이 없다고 가정하여 시간 측정을 시작한다.
+                measureTime = true;
+            }
+
+            if (measureTime && !confirmLeave) {
+                checkEndTime1 = time(NULL);
+                if (checkEndTime1 - checkStartTime1 >= 1) { // 시간을 1초 간격으로 계속 측정한다.
+                    if (isLeave) {
+                        checkStartTime2 = time(NULL);
+                        confirmLeave = true;  // isLeave에 변동이 없다면 컨트롤이 없음을 확정한다.
+                    }
+                    else
+                        measureTime = false;  // 컨트롤이 존재함을 확인하고 다시 처음 단계로 되돌아간다.
+                }
+            }
+
+            if (confirmLeave) {  // 컨트롤이 없음이 확정된 상태에서 컨트롤이 감지되면 다시 처음 단계로 되돌아간다.
+                if (!isLeave) {
+                    measureTime = false;
+                    confirmLeave = false;
+                }
+                else {  //  여전히 계속해서 컨트롤이 없다면 알키는 졸기 시작한다.
+                    checkEndTime2 = time(NULL);
+                    if (checkEndTime2 - checkStartTime2 >= 9) {
+                        sleepReadyTime = time(NULL);
+                        tired = true;
+                    }
+                }
+            }
+        }
+    }
+
+    void updateAlcySleep() {
+        if (tired && !sleeping) {  // 졸기 시작하면 마우스로 알키를 직접 클릭하지 않는 이상 꺠지 않는다.
+            sleepCheckTime = time(NULL);
+
+            if (lButtonDown) {  // 조는 도중 알키를 클릭할 경우 다시 상태가 초기화 된다.
+                measureTime = false;
+                confirmLeave = false;
+                tired = false;
+            }
+
+            if (sleepCheckTime - sleepReadyTime >= 4)  // 졸기 시작하고 5초 뒤 알키는 잠을 자기 시작한다.
+                sleeping = true;
+        }
+
+        if (tired && sleeping) {
+            sleepHeight = sin(sleepNum) / 80;  // 자는 동안에는 머리가 조금씩 위 아래로 움직인다.
+            sleepNum += fs / 5;
+            tailRot = sleepHeight * 100;
+
+            if (lButtonDown) {  // 자는 도중 알키를 클릭할 경우 다시 상태가 초기화 된다.
+                sleepHeight = 0;
+                sleepNum = 0;
+                tailRot = 0;
+                measureTime = false;
+                confirmLeave = false;
+                tired = false;
+                sleeping = false;
+            }
+        }
     }
 
     void playTiltSound() {  // 머리 기울이는 소리 재생
@@ -84,7 +157,7 @@ public:
     }
 
     void moveAlcyHead() {  // 바라보는 방향 전환 시 알키 머리 움직임
-        if (!cam.camR && !cam.camL && cam.camRot == 0 && !squeak) {
+        if (!cam.camR && !cam.camL && cam.camRot == 0 && !squeak && !tired && !sleeping) {
             switch (dir) {
             case l:  // 좌측 바라볼 시
                 headPos -= 0.03 * fs;
@@ -139,7 +212,7 @@ public:
     }
 
     void tiltAlcyHead() {
-        if (!squeak) {  // 코를 누르는 상태가 아닐 때 머리 각도를 업데이트 한다.
+        if (!squeak && !tired && !sleeping) {  // 코를 누르는 상태가 아닐 때 머리 각도를 업데이트 한다.
             if (cam.camRot < -9.9) {  // 카메라가 완전히 기울어진 후  알키가 머리를 기울인다
                 headTiltL = false;
                 headTiltR = true;
@@ -224,14 +297,14 @@ public:
             break;
 
         case body_:
-            translateMatrix = translate(translateMatrix, vec3(0.0, -0.75, -0.00002));
+            translateMatrix = translate(translateMatrix, vec3(0.0, -0.75 + sleepHeight / 2, -0.00002));
             translateMatrix = rotate(translateMatrix, radians(bodyRot), vec3(0.0, 0.0, 1.0));
             selectedColor = vec3(0.0, 1.0, 0.0);
             threshold = vec3(0.0, 0.8, 0.0);
             break;
 
         case hair_:
-            translateMatrix = translate(translateMatrix, vec3(0.0, -0.75 - headRot / 200, -0.00001));
+            translateMatrix = translate(translateMatrix, vec3(0.0, -0.75 - headRot / 200 + sleepHeight, -0.00001));
             selectedColor = vec3(0.0, 1.0, 0.0);
             threshold = vec3(0.0, 0.8, 0.0);
             break;
@@ -239,7 +312,7 @@ public:
         case head_:
             translateMatrix = translate(translateMatrix, vec3(0.0, -0.1, 0.0));
             translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
-            translateMatrix = translate(translateMatrix, vec3((headPos - headRot / 300) * ratio, 0.22, 0.0));
+            translateMatrix = translate(translateMatrix, vec3((headPos - headRot / 300) * ratio, 0.22 + sleepHeight, 0.0));
             selectedColor = vec3(0.0, 1.0, 0.0);
             threshold = vec3(0.0, 0.8, 0.0);
             break;
@@ -247,7 +320,7 @@ public:
         case eye_:
             translateMatrix = translate(translateMatrix, vec3(0.0, -0.1, 0.0));
             translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
-            if (cam.camRot == 0 && !cam.camR && !cam.camL && !squeak)
+            if (cam.camRot == 0 && !cam.camR && !cam.camL && !squeak && !tired && !sleeping)
                 translateMatrix = translate(translateMatrix,
                     vec3(((headPos - headRot / 300) - (cam.camX / 4)) * ratio, 0.22 - (cam.camY / 4), 0.00001));
             else
@@ -272,10 +345,10 @@ public:
         case brow_:
             translateMatrix = translate(translateMatrix, vec3(0.0, -0.1, 0.0));
             translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
-            if (cam.camRot == 0 && !cam.camR && !cam.camL && !touchEnable && !squeak)
+            if (cam.camRot == 0 && !cam.camR && !cam.camL && !touchEnable && !squeak && !tired && !sleeping)
                 translateMatrix = translate(translateMatrix,vec3((headPos - headRot / 300) * ratio, 0.23 - (cam.camY / 4), 0.00003));
             else
-                translateMatrix = translate(translateMatrix,vec3((headPos - headRot / 300) * ratio, 0.22, 0.00003));
+                translateMatrix = translate(translateMatrix,vec3((headPos - headRot / 300) * ratio, 0.22 + sleepHeight, 0.00003));
             selectedColor = vec3(0.0, 1.0, 0.0);
             threshold = vec3(0.0, 0.8, 0.0);
             break;
@@ -283,7 +356,7 @@ public:
         case blink_:
             translateMatrix = translate(translateMatrix, vec3(0.0, -0.1, 0.0));
             translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
-            translateMatrix = translate(translateMatrix, vec3((headPos - headRot / 300) * ratio, 0.22, 0.00004));
+            translateMatrix = translate(translateMatrix, vec3((headPos - headRot / 300) * ratio, 0.22 + sleepHeight, 0.00004));
             selectedColor = vec3(0.0, 1.0, 0.0);
             threshold = vec3(0.0, 0.8, 0.0);
             break;
@@ -310,7 +383,7 @@ public:
             break;
 
         case head_:  // 카메라가 초기 상태일 때 이미지를 업데이트 한다.
-            if (cam.camRot == 0 && !cam.camR && !cam.camL && !squeak) {
+            if (cam.camRot == 0 && !cam.camR && !cam.camL && !squeak && !tired && !sleeping) {
                 switch (dir) {
                 case l: glBindTexture(GL_TEXTURE_2D, alcyHead[1]);  // head left
                     break;
@@ -326,30 +399,27 @@ public:
             break;
 
         case eye_:  // 카메라가 초기 상태일 때 이미지를 업데이트 한다.
-                if (cam.camRot == 0 && !cam.camR && !cam.camL) {
-                    if (squeak)
-                        glBindTexture(GL_TEXTURE_2D, eye[3]);  // eye squeak
-
-                    else {
-                        switch (dir) {
-                        case l: glBindTexture(GL_TEXTURE_2D, eye[1]);  // eye left
-                            break;
-                        case r: glBindTexture(GL_TEXTURE_2D, eye[2]);  // eye right
-                            break;
-                        case m: glBindTexture(GL_TEXTURE_2D, eye[0]);  // eye middle
-                            break;
-                        }
+            if (cam.camRot == 0 && !cam.camR && !cam.camL && !squeak && !tired && !sleeping) {
+                    switch (dir) {
+                    case l: glBindTexture(GL_TEXTURE_2D, eye[1]);  // eye left
+                        break;
+                    case r: glBindTexture(GL_TEXTURE_2D, eye[2]);  // eye right
+                        break;
+                    case m: glBindTexture(GL_TEXTURE_2D, eye[0]);  // eye middle
+                        break;
                     }
-                }
+            }
 
-                else { // 카메라 회전 시 앞을 보도록 하고, 코를 누를 때는 특정한 이미지로 고정되어 출력된다.
-                    if(squeak)
-                        glBindTexture(GL_TEXTURE_2D, eye[3]);  // eye squeak
-                    else
-                        glBindTexture(GL_TEXTURE_2D, eye[0]);  // eye middle
-                }
+            else { // 카메라 회전 시 앞을 보도록 하고, 상태에 맞는 이미지로 고정되어 출력된다.
+                if (squeak)
+                    glBindTexture(GL_TEXTURE_2D, eye[3]);  // eye squeak
+                else if (tired)
+                    glBindTexture(GL_TEXTURE_2D, eye[4]);  // eye tired
+                else
+                    glBindTexture(GL_TEXTURE_2D, eye[0]);  // eye middle
+            }
 
-            if (!blinkEnable && !touchEnable)  // 눈을 깜빡이지 않을 때, 쓰다듬지 않을 때 출력한다.
+            if (!blinkEnable && !touchEnable && !sleeping)  // 눈을 깜빡이지 않을 때, 쓰다듬지 않을 때 출력한다.
                 glDrawArrays(GL_TRIANGLES, 0, 6);
             break;
 
@@ -367,12 +437,12 @@ public:
             else  // 카메라 회전 시 앞을 보도록 함
                 glBindTexture(GL_TEXTURE_2D, dot[0]);  // eye middle
 
-            if (!blinkEnable && !touchEnable && !squeak)  // 눈을 깜빡이지 않을 때, 쓰다듬지 않을 때, 코를 누르지 않을 때 출력한다.
+            if (!blinkEnable && !touchEnable && !squeak && !tired )  // 눈을 깜빡이지 않을 때, 쓰다듬지 않을 때, 코를 누르지 않을 때 출력한다.
                 glDrawArrays(GL_TRIANGLES, 0, 6);
             break;
 
         case brow_:  // 카메라가 초기 상태이면서 코를 누르지 않을 때만 이미지를 업데이트 한다.
-            if (cam.camRot == 0 && !cam.camR && !cam.camL && !squeak) {
+            if (cam.camRot == 0 && !cam.camR && !cam.camL && !squeak && !tired && !sleeping) {
                 switch (dir) {
                 case l: glBindTexture(GL_TEXTURE_2D, brow[1]);  // brow left
                     break;
@@ -388,7 +458,7 @@ public:
             break;
 
         case blink_:  // 카메라가 초기 상태이면서 코를 누르지 않을 때만 이미지를 업데이트 한다.
-            if (cam.camRot == 0 && !cam.camR && !cam.camL && !squeak) {
+            if (cam.camRot == 0 && !cam.camR && !cam.camL && !squeak && !tired && !sleeping) {
                 switch (dir) {
                 case l: glBindTexture(GL_TEXTURE_2D, blink[1]);  // blink left
                     break;
@@ -400,7 +470,8 @@ public:
             }
             else
                 glBindTexture(GL_TEXTURE_2D, blink[0]);  // blink middle
-            if (blinkEnable || touchEnable)  // 둘 중 하나가 true일 때만 출력
+
+            if (blinkEnable || touchEnable || sleeping)  // 셋 중 하나가 true일 때만 출력
                 glDrawArrays(GL_TRIANGLES, 0, 6);
             break;
         }

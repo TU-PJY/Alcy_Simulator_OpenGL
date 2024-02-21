@@ -24,6 +24,8 @@ void timerOperation(int value) {
     ui.exitGame();
     ui.updateTip();
 
+    alcy.checkControl();
+    alcy.updateAlcySleep();
     alcy.updateAlcyBlink();
     alcy.moveAlcyHead();
     alcy.updateAlcyTouch();

@@ -111,7 +111,7 @@ public:
 			else
 				translateMatrix = translate(translateMatrix, vec3((mx - cam.camX) * ratio, my - cam.camY, 0.001));
 			selectedColor = vec3(0.0, 1.0, 0.0);
-			threshold = vec3(0.0, 0.85, 0.0);
+			threshold = vec3(0.0, 0.8, 0.0);
 			break;
 		}
 

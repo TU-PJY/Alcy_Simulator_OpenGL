@@ -87,6 +87,8 @@ void pMotion(int x, int y) {  // 클릭 안할 때의 모션
 		cam.camX = (0.0 - mx) / 10;
 		cam.camY = (0.0 - my) / 10;
 
+		alcy.isLeave = false;  // 움직이면 컨트롤을 감지한다.
+		
 		setDir();
 		updateCursor();
 
@@ -103,6 +105,8 @@ void Motion(int x, int y) {  // 클릭 할 때의 모션
 		updateCursor();
 	}
 
+	alcy.isLeave = false;  // 움직이면 컨트롤을 감지한다.
+
 	glutPostRedisplay();
 }
 
@@ -113,6 +117,8 @@ void Wheel(int button, int dir, int x, int y) {  // 마우스 휠
 
 		cam.zoomAcc = 0.2 + (cam.zoom - 1.0) / 10;
 		cam.zoomEnable = true;
+
+		alcy.isLeave = false;
 	}
 	else if (dir < 0) {
 		channelScroll->stop();
@@ -122,6 +128,8 @@ void Wheel(int button, int dir, int x, int y) {  // 마우스 휠
 			cam.zoomAcc = -0.2 - (cam.zoom - 1.0) / 15;
 			cam.zoomEnable = true;
 		}
+
+		alcy.isLeave = false;
 	}
 	
 	return;

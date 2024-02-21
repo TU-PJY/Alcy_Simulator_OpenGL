@@ -64,7 +64,7 @@ unsigned int tip;
 
 // 알키 리소스
 unsigned int alcyTail, alcyBody, alcyHair, alcyHead[3];
-unsigned int eye[4], dot[3], eyeClose[3], brow[3], blink[3];
+unsigned int eye[5], dot[3], eyeClose[3], brow[3], blink[3];
 
 unsigned char* texture_data;
 
@@ -231,6 +231,13 @@ void setTexture() {
 	glBindTexture(GL_TEXTURE_2D, eye[3]);
 	parameteri();
 	texture_data = LoadDIBitmap("res//alcy//face//eye_squeak.bmp", &bmp);
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, 1500, 1500, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+
+	// eye tired
+	glGenTextures(1, &eye[4]);
+	glBindTexture(GL_TEXTURE_2D, eye[4]);
+	parameteri();
+	texture_data = LoadDIBitmap("res//alcy//face//eye_tired.bmp", &bmp);
 	glTexImage2D(GL_TEXTURE_2D, 0, 3, 1500, 1500, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
 
 	// dot middle

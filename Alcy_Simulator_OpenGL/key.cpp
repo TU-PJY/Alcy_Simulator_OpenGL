@@ -15,6 +15,7 @@ void keyDown(unsigned char KEY, int x, int y) {
 			escSoundPlayed = true;
 		}
 		ui.exitEnable = true;
+		alcy.isLeave = false;
 		break;
 
 	case 9:  // tab
@@ -27,6 +28,7 @@ void keyDown(unsigned char KEY, int x, int y) {
 		}
 		else 
 			ui.tipEnable = false;
+		alcy.isLeave = false;
 		break;
 
 	case 'q':  // 카메라 좌측 회전
@@ -34,6 +36,7 @@ void keyDown(unsigned char KEY, int x, int y) {
 			cam.camL = true;
 			mouseClickEnable = false;
 		}
+		alcy.isLeave = false;
 		break;
 
 	case 'e':  // 카메라 우측 회전
@@ -41,6 +44,7 @@ void keyDown(unsigned char KEY, int x, int y) {
 			cam.camR = true;
 			mouseClickEnable = false;
 		}
+		alcy.isLeave = false;
 		break;
 	}
 	if (glutGetWindow() != 0)
