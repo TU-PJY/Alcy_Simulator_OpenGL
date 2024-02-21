@@ -43,6 +43,9 @@
     <Filter Include="소스 파일\shader">
       <UniqueIdentifier>{a2fc8178-acc8-46b6-a1c0-1f300cdc0979}</UniqueIdentifier>
     </Filter>
+    <Filter Include="헤더 파일\propClasses">
+      <UniqueIdentifier>{604acc11-7ba6-4ffd-b023-e260d34bd26f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -109,6 +112,9 @@
     </ClInclude>
     <ClInclude Include="screen.h">
       <Filter>헤더 파일\global</Filter>
+    </ClInclude>
+    <ClInclude Include="ZZZ.h">
+      <Filter>헤더 파일\propClasses</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

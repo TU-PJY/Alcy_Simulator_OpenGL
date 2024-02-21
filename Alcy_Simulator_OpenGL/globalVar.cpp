@@ -3,6 +3,7 @@
 #include "Alcy.h"
 #include "Camera.h"
 #include "UI.h"
+#include "ZZZ.h"
 // 프로젝트 전체 전역 변수 및 클래스
 
 GLfloat mx, my; // 마우스 좌표
@@ -15,3 +16,5 @@ bool mouseClickEnable;  // 마우스 클릭 사용 가능 여부
 Alcy alcy;
 Camera cam;
 UI ui;
+ZZZ zzz[3];
+

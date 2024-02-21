@@ -149,6 +149,7 @@
     <ClInclude Include="config.h" />
     <ClInclude Include="globalVar.h" />
     <ClInclude Include="gl_func.h" />
+    <ClInclude Include="ZZZ.h" />
     <ClInclude Include="screen.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="sound.h" />

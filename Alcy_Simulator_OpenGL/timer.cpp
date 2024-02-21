@@ -4,6 +4,7 @@
 #include "Alcy.h"
 #include "Camera.h"
 #include "UI.h"
+#include "ZZZ.h"
 
 // 프레임
 int lastElapsedTime, elapsedTime;
@@ -31,6 +32,9 @@ void timerOperation(int value) {
     alcy.updateAlcyTouch();
     alcy.tiltAlcyHead();
     alcy.squeakAlcyNose();
+
+    for(int i = 0; i < 3; i ++)
+     zzz[i].update();
 
     glutTimerFunc(10, timerOperation, 1);
     if (glutGetWindow() != 0)

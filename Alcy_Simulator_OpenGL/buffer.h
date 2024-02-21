@@ -3,10 +3,13 @@
 #define MODEL_BUFFER_H
 #include "config.h"
 
+GLubyte* LoadDIBitmap(const char* filename, BITMAPINFO** info);
 void setBufferUI(int idx);
 void setBufferAlcy(int idx);
 void vertexInput(int idx);
-void setTexture();
+void parameteri();
+void setAlcyTexture();
+void setUITexture();
 
 extern GLuint VBO;  // MODEL_COUNT는 config.h에 정의되어있음
 extern GLuint VAO_ALCY[ALCY_PART];  // 알키 전용 독립 VAO

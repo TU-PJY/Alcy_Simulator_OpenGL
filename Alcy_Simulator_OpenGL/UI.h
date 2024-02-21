@@ -91,8 +91,8 @@ public:
 			break;
 
 		case icon_:
-			scaleMatrix = scale(scaleMatrix, vec3(0.5 / cam.zoom, 0.5 / cam.zoom, 1.0));
-			translateMatrix = translate(translateMatrix, vec3((0.0 - cam.camX) * ratio, 0.0 - cam.camY, 0.0005));
+			scaleMatrix = scale(scaleMatrix, vec3(0.5 / cam.zoom, 0.5 / cam.zoom, 0.0));
+			translateMatrix = translate(translateMatrix, vec3((0.0 - cam.camX) * ratio, 0.0 - cam.camY, 0.001));
 			rotateMatrix = rotate(rotateMatrix, radians(-cam.camRot), vec3(0.0, 0.0, 1.0));
 
 			selectedColor = vec3(0.0, 1.0, 0.0);
@@ -101,15 +101,15 @@ public:
 			break;
 
 		case cursor_:
-			if(fingerEnable)
-				scaleMatrix = scale(scaleMatrix, vec3(0.15 / cam.zoom, 0.15 / cam.zoom, 1.0));
+			if (fingerEnable)
+				scaleMatrix = scale(scaleMatrix, vec3(0.15 / cam.zoom, 0.15 / cam.zoom, 0.0));
 			else
-				scaleMatrix = scale(scaleMatrix, vec3(0.1 / cam.zoom, 0.1 / cam.zoom, 1.0));
+				scaleMatrix = scale(scaleMatrix, vec3(0.1 / cam.zoom, 0.1 / cam.zoom, .0));
 
 			if (lButtonDown && handEnable)  // 쓰다듬을 때는 커서를 강제로 지정된 위치로 변환한다.
-				translateMatrix = translate(translateMatrix, vec3((handX - cam.camX) * ratio, 0.3 - cam.camY, 0.001));
+				translateMatrix = translate(translateMatrix, vec3((handX - cam.camX) * ratio, 0.3 - cam.camY, 0.0006));
 			else
-				translateMatrix = translate(translateMatrix, vec3((mx - cam.camX) * ratio, my - cam.camY, 0.001));
+				translateMatrix = translate(translateMatrix, vec3((mx - cam.camX) * ratio, my - cam.camY, 0.0006));
 			selectedColor = vec3(0.0, 1.0, 0.0);
 			threshold = vec3(0.0, 0.8, 0.0);
 			break;
@@ -126,13 +126,17 @@ public:
 			break;
 
 		case tip_:
+			glDepthMask(GL_FALSE);
 			glBindTexture(GL_TEXTURE_2D, tip);
 			glDrawArrays(GL_TRIANGLES, 0, 6);
+			glDepthMask(GL_TRUE);
 			break;
 
 		case icon_:
+			glDepthMask(GL_FALSE);
 			glBindTexture(GL_TEXTURE_2D, icon[0]);  // exit icon
 			glDrawArrays(GL_TRIANGLES, 0, 6);
+			glDepthMask(GL_TRUE);
 			break;
 
 		case cursor_:

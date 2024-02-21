@@ -4,9 +4,10 @@
 #include "transform.h"  // 변환
 #include "gl_func.h"  // GL 기능 함수
 #include "screen.h"  // 윈도우 사이즈
-#include "sound.h"
-#include "Alcy.h"
+#include "sound.h"  // 사운드
+#include "Alcy.h"  
 #include "UI.h"
+#include "ZZZ.h"
 
 int WIDTH = GetSystemMetrics(SM_CXSCREEN);
 int HEIGHT = GetSystemMetrics(SM_CYSCREEN);  // 화면 사이즈에 맞추어 창을 출력한다
@@ -17,7 +18,7 @@ GLvoid displayReshape(int w, int h) {
 
 GLvoid displayOutput() {
 	glClearColor(0.39, 0.40, 0.50, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glUseProgram(ID);
 
 	setWindowView();
@@ -31,15 +32,24 @@ GLvoid displayOutput() {
 		alcy.modelOutput(i);
 	}
 
+	// ZZZ 이미지
+	for (int i = 0; i < 3; i++) {
+		initTransform();
+		zzz[i].setTransform();
+		transmit();
+		zzz[i].bindVertex();
+		zzz[i].modelOutput();
+	}
+
 	// UI
-	for (int i = 0; i < UI_PART; i++) { 
+	for (int i = 0; i < UI_PART; i++) {
 		initTransform();
 		ui.setTransform(i);
 		transmit();
 		ui.bindVertex(i);
 		ui.modelOutput(i);
 	}
-	
+
 	glutSwapBuffers();
 }
 
@@ -78,8 +88,16 @@ void main(int argc, char** argv) {
 		setBufferUI(i); 
 	for (int i = 0; i < ALCY_PART; i++)
 		setBufferAlcy(i);  // 알키 버퍼 초기화
+	for(int i = 0; i < 3; i ++)
+		zzz[i].setBuffer();
 
-	setTexture();  // 텍스처 설정
+	setAlcyTexture();  // 텍스처 설정
+	setUITexture();
+
+	for (int i = 0; i < 3; i++) {
+		zzz[i].setTexture();
+		zzz[i].setDelay(10 * i);
+	}
 	
 	glutDisplayFunc(displayOutput);
 	glutReshapeFunc(displayReshape);
