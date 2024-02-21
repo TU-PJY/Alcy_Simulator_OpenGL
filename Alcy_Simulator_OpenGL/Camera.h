@@ -56,10 +56,10 @@ public:
 
             if (zoomAcc > 0) {  // 줌 인
                 zoomAcc -= fs / 10;
-                if (zoomAcc < 0 || zoom > 2.7) {  // 최대 줌 값 위로 올라가면 줌 인을 중단한다. 
+                if (zoomAcc < 0 || zoom > 2.62) {  // 최대 줌 값 위로 올라가면 줌 인을 중단한다. 
                     zoomAcc = 0;
-                    if (zoom > 2.7)
-                        zoom = 2.7;
+                    if (zoom > 2.62)
+                        zoom = 2.62;
                     zoomEnable = false;
                 }
             }
@@ -73,6 +73,7 @@ public:
                     zoomEnable = false;
                 }
             }
+            cout << zoom << endl;
         }
     }
 

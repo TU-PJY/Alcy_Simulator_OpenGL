@@ -123,7 +123,7 @@ void Wheel(int button, int dir, int x, int y) {  // ¸¶¿ì½º ÈÙ
 			channelScroll->stop();
 			ssystem->playSound(scroll, 0, false, &channelScroll);
 
-			cam.zoomAcc = 0.2 + (cam.zoom - 1.0) / 10;
+			cam.zoomAcc = 0.25;
 			cam.zoomEnable = true;
 
 			alcy.isLeave = false;
@@ -133,7 +133,7 @@ void Wheel(int button, int dir, int x, int y) {  // ¸¶¿ì½º ÈÙ
 			ssystem->playSound(scroll, 0, false, &channelScroll);
 
 			if (cam.zoom > 1.0) {
-				cam.zoomAcc = -0.2 - (cam.zoom - 1.0) / 15;
+				cam.zoomAcc = -0.25;
 				cam.zoomEnable = true;
 			}
 
