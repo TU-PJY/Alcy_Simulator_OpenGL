@@ -73,7 +73,6 @@ public:
                     zoomEnable = false;
                 }
             }
-            cout << zoom << endl;
         }
     }
 
