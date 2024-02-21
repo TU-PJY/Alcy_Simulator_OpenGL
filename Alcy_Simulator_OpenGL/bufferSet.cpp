@@ -294,6 +294,13 @@ void setUITexture() {
 	texture_data = LoadDIBitmap("res//ui//icon_exit.bmp", &bmp);
 	glTexImage2D(GL_TEXTURE_2D, 0, 3, 512, 512, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
 
+	// info icon
+	glGenTextures(1, &icon[1]);
+	glBindTexture(GL_TEXTURE_2D, icon[1]);
+	parameteri();
+	texture_data = LoadDIBitmap("res//ui//icon_info.bmp", &bmp);
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, 512, 512, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+
 	// tip
 	glGenTextures(1, &tip);
 	glBindTexture(GL_TEXTURE_2D, tip);

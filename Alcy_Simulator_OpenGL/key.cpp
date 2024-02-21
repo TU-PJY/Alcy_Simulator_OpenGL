@@ -46,6 +46,15 @@ void keyDown(unsigned char KEY, int x, int y) {
 		}
 		alcy.isLeave = false;
 		break;
+
+	case 'i':  // info 보기
+		if (!escSoundPlayed) {  // 중복 재생 방지
+			channelEscDown->stop();
+			ssystem->playSound(escDown, 0, false, &channelEscDown);
+			escSoundPlayed = true;
+		}
+		ui.infoEnable = true;  // info 활성화
+		break;
 	}
 	if (glutGetWindow() != 0)
 		glutPostRedisplay();
@@ -69,6 +78,14 @@ void keyUp(unsigned char KEY, int x, int y) {
 	case 'e':  // 카메라 좌측 회전 해제
 		cam.camR = false;
 		alcy.tiltSoundPlayed = false;
+		break;
+
+	case 'i':
+		channelEscUp->stop();
+		ssystem->playSound(escUp, 0, false, &channelEscUp);
+		escSoundPlayed = false;
+
+		ui.infoEnable = false;
 		break;
 	}
 	if (glutGetWindow() != 0)

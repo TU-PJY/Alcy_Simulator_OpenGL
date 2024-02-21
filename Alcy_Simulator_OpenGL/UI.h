@@ -27,6 +27,10 @@ public:
 	bool exitEnable;
 	GLfloat exitTransparent; // 나가기 아이콘 투명도
 
+	// info 아이콘
+	bool infoEnable;
+	GLfloat infoTransparent;
+
 	//팁
 	bool tipEnable;
 	GLfloat tipTransparent;

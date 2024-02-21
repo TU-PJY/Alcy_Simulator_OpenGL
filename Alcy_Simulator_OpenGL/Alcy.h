@@ -26,6 +26,10 @@ enum name {  // 각 이미지 출력 케이스 네임
     blink_,
 };
 
+enum breathe {
+    in_, out_,
+};
+
 class Alcy {
 public:
 	int dir;  // 알키 바라보는 방향, 초기값 m
@@ -54,10 +58,15 @@ public:
     bool tired, sleeping;
     time_t sleepReadyTime, sleepCheckTime;
     GLfloat sleepHeight, sleepNum;  // 잠을 잘 때 위 아래로 조금씩 움직인다.
+    int breatheType;  // 들숨 / 날숨
+    bool breatheSound;  // 중복 재생 방지
+    GLfloat delay;
     
 
     Alcy() {
         dir = m;
+        delay = 2;
+        breatheType = in_;
     }
 
     void checkControl() {
@@ -99,22 +108,32 @@ public:
     void updateAlcySleep() {
         if (tired && !sleeping) {  // 졸기 시작하면 마우스로 알키를 직접 클릭하지 않는 이상 꺠지 않는다.
             sleepCheckTime = time(NULL);
-
             if (lButtonDown) {  // 조는 도중 알키를 클릭할 경우 다시 상태가 초기화 된다.
                 measureTime = false;
                 confirmLeave = false;
                 tired = false;
             }
-
             if (sleepCheckTime - sleepReadyTime >= 4)  // 졸기 시작하고 5초 뒤 알키는 잠을 자기 시작한다.
                 sleeping = true;
         }
 
         if (tired && sleeping) {
+            sleepNum += fs / 4;
+            
             sleepHeight = sin(sleepNum) / 80;  // 자는 동안에는 머리가 조금씩 위 아래로 움직인다.
-            sleepNum += fs / 5;
             tailRot = sleepHeight * 100;
 
+            cout << sin(sleepNum) << endl;
+
+            if (sin(sleepNum) > 0.99 && breatheType == in_) {
+                breatheType = out_;
+                breatheSound = true;
+            }
+            if (sin(sleepNum) < -0.99 && breatheType == out_) {
+                breatheType = in_;
+                breatheSound = true;
+            }
+            
             if (lButtonDown) {  // 자는 도중 알키를 클릭할 경우 다시 상태가 초기화 된다.
                 sleepHeight = 0;
                 sleepNum = 0;
@@ -123,6 +142,23 @@ public:
                 confirmLeave = false;
                 tired = false;
                 sleeping = false;
+                breatheSound = false;
+                delay = 2;
+                channelBreathe->stop();
+            }
+
+            if (breatheSound) {  // 들숨, 날숨 소리가 다르다.
+                delay -= fs;
+
+                if (delay < 0) {
+                    channelBreathe->stop();
+                    if (breatheType == in_)
+                        ssystem->playSound(breatheIn, 0, false, &channelBreathe);
+                    else if (breatheType == out_)
+                        ssystem->playSound(breatheOut, 0, false, &channelBreathe);
+                    breatheSound = false;
+                    delay = 1;
+                }
             }
         }
     }
