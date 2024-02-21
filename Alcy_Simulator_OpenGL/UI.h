@@ -10,6 +10,7 @@
 #include "Camera.h"
 
 enum ui_name {
+	title_,
 	background_,
 	tip_,
 	icon_,
@@ -35,12 +36,34 @@ public:
 	bool tipEnable;
 	GLfloat tipTransparent;
 
+	// 타이틀
+	GLfloat titleY, titleTransparent, titleSize;
+
+	// 게임 시작
+	bool intro;  // 인트로 애니메이션
+
 	UI() {
 		mouseClickEnable = true;
 		tipEnable = true;
 		tipTransparent = 1.0f;
+
+		titleTransparent = 1.0f;
+		titleSize = 1.3f;
+		titleY = 0.75;
 	}
+
     // ui
+	void startGame() {
+		if (!gameStarted && intro) {
+			titleTransparent -= fs / 5;
+			titleY += fs / 30;
+			titleSize += fs / 20;
+
+			if (titleTransparent < 0)   // 완전히 투명해지면 더 이상 애니메이션이 진행되지 않는다.
+				intro = false;
+		}
+	}
+
     void exitGame() {  // esc를 길게 눌러 게임 종료
         if (exitEnable) {
             exitTransparent += fs / 6;  // 종료 아이콘이 완전히 나타나면 게임을 종료한다.
@@ -78,6 +101,14 @@ public:
 		using namespace glm;
 
 		switch (idx) {
+		case title_:
+			scaleMatrix = scale(scaleMatrix, vec3(titleSize / cam.zoom, titleSize / cam.zoom, 0.0));
+			translateMatrix = translate(translateMatrix, vec3(0.0, titleY, 0.05));
+			selectedColor = vec3(0.0, 1.0, 0.0);
+			threshold = vec3(0.0, 0.85, 0.0);
+			transparent = titleTransparent;
+			break;
+
 		case background_: 
 			scaleMatrix = scale(scaleMatrix, vec3(2.0 * ratio / cam.zoom, 2.0 / cam.zoom, 0.0));
 			translateMatrix = translate(translateMatrix, vec3(-cam.camX * ratio / 4, -cam.camY / 4, -0.001));
@@ -124,6 +155,13 @@ public:
 
 	void modelOutput(int idx) {  // 모델 출력 
 		switch (idx) {
+		case title_:
+			glDepthMask(GL_FALSE);
+			glBindTexture(GL_TEXTURE_2D, title);
+			glDrawArrays(GL_TRIANGLES, 0, 6);
+			glDepthMask(GL_TRUE);
+			break;
+
 		case background_:
 			glBindTexture(GL_TEXTURE_2D, back);
 			glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -131,8 +169,10 @@ public:
 
 		case tip_:
 			glDepthMask(GL_FALSE);
-			glBindTexture(GL_TEXTURE_2D, tip);
-			glDrawArrays(GL_TRIANGLES, 0, 6);
+			if (gameStarted) {
+				glBindTexture(GL_TEXTURE_2D, tip);
+				glDrawArrays(GL_TRIANGLES, 0, 6);
+			}
 			glDepthMask(GL_TRUE);
 			break;
 
@@ -151,12 +191,11 @@ public:
 			else // 일반 커서
 				glBindTexture(GL_TEXTURE_2D, cursor[0]);
 
-			if (cam.camRot == 0 && !cam.camR && !cam.camL)  // 카메라 회전 시 커서를 숨김
+			if (cam.camRot == 0 && !cam.camR && !cam.camL && gameStarted)  // 카메라 회전 시 커서를 숨김
 				glDrawArrays(GL_TRIANGLES, 0, 6);
 			break;
 		}
 	}
-
 };
 
 extern UI ui;

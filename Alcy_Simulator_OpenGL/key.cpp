@@ -18,42 +18,57 @@ void keyDown(unsigned char KEY, int x, int y) {
 		alcy.isLeave = false;
 		break;
 
-	case 9:  // tab
-		channelClick->stop();
-		ssystem->playSound(click, 0, false, &channelClick);
-
-		if (!ui.tipEnable) {
-			ui.tipEnable = true;
-			break;
+	case 32:
+		if (!gameStarted && INTRO == 1) {  // 게임 시작 시 인트로 출력
+			startIntro = true;  // 카메라 애니메이션 활성화
+			ui.intro = true;
 		}
-		else 
-			ui.tipEnable = false;
-		alcy.isLeave = false;
+		break;
+
+	case 9:  // tab
+		if (gameStarted) {
+			channelClick->stop();
+			ssystem->playSound(click, 0, false, &channelClick);
+
+			if (!ui.tipEnable) {
+				ui.tipEnable = true;
+				break;
+			}
+			else
+				ui.tipEnable = false;
+			alcy.isLeave = false;
+		}
 		break;
 
 	case 'q':  // 카메라 좌측 회전
-		if (!alcy.touchEnable) {
-			cam.camL = true;
-			mouseClickEnable = false;
+		if (gameStarted) {
+			if (!alcy.touchEnable) {
+				cam.camL = true;
+				mouseClickEnable = false;
+			}
+			alcy.isLeave = false;
 		}
-		alcy.isLeave = false;
 		break;
 
 	case 'e':  // 카메라 우측 회전
-		if (!alcy.touchEnable) {
-			cam.camR = true;
-			mouseClickEnable = false;
+		if (gameStarted) {
+			if (!alcy.touchEnable) {
+				cam.camR = true;
+				mouseClickEnable = false;
+			}
+			alcy.isLeave = false;
 		}
-		alcy.isLeave = false;
 		break;
 
 	case 'i':  // info 보기
-		if (!escSoundPlayed) {  // 중복 재생 방지
-			channelEscDown->stop();
-			ssystem->playSound(escDown, 0, false, &channelEscDown);
-			escSoundPlayed = true;
+		if (gameStarted) {
+			if (!escSoundPlayed) {  // 중복 재생 방지
+				channelEscDown->stop();
+				ssystem->playSound(escDown, 0, false, &channelEscDown);
+				escSoundPlayed = true;
+			}
+			ui.infoEnable = true;  // info 활성화
 		}
-		ui.infoEnable = true;  // info 활성화
 		break;
 	}
 	if (glutGetWindow() != 0)
@@ -81,11 +96,13 @@ void keyUp(unsigned char KEY, int x, int y) {
 		break;
 
 	case 'i':
-		channelEscUp->stop();
-		ssystem->playSound(escUp, 0, false, &channelEscUp);
-		escSoundPlayed = false;
+		if (gameStarted) {
+			channelEscUp->stop();
+			ssystem->playSound(escUp, 0, false, &channelEscUp);
+			escSoundPlayed = false;
 
-		ui.infoEnable = false;
+			ui.infoEnable = false;
+		}
 		break;
 	}
 	if (glutGetWindow() != 0)

@@ -13,7 +13,10 @@ public:
 	bool camR, camL;  // 카메라 좌우 회전
 
     Camera() {
-        zoom = 1.0;
+        if (INTRO == 0)
+            zoom = 1.0;
+        else if (INTRO == 1)
+            zoom = 0.6;
     }
 
     void rotateCam() {  // 카메라 회전
@@ -69,6 +72,17 @@ public:
                         zoom = 1.0;
                     zoomEnable = false;
                 }
+            }
+        }
+    }
+
+    void introAnimation() {
+        if (startIntro) {
+            zoom += fs / 30;
+            if (zoom > 1.0) {
+                zoom = 1.0;
+                startIntro = false;
+                gameStarted = true;
             }
         }
     }

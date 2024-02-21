@@ -7,6 +7,8 @@
 extern GLfloat mx, my;  // 마우스 좌표
 extern bool lButtonDown;  // 마우스 클릭 여부
 extern bool mouseClickEnable;  // 마우스 클릭 가능 여부
+extern bool startIntro;
+extern bool gameStarted;
 
 // 프레임
 extern int lastElapsedTime, elapsedTime;

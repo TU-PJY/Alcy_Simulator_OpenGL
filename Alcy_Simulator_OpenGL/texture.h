@@ -4,6 +4,7 @@
 extern unsigned int back, cursor[3];  // 배경, 커서
 extern unsigned int icon[3];  // 아이콘
 extern unsigned int tip;  // 팁
+extern unsigned int title;  // 타이틀
 
 // 알키
 extern unsigned int alcyTail, alcyBody, alcyHair, alcyHead[3];  // 알키 파츠

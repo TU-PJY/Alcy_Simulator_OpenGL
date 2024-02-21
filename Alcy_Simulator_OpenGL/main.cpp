@@ -5,6 +5,7 @@
 #include "gl_func.h"  // GL 기능 함수
 #include "screen.h"  // 윈도우 사이즈
 #include "sound.h"  // 사운드
+#include "globalVar.h"
 #include "Alcy.h"  
 #include "UI.h"
 #include "ZZZ.h"
@@ -81,6 +82,11 @@ void main(int argc, char** argv) {
 			exit(0);
 
 		initFmod();
+
+		if (INTRO == 0)  // 개발 시에는 인트로 생략
+			gameStarted = true;
+		else
+			gameStarted = false;
 	}
 
 

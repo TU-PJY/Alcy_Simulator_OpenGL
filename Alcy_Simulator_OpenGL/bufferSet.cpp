@@ -61,13 +61,11 @@ BITMAPINFO* bmp;
 unsigned int back, cursor[3];
 unsigned int icon[3];
 unsigned int tip;
+unsigned int title;
 
 // 알키 리소스
 unsigned int alcyTail, alcyBody, alcyHair, alcyHead[3];
 unsigned int eye[5], dot[3], eyeClose[3], brow[3], blink[3];
-
-// 프롭 리소스
-unsigned int zzz;
 
 unsigned char* texture_data;
 
@@ -266,6 +264,13 @@ void setAlcyTexture() {
 }
 
 void setUITexture() {
+	// title
+	glGenTextures(1, &title);
+	glBindTexture(GL_TEXTURE_2D, title);
+	parameteri();
+	texture_data = LoadDIBitmap("res//ui//title.bmp", &bmp);
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, 1500, 1500, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+
 	// cursor
 	glGenTextures(1, &cursor[0]);
 	glBindTexture(GL_TEXTURE_2D, cursor[0]);

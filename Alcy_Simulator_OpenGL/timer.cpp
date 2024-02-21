@@ -19,14 +19,18 @@ void syncFrame() {  // 프레임 동기화
 void timerOperation(int value) {
     syncFrame();
 
+    cam.introAnimation();
     cam.rotateCam();
     cam.updateZoom();
 
+    ui.startGame();
     ui.exitGame();
     ui.updateTip();
 
-    alcy.checkControl();
-    alcy.updateAlcySleep();
+    if (gameStarted) {
+        alcy.checkControl();
+        alcy.updateAlcySleep();
+    }
     alcy.updateAlcyBlink();
     alcy.moveAlcyHead();
     alcy.updateAlcyTouch();

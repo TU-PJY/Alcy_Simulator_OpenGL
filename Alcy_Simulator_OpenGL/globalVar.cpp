@@ -11,6 +11,8 @@ GLfloat ratio;  // 화면 종횡비;
 
 bool lButtonDown;  // 마우스 클릭 여부
 bool mouseClickEnable;  // 마우스 클릭 사용 가능 여부
+bool startIntro;  // 인트로 재생, Camera 객체 전용
+bool gameStarted; // 게임 시작을 알리는 변수
 
 // 여기에 클래스 선언하고 사용
 Alcy alcy;
