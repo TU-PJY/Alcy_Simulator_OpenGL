@@ -60,6 +60,7 @@ BITMAPINFO* bmp;
 // ui 리소스
 unsigned int back, cursor[3];
 unsigned int icon[3];
+unsigned int bar;
 unsigned int tip;
 unsigned int title;
 
@@ -271,6 +272,13 @@ void setUITexture() {
 	texture_data = LoadDIBitmap("res//ui//title.bmp", &bmp);
 	glTexImage2D(GL_TEXTURE_2D, 0, 3, 1500, 1500, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
 
+	// background
+	glGenTextures(1, &back);
+	glBindTexture(GL_TEXTURE_2D, back);
+	parameteri();
+	texture_data = LoadDIBitmap("res//ui//background.bmp", &bmp);
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, 2560, 1440, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+
 	// cursor
 	glGenTextures(1, &cursor[0]);
 	glBindTexture(GL_TEXTURE_2D, cursor[0]);
@@ -313,10 +321,10 @@ void setUITexture() {
 	texture_data = LoadDIBitmap("res//ui//tip.bmp", &bmp);
 	glTexImage2D(GL_TEXTURE_2D, 0, 3, 500, 500, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
 
-	// background
-	glGenTextures(1, &back);  
-	glBindTexture(GL_TEXTURE_2D, back);
+	// bar
+	glGenTextures(1, &bar);
+	glBindTexture(GL_TEXTURE_2D, bar);
 	parameteri();
-	texture_data = LoadDIBitmap("res//ui//background.bmp", &bmp);
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, 2560, 1440, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+	texture_data = LoadDIBitmap("res//ui//bar.bmp", &bmp);
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, 51, 51, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
 }

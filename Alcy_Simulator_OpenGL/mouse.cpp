@@ -6,28 +6,27 @@
 #include "Camera.h"
 #include "UI.h"
 
-void convert_to_gl(int x, int y) {  //GL좌표계로 변환
+void convertToGLCoord(int x, int y) {  //GL좌표계로 변환
 	mx = (GLfloat)(x - (GLfloat)WIDTH / 2.0) * (GLfloat)(1.0 / (GLfloat)(WIDTH / 2.0));
 	my = -(GLfloat)(y - (GLfloat)HEIGHT / 2.0) * (GLfloat)(1.0 / (GLfloat)(HEIGHT / 2.0));
 }
 
 void setDir() {  // 알키 바라보는 방향을 결정한다
-		if (mx * ratio < -0.5 * ratio)
+		if (mx / cam.zoom * ratio < -0.5 * ratio)
 			alcy.dir = l;
-		else if (mx * ratio > 0.5 * ratio)
+		else if (mx / cam.zoom * ratio > 0.5 * ratio)
 			alcy.dir = r;
 		else
 			alcy.dir = m;
-	
 }
 
 void updateCursor() {  // 알키 머리에 커서를 가져다대면 커서가 바뀐다
-	if ((mx * ratio >= -0.4 && mx * ratio <= 0.4) && (my >= 0.1 && my <= 0.5)) // 쓰다듬기
+	if ((mx / cam.zoom * ratio >= -0.4 && mx / cam.zoom * ratio <= 0.4) && (my / cam.zoom >= 0.1 && my / cam.zoom <= 0.5)) // 쓰다듬기
 		ui.handEnable = true;
 	else
 		ui.handEnable = false;
 
-	if ((mx * ratio >= -0.03 && mx * ratio <= 0.05) && (my >= -0.2 && my <= -0.15))  // 코 누르가
+	if ((mx / cam.zoom * ratio >= -0.03 && mx / cam.zoom * ratio <= 0.05) && (my / cam.zoom >= -0.2 && my / cam.zoom <= -0.15))  // 코 누르가
 		ui.fingerEnable = true;
 	else
 		ui.fingerEnable = false;
@@ -86,10 +85,10 @@ void Mouse(int button, int state, int x, int y) {  // 마우스 클릭
 }
 
 void pMotion(int x, int y) {  // 클릭 안할 때의 모션
-		convert_to_gl(x, y);
+		convertToGLCoord(x, y);
 		if (gameStarted) {
-			cam.camX = (0.0 - mx) / 10;
-			cam.camY = (0.0 - my) / 10;
+			cam.camX = (0.0 - mx) / 10 / cam.zoom;
+			cam.camY = (0.0 - my) / 10 / cam.zoom;
 
 			setDir();
 			updateCursor();
@@ -103,9 +102,9 @@ void pMotion(int x, int y) {  // 클릭 안할 때의 모션
 void Motion(int x, int y) {  // 클릭 할 때의 모션
 	if (gameStarted) {
 		if (!alcy.touchEnable) {  // 알키를 쓰다듬는 도중에는 마우스 업데이트를 하지 않는다.
-			convert_to_gl(x, y);
-			cam.camX = (0.0 - mx) / 10;
-			cam.camY = (0.0 - my) / 10;
+			convertToGLCoord(x, y);
+			cam.camX = (0.0 - mx) / 10 / cam.zoom;
+			cam.camY = (0.0 - my) / 10 / cam.zoom;
 
 			setDir();
 			updateCursor();

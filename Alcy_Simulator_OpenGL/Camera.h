@@ -2,6 +2,7 @@
 #define CAMERA_H
 #include "config.h"
 #include "globalVar.h"
+
 // Alcy  <-- Camera -->  UI
 class Camera {
 public:
@@ -84,6 +85,26 @@ public:
                 startIntro = false;
                 gameStarted = true;
             }
+        }
+    }
+
+    // 메트로놈 함수
+    void metronome(int music) {
+        switch (music) {
+        case 1:  // 
+            beatDelay += fs;
+            if (beatDelay > 5) {  // 120BPM
+                zoom = 1.1;
+                beatDelay = 0;
+            }
+
+            else {
+                zoom -= fs / 20;
+                if (zoom < 1.0) {
+                    zoom = 1.0;
+                }
+            }
+            break;
         }
     }
 };

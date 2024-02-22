@@ -70,6 +70,9 @@ void keyDown(unsigned char KEY, int x, int y) {
 			ui.infoEnable = true;  // info 활성화
 		}
 		break;
+
+	case 'm':
+		break;
 	}
 	if (glutGetWindow() != 0)
 		glutPostRedisplay();

@@ -123,8 +123,6 @@ public:
             sleepHeight = sin(sleepNum) / 80;  // 자는 동안에는 머리가 조금씩 위 아래로 움직인다.
             tailRot = sleepHeight * 100;
 
-            cout << sin(sleepNum) << endl;
-
             if (sin(sleepNum) > 0.99 && breatheType == in_) {
                 breatheType = out_;
                 breatheSound = true;

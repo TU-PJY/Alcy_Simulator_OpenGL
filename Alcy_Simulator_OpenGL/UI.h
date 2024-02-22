@@ -14,6 +14,7 @@ enum ui_name {
 	background_,
 	tip_,
 	icon_,
+	bar_,
 	cursor_,
 };
 
@@ -41,6 +42,10 @@ public:
 
 	// 게임 시작
 	bool intro;  // 인트로 애니메이션
+
+	bool menuEnable;  // 메뉴 활성화 여부
+	GLfloat menuY;  // 메뉴 높이
+	GLfloat menuSize;  // 메뉴 크기
 
 	UI() {
 		mouseClickEnable = true;
@@ -111,7 +116,7 @@ public:
 
 		case background_: 
 			scaleMatrix = scale(scaleMatrix, vec3(2.0 * ratio / cam.zoom, 2.0 / cam.zoom, 0.0));
-			translateMatrix = translate(translateMatrix, vec3(-cam.camX * ratio / 4, -cam.camY / 4, -0.001));
+			translateMatrix = translate(translateMatrix, vec3(cam.camX / 10 * ratio, (cam.camY / 10) / cam.zoom, -0.001));
 			selectedColor = vec3(0.0, 1.0, 0.0);
 			threshold = vec3(0.0, 0.85, 0.0);
 			break;
@@ -135,6 +140,14 @@ public:
 			transparent = exitTransparent;
 			break;
 
+		case bar_:
+			scaleMatrix = scale(scaleMatrix, vec3(0.6 / cam.zoom, 0.01 / cam.zoom, 0.0));
+			rotateMatrix = rotate(rotateMatrix, radians(-cam.camRot), vec3(0.0, 0.0, 1.0));
+			translateMatrix = translate(translateMatrix, vec3(-cam.camX * ratio, -0.97 / cam.zoom - cam.camY, 0.001));
+			selectedColor = vec3(0.0, 1.0, 0.0);
+			threshold = vec3(0.0, 0.8, 0.0);
+			break;
+
 		case cursor_:
 			if (fingerEnable)
 				scaleMatrix = scale(scaleMatrix, vec3(0.15 / cam.zoom, 0.15 / cam.zoom, 0.0));
@@ -142,9 +155,9 @@ public:
 				scaleMatrix = scale(scaleMatrix, vec3(0.1 / cam.zoom, 0.1 / cam.zoom, .0));
 
 			if (lButtonDown && handEnable)  // 쓰다듬을 때는 커서를 강제로 지정된 위치로 변환한다.
-				translateMatrix = translate(translateMatrix, vec3((handX - cam.camX) * ratio, 0.3 - cam.camY, 0.0006));
+				translateMatrix = translate(translateMatrix, vec3((handX - cam.camX) * ratio, (0.3 - cam.camY), 0.0006));
 			else
-				translateMatrix = translate(translateMatrix, vec3((mx - cam.camX) * ratio, my - cam.camY, 0.0006));
+				translateMatrix = translate(translateMatrix, vec3((mx / cam.zoom - cam.camX) * ratio, (my / cam.zoom - cam.camY), 0.0006));
 			selectedColor = vec3(0.0, 1.0, 0.0);
 			threshold = vec3(0.0, 0.8, 0.0);
 			break;
@@ -181,6 +194,11 @@ public:
 			glBindTexture(GL_TEXTURE_2D, icon[0]);  // exit icon
 			glDrawArrays(GL_TRIANGLES, 0, 6);
 			glDepthMask(GL_TRUE);
+			break;
+
+		case bar_:
+			glBindTexture(GL_TEXTURE_2D, bar);  // exit icon
+			glDrawArrays(GL_TRIANGLES, 0, 6);
 			break;
 
 		case cursor_:
