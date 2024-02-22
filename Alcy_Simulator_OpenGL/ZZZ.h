@@ -26,7 +26,7 @@ public:
 	int channel;
 
 	ZZZ() {
-		x = 0.3, y = 0.3;
+		x = 0.5, y = 0.5;
 	}
 
 	void update() {  // 애니메이션 업데이트
@@ -39,13 +39,13 @@ public:
 				zzzTransparent = sin(num);
 				num += fs / 10;
 				size = zzzTransparent / 5;
-				x += fs / 80;
-				y += fs / 80;
+				x += fs / 50;
+				y += fs / 50;
 
 				if (zzzTransparent < 0) {
 					num = 0;
-					x = 0.3;
-					y = 0.3;
+					x = 0.4;
+					y = 0.4;
 				}
 			}
 		}
@@ -55,8 +55,8 @@ public:
 			if (zzzTransparent < 0) {
 				zzzTransparent = 0;
 				num = 0;
-				x = 0.3;
-				y = 0.3;
+				x = 0.4;
+				y = 0.4;
 				delay = delayData;  // 딜레이를 입력받았던 딜레이로 초기화
 			}
 		}
@@ -96,7 +96,7 @@ public:
 	void setTransform() {
 		using namespace glm;
 		scaleMatrix = scale(scaleMatrix, vec3(size, size, 0.0));
-		translateMatrix = translate(translateMatrix, vec3(x * ratio, y, 0.0005));
+		translateMatrix = translate(translateMatrix, vec3(x, y, 0.0005));
 		transparent = zzzTransparent;
 
 		transformMatrix = rotateMatrix * translateMatrix * scaleMatrix;  // 최종 변환

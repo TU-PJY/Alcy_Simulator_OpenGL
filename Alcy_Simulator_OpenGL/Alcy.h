@@ -194,25 +194,25 @@ public:
         if (!cam.camR && !cam.camL && cam.camRot == 0 && !squeak && !tired && !sleeping) {
             switch (dir) {
             case l:  // 좌측 바라볼 시
-                headPos -= 0.03 * fs;
-                if (headPos < -0.05)
-                    headPos = -0.05;
+                headPos -= 0.04 * fs;
+                if (headPos < -0.08)
+                    headPos = -0.08;
                 break;
 
             case r:  // 우측 바라볼 시
-                headPos += 0.03 * fs;
-                if (headPos > 0.05)
-                    headPos = 0.05;
+                headPos += 0.04 * fs;
+                if (headPos > 0.08)
+                    headPos = 0.08;
                 break;
 
             default:  // 가운데 바라볼 시
                 if (headPos < 0) {
-                    headPos += 0.03 * fs;
+                    headPos += 0.04 * fs;
                     if (headPos > 0)
                         headPos = 0;
                 }
                 if (headPos > 0) {
-                    headPos -= 0.03 * fs;
+                    headPos -= 0.04 * fs;
                     if (headPos < 0)
                         headPos = 0;
                 }
@@ -221,12 +221,12 @@ public:
         }
         else {  // 아무 조작 없을 때
             if (headPos < 0) {
-                headPos += 0.03 * fs;
+                headPos += 0.04 * fs;
                 if (headPos > 0)
                     headPos = 0;
             }
             if (headPos > 0) {
-                headPos -= 0.03 * fs;
+                headPos -= 0.04 * fs;
                 if (headPos < 0)
                     headPos = 0;
             }
@@ -235,12 +235,12 @@ public:
 
     void updateAlcyTouch() {  // 알키 머리 쓰다듬기
         if (mouseClickEnable && ui.handEnable && touchEnable) {  // 손 커서인 상태로 머리를 쓰다듬을 수 있다
-            ui.handX = sin(ui.handNum) * 0.2;  // 쓰다듬는 중에는 손 커서가 좌우로 부드럽게 움직인다.
+            ui.handX = sin(ui.handNum) * 0.4;  // 쓰다듬는 중에는 손 커서가 좌우로 부드럽게 움직인다.
             ui.handNum += fs / 4;
 
             tailNum += fs / 10;  // 꼬리는 느린 속도로 별도로 움직인다.
             tailRot = sin(tailNum) * 10;
-            headRot = -ui.handX * 25;  // 손의 움직임에 따라 머리도 같이 움직인다.
+            headRot = -ui.handX * 17;  // 손의 움직임에 따라 머리도 같이 움직인다.
             bodyRot = -headRot / 4;  // 몸통도 같이 움직인다.
         }
     }
@@ -324,7 +324,7 @@ public:
 
         switch (idx) {  // 변환 추가
         case tail_:
-            translateMatrix = translate(translateMatrix, vec3(-0.2 * ratio, -0.75, -0.0008));
+            translateMatrix = translate(translateMatrix, vec3(-0.4, -0.75, -0.0008));
             translateMatrix = rotate(translateMatrix, radians(tailRot), vec3(0.0, 0.0, 1.0));
             break;
 
@@ -340,7 +340,7 @@ public:
         case head_:
             translateMatrix = translate(translateMatrix, vec3(0.0, -0.1, -0.00001));
             translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
-            translateMatrix = translate(translateMatrix, vec3((headPos - headRot / 300) * ratio, 0.22 + sleepHeight, -0.0001));
+            translateMatrix = translate(translateMatrix, vec3((headPos - headRot / 150), 0.22 + sleepHeight, -0.0001));
             break;
 
         case eye_:
@@ -348,10 +348,10 @@ public:
             translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
             if (cam.camRot == 0 && !cam.camR && !cam.camL && !squeak && !tired && !sleeping)
                 translateMatrix = translate(translateMatrix,
-                    vec3(((headPos - headRot / 300) - (cam.camX / 4)) * ratio, 0.22 - (cam.camY / 4), 0.00001));
+                    vec3(((headPos - headRot / 150) - (cam.camX / 4)), 0.22 - (cam.camY / 4), 0.00001));
             else
                 translateMatrix = translate(translateMatrix,
-                    vec3((headPos - headRot / 300) * ratio, 0.22, 0.00001));
+                    vec3((headPos - headRot / 150), 0.22, 0.00001));
             break;
 
         case dot_:
@@ -359,24 +359,24 @@ public:
             translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
             if (cam.camRot == 0 && !cam.camR && !cam.camL)
                 translateMatrix = translate(translateMatrix,
-                    vec3(((headPos - headRot / 300) - (cam.camX / 2.5)) * ratio, 0.22 - (cam.camY / 2), 0.00003));
+                    vec3(((headPos - headRot / 150) - (cam.camX / 2.5)), 0.22 - (cam.camY / 2), 0.00003));
             else
-                translateMatrix = translate(translateMatrix,vec3((headPos - headRot / 300) * ratio, 0.22, 0.00003));
+                translateMatrix = translate(translateMatrix,vec3((headPos - headRot / 150), 0.22, 0.00003));
             break;
 
         case brow_:
             translateMatrix = translate(translateMatrix, vec3(0.0, -0.1, 0.0));
             translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
             if (cam.camRot == 0 && !cam.camR && !cam.camL && !touchEnable && !squeak && !tired && !sleeping)
-                translateMatrix = translate(translateMatrix,vec3((headPos - headRot / 300) * ratio, 0.23 - (cam.camY / 4), 0.00003));
+                translateMatrix = translate(translateMatrix,vec3((headPos - headRot / 150), 0.23 - (cam.camY / 4), 0.00003));
             else
-                translateMatrix = translate(translateMatrix,vec3((headPos - headRot / 300) * ratio, 0.22 + sleepHeight, 0.00003));
+                translateMatrix = translate(translateMatrix,vec3((headPos - headRot / 150), 0.22 + sleepHeight, 0.00003));
             break;
 
         case blink_:
             translateMatrix = translate(translateMatrix, vec3(0.0, -0.1, 0.0));
             translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
-            translateMatrix = translate(translateMatrix, vec3((headPos - headRot / 300) * ratio, 0.22 + sleepHeight, 0.00004));
+            translateMatrix = translate(translateMatrix, vec3((headPos - headRot / 150), 0.22 + sleepHeight, 0.00004));
             break;
         }
 

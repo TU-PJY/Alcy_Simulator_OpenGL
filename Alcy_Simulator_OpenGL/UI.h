@@ -153,7 +153,7 @@ public:
 
 		case tip_:
 			scaleMatrix = scale(scaleMatrix, vec3(0.5 / cam.zoom, 0.5 / cam.zoom, 0.0));
-			translateMatrix = translate(translateMatrix, vec3((-0.7 - cam.camX) * ratio, 0.5 - cam.camY, 0.0005));
+			translateMatrix = translate(translateMatrix, vec3(-1.0 * ratio + 0.5 - cam.camX * ratio, 0.5 - cam.camY, 0.0005));
 			rotateMatrix = rotate(rotateMatrix, radians(-cam.camRot), vec3(0.0, 0.0, 1.0));
 			transparent = tipTransparent;
 			break;
@@ -165,7 +165,7 @@ public:
 			transparent = exitTransparent;
 			break;
 
-		case bar_:
+		case bar_:  // 화면 크기에 따라 메뉴바의 최대 크기가 달라짐
 			scaleMatrix = scale(scaleMatrix, vec3((0.2 + menuSizeX) * ratio / cam.zoom, (0.01 + menuSizeY) / cam.zoom, 0.0));
 			rotateMatrix = rotate(rotateMatrix, radians(-cam.camRot), vec3(0.0, 0.0, 1.0));
 			translateMatrix = translate(translateMatrix, vec3(-cam.camX * ratio, (menuY + menuSizeY / 1.2) / cam.zoom - cam.camY, 0.0005));
@@ -176,7 +176,7 @@ public:
 			scaleMatrix = scale(scaleMatrix, vec3(0.15 / cam.zoom, 0.15 / cam.zoom, .0));
 
 			if (lButtonDown && handEnable)  // 쓰다듬을 때는 커서를 강제로 지정된 위치로 변환한다.
-				translateMatrix = translate(translateMatrix, vec3((handX - cam.camX) * ratio, (0.3 - cam.camY), 0.0006));
+				translateMatrix = translate(translateMatrix, vec3((handX - cam.camX), (0.3 - cam.camY), 0.0006));
 			else
 				translateMatrix = translate(translateMatrix, vec3((mx / cam.zoom - cam.camX) * ratio, (my / cam.zoom - cam.camY), 0.005));
 			break;
