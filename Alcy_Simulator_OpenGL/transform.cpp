@@ -47,12 +47,6 @@ void initTransform() {
 }
 
 void transmit() {  // transmit transform data to glsl
-    colorLocation = glGetUniformLocation(ID, "targetColor");
-    glUniform3f(colorLocation, selectedColor.r, selectedColor.g, selectedColor.b);
-
-    thresholdLocation = glGetUniformLocation(ID, "colorThreshold");
-    glUniform3f(thresholdLocation, threshold.r, threshold.g, threshold.b);
-
     transparencyLocation = glGetUniformLocation(ID, "transparency");
     glUniform1f(transparencyLocation, transparent);
 

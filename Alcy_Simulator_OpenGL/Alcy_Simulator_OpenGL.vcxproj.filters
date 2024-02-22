@@ -116,6 +116,12 @@
     <ClInclude Include="ZZZ.h">
       <Filter>헤더 파일\propClasses</Filter>
     </ClInclude>
+    <ClInclude Include="Icon.h">
+      <Filter>헤더 파일\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Background.h">
+      <Filter>헤더 파일\classes</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="glsl\GLSL_fragment.glsl">

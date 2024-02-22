@@ -7,8 +7,8 @@
 GLuint VAO_ALCY[ALCY_PART], VAO_UI[UI_PART], VBO;  // MODEL_COUNT는 config.h에 정의되어있음
 
 // ui 리소스
-unsigned int back, cursor[3];
-unsigned int icon[3];
+unsigned int cursor[3];
+unsigned int uiIcon[3];
 unsigned int bar;
 unsigned int tip;
 unsigned int title;
@@ -22,7 +22,6 @@ unsigned char* texture_data;
 //ui
 int channel = 1;
 int titleW = 1500, titleH = 1500;
-int backgroundW = 2560, backgroundH = 1440;
 int cursorW = 200, cursorH = 200;
 int iconW = 512, iconH = 512;
 int tipW = 500, tipH = 500;
@@ -236,13 +235,6 @@ void setUITexture() {
 	texture_data = stbi_load("res//ui//title.png", &titleW, &titleH, &channel, 4);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, titleW, titleH, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 
-	// background
-	glGenTextures(1, &back);
-	glBindTexture(GL_TEXTURE_2D, back);
-	parameteri();
-	texture_data = stbi_load("res//ui//background.png", &backgroundW, &backgroundH, &channel, 4);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, backgroundW, backgroundH, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
-
 	// cursor
 	glGenTextures(1, &cursor[0]);
 	glBindTexture(GL_TEXTURE_2D, cursor[0]);
@@ -265,15 +257,15 @@ void setUITexture() {
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, cursorW, cursorH, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 
 	// exit icon
-	glGenTextures(1, &icon[0]);
-	glBindTexture(GL_TEXTURE_2D, icon[0]);
+	glGenTextures(1, &uiIcon[0]);
+	glBindTexture(GL_TEXTURE_2D, uiIcon[0]);
 	parameteri();
 	texture_data = stbi_load("res//ui//icon_exit.png", &iconW, &iconH, &channel, 4);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, iconW, iconH, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 
 	// info icon
-	glGenTextures(1, &icon[1]);
-	glBindTexture(GL_TEXTURE_2D, icon[1]);
+	glGenTextures(1, &uiIcon[1]);
+	glBindTexture(GL_TEXTURE_2D, uiIcon[1]);
 	parameteri();
 	texture_data = stbi_load("res//ui//icon_info.png", &iconW, &iconH, &channel, 4);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, iconW, iconH, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);

@@ -10,7 +10,7 @@ extern FMOD::Sound* music1;
 
 extern FMOD::Channel* channelClick, *channelEscDown, *channelEscUp, * channelScroll;
 extern FMOD::Channel* channelSqueak, *channelTouch, *channelTilt, *channelBreathe;
-extern FMOD::Channel* channelMusic;
+extern FMOD::Channel* channelMusic, * channelTheme;
 
 extern void* extradriverdata;
 extern FMOD_RESULT result;

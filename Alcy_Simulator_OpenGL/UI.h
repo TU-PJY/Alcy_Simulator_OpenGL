@@ -11,7 +11,6 @@
 
 enum ui_name {
 	title_,
-	background_,
 	tip_,
 	icon_,
 	bar_,
@@ -108,11 +107,12 @@ public:
 		if (menuEnable) {
 			menuSizeX += menuAcc * 2 * fs;
 			menuSizeY += menuAcc * fs;
-			menuTransparent -= menuAcc / 10;
+			menuTransparent -= menuAcc / 20;
 
 			menuAcc -= fs / 25;
 
 			if (menuAcc < 0) {
+				menuTransparent = 0.75;
 				menuSizeX = 1.02;
 				menuSizeY = 0.51;
 				menuAcc = 0;
@@ -122,7 +122,7 @@ public:
 		else {
 			menuSizeX -= menuAcc * 2 * fs;
 			menuSizeY -= menuAcc * fs;
-			menuTransparent += menuAcc / 10;
+			menuTransparent += menuAcc / 20;
 
 			menuAcc -= fs / 25;
 
@@ -147,11 +147,6 @@ public:
 			scaleMatrix = scale(scaleMatrix, vec3(titleSize / cam.zoom, titleSize / cam.zoom, 0.0));
 			translateMatrix = translate(translateMatrix, vec3(0.0, titleY, 0.05));
 			transparent = titleTransparent;
-			break;
-
-		case background_: 
-			scaleMatrix = scale(scaleMatrix, vec3(2.0 * ratio / cam.zoom, 2.0 / cam.zoom, 0.0));
-			translateMatrix = translate(translateMatrix, vec3(cam.camX / 10 * ratio, (cam.camY / 10) / cam.zoom, -0.001));
 			break;
 
 		case tip_:
@@ -181,7 +176,7 @@ public:
 			if (lButtonDown && handEnable)  // 쓰다듬을 때는 커서를 강제로 지정된 위치로 변환한다.
 				translateMatrix = translate(translateMatrix, vec3((handX - cam.camX) * ratio, (0.3 - cam.camY), 0.0006));
 			else
-				translateMatrix = translate(translateMatrix, vec3((mx / cam.zoom - cam.camX) * ratio, (my / cam.zoom - cam.camY), 0.0006));
+				translateMatrix = translate(translateMatrix, vec3((mx / cam.zoom - cam.camX) * ratio, (my / cam.zoom - cam.camY), 0.005));
 			break;
 		}
 
@@ -191,32 +186,21 @@ public:
 	void modelOutput(int idx) {  // 모델 출력 
 		switch (idx) {
 		case title_:
-			glDepthMask(GL_FALSE);
 			glBindTexture(GL_TEXTURE_2D, title);
 			if(INTRO == 1)
 				glDrawArrays(GL_TRIANGLES, 0, 6);
-			glDepthMask(GL_TRUE);
-			break;
-
-		case background_:
-			glBindTexture(GL_TEXTURE_2D, back);
-			glDrawArrays(GL_TRIANGLES, 0, 6);
 			break;
 
 		case tip_:
-			glDepthMask(GL_FALSE);
 			if (gameStarted) {
 				glBindTexture(GL_TEXTURE_2D, tip);
 				glDrawArrays(GL_TRIANGLES, 0, 6);
 			}
-			glDepthMask(GL_TRUE);
 			break;
 
 		case icon_:
-			glDepthMask(GL_FALSE);
-			glBindTexture(GL_TEXTURE_2D, icon[0]);  // exit icon
+			glBindTexture(GL_TEXTURE_2D, uiIcon[0]);  // exit icon
 			glDrawArrays(GL_TRIANGLES, 0, 6);
-			glDepthMask(GL_TRUE);
 			break;
 
 		case bar_:

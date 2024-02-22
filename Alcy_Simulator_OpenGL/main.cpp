@@ -9,6 +9,8 @@
 #include "Alcy.h"  
 #include "UI.h"
 #include "ZZZ.h"
+#include "Icon.h"
+#include "Background.h"
 #include "texture.h"
 #include "stb_image.h"
 
@@ -25,6 +27,13 @@ GLvoid displayOutput() {
 	glUseProgram(ID);
 
 	setWindowView();
+	// 아래로 갈 수록 위에 그려짐
+	// 배경
+	initTransform();
+	background.setTransform();
+	transmit();
+	background.bindVertex();
+	background.modelOutput();
 
 	// Alcy
 	for (int i = 0; i < ALCY_PART; i++) {
@@ -44,7 +53,16 @@ GLvoid displayOutput() {
 		zzz[i].modelOutput();
 	}
 
-	// UI
+	// 메뉴 아이콘
+	for (int i = 0; i < ICON_PART; i++) {
+		initTransform();
+		icon[i].setTransform(i);
+		transmit();
+		icon[i].bindVertex();
+		//icon[i].modelOutput();
+	}
+
+	// UI  // 항상 맨 위에 렌더링 되도록 함(중요)
 	for (int i = 0; i < UI_PART; i++) {
 		initTransform();
 		ui.setTransform(i);
@@ -77,6 +95,7 @@ void main(int argc, char** argv) {
 		glEnable(GL_ALPHA_TEST);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glDepthFunc(GL_ALWAYS);
 		stbi_set_flip_vertically_on_load(true);
 
 		makeShaderProgram();
@@ -93,19 +112,28 @@ void main(int argc, char** argv) {
 			gameStarted = false;
 	}
 
-
+	background.setBuffer();  // 배경 초기화
+	for (int i = 0; i < ALCY_PART; i++) // 알키 버퍼 초기화
+		setBufferAlcy(i);  
 	for (int i = 0; i < UI_PART; i++) // UI 버퍼 초기화
 		setBufferUI(i); 
-	for (int i = 0; i < ALCY_PART; i++)
-		setBufferAlcy(i);  // 알키 버퍼 초기화
-	for(int i = 0; i < 3; i ++)
+	for(int i = 0; i < 3; i ++)  // zzz오브젝트 초기화
 		zzz[i].setBuffer();
+	for (int i = 0; i < ICON_PART; i++)  // 메뉴 아이콘 초기화
+		icon[i].setBuffer();
 
-	setAlcyTexture();  // 텍스처 설정
-	setUITexture();
-	for (int i = 0; i < 3; i++) {
+	// 텍스처 설정
+	background.setTexture();  // 배경
+	setAlcyTexture();  // 알키
+	setUITexture();  // UI
+
+	for (int i = 0; i < 3; i++) {  // zzz오브젝트
 		zzz[i].setTexture();
 		zzz[i].setDelay(10 * i);
+	}
+
+	for (int i = 0; i < ICON_PART; i++) {  // menu icon
+		icon[i].setTexture(i);
 	}
 
 	stbi_image_free(texture_data);

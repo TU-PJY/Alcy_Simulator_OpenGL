@@ -1,5 +1,5 @@
-#ifndef PROPCLASSES_H
-#define PROPCLASSES_H
+#ifndef ZZZ_H
+#define ZZZ_H
 #include "config.h"
 #include "shader.h"
 #include "buffer.h"
@@ -22,7 +22,7 @@ public:
 	GLfloat delay;  // 출력 딜레이
 	unsigned int zzzTex;
 	int zzzW = 200, zzzH = 200;
-	unsigned char* texture_data;
+	//unsigned char* texture_data;
 	int channel;
 
 	ZZZ() {
@@ -97,8 +97,6 @@ public:
 		using namespace glm;
 		scaleMatrix = scale(scaleMatrix, vec3(size, size, 0.0));
 		translateMatrix = translate(translateMatrix, vec3(x * ratio, y, 0.0005));
-		selectedColor = vec3(0.0, 1.0, 0.0);
-		threshold = vec3(0.0, 0.9, 0.0);
 		transparent = zzzTransparent;
 
 		transformMatrix = rotateMatrix * translateMatrix * scaleMatrix;  // 최종 변환

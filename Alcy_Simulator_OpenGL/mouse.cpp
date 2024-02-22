@@ -90,10 +90,9 @@ void pMotion(int x, int y) {  // 클릭 안할 때의 모션
 			cam.camX = (0.0 - mx) / 10 / cam.zoom;
 			cam.camY = (0.0 - my) / 10 / cam.zoom;
 
-			if (!ui.menuEnable) {
-				setDir();
+			if (!ui.menuEnable) 
 				updateCursor();
-			}
+			setDir();
 
 			alcy.isLeave = false;  // 움직이면 컨트롤을 감지한다.
 		}
@@ -108,10 +107,10 @@ void Motion(int x, int y) {  // 클릭 할 때의 모션
 			cam.camX = (0.0 - mx) / 10 / cam.zoom;
 			cam.camY = (0.0 - my) / 10 / cam.zoom;
 
-			if (!ui.menuEnable) {
-				setDir();
+			if (!ui.menuEnable) 
 				updateCursor();
-			}
+			setDir();
+			
 		}
 
 		alcy.isLeave = false;  // 움직이면 컨트롤을 감지한다.
@@ -121,7 +120,7 @@ void Motion(int x, int y) {  // 클릭 할 때의 모션
 }
 
 void Wheel(int button, int dir, int x, int y) {  // 마우스 휠
-	if (gameStarted) {
+	if (gameStarted && !ui.menuEnable) {
 		if (dir > 0) {
 			channelScroll->stop();
 			ssystem->playSound(scroll, 0, false, &channelScroll);

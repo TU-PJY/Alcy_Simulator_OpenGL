@@ -31,7 +31,9 @@ void keyDown(unsigned char KEY, int x, int y) {
 				ui.menuEnable = true;
 				ui.handEnable = false;
 				ui.fingerEnable = false;
-
+				ui.exitEnable = false;
+				ui.infoEnable = false;
+				ui.menuTransparent = 1;
 				ui.menuSizeX = 0;
 				ui.menuSizeY = 0;
 				ui.menuAcc = 0.2;
@@ -55,6 +57,7 @@ void keyDown(unsigned char KEY, int x, int y) {
 			}
 			else {
 				ui.menuEnable = false;
+				ui.menuTransparent = 0.75;
 				ui.menuSizeX = 1.02;
 				ui.menuSizeY = 0.51;
 				ui.menuAcc = 0.2;

@@ -143,12 +143,14 @@
     <ClCompile Include="timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Background.h" />
     <ClInclude Include="buffer.h" />
     <ClInclude Include="Alcy.h" />
     <ClInclude Include="Camera.h" />
     <ClInclude Include="config.h" />
     <ClInclude Include="globalVar.h" />
     <ClInclude Include="gl_func.h" />
+    <ClInclude Include="Icon.h" />
     <ClInclude Include="ZZZ.h" />
     <ClInclude Include="screen.h" />
     <ClInclude Include="shader.h" />

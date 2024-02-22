@@ -4,9 +4,9 @@
 extern unsigned char* texture_data;
 
 // ui
-extern unsigned int back, cursor[3];  // 배경, 커서
+extern unsigned int cursor[3];  // 배경, 커서
 extern unsigned int bar;  //메뉴바
-extern unsigned int icon[3];  // 아이콘
+extern unsigned int uiIcon[3];  // 아이콘
 extern unsigned int tip;  // 팁
 extern unsigned int title;  // 타이틀
 

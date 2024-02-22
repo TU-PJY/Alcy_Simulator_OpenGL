@@ -4,6 +4,8 @@
 #include "Camera.h"
 #include "UI.h"
 #include "ZZZ.h"
+#include "Icon.h"
+#include "Background.h"
 // 프로젝트 전체 전역 변수 및 클래스
 
 GLfloat mx, my; // 마우스 좌표
@@ -19,8 +21,10 @@ int musicTraack;  // 음악 구분
 double beatDelay;  // 음악 효과에 사용되는 딜레이 변수
 
 // 여기에 클래스 선언하고 사용
-Alcy alcy;
+Background background;
 Camera cam;
-UI ui;
+Alcy alcy;
 ZZZ zzz[3];
+UI ui;
+Icon icon[ICON_PART];
 
