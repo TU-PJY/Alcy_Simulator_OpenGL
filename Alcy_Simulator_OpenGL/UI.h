@@ -48,6 +48,7 @@ public:
 	GLfloat menuSizeX;  // 메뉴 크기
 	GLfloat menuSizeY;
 	GLfloat menuAcc;  // 메뉴를 열 때 사용하는 가속값
+	GLfloat menuTransparent;
 
 	UI() {
 		mouseClickEnable = true;
@@ -58,6 +59,7 @@ public:
 		titleSize = 1.3f;
 		titleY = 0.75;
 
+		menuTransparent = 1.0f;
 		menuY = -0.97;
 	}
 
@@ -105,7 +107,8 @@ public:
 	void updateMenu() {
 		if (menuEnable) {
 			menuSizeX += menuAcc * 2 * fs;
-			menuSizeY += menuAcc * fs ;
+			menuSizeY += menuAcc * fs;
+			menuTransparent -= menuAcc / 10;
 
 			menuAcc -= fs / 25;
 
@@ -119,6 +122,7 @@ public:
 		else {
 			menuSizeX -= menuAcc * 2 * fs;
 			menuSizeY -= menuAcc * fs;
+			menuTransparent += menuAcc / 10;
 
 			menuAcc -= fs / 25;
 
@@ -126,6 +130,7 @@ public:
 				menuAcc = 0;
 				menuSizeX = 0;
 				menuSizeY = 0;
+				menuTransparent = 1.0;
 			}
 		}
 	}
@@ -167,6 +172,7 @@ public:
 			scaleMatrix = scale(scaleMatrix, vec3((0.6 + menuSizeX) / cam.zoom, (0.01 + menuSizeY) / cam.zoom, 0.0));
 			rotateMatrix = rotate(rotateMatrix, radians(-cam.camRot), vec3(0.0, 0.0, 1.0));
 			translateMatrix = translate(translateMatrix, vec3(-cam.camX * ratio, (menuY + menuSizeY / 1.2) / cam.zoom - cam.camY, 0.0005));
+			transparent = menuTransparent;
 			break;
 
 		case cursor_:
