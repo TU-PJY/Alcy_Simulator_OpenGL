@@ -26,7 +26,7 @@ int backgroundW = 2560, backgroundH = 1440;
 int cursorW = 200, cursorH = 200;
 int iconW = 512, iconH = 512;
 int tipW = 500, tipH = 500;
-int barW = 51, barH = 51;
+int barW = 512, barH = 512;
 
 // 알키
 int alcyW = 1500, alcyH = 1500;

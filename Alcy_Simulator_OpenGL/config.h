@@ -19,7 +19,7 @@
 #include "fmod_errors.h"
 #define ALCY_PART 8  // 알키 파트 개수
 #define UI_PART 6  // ui 파트 개수
-#define INTRO 1  // 1: true, 0: false
+#define INTRO 0  // 1: true, 0: false
 
 using namespace std;
 

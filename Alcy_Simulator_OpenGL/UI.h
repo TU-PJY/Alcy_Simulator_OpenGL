@@ -45,7 +45,9 @@ public:
 
 	bool menuEnable;  // 메뉴 활성화 여부
 	GLfloat menuY;  // 메뉴 높이
-	GLfloat menuSize;  // 메뉴 크기
+	GLfloat menuSizeX;  // 메뉴 크기
+	GLfloat menuSizeY;
+	GLfloat menuAcc;  // 메뉴를 열 때 사용하는 가속값
 
 	UI() {
 		mouseClickEnable = true;
@@ -55,6 +57,8 @@ public:
 		titleTransparent = 1.0f;
 		titleSize = 1.3f;
 		titleY = 0.75;
+
+		menuY = -0.97;
 	}
 
     // ui
@@ -98,6 +102,34 @@ public:
         }
     }
 
+	void updateMenu() {
+		if (menuEnable) {
+			menuSizeX += menuAcc * 2 * fs;
+			menuSizeY += menuAcc * fs ;
+
+			menuAcc -= fs / 25;
+
+			if (menuAcc < 0) {
+				menuSizeX = 1.02;
+				menuSizeY = 0.51;
+				menuAcc = 0;
+			}
+		}
+
+		else {
+			menuSizeX -= menuAcc * 2 * fs;
+			menuSizeY -= menuAcc * fs;
+
+			menuAcc -= fs / 25;
+
+			if (menuAcc < 0) {
+				menuAcc = 0;
+				menuSizeX = 0;
+				menuSizeY = 0;
+			}
+		}
+	}
+
 	void bindVertex(int idx) {
 		glBindVertexArray(VAO_UI[idx]);  // 각 모델마다 지정된 VAO만 사용
 	}
@@ -132,9 +164,9 @@ public:
 			break;
 
 		case bar_:
-			scaleMatrix = scale(scaleMatrix, vec3(0.6 / cam.zoom, 0.01 / cam.zoom, 0.0));
+			scaleMatrix = scale(scaleMatrix, vec3((0.6 + menuSizeX) / cam.zoom, (0.01 + menuSizeY) / cam.zoom, 0.0));
 			rotateMatrix = rotate(rotateMatrix, radians(-cam.camRot), vec3(0.0, 0.0, 1.0));
-			translateMatrix = translate(translateMatrix, vec3(-cam.camX * ratio, -0.97 / cam.zoom - cam.camY, 0.001));
+			translateMatrix = translate(translateMatrix, vec3(-cam.camX * ratio, (menuY + menuSizeY / 1.2) / cam.zoom - cam.camY, 0.0005));
 			break;
 
 		case cursor_:
@@ -155,7 +187,8 @@ public:
 		case title_:
 			glDepthMask(GL_FALSE);
 			glBindTexture(GL_TEXTURE_2D, title);
-			glDrawArrays(GL_TRIANGLES, 0, 6);
+			if(INTRO == 1)
+				glDrawArrays(GL_TRIANGLES, 0, 6);
 			glDepthMask(GL_TRUE);
 			break;
 
@@ -182,7 +215,8 @@ public:
 
 		case bar_:
 			glBindTexture(GL_TEXTURE_2D, bar);  // exit icon
-			glDrawArrays(GL_TRIANGLES, 0, 6);
+			if(gameStarted)
+				glDrawArrays(GL_TRIANGLES, 0, 6);
 			break;
 
 		case cursor_:

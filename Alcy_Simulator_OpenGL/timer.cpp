@@ -48,8 +48,10 @@ void timerOperation(int value) {
     syncFrame();
     if (gameStarted) {  // 마우스 이벤트를 실시간으로 처리하기 위한 더블 싱크
         syncCamera();
-        syncAlcyHead();
-        syncCursor();
+        if (!ui.menuEnable) {
+            syncAlcyHead();
+            syncCursor();
+        }
     }
 
     cam.introAnimation();
@@ -61,6 +63,7 @@ void timerOperation(int value) {
     ui.updateTip();
 
     if (gameStarted) {
+        ui.updateMenu();
         alcy.checkControl();
         alcy.updateAlcySleep();
     }

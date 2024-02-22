@@ -90,8 +90,10 @@ void pMotion(int x, int y) {  // 클릭 안할 때의 모션
 			cam.camX = (0.0 - mx) / 10 / cam.zoom;
 			cam.camY = (0.0 - my) / 10 / cam.zoom;
 
-			setDir();
-			updateCursor();
+			if (!ui.menuEnable) {
+				setDir();
+				updateCursor();
+			}
 
 			alcy.isLeave = false;  // 움직이면 컨트롤을 감지한다.
 		}
@@ -106,8 +108,10 @@ void Motion(int x, int y) {  // 클릭 할 때의 모션
 			cam.camX = (0.0 - mx) / 10 / cam.zoom;
 			cam.camY = (0.0 - my) / 10 / cam.zoom;
 
-			setDir();
-			updateCursor();
+			if (!ui.menuEnable) {
+				setDir();
+				updateCursor();
+			}
 		}
 
 		alcy.isLeave = false;  // 움직이면 컨트롤을 감지한다.

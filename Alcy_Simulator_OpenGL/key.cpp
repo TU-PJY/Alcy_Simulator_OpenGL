@@ -9,19 +9,58 @@
 void keyDown(unsigned char KEY, int x, int y) {
 	switch (KEY) {
 	case 27:  // ESC
-		if (!escSoundPlayed) {  // 중복 재생 방지
+		if (!escSoundPlayed && !ui.menuEnable) {  // 중복 재생 방지
 			channelEscDown->stop();
 			ssystem->playSound(escDown, 0, false, &channelEscDown);
 			escSoundPlayed = true;
 		}
-		ui.exitEnable = true;
-		alcy.isLeave = false;
+		if (!ui.menuEnable) {
+			ui.exitEnable = true;
+			alcy.isLeave = false;
+		}
 		break;
 
-	case 32:
+	case 32:  // space
 		if (!gameStarted && INTRO == 1) {  // 게임 시작 시 인트로 출력
 			startIntro = true;  // 카메라 애니메이션 활성화
 			ui.intro = true;
+		}
+
+		else if (gameStarted) {  // 게임 시작 이후에는 메뉴를 여는 기능을 한다.
+			if (!ui.menuEnable) {
+				ui.menuEnable = true;
+				ui.handEnable = false;
+				ui.fingerEnable = false;
+
+				ui.menuSizeX = 0;
+				ui.menuSizeY = 0;
+				ui.menuAcc = 0.2;
+
+				if (cam.camL || cam.camR) {
+					cam.camL = false;
+					cam.camR = false;
+				}
+			
+				if (!cam.camL && !cam.camR && alcy.touchEnable) {
+					ui.handX = 0;
+					ui.handNum = 0;
+					alcy.headRot = 0;
+					alcy.tailNum = 0;
+					alcy.tailRot = 0;
+					alcy.bodyRot = 0;
+					alcy.touchEnable = false;
+					channelTouch->stop();
+				}
+				break;
+			}
+			else {
+				ui.menuEnable = false;
+				ui.menuSizeX = 1.02;
+				ui.menuSizeY = 0.51;
+				ui.menuAcc = 0.2;
+			}
+
+			alcy.isLeave = false;
 		}
 		break;
 
@@ -42,7 +81,7 @@ void keyDown(unsigned char KEY, int x, int y) {
 
 	case 'q':  // 카메라 좌측 회전
 		if (gameStarted) {
-			if (!alcy.touchEnable) {
+			if (!alcy.touchEnable && !ui.menuEnable) {
 				cam.camL = true;
 				mouseClickEnable = false;
 			}
@@ -52,7 +91,7 @@ void keyDown(unsigned char KEY, int x, int y) {
 
 	case 'e':  // 카메라 우측 회전
 		if (gameStarted) {
-			if (!alcy.touchEnable) {
+			if (!alcy.touchEnable && !ui.menuEnable) {
 				cam.camR = true;
 				mouseClickEnable = false;
 			}
@@ -61,7 +100,7 @@ void keyDown(unsigned char KEY, int x, int y) {
 		break;
 
 	case 'i':  // info 보기
-		if (gameStarted) {
+		if (gameStarted && !ui.menuEnable) {
 			if (!escSoundPlayed) {  // 중복 재생 방지
 				channelEscDown->stop();
 				ssystem->playSound(escDown, 0, false, &channelEscDown);
@@ -69,9 +108,6 @@ void keyDown(unsigned char KEY, int x, int y) {
 			}
 			ui.infoEnable = true;  // info 활성화
 		}
-		break;
-
-	case 'm':
 		break;
 	}
 	if (glutGetWindow() != 0)
@@ -81,9 +117,11 @@ void keyDown(unsigned char KEY, int x, int y) {
 void keyUp(unsigned char KEY, int x, int y) {
 	switch (KEY) {
 	case 27:
-		channelEscUp->stop();
-		ssystem->playSound(escUp, 0, false, &channelEscUp);
-		escSoundPlayed = false;
+		if (!ui.menuEnable) {
+			channelEscUp->stop();
+			ssystem->playSound(escUp, 0, false, &channelEscUp);
+			escSoundPlayed = false;
+		}
 
 		ui.exitEnable = false;
 		break;
@@ -99,7 +137,7 @@ void keyUp(unsigned char KEY, int x, int y) {
 		break;
 
 	case 'i':
-		if (gameStarted) {
+		if (gameStarted && !ui.menuEnable) {
 			channelEscUp->stop();
 			ssystem->playSound(escUp, 0, false, &channelEscUp);
 			escSoundPlayed = false;
