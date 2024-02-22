@@ -326,29 +326,21 @@ public:
         case tail_:
             translateMatrix = translate(translateMatrix, vec3(-0.2 * ratio, -0.75, -0.00003));
             translateMatrix = rotate(translateMatrix, radians(tailRot), vec3(0.0, 0.0, 1.0));
-            selectedColor = vec3(0.0, 1.0, 0.0);
-            threshold = vec3(0.0, 0.8, 0.0);
             break;
 
         case body_:
             translateMatrix = translate(translateMatrix, vec3(0.0, -0.75 + sleepHeight / 2, -0.00002));
             translateMatrix = rotate(translateMatrix, radians(bodyRot), vec3(0.0, 0.0, 1.0));
-            selectedColor = vec3(0.0, 1.0, 0.0);
-            threshold = vec3(0.0, 0.8, 0.0);
             break;
 
         case hair_:
             translateMatrix = translate(translateMatrix, vec3(0.0, -0.75 - headRot / 200 + sleepHeight, -0.00001));
-            selectedColor = vec3(0.0, 1.0, 0.0);
-            threshold = vec3(0.0, 0.8, 0.0);
             break;
 
         case head_:
             translateMatrix = translate(translateMatrix, vec3(0.0, -0.1, 0.0));
             translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
             translateMatrix = translate(translateMatrix, vec3((headPos - headRot / 300) * ratio, 0.22 + sleepHeight, 0.0));
-            selectedColor = vec3(0.0, 1.0, 0.0);
-            threshold = vec3(0.0, 0.8, 0.0);
             break;
 
         case eye_:
@@ -360,8 +352,6 @@ public:
             else
                 translateMatrix = translate(translateMatrix,
                     vec3((headPos - headRot / 300) * ratio, 0.22, 0.00001));
-            selectedColor = vec3(0.0, 1.0, 0.0);
-            threshold = vec3(0.0, 0.9, 0.0);
             break;
 
         case dot_:
@@ -372,8 +362,6 @@ public:
                     vec3(((headPos - headRot / 300) - (cam.camX / 2.5)) * ratio, 0.22 - (cam.camY / 2), 0.00003));
             else
                 translateMatrix = translate(translateMatrix,vec3((headPos - headRot / 300) * ratio, 0.22, 0.00003));
-            selectedColor = vec3(0.0, 1.0, 0.0);
-            threshold = vec3(0.0, 1.0, 0.0);
             break;
 
         case brow_:
@@ -383,16 +371,12 @@ public:
                 translateMatrix = translate(translateMatrix,vec3((headPos - headRot / 300) * ratio, 0.23 - (cam.camY / 4), 0.00003));
             else
                 translateMatrix = translate(translateMatrix,vec3((headPos - headRot / 300) * ratio, 0.22 + sleepHeight, 0.00003));
-            selectedColor = vec3(0.0, 1.0, 0.0);
-            threshold = vec3(0.0, 0.8, 0.0);
             break;
 
         case blink_:
             translateMatrix = translate(translateMatrix, vec3(0.0, -0.1, 0.0));
             translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
             translateMatrix = translate(translateMatrix, vec3((headPos - headRot / 300) * ratio, 0.22 + sleepHeight, 0.00004));
-            selectedColor = vec3(0.0, 1.0, 0.0);
-            threshold = vec3(0.0, 0.8, 0.0);
             break;
         }
 

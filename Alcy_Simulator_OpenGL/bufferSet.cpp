@@ -1,61 +1,10 @@
 ﻿// 모델 버퍼 
+#define STB_IMAGE_IMPLEMENTATION
 #include "buffer.h"
 #include "texture.h"
-
-GLubyte* LoadDIBitmap(const char* filename, BITMAPINFO** info) {
-	FILE* fp;
-	GLubyte* bits;
-	int bitsize, infosize;
-	BITMAPFILEHEADER header;
-
-	//--- 바이너리 읽기 모드로 파일을 연다
-	if ((fp = fopen(filename, "rb")) == NULL)
-		return NULL;
-	//--- 비트맵 파일 헤더를 읽는다.
-	if (fread(&header, sizeof(BITMAPFILEHEADER), 1, fp) < 1) {
-		fclose(fp); return NULL;
-	}
-
-	//--- 파일이 BMP 파일인지 확인한다.
-	if (header.bfType != 'MB') {
-		fclose(fp); return NULL;
-	}
-
-	//--- BITMAPINFOHEADER 위치로 간다.
-	infosize = header.bfOffBits - sizeof(BITMAPFILEHEADER);
-	//--- 비트맵 이미지 데이터를 넣을 메모리 할당을 한다.
-	if ((*info = (BITMAPINFO*)malloc(infosize)) == NULL) {
-		fclose(fp); return NULL;
-	}
-
-	//--- 비트맵 인포 헤더를 읽는다.
-	if (fread(*info, 1, infosize, fp) < (unsigned int)infosize) {
-		free(*info);
-		fclose(fp); return NULL;
-	}
-
-	//--- 비트맵의 크기 설정
-	if ((bitsize = (*info)->bmiHeader.biSizeImage) == 0)
-		bitsize = ((*info)->bmiHeader.biWidth * (*info)->bmiHeader.biBitCount + 7) / 8.0 * abs((*info)->bmiHeader.biHeight);
-
-	//--- 비트맵의 크기만큼 메모리를 할당한다.
-	if ((bits = (unsigned char*)malloc(bitsize)) == NULL) {
-		free(*info);
-		fclose(fp); return NULL;
-	}
-
-	//--- 비트맵 데이터를 bit(GLubyte 타입)에 저장한다.
-	if (fread(bits, 1, bitsize, fp) < (unsigned int)bitsize) {
-		free(*info); free(bits);
-		fclose(fp); return NULL;
-	}
-
-	fclose(fp);
-	return bits;
-}
+#include "stb_image.h"
 
 GLuint VAO_ALCY[ALCY_PART], VAO_UI[UI_PART], VBO;  // MODEL_COUNT는 config.h에 정의되어있음
-BITMAPINFO* bmp;
 
 // ui 리소스
 unsigned int back, cursor[3];
@@ -69,6 +18,19 @@ unsigned int alcyTail, alcyBody, alcyHair, alcyHead[3];
 unsigned int eye[5], dot[3], eyeClose[3], brow[3], blink[3];
 
 unsigned char* texture_data;
+
+//ui
+int channel = 1;
+int titleW = 1500, titleH = 1500;
+int backgroundW = 2560, backgroundH = 1440;
+int cursorW = 200, cursorH = 200;
+int iconW = 512, iconH = 512;
+int tipW = 500, tipH = 500;
+int barW = 51, barH = 51;
+
+// 알키
+int alcyW = 1500, alcyH = 1500;
+
 
 GLfloat plate[][48] = {  // 이미지 출력에 사용할 plate
 	-0.8f, -0.8f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0, 0.0,
@@ -119,47 +81,49 @@ void parameteri() {
 }
 
 void setAlcyTexture() {
+	stbi_set_flip_vertically_on_load(true);
+
 	// tail
 	glGenTextures(1, &alcyTail);
 	glBindTexture(GL_TEXTURE_2D, alcyTail);
 	parameteri();
-	texture_data = LoadDIBitmap("res//alcy//tail.bmp", &bmp);
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, 1500, 1500, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+	texture_data = stbi_load("res//alcy//tail.png", &alcyW, &alcyH, &channel, 4);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 
 	// alcy body
 	glGenTextures(1, &alcyBody);
 	glBindTexture(GL_TEXTURE_2D, alcyBody);
 	parameteri();
-	texture_data = LoadDIBitmap("res//alcy//body.bmp", &bmp);
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, 1500, 1500, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+	texture_data = stbi_load("res//alcy//body.png", &alcyW, &alcyH, &channel, 4);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 
 	// alcy hair
 	glGenTextures(1, &alcyHair);
 	glBindTexture(GL_TEXTURE_2D, alcyHair);
 	parameteri();
-	texture_data = LoadDIBitmap("res//alcy//hair.bmp", &bmp);
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, 1500, 1500, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+	texture_data = stbi_load("res//alcy//hair.png", &alcyW, &alcyH, &channel, 4);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 
 	// alcy head middle
 	glGenTextures(1, &alcyHead[0]);
 	glBindTexture(GL_TEXTURE_2D, alcyHead[0]);
 	parameteri();
-	texture_data = LoadDIBitmap("res//alcy//head_middle.bmp", &bmp);
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, 1500, 1500, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+	texture_data = stbi_load("res//alcy//head_middle.png", &alcyW, &alcyH, &channel, 4);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 
 	// alcy head left
 	glGenTextures(1, &alcyHead[1]);
 	glBindTexture(GL_TEXTURE_2D, alcyHead[1]);
 	parameteri();
-	texture_data = LoadDIBitmap("res//alcy//head_left.bmp", &bmp);
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, 1500, 1500, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+	texture_data = stbi_load("res//alcy//head_left.png", &alcyW, &alcyH, &channel, 4);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 
 	// alcy head right
 	glGenTextures(1, &alcyHead[2]);
 	glBindTexture(GL_TEXTURE_2D, alcyHead[2]);
 	parameteri();
-	texture_data = LoadDIBitmap("res//alcy//head_right.bmp", &bmp);
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, 1500, 1500, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+	texture_data = stbi_load("res//alcy//head_right.png", &alcyW, &alcyH, &channel, 4);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 
 
 
@@ -167,57 +131,57 @@ void setAlcyTexture() {
 	glGenTextures(1, &eye[0]);
 	glBindTexture(GL_TEXTURE_2D, eye[0]);
 	parameteri();
-	texture_data = LoadDIBitmap("res//alcy//face//eye_middle.bmp", &bmp);
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, 1500, 1500, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+	texture_data = stbi_load("res//alcy//face//eye_middle.png", &alcyW, &alcyH, &channel, 4);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 
 	// eye left
 	glGenTextures(1, &eye[1]);
 	glBindTexture(GL_TEXTURE_2D, eye[1]);
 	parameteri();
-	texture_data = LoadDIBitmap("res//alcy//face//eye_left.bmp", &bmp);
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, 1500, 1500, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+	texture_data = stbi_load("res//alcy//face//eye_left.png", &alcyW, &alcyH, &channel, 4);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 
 	// eye right
 	glGenTextures(1, &eye[2]);
 	glBindTexture(GL_TEXTURE_2D, eye[2]);
 	parameteri();
-	texture_data = LoadDIBitmap("res//alcy//face//eye_right.bmp", &bmp);
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, 1500, 1500, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+	texture_data = stbi_load("res//alcy//face//eye_right.png", &alcyW, &alcyH, &channel, 4);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 
 	// eye squeak
 	glGenTextures(1, &eye[3]);
 	glBindTexture(GL_TEXTURE_2D, eye[3]);
 	parameteri();
-	texture_data = LoadDIBitmap("res//alcy//face//eye_squeak.bmp", &bmp);
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, 1500, 1500, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+	texture_data = stbi_load("res//alcy//face//eye_squeak.png", &alcyW, &alcyH, &channel, 4);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 
 	// eye tired
 	glGenTextures(1, &eye[4]);
 	glBindTexture(GL_TEXTURE_2D, eye[4]);
 	parameteri();
-	texture_data = LoadDIBitmap("res//alcy//face//eye_tired.bmp", &bmp);
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, 1500, 1500, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+	texture_data = stbi_load("res//alcy//face//eye_tired.png", &alcyW, &alcyH, &channel, 4);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 
 	// dot middle
 	glGenTextures(1, &dot[0]);
 	glBindTexture(GL_TEXTURE_2D, dot[0]);
 	parameteri();
-	texture_data = LoadDIBitmap("res//alcy//face//dot_middle.bmp", &bmp);
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, 1500, 1500, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+	texture_data = stbi_load("res//alcy//face//dot_middle.png", &alcyW, &alcyH, &channel, 4);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 
 	// dot left
 	glGenTextures(1, &dot[1]);
 	glBindTexture(GL_TEXTURE_2D, dot[1]);
 	parameteri();
-	texture_data = LoadDIBitmap("res//alcy//face//dot_left.bmp", &bmp);
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, 1500, 1500, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+	texture_data = stbi_load("res//alcy//face//dot_left.png", &alcyW, &alcyH, &channel, 4);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 
 	// dot right
 	glGenTextures(1, &dot[2]);
 	glBindTexture(GL_TEXTURE_2D, dot[2]);
 	parameteri();
-	texture_data = LoadDIBitmap("res//alcy//face//dot_right.bmp", &bmp);
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, 1500, 1500, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+	texture_data = stbi_load("res//alcy//face//dot_right.png", &alcyW, &alcyH, &channel, 4);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 
 
 
@@ -225,43 +189,43 @@ void setAlcyTexture() {
 	glGenTextures(1, &brow[0]);
 	glBindTexture(GL_TEXTURE_2D, brow[0]);
 	parameteri();
-	texture_data = LoadDIBitmap("res//alcy//face//brow_middle.bmp", &bmp);
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, 1500, 1500, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+	texture_data = stbi_load("res//alcy//face//brow_middle.png", &alcyW, &alcyH, &channel, 4);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 
 	//brow left
 	glGenTextures(1, &brow[1]);
 	glBindTexture(GL_TEXTURE_2D, brow[1]);
 	parameteri();
-	texture_data = LoadDIBitmap("res//alcy//face//brow_left.bmp", &bmp);
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, 1500, 1500, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+	texture_data = stbi_load("res//alcy//face//brow_left.png", &alcyW, &alcyH, &channel, 4);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 
 	//brow right
 	glGenTextures(1, &brow[2]);
 	glBindTexture(GL_TEXTURE_2D, brow[2]);
 	parameteri();
-	texture_data = LoadDIBitmap("res//alcy//face//brow_right.bmp", &bmp);
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, 1500, 1500, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+	texture_data = stbi_load("res//alcy//face//brow_right.png", &alcyW, &alcyH, &channel, 4);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 
 	//blink middle
 	glGenTextures(1, &blink[0]);
 	glBindTexture(GL_TEXTURE_2D, blink[0]);
 	parameteri();
-	texture_data = LoadDIBitmap("res//alcy//face//blink_middle.bmp", &bmp);
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, 1500, 1500, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+	texture_data = stbi_load("res//alcy//face//blink_middle.png", &alcyW, &alcyH, &channel, 4);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 
 	//blink left
 	glGenTextures(1, &blink[1]);
 	glBindTexture(GL_TEXTURE_2D, blink[1]);
 	parameteri();
-	texture_data = LoadDIBitmap("res//alcy//face//blink_left.bmp", &bmp);
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, 1500, 1500, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+	texture_data = stbi_load("res//alcy//face//blink_left.png", &alcyW, &alcyH, &channel, 4);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 
 	//blink right
 	glGenTextures(1, &blink[2]);
 	glBindTexture(GL_TEXTURE_2D, blink[2]);
 	parameteri();
-	texture_data = LoadDIBitmap("res//alcy//face//blink_right.bmp", &bmp);
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, 1500, 1500, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+	texture_data = stbi_load("res//alcy//face//blink_right.png", &alcyW, &alcyH, &channel, 4);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 }
 
 void setUITexture() {
@@ -269,62 +233,62 @@ void setUITexture() {
 	glGenTextures(1, &title);
 	glBindTexture(GL_TEXTURE_2D, title);
 	parameteri();
-	texture_data = LoadDIBitmap("res//ui//title.bmp", &bmp);
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, 1500, 1500, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+	texture_data = stbi_load("res//ui//title.png", &titleW, &titleH, &channel, 4);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, titleW, titleH, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 
 	// background
 	glGenTextures(1, &back);
 	glBindTexture(GL_TEXTURE_2D, back);
 	parameteri();
-	texture_data = LoadDIBitmap("res//ui//background.bmp", &bmp);
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, 2560, 1440, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+	texture_data = stbi_load("res//ui//background.png", &backgroundW, &backgroundH, &channel, 4);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, backgroundW, backgroundH, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 
 	// cursor
 	glGenTextures(1, &cursor[0]);
 	glBindTexture(GL_TEXTURE_2D, cursor[0]);
 	parameteri();
-	texture_data = LoadDIBitmap("res//ui//cursor.bmp", &bmp);
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, 100, 100, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+	texture_data = stbi_load("res//ui//cursor.png", &cursorW, &cursorH, &channel, 4);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, cursorW, cursorH, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 
 	// cursor hand
 	glGenTextures(1, &cursor[1]);
 	glBindTexture(GL_TEXTURE_2D, cursor[1]);
 	parameteri();
-	texture_data = LoadDIBitmap("res//ui//cursor_hand.bmp", &bmp);
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, 100, 100, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+	texture_data = stbi_load("res//ui//cursor_hand.png", &cursorW, &cursorH, &channel, 4);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, cursorW, cursorH, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 
 	// cursor finger
 	glGenTextures(1, &cursor[2]);
 	glBindTexture(GL_TEXTURE_2D, cursor[2]);
 	parameteri();
-	texture_data = LoadDIBitmap("res//ui//cursor_finger.bmp", &bmp);
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, 512, 512, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+	texture_data = stbi_load("res//ui//cursor_finger.png", &cursorW, &cursorH, &channel, 4);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, cursorW, cursorH, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 
 	// exit icon
 	glGenTextures(1, &icon[0]);
 	glBindTexture(GL_TEXTURE_2D, icon[0]);
 	parameteri();
-	texture_data = LoadDIBitmap("res//ui//icon_exit.bmp", &bmp);
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, 512, 512, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+	texture_data = stbi_load("res//ui//icon_exit.png", &iconW, &iconH, &channel, 4);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, iconW, iconH, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 
 	// info icon
 	glGenTextures(1, &icon[1]);
 	glBindTexture(GL_TEXTURE_2D, icon[1]);
 	parameteri();
-	texture_data = LoadDIBitmap("res//ui//icon_info.bmp", &bmp);
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, 512, 512, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+	texture_data = stbi_load("res//ui//icon_info.png", &iconW, &iconH, &channel, 4);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, iconW, iconH, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 
 	// tip
 	glGenTextures(1, &tip);
 	glBindTexture(GL_TEXTURE_2D, tip);
 	parameteri();
-	texture_data = LoadDIBitmap("res//ui//tip.bmp", &bmp);
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, 500, 500, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+	texture_data = stbi_load("res//ui//tip.png", &tipW, &tipH, &channel, 4);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tipW, tipH, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 
 	// bar
 	glGenTextures(1, &bar);
 	glBindTexture(GL_TEXTURE_2D, bar);
 	parameteri();
-	texture_data = LoadDIBitmap("res//ui//bar.bmp", &bmp);
-	glTexImage2D(GL_TEXTURE_2D, 0, 3, 51, 51, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+	texture_data = stbi_load("res//ui//bar.png", &barW, &barH, &channel, 4);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, barW, barH, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 }

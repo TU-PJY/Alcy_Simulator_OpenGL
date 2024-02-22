@@ -9,6 +9,8 @@
 #include "Alcy.h"  
 #include "UI.h"
 #include "ZZZ.h"
+#include "texture.h"
+#include "stb_image.h"
 
 int WIDTH = GetSystemMetrics(SM_CXSCREEN);
 int HEIGHT = GetSystemMetrics(SM_CYSCREEN);  // 화면 사이즈에 맞추어 창을 출력한다
@@ -72,8 +74,10 @@ void main(int argc, char** argv) {
 
 		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_MULTISAMPLE);
+		glEnable(GL_ALPHA_TEST);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		stbi_set_flip_vertically_on_load(true);
 
 		makeShaderProgram();
 
@@ -99,11 +103,12 @@ void main(int argc, char** argv) {
 
 	setAlcyTexture();  // 텍스처 설정
 	setUITexture();
-
 	for (int i = 0; i < 3; i++) {
 		zzz[i].setTexture();
 		zzz[i].setDelay(10 * i);
 	}
+
+	stbi_image_free(texture_data);
 	
 	glutDisplayFunc(displayOutput);
 	glutReshapeFunc(displayReshape);

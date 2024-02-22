@@ -109,24 +109,18 @@ public:
 		case title_:
 			scaleMatrix = scale(scaleMatrix, vec3(titleSize / cam.zoom, titleSize / cam.zoom, 0.0));
 			translateMatrix = translate(translateMatrix, vec3(0.0, titleY, 0.05));
-			selectedColor = vec3(0.0, 1.0, 0.0);
-			threshold = vec3(0.0, 0.85, 0.0);
 			transparent = titleTransparent;
 			break;
 
 		case background_: 
 			scaleMatrix = scale(scaleMatrix, vec3(2.0 * ratio / cam.zoom, 2.0 / cam.zoom, 0.0));
 			translateMatrix = translate(translateMatrix, vec3(cam.camX / 10 * ratio, (cam.camY / 10) / cam.zoom, -0.001));
-			selectedColor = vec3(0.0, 1.0, 0.0);
-			threshold = vec3(0.0, 0.85, 0.0);
 			break;
 
 		case tip_:
 			scaleMatrix = scale(scaleMatrix, vec3(0.5 / cam.zoom, 0.5 / cam.zoom, 0.0));
 			translateMatrix = translate(translateMatrix, vec3((-0.7 - cam.camX) * ratio, 0.5 - cam.camY, 0.0005));
 			rotateMatrix = rotate(rotateMatrix, radians(-cam.camRot), vec3(0.0, 0.0, 1.0));
-			selectedColor = vec3(0.0, 1.0, 0.0);
-			threshold = vec3(0.0, 0.8, 0.0);
 			transparent = tipTransparent;
 			break;
 
@@ -134,9 +128,6 @@ public:
 			scaleMatrix = scale(scaleMatrix, vec3(0.5 / cam.zoom, 0.5 / cam.zoom, 0.0));
 			translateMatrix = translate(translateMatrix, vec3((0.0 - cam.camX) * ratio, 0.0 - cam.camY, 0.001));
 			rotateMatrix = rotate(rotateMatrix, radians(-cam.camRot), vec3(0.0, 0.0, 1.0));
-
-			selectedColor = vec3(0.0, 1.0, 0.0);
-			threshold = vec3(0.0, 0.8, 0.0);
 			transparent = exitTransparent;
 			break;
 
@@ -144,22 +135,15 @@ public:
 			scaleMatrix = scale(scaleMatrix, vec3(0.6 / cam.zoom, 0.01 / cam.zoom, 0.0));
 			rotateMatrix = rotate(rotateMatrix, radians(-cam.camRot), vec3(0.0, 0.0, 1.0));
 			translateMatrix = translate(translateMatrix, vec3(-cam.camX * ratio, -0.97 / cam.zoom - cam.camY, 0.001));
-			selectedColor = vec3(0.0, 1.0, 0.0);
-			threshold = vec3(0.0, 0.8, 0.0);
 			break;
 
 		case cursor_:
-			if (fingerEnable)
-				scaleMatrix = scale(scaleMatrix, vec3(0.15 / cam.zoom, 0.15 / cam.zoom, 0.0));
-			else
-				scaleMatrix = scale(scaleMatrix, vec3(0.1 / cam.zoom, 0.1 / cam.zoom, .0));
+			scaleMatrix = scale(scaleMatrix, vec3(0.15 / cam.zoom, 0.15 / cam.zoom, .0));
 
 			if (lButtonDown && handEnable)  // 쓰다듬을 때는 커서를 강제로 지정된 위치로 변환한다.
 				translateMatrix = translate(translateMatrix, vec3((handX - cam.camX) * ratio, (0.3 - cam.camY), 0.0006));
 			else
 				translateMatrix = translate(translateMatrix, vec3((mx / cam.zoom - cam.camX) * ratio, (my / cam.zoom - cam.camY), 0.0006));
-			selectedColor = vec3(0.0, 1.0, 0.0);
-			threshold = vec3(0.0, 0.8, 0.0);
 			break;
 		}
 

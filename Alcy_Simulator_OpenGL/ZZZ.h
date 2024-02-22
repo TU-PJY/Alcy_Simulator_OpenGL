@@ -9,6 +9,7 @@
 #include "globalVar.h"
 #include "Camera.h"
 #include "Alcy.h"
+#include "stb_image.h"
 
 class ZZZ {
 public:
@@ -20,8 +21,9 @@ public:
 	GLfloat delayData; // 출력 딜레이 저장
 	GLfloat delay;  // 출력 딜레이
 	unsigned int zzzTex;
+	int zzzW = 200, zzzH = 200;
 	unsigned char* texture_data;
-	BITMAPINFO* bmp;
+	int channel;
 
 	ZZZ() {
 		x = 0.3, y = 0.3;
@@ -83,8 +85,8 @@ public:
 		glGenTextures(1, &zzzTex);
 		glBindTexture(GL_TEXTURE_2D, zzzTex);
 		parameteri();
-		texture_data = LoadDIBitmap("res//prop//zzz.bmp", &bmp);
-		glTexImage2D(GL_TEXTURE_2D, 0, 3, 300, 300, 0, GL_BGR, GL_UNSIGNED_BYTE, texture_data);
+		texture_data = stbi_load("res//prop//zzz.png", &zzzW, &zzzH, &channel, 4);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, zzzW, zzzH, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 	}
 
 	void bindVertex() {
