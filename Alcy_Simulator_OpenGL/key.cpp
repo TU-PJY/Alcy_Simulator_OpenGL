@@ -5,6 +5,7 @@
 #include "Alcy.h"
 #include "Camera.h"
 #include "UI.h"
+#include "Icon.h"
 
 void keyDown(unsigned char KEY, int x, int y) {
 	switch (KEY) {
@@ -55,12 +56,17 @@ void keyDown(unsigned char KEY, int x, int y) {
 				}
 				break;
 			}
+
 			else {
 				ui.menuEnable = false;
+				ui.menuOpened = false;  // 더 이상 커서와 아이콘이 상호작용하지 않는다.
 				ui.menuTransparent = 0.75;
 				ui.menuSizeX = 1.02;
 				ui.menuSizeY = 0.51;
 				ui.menuAcc = 0.2;
+
+				for (int i = 0; i < ICON_PART; i++)
+					icon[i].isOnCursor = false;
 			}
 
 			alcy.isLeave = false;

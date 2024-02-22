@@ -5,6 +5,7 @@
 #include "Camera.h"
 #include "UI.h"
 #include "ZZZ.h"
+#include "Icon.h"
 
 // 프레임
 int lastElapsedTime, elapsedTime;
@@ -38,25 +39,47 @@ void syncCursor() {
     else
         ui.handEnable = false;
 
-    if ((mx / cam.zoom * ratio >= -0.03 && mx / cam.zoom * ratio <= 0.05) && (my / cam.zoom >= -0.2 && my / cam.zoom <= -0.15))  // 코 누르기
+    if ((mx / cam.zoom * ratio >= -0.03 && mx / cam.zoom * ratio <= 0.03) && (my / cam.zoom >= -0.2 && my / cam.zoom <= -0.15))  // 코 누르기
         ui.fingerEnable = true;
     else
         ui.fingerEnable = false;
 }
 
+void syncIconSelection() { 
+    for (int i = 0; i < ICON_PART; i++) {
+        GLfloat iconX = (-1.0 * ratio + 0.15 * ratio + i * 0.35);
+        GLfloat iconY = -0.33;
+        if (((iconX - 0.14) / cam.zoom <= mx / cam.zoom * ratio && mx / cam.zoom * ratio <= (iconX + 0.14) / cam.zoom) &&
+            ((iconY - 0.14) / cam.zoom <= my / cam.zoom && my / cam.zoom <= (iconY + 0.13) / cam.zoom)) {
+            icon[i].isOnCursor = true;  // 선택된 아이콘은 살짝 투명해진다.
+        }
+        else {
+            icon[i].isOnCursor = false;  // 그 외의 아이콘은 그대로 있는다.
+        }
+    }
+}
+
 void timerOperation(int value) {
     syncFrame();
+
+    cam.introAnimation();
+    cam.rotateCam();
+    cam.updateZoom();
+
     if (gameStarted) {  // 마우스 이벤트를 실시간으로 처리하기 위한 더블 싱크
         syncCamera();
         if (!ui.menuEnable) {
             syncAlcyHead();
             syncCursor();
         }
+        if (ui.menuOpened && ui.menuEnable)
+            syncIconSelection();
     }
 
-    cam.introAnimation();
-    cam.rotateCam();
-    cam.updateZoom();
+    for (int i = 0; i < ICON_PART; i++) {
+        icon[i].updateIcon();
+        icon[i].updateOnCursor();
+    }
 
     ui.startGame();
     ui.exitGame();

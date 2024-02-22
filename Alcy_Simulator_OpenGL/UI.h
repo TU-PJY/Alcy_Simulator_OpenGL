@@ -43,6 +43,7 @@ public:
 	bool intro;  // 인트로 애니메이션
 
 	bool menuEnable;  // 메뉴 활성화 여부
+	bool menuOpened;  // 메뉴 아이콘 사용 가능 여부
 	GLfloat menuY;  // 메뉴 높이
 	GLfloat menuSizeX;  // 메뉴 크기
 	GLfloat menuSizeY;
@@ -116,6 +117,7 @@ public:
 				menuSizeX = 1.02;
 				menuSizeY = 0.51;
 				menuAcc = 0;
+				menuOpened = true;
 			}
 		}
 
@@ -164,7 +166,7 @@ public:
 			break;
 
 		case bar_:
-			scaleMatrix = scale(scaleMatrix, vec3((0.6 + menuSizeX) / cam.zoom, (0.01 + menuSizeY) / cam.zoom, 0.0));
+			scaleMatrix = scale(scaleMatrix, vec3((0.2 + menuSizeX) * ratio / cam.zoom, (0.01 + menuSizeY) / cam.zoom, 0.0));
 			rotateMatrix = rotate(rotateMatrix, radians(-cam.camRot), vec3(0.0, 0.0, 1.0));
 			translateMatrix = translate(translateMatrix, vec3(-cam.camX * ratio, (menuY + menuSizeY / 1.2) / cam.zoom - cam.camY, 0.0005));
 			transparent = menuTransparent;
@@ -193,20 +195,27 @@ public:
 
 		case tip_:
 			if (gameStarted) {
+				glDepthMask(GL_FALSE);
 				glBindTexture(GL_TEXTURE_2D, tip);
 				glDrawArrays(GL_TRIANGLES, 0, 6);
+				glDepthMask(GL_TRUE);
 			}
 			break;
 
 		case icon_:
+			glDepthMask(GL_FALSE);
 			glBindTexture(GL_TEXTURE_2D, uiIcon[0]);  // exit icon
 			glDrawArrays(GL_TRIANGLES, 0, 6);
+			glDepthMask(GL_TRUE);
 			break;
 
 		case bar_:
-			glBindTexture(GL_TEXTURE_2D, bar);  // exit icon
-			if(gameStarted)
+			if (gameStarted) {
+				glDepthMask(GL_FALSE);
+				glBindTexture(GL_TEXTURE_2D, bar);  // exit icon
 				glDrawArrays(GL_TRIANGLES, 0, 6);
+				glDepthMask(GL_TRUE);
+			}
 			break;
 
 		case cursor_:

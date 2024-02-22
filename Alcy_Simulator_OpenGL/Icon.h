@@ -9,6 +9,7 @@
 #include "globalVar.h"
 #include "Camera.h"
 #include "Alcy.h"
+#include "Ui.h"
 #include "stb_image.h"
 
 class Icon {
@@ -21,9 +22,33 @@ public:
 	int iconW, iconH;
 	int channel;
 
+	bool isOnCursor;  // true일 시 아이콘이 선택된 것
+
 	Icon() {
-		iconTransparent = 1.0;
+		iconTransparent = 0.0;
 		iconW = 512, iconH = 512;
+	}
+
+	void updateIcon() {  // 메뉴를 열 시 아이큰이 부드럽게 나타난다.
+		if (ui.menuEnable && ui.menuTransparent < 0.8) {
+			iconTransparent += fs / 2;
+			if (iconTransparent > 1.0)
+				iconTransparent = 1.0;
+		}
+
+		else if (!ui.menuEnable) {  // 메뉴를 닫을 때는 조금 빠르게 사라진다.
+			iconTransparent -= fs;
+			if (iconTransparent < 0)
+				iconTransparent = 0;
+		}
+	}
+
+	void updateOnCursor() {  // 커서 선택 업데이트
+		if (isOnCursor && ui.menuOpened) {  // 커서를 아이콘에 올리면 조금 투명해진다
+			iconTransparent -= fs;
+			if (iconTransparent < 0.5)
+				iconTransparent = 0.5;
+		}
 	}
 
 	void setBuffer() {  // 프롭 버퍼 초기화
@@ -63,8 +88,9 @@ public:
 
 	void setTransform(int idx) {
 		using namespace glm;
-		//scaleMatrix = scale(scaleMatrix, vec3(0.3, 0.3, 0.0));
-		transformMatrix = translate(transformMatrix, vec3(0.0, 0.0, 0.0007));
+		scaleMatrix = scale(scaleMatrix, vec3(0.2 / cam.zoom, 0.2 / cam.zoom, 0.0));
+		translateMatrix = translate(translateMatrix, vec3(-cam.camX * ratio + (-1.0 * ratio + 0.15 * ratio + idx * 0.35) / cam.zoom, -cam.camY - 0.33 / cam.zoom, 0.002));
+		rotateMatrix = rotate(rotateMatrix, radians(-cam.camRot), vec3(0.0, 0.0, 1.0));
 		transparent = iconTransparent;
 
 		transformMatrix = rotateMatrix * translateMatrix * scaleMatrix;  // 최종 변환

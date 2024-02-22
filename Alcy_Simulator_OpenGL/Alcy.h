@@ -324,23 +324,23 @@ public:
 
         switch (idx) {  // 변환 추가
         case tail_:
-            translateMatrix = translate(translateMatrix, vec3(-0.2 * ratio, -0.75, -0.0004));
+            translateMatrix = translate(translateMatrix, vec3(-0.2 * ratio, -0.75, -0.0008));
             translateMatrix = rotate(translateMatrix, radians(tailRot), vec3(0.0, 0.0, 1.0));
             break;
 
         case body_:
-            translateMatrix = translate(translateMatrix, vec3(0.0, -0.75 + sleepHeight / 2, -0.0003));
+            translateMatrix = translate(translateMatrix, vec3(0.0, -0.75 + sleepHeight / 2, -0.0005));
             translateMatrix = rotate(translateMatrix, radians(bodyRot), vec3(0.0, 0.0, 1.0));
             break;
 
         case hair_:
-            translateMatrix = translate(translateMatrix, vec3(0.0, -0.75 - headRot / 200 + sleepHeight, -0.00002));
+            translateMatrix = translate(translateMatrix, vec3(0.0, -0.75 - headRot / 200 + sleepHeight, -0.0003));
             break;
 
         case head_:
             translateMatrix = translate(translateMatrix, vec3(0.0, -0.1, -0.00001));
             translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
-            translateMatrix = translate(translateMatrix, vec3((headPos - headRot / 300) * ratio, 0.22 + sleepHeight, -0.00001));
+            translateMatrix = translate(translateMatrix, vec3((headPos - headRot / 300) * ratio, 0.22 + sleepHeight, -0.0001));
             break;
 
         case eye_:

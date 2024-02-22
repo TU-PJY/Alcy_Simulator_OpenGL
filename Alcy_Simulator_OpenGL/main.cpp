@@ -53,22 +53,22 @@ GLvoid displayOutput() {
 		zzz[i].modelOutput();
 	}
 
-	// 메뉴 아이콘
-	for (int i = 0; i < ICON_PART; i++) {
-		initTransform();
-		icon[i].setTransform(i);
-		transmit();
-		icon[i].bindVertex();
-		//icon[i].modelOutput();
-	}
-
-	// UI  // 항상 맨 위에 렌더링 되도록 함(중요)
+	// UI
 	for (int i = 0; i < UI_PART; i++) {
 		initTransform();
 		ui.setTransform(i);
 		transmit();
 		ui.bindVertex(i);
 		ui.modelOutput(i);
+	}
+
+	// 메뉴 아이콘
+	for (int i = 0; i < ICON_PART; i++) {
+		initTransform();
+		icon[i].setTransform(i);
+		transmit();
+		icon[i].bindVertex();
+		icon[i].modelOutput();
 	}
 
 	glutSwapBuffers();
@@ -95,7 +95,7 @@ void main(int argc, char** argv) {
 		glEnable(GL_ALPHA_TEST);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glDepthFunc(GL_ALWAYS);
+		//glDepthFunc(GL_ALWAYS);
 		stbi_set_flip_vertically_on_load(true);
 
 		makeShaderProgram();
