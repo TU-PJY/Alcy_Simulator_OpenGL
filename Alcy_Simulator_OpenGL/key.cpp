@@ -7,6 +7,51 @@
 #include "UI.h"
 #include "Icon.h"
 
+void openMenu() {
+	channelMenu->stop();
+	ssystem->playSound(menuOpen, 0, false, &channelMenu);
+	ui.menuEnable = true;
+	ui.handEnable = false;
+	ui.fingerEnable = false;
+	ui.exitEnable = false;
+	ui.infoEnable = false;
+	ui.menuTransparent = 1;
+	ui.menuSizeX = 0;
+	ui.menuSizeY = 0;
+	ui.menuAcc = 0.2;
+
+	if (cam.camL || cam.camR) {
+		cam.camL = false;
+		cam.camR = false;
+	}
+
+	if (!cam.camL && !cam.camR && alcy.touchEnable) {
+		ui.handX = 0;
+		ui.handNum = 0;
+		alcy.headRot = 0;
+		alcy.tailNum = 0;
+		alcy.tailRot = 0;
+		alcy.bodyRot = 0;
+		alcy.touchEnable = false;
+		channelTouch->stop();
+	}
+}
+
+void closeMenu() {
+	channelMenu->stop();
+	ssystem->playSound(menuClose, 0, false, &channelMenu);
+
+	ui.menuEnable = false;
+	ui.menuOpened = false;  // 더 이상 커서와 아이콘이 상호작용하지 않는다.
+	ui.menuTransparent = 0.743;
+	ui.menuSizeX = 1.02;
+	ui.menuSizeY = 0.51;
+	ui.menuAcc = 0.2;
+
+	for (int i = 0; i < ICON_PART; i++)
+		icon[i].isOnCursor = false;
+}
+
 void keyDown(unsigned char KEY, int x, int y) {
 	switch (KEY) {
 	case 27:  // ESC
@@ -28,46 +73,10 @@ void keyDown(unsigned char KEY, int x, int y) {
 		}
 
 		else if (gameStarted) {  // 게임 시작 이후에는 메뉴를 여는 기능을 한다.
-			if (!ui.menuEnable) {
-				ui.menuEnable = true;
-				ui.handEnable = false;
-				ui.fingerEnable = false;
-				ui.exitEnable = false;
-				ui.infoEnable = false;
-				ui.menuTransparent = 1;
-				ui.menuSizeX = 0;
-				ui.menuSizeY = 0;
-				ui.menuAcc = 0.2;
-
-				if (cam.camL || cam.camR) {
-					cam.camL = false;
-					cam.camR = false;
-				}
-			
-				if (!cam.camL && !cam.camR && alcy.touchEnable) {
-					ui.handX = 0;
-					ui.handNum = 0;
-					alcy.headRot = 0;
-					alcy.tailNum = 0;
-					alcy.tailRot = 0;
-					alcy.bodyRot = 0;
-					alcy.touchEnable = false;
-					channelTouch->stop();
-				}
-				break;
-			}
-
-			else {
-				ui.menuEnable = false;
-				ui.menuOpened = false;  // 더 이상 커서와 아이콘이 상호작용하지 않는다.
-				ui.menuTransparent = 0.75;
-				ui.menuSizeX = 1.02;
-				ui.menuSizeY = 0.51;
-				ui.menuAcc = 0.2;
-
-				for (int i = 0; i < ICON_PART; i++)
-					icon[i].isOnCursor = false;
-			}
+			if (!ui.menuEnable)
+				openMenu();
+			else
+				closeMenu();
 
 			alcy.isLeave = false;
 		}

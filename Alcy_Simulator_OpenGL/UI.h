@@ -108,12 +108,12 @@ public:
 		if (menuEnable) {
 			menuSizeX += menuAcc * 2 * fs;
 			menuSizeY += menuAcc * fs;
-			menuTransparent -= menuAcc / 20;
+			menuTransparent -= menuAcc / 2 * fs;
 
 			menuAcc -= fs / 25;
 
 			if (menuAcc < 0) {
-				menuTransparent = 0.75;
+				menuTransparent = 0.743;
 				menuSizeX = 1.02;
 				menuSizeY = 0.51;
 				menuAcc = 0;
@@ -124,7 +124,7 @@ public:
 		else {
 			menuSizeX -= menuAcc * 2 * fs;
 			menuSizeY -= menuAcc * fs;
-			menuTransparent += menuAcc / 20;
+			menuTransparent += menuAcc / 2 * fs;
 
 			menuAcc -= fs / 25;
 

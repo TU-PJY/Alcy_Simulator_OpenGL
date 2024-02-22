@@ -47,70 +47,107 @@ void selectIcon() {  // 커서로 아이콘 선택
 	}
 }
 
-void Mouse(int button, int state, int x, int y) {  // 마우스 클릭
-	int randomSound = 0;
+void startTouch() {
+	if (ui.handEnable && mouseClickEnable && cam.camRot == 0 && !alcy.squeak) {
+		channelTouch->stop();
+		ssystem->playSound(touch, 0, false, &channelTouch);   // 쓰다듬기 시작한 순간부터 소리를 반복 재생한다.
+		alcy.touchEnable = true;
+		lButtonDown = true;
+	}
+}
 
-	if (gameStarted) {
-		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-			if (ui.handEnable && mouseClickEnable && cam.camRot == 0 && !alcy.squeak) {
-				channelTouch->stop();
-				ssystem->playSound(touch, 0, false, &channelTouch);   // 쓰다듬기 시작한 순간부터 소리를 반복 재생한다.
-				alcy.touchEnable = true;
-				lButtonDown = true;
-			}
+void stopTouch() {
+	if (ui.handEnable && mouseClickEnable && alcy.touchEnable) {
+		ui.handNum = 0;
+		alcy.headRot = 0;
+		alcy.tailNum = 0;
+		alcy.tailRot = 0;
+		alcy.bodyRot = 0;
+		alcy.touchEnable = false;
+		channelTouch->stop();  // 쓰다듬기를 중단할 경우 소리를 정지한다.
+	}
+}
 
-			if (ui.fingerEnable && mouseClickEnable && cam.camRot == 0 && !alcy.squeak) {
-				random_device rd;  mt19937 gen(rd());
-				uniform_int_distribution <int> dis(1, 3);
-				randomSound = dis(gen);
+void clickSqueak() {
+	if (ui.fingerEnable && mouseClickEnable && cam.camRot == 0 && !alcy.squeak) {
+		random_device rd;  mt19937 gen(rd());
+		uniform_int_distribution <int> dis(1, 3);
+		int randomSound = dis(gen);
 
-				channelSqueak->stop();
+		channelSqueak->stop();
 
-				switch (randomSound) {  // 3가지 중 하나를 재생한다.
-				case 1:
-					ssystem->playSound(squeak1, 0, false, &channelSqueak);
-					break;
-				case 2:
-					ssystem->playSound(squeak2, 0, false, &channelSqueak);
-					break;
-				case 3:
-					ssystem->playSound(squeak3, 0, false, &channelSqueak);
-					break;
-				}
+		switch (randomSound) {  // 3가지 중 하나를 재생한다.
+		case 1:
+			ssystem->playSound(squeak1, 0, false, &channelSqueak);
+			break;
+		case 2:
+			ssystem->playSound(squeak2, 0, false, &channelSqueak);
+			break;
+		case 3:
+			ssystem->playSound(squeak3, 0, false, &channelSqueak);
+			break;
+		}
 
-				alcy.squeakStartTime = time(NULL);
-				alcy.squeak = true;
-				lButtonDown = true;
-			}
+		alcy.squeakStartTime = time(NULL);
+		alcy.squeak = true;
+		lButtonDown = true;
+	}
+}
 
-			
-			if (ui.menuEnable) {  // 아이콘 선택 시 실행되면서 메뉴바가 닫힌다.
-				for (int i = 0; i < ICON_PART; i++) {
-					if (ui.menuOpened && icon[i].isOnCursor) {
-						ui.menuEnable = false;
-						ui.menuOpened = false;  // 더 이상 커서와 아이콘이 상호작용하지 않는다.
-						ui.menuTransparent = 0.75;
-						ui.menuSizeX = 1.02;
-						ui.menuSizeY = 0.51;
-						ui.menuAcc = 0.2;
-						cam.zoom = 1.0;  // 기능을 실행해햐 하므로 줌을 초기화한다.
+void executeFunc(int icon) {
+	channelMenu->stop();
+	ssystem->playSound(menuClick, 0, false, &channelMenu);
 
-						for (int i = 0; i < ICON_PART; i++)
-							icon[i].isOnCursor = false;
-					}
-				}
+	switch (icon) {
+	case 0:
+		channelMusic->stop();
+		ssystem->playSound(music1, 0, false, &channelMusic);
+		break;
+	case 1:
+		channelMusic->stop();
+		ssystem->playSound(music2, 0, false, &channelMusic);
+		break;
+	case 2:
+		channelMusic->stop();
+		ssystem->playSound(music3, 0, false, &channelMusic);
+		break;
+	case 3:
+		channelMusic->stop();
+		ssystem->playSound(music4, 0, false, &channelMusic);
+		break;
+	}
+}
+
+void clickMenuIcon() {
+	if (ui.menuEnable) {  // 아이콘 선택 시 실행되면서 메뉴바가 닫힌다.
+		for (int i = 0; i < ICON_PART; i++) {
+			if (ui.menuOpened && icon[i].isOnCursor) {
+				ui.menuEnable = false;
+				ui.menuOpened = false;  // 더 이상 커서와 아이콘이 상호작용하지 않는다.
+				ui.menuTransparent = 0.743;
+				ui.menuSizeX = 1.02;
+				ui.menuSizeY = 0.51;
+				ui.menuAcc = 0.2;
+				cam.zoom = 1.0;  // 기능을 실행해햐 하므로 줌을 초기화한다.
+
+				executeFunc(i);
+
+				for (int i = 0; i < ICON_PART; i++)
+					icon[i].isOnCursor = false;
 			}
 		}
+	}
+}
+
+void Mouse(int button, int state, int x, int y) {  // 마우스 클릭
+	if (gameStarted) {
+		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+			startTouch();
+			clickSqueak();
+			clickMenuIcon();
+		}
 		else if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
-			if (ui.handEnable && mouseClickEnable && alcy.touchEnable) {
-				ui.handNum = 0;
-				alcy.headRot = 0;
-				alcy.tailNum = 0;
-				alcy.tailRot = 0;
-				alcy.bodyRot = 0;
-				alcy.touchEnable = false;
-				channelTouch->stop();  // 쓰다듬기를 중단할 경우 소리를 정지한다.
-			}
+			stopTouch();
 			lButtonDown = false;
 		}
 	}

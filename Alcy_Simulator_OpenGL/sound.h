@@ -4,11 +4,11 @@
 
 extern FMOD::System* ssystem;
 
-extern FMOD::Sound* click, *escDown, *escUp, * scroll;
+extern FMOD::Sound* click, *escDown, *escUp, * scroll, *menuOpen, *menuClose, *menuClick;
 extern FMOD::Sound* squeak1, * squeak2, * squeak3, * touch, * tilt, *breatheIn, *breatheOut;
-extern FMOD::Sound* music1;
+extern FMOD::Sound* music1, * music2, *music3, *music4, *mainTheme;
 
-extern FMOD::Channel* channelClick, *channelEscDown, *channelEscUp, * channelScroll;
+extern FMOD::Channel* channelClick, *channelEscDown, *channelEscUp, * channelScroll, *channelMenu;
 extern FMOD::Channel* channelSqueak, *channelTouch, *channelTilt, *channelBreathe;
 extern FMOD::Channel* channelMusic, * channelTheme;
 
