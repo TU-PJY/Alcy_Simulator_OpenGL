@@ -17,8 +17,11 @@ bool startIntro;  // 인트로 재생, Camera 객체 전용
 bool gameStarted; // 게임 시작을 알리는 변수
 
 bool playMusic;  // 음악 재생 여부
-int musicTraack;  // 음악 구분
+int musicTrack;  // 음악 구분
 double beatDelay;  // 음악 효과에 사용되는 딜레이 변수
+
+time_t functionStartTime;  // 메뉴 기능 실행 시간
+GLfloat functionOperationTime;
 
 // 여기에 클래스 선언하고 사용
 Background background;

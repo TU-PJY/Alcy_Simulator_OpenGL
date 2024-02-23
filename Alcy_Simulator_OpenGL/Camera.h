@@ -2,6 +2,7 @@
 #define CAMERA_H
 #include "config.h"
 #include "globalVar.h"
+#include "sound.h"
 
 // Alcy  <-- Camera -->  UI
 class Camera {
@@ -89,22 +90,27 @@ public:
     }
 
     // 메트로놈 함수
-    void metronome(int music) {
-        switch (music) {
-        case 1:  // 
-            beatDelay += fs;
-            if (beatDelay > 5) {  // 120BPM
-                zoom = 1.1;
-                beatDelay = 0;
-            }
+    void metronomeEffect() {
+        functionOperationTime += fs;
+        if (functionOperationTime > 160) {
+            playMusic = false; // 노래 길이 16초가 지나면 노래 재생 상태 비활성화
+            beatDelay = 0;  // 박자 지연 시간 초기화
+            functionOperationTime = 0;
+            channelMusic->stop();  // 다시 메인 테마곡을 재생한다.
+            ssystem->playSound(mainTheme, 0, false, &channelTheme);
+        }
 
-            else {
-                zoom -= fs / 20;
-                if (zoom < 1.0) {
-                    zoom = 1.0;
-                }
+        beatDelay += fs;
+        if (beatDelay > 5) {  // 120BPM
+            zoom = 1.1;
+            beatDelay = 0;
+        }
+
+        else {
+            zoom -= fs / 20;
+            if (zoom < 1.0) {
+                zoom = 1.0;
             }
-            break;
         }
     }
 };

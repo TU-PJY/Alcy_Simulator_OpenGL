@@ -19,4 +19,8 @@ extern bool playMusic;
 extern int musicTrack;
 extern double beatDelay;  // 음악 효과에 사용되는 딜레이 변수
 
+
+extern time_t functionStartTime; // 메뉴 기능 실행 시간
+extern GLfloat functionOperationTime;
+
 #endif

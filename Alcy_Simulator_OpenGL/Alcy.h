@@ -50,8 +50,7 @@ public:
     bool tiltSoundPlayed;  // 알키 머리 기울이는 소리 재생 여부, 중복 재생 방지
 
     bool squeak; // 알키 코 누름 여부
-    time_t squeakStartTime;  // 코 눌림 상태 시작 시간
-    time_t squeakTime;  // 코 눌림 상태동안의 시간
+    GLfloat squeakTime;  // 코 눌림 상태동안의 시간
 
     bool measureTime, isLeave, confirmLeave;
     time_t checkStartTime1, checkEndTime1, checkStartTime2, checkEndTime2;
@@ -60,6 +59,7 @@ public:
     GLfloat sleepHeight, sleepNum;  // 잠을 잘 때 위 아래로 조금씩 움직인다.
     int breatheType;  // 들숨 / 날숨
     bool breatheSound;  // 중복 재생 방지
+
     GLfloat delay;
     
 
@@ -307,10 +307,10 @@ public:
 
     void squeakAlcyNose() {  // 코 누르기
         if (squeak) {  // 일정시간동안 알키는 자기 코를 바라본다
-            squeakTime = time(NULL);
-            if (squeakTime - squeakStartTime > 1) {  // 1초 후 해제
-                squeakStartTime = time(NULL);
+            squeakTime += fs;
+            if (squeakTime > 15) {  // 1.5초 후 해제
                 squeak = false;
+                squeakTime = 0;
             }
         }
     }

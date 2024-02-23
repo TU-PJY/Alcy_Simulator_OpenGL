@@ -65,12 +65,19 @@ void timerOperation(int value) {
     cam.introAnimation();
     cam.rotateCam();
     cam.updateZoom();
+    if (playMusic) {
+        switch (musicTrack) {
+        case 0:
+            cam.metronomeEffect();
+            break;
+        }
+    }
 
     if (gameStarted) {  // 마우스 이벤트를 실시간으로 처리하기 위한 더블 싱크
         syncCamera();
-        if (!ui.menuEnable) {
-            syncAlcyHead();
+        if (!ui.menuEnable && !playMusic) {
             syncCursor();
+            syncAlcyHead();
         }
         if (ui.menuOpened && ui.menuEnable)
             syncIconSelection();
