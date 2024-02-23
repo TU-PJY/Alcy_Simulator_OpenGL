@@ -6560,7 +6560,7 @@ typedef struct
    stbi_uc *out;                 // output buffer (always 4 components)
    stbi_uc *background;          // The current "background" as far as a gif is concerned
    stbi_uc *history;
-   int flags, bgindex, ratio, transparent, eflags;
+   int flags, bgindex, ratio_, transparent, eflags;
    stbi_uc  pal[256][4];
    stbi_uc lpal[256][4];
    stbi__gif_lzw codes[8192];
@@ -6617,7 +6617,7 @@ static int stbi__gif_header(stbi__context *s, stbi__gif *g, int *comp, int is_in
    g->h = stbi__get16le(s);
    g->flags = stbi__get8(s);
    g->bgindex = stbi__get8(s);
-   g->ratio = stbi__get8(s);
+   g->ratio_ = stbi__get8(s);
    g->transparent = -1;
 
    if (g->w > STBI_MAX_DIMENSIONS) return stbi__err("too large","Very large image (corrupt?)");

@@ -24,13 +24,13 @@ void setWindowView() {  // 시점 세팅
 	cameraDirection = vec3(0.0f, 0.0f, 0.0f);
 	cameraUp = vec3(0.0f, 1.0f, 0.0f);
 	projection = mat4(1.0f);
-	ratio = 1.0 * WIDTH / HEIGHT;  // 화면 비율을 구하여 모델이 제대로 나오도록 함
+	ratio_ = 1.0 * WIDTH / HEIGHT;  // 화면 비율을 구하여 모델이 제대로 나오도록 함
 	// X축 변환에 곱해야함.
 
 	view = lookAt(cameraPos, cameraDirection, cameraUp);
-	view = translate(view, vec3(cam.camX * ratio, cam.camY, 0));
+	view = translate(view, vec3(cam.camX * ratio_, cam.camY, 0));
 	view = rotate(view, radians(cam.camRot), vec3(0.0, 0.0, 1.0));
-	projection = ortho(-1.0 * ratio / cam.zoom, 1.0 * ratio / cam.zoom, -1.0 / cam.zoom, 1.0 / cam.zoom, -100.0, 100.0);
+	projection = ortho(-1.0 * ratio_ / cam.zoom, 1.0 * ratio_ / cam.zoom, -1.0 / cam.zoom, 1.0 / cam.zoom, -100.0, 100.0);
 }
 
 void initTransform() {

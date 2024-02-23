@@ -49,8 +49,8 @@ public:
 
 	void setTransform() {
 		using namespace glm;
-		scaleMatrix = scale(scaleMatrix, vec3(2.0 * ratio / cam.zoom, 2.0 / cam.zoom, 0.0));
-		translateMatrix = translate(translateMatrix, vec3(cam.camX / 10 * ratio, (cam.camY / 10) / cam.zoom, -0.1));
+		scaleMatrix = scale(scaleMatrix, vec3(2.0 * ratio_ / cam.zoom, 2.0 / cam.zoom, 0.0));
+		translateMatrix = translate(translateMatrix, vec3(cam.camX / 10 * ratio_, (cam.camY / 10) / cam.zoom, -0.1));
 
 		transformMatrix = rotateMatrix * translateMatrix * scaleMatrix;  // 최종 변환
 	}

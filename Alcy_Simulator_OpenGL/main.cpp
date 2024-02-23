@@ -104,12 +104,12 @@ void main(int argc, char** argv) {
 		if (result != FMOD_OK)
 			exit(0);
 
-		initFmod();
-
 		if (INTRO == 0)  // 개발 시에는 인트로 생략
 			gameStarted = true;
 		else
 			gameStarted = false;
+
+		initFmod();
 	}
 
 	background.setBuffer();  // 배경 초기화

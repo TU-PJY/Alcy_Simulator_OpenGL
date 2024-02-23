@@ -25,21 +25,21 @@ void syncCamera() {
 }
 
 void syncAlcyHead() {
-    if (mx / cam.zoom * ratio < -0.5 * ratio)
+    if (mx / cam.zoom * ratio_ < -0.5 * ratio_)
         alcy.dir = l;
-    else if (mx / cam.zoom * ratio > 0.5 * ratio)
+    else if (mx / cam.zoom * ratio_ > 0.5 * ratio_)
         alcy.dir = r;
     else
         alcy.dir = m;
 }
 
 void syncCursor() {
-    if ((mx / cam.zoom * ratio >= -0.4 && mx / cam.zoom * ratio <= 0.4) && (my / cam.zoom >= 0.1 && my / cam.zoom <= 0.5)) // 쓰다듬기
+    if ((mx / cam.zoom * ratio_ >= -0.4 && mx / cam.zoom * ratio_ <= 0.4) && (my / cam.zoom >= 0.1 && my / cam.zoom <= 0.5)) // 쓰다듬기
         ui.handEnable = true;
     else
         ui.handEnable = false;
 
-    if ((mx / cam.zoom * ratio >= -0.03 && mx / cam.zoom * ratio <= 0.03) && (my / cam.zoom >= -0.2 && my / cam.zoom <= -0.15))  // 코 누르기
+    if ((mx / cam.zoom * ratio_ >= -0.03 && mx / cam.zoom * ratio_ <= 0.03) && (my / cam.zoom >= -0.2 && my / cam.zoom <= -0.15))  // 코 누르기
         ui.fingerEnable = true;
     else
         ui.fingerEnable = false;
@@ -49,7 +49,7 @@ void syncIconSelection() {
     for (int i = 0; i < ICON_PART; i++) {
         GLfloat iconX = (-0.53 + i * 0.35);
         GLfloat iconY = -0.33;
-        if ((iconX - 0.14 <= mx * ratio && mx * ratio <= iconX + 0.14) &&
+        if ((iconX - 0.14 <= mx * ratio_ && mx * ratio_ <= iconX + 0.14) &&
             (iconY - 0.13 <= my && my <= iconY + 0.13)) {
             icon[i].isOnCursor = true;  // 선택된 아이콘은 살짝 투명해진다.
         }
@@ -83,7 +83,7 @@ void timerOperation(int value) {
     if (playFunc) {
         switch (musicTrack) {
         case 0:
-            cam.metronomeEffect();
+            cam.metronomeEffect(musicTrack);
             break;
         }
     }

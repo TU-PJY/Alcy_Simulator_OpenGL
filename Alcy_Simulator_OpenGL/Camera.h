@@ -13,6 +13,8 @@ public:
 	GLfloat zoomAcc;  // 줌 가속도
 	bool zoomEnable;  // 줌 여부
 	bool camR, camL;  // 카메라 좌우 회전
+    bool startFirst;  // 이전 시간을 측정하여 시간 차를 보간한다.
+    GLfloat interpolation;  // 박자 효과 딜래이의 지연 또는 단축을 보간한다.
 
     Camera() {
         if (INTRO == 0)
@@ -90,27 +92,38 @@ public:
     }
 
     // 메트로놈 함수
-    void metronomeEffect() {
-        functionOperationTime += fs;
-        if (functionOperationTime > 160) {
-            playFunc = false; // 노래 길이 16초가 지나면 노래 재생 상태 비활성화
-            beatDelay = 0;  // 박자 지연 시간 초기화
-            functionOperationTime = 0;
-            channelMusic->stop();  // 다시 메인 테마곡을 재생한다.
-            ssystem->playSound(mainTheme, 0, false, &channelTheme);
+    void metronomeEffect(int track) {
+        GLfloat interval, playTime;
+
+        switch (track) {  // 트랙에 따라 박자 간격을 다르게 설정한다.
+        case 0: 
+            interval = 4.688;  // 128bpm
+            playTime = 317;  // 31.7sec
+            break;
         }
 
-        beatDelay += fs;
-        if (beatDelay > 5) {  // 120BPM
+        if (beatDelay >= interval) {
             zoom = 1.1;
+            interpolation = beatDelay;
             beatDelay = 0;
+            beatDelay = interpolation - interval;  // 초과 시간 보간
         }
 
         else {
             zoom -= fs / 20;
-            if (zoom < 1.0) {
+            if (zoom < 1.0)
                 zoom = 1.0;
-            }
+        }
+
+        beatDelay += fs;
+        functionOperationTime += fs;
+       
+        if (functionOperationTime > playTime) {  // 31.7sec
+            playFunc = false; // 노래 길이 31.7sec 지나면 노래 재생 상태 비활성화
+            beatDelay = 0;  // 박자 지연 시간 초기화
+            functionOperationTime = 0;
+            channelMusic->stop();  // 다시 메인 테마곡을 재생한다.
+            ssystem->playSound(mainTheme, 0, false, &channelTheme);
         }
     }
 };

@@ -9,7 +9,7 @@
 // 프로젝트 전체 전역 변수 및 클래스
 
 GLfloat mx, my; // 마우스 좌표
-GLfloat ratio;  // 화면 종횡비;
+GLfloat ratio_;  // 화면 종횡비;
 
 bool lButtonDown;  // 마우스 클릭 여부
 bool mouseClickEnable;  // 마우스 클릭 사용 가능 여부
@@ -30,4 +30,3 @@ Alcy alcy;
 ZZZ zzz[3];
 UI ui;
 Icon icon[ICON_PART];
-
