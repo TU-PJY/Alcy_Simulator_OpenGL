@@ -114,7 +114,6 @@ public:
             if (zoom < 1.0)
                 zoom = 1.0;
         }
-
         beatDelay += fs;
         functionOperationTime += fs;
        

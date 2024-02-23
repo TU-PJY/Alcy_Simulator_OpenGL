@@ -25,6 +25,8 @@ public:
 	bool isOnCursor;  // true일 시 아이콘이 선택된 것
 	bool operating;  // 각 아이콘 별 실행 여부
 
+	GLfloat iconBeatEffect;
+
 	Icon() {
 		iconTransparent = 0.0;
 		iconW = 512, iconH = 512;
@@ -42,6 +44,8 @@ public:
 			if (iconTransparent < 0)
 				iconTransparent = 0;
 		}
+
+		iconBeatEffect = (cam.zoom - 1) / 4;
 	}
 
 	void updateOnCursor() {  // 커서 선택 업데이트
@@ -71,9 +75,9 @@ public:
 		glBindTexture(GL_TEXTURE_2D, iconTex[0]);
 		parameteri();
 		switch (idx) {  // 각 객체마다 다른 아이콘을 로드함
-			case 0: texture_data = stbi_load("res//ui//menu//icon_drum_base.png", &iconW, &iconH, &channel, 4);  // icon_drun
+			case 0: texture_data = stbi_load("res//ui//menu//icon_house.png", &iconW, &iconH, &channel, 4);  // icon_drun
 				break;
-			case 1: texture_data = stbi_load("res//ui//menu//icon_electronic.png", &iconW, &iconH, &channel, 4);  // icon_electronic
+			case 1: texture_data = stbi_load("res//ui//menu//icon_glitch.png", &iconW, &iconH, &channel, 4);  // icon_electronic
 				break;
 			case 2: texture_data = stbi_load("res//ui//menu//icon_guitar1.png", &iconW, &iconH, &channel, 4);  // icon_guitar1
 				break;
@@ -88,9 +92,9 @@ public:
 		glBindTexture(GL_TEXTURE_2D, iconTex[1]);
 		parameteri();
 		switch (idx) {  // 각 객체마다 다른 아이콘을 로드함
-			case 0: texture_data = stbi_load("res//ui//menu//icon_drum_base_stop.png", &iconW, &iconH, &channel, 4);  // icon_drun
+			case 0: texture_data = stbi_load("res//ui//menu//icon_house_stop.png", &iconW, &iconH, &channel, 4);  // icon_drun
 				break;
-			case 1: texture_data = stbi_load("res//ui//menu//icon_electronic_stop.png", &iconW, &iconH, &channel, 4);  // icon_electronic
+			case 1: texture_data = stbi_load("res//ui//menu//icon_glitch_stop.png", &iconW, &iconH, &channel, 4);  // icon_electronic
 				break;
 			case 2: texture_data = stbi_load("res//ui//menu//icon_guitar1_stop.png", &iconW, &iconH, &channel, 4);  // icon_guitar1
 				break;
@@ -107,7 +111,7 @@ public:
 	void setTransform(int idx) {
 		using namespace glm;
 		scaleMatrix = scale(scaleMatrix, vec3(0.2 / cam.zoom, 0.2 / cam.zoom, 0.0));
-		translateMatrix = translate(translateMatrix, vec3(-cam.camX * ratio_ + (-0.53 + idx * 0.35) / cam.zoom, -cam.camY - 0.33 / cam.zoom, 0.002));
+		translateMatrix = translate(translateMatrix, vec3(-cam.camX * ratio_ + (-0.53 + idx * 0.35) / cam.zoom, -cam.camY + (- 0.33 + iconBeatEffect) / cam.zoom, 0.002));
 		rotateMatrix = rotate(rotateMatrix, radians(-cam.camRot), vec3(0.0, 0.0, 1.0));
 		transparent = iconTransparent;
 
