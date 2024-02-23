@@ -6,7 +6,7 @@
 #include "Camera.h"
 #include "UI.h"
 #include "Icon.h"
-//#include <chrono>
+#include "White.h"
 
 void convertToGLCoord(int x, int y) {  //GL좌표계로 변환
 	mx = (GLfloat)(x - (GLfloat)WIDTH / 2.0) * (GLfloat)(1.0 / (GLfloat)(WIDTH / 2.0));
@@ -112,12 +112,16 @@ void executeFunc(int idx) {
 			ssystem->playSound(music1, 0, false, &channelMusic);
 			playFunc = true;
 			beatDelay = 4.688;
+			whiteTransparent = 1.0;
 			icon[idx].operating = true;
 			break;
 		}
 		else {
 			cam.zoom = 1.0;  // 다시 줌을 초기화 한다.
 			beatDelay = 0;
+			alcy.beatX = 0;
+			alcy.beatY = 0;
+			whiteTransparent = 1.0;
 			channelMusic->stop();
 			ssystem->playSound(mainTheme, 0, false, &channelTheme);
 			playFunc = false;

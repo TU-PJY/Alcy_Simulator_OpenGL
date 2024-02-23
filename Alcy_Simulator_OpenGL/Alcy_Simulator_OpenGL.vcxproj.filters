@@ -40,11 +40,11 @@
     <Filter Include="헤더 파일\gl_header">
       <UniqueIdentifier>{e8b98558-de81-43a3-88c0-579ad51fd444}</UniqueIdentifier>
     </Filter>
-    <Filter Include="소스 파일\shader">
-      <UniqueIdentifier>{a2fc8178-acc8-46b6-a1c0-1f300cdc0979}</UniqueIdentifier>
-    </Filter>
     <Filter Include="헤더 파일\propClasses">
       <UniqueIdentifier>{604acc11-7ba6-4ffd-b023-e260d34bd26f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\shader">
+      <UniqueIdentifier>{a2fc8178-acc8-46b6-a1c0-1f300cdc0979}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -120,6 +120,9 @@
       <Filter>헤더 파일\classes</Filter>
     </ClInclude>
     <ClInclude Include="Background.h">
+      <Filter>헤더 파일\classes</Filter>
+    </ClInclude>
+    <ClInclude Include="White.h">
       <Filter>헤더 파일\classes</Filter>
     </ClInclude>
   </ItemGroup>

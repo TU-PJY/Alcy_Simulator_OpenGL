@@ -18,9 +18,11 @@ extern GLfloat fs;  // frame sync, 프레임 동기화
 extern bool playFunc;  
 extern int musicTrack;
 extern double beatDelay;  // 음악 효과에 사용되는 딜레이 변수
-
-
-extern time_t functionStartTime; // 메뉴 기능 실행 시간
+extern GLfloat interpolation;  // 음악 효과 속도를 보간하는 변수 
+extern GLfloat interval, playTime;  // 박자 간격, 음악 플레이 시간
+extern GLfloat beatAcc;
 extern GLfloat functionOperationTime;
+
+extern GLfloat whiteTransparent;  // 흰 배경 투명도
 
 #endif

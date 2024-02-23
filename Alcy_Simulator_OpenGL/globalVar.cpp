@@ -6,6 +6,7 @@
 #include "ZZZ.h"
 #include "Icon.h"
 #include "Background.h"
+#include "White.h"
 // 프로젝트 전체 전역 변수 및 클래스
 
 GLfloat mx, my; // 마우스 좌표
@@ -19,9 +20,12 @@ bool gameStarted; // 게임 시작을 알리는 변수
 bool playFunc;  // 음악 재생 여부
 int musicTrack;  // 음악 구분
 double beatDelay;  // 음악 효과에 사용되는 딜레이 변수
-
-time_t functionStartTime;  // 메뉴 기능 실행 시간
+GLfloat interpolation;
+GLfloat interval, playTime;
+GLfloat beatAcc;
 GLfloat functionOperationTime;
+
+GLfloat whiteTransparent;  // 흰 배경 투명도
 
 // 여기에 클래스 선언하고 사용
 Background background;
@@ -30,3 +34,4 @@ Alcy alcy;
 ZZZ zzz[3];
 UI ui;
 Icon icon[ICON_PART];
+White white;

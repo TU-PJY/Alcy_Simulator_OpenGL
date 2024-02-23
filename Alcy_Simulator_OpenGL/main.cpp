@@ -11,6 +11,7 @@
 #include "ZZZ.h"
 #include "Icon.h"
 #include "Background.h"
+#include "White.h"
 #include "texture.h"
 #include "stb_image.h"
 
@@ -70,6 +71,13 @@ GLvoid displayOutput() {
 		icon[i].bindVertex();
 		icon[i].modelOutput();
 	}
+	
+	//흰 배경
+	initTransform();
+	white.setTransform();
+	transmit();
+	white.bindVertex();
+	white.modelOutput();
 
 	glutSwapBuffers();
 }
@@ -121,6 +129,7 @@ void main(int argc, char** argv) {
 		zzz[i].setBuffer();
 	for (int i = 0; i < ICON_PART; i++)  // 메뉴 아이콘 초기화
 		icon[i].setBuffer();
+	white.setBuffer();  // 흰 배경 초기화
 
 	// 텍스처 설정
 	background.setTexture();  // 배경
@@ -136,6 +145,8 @@ void main(int argc, char** argv) {
 		icon[i].setTexture(i);
 		icon[i].setTexture2(i);
 	}
+	
+	white.setTexture();  // white
 
 	stbi_image_free(texture_data);
 	

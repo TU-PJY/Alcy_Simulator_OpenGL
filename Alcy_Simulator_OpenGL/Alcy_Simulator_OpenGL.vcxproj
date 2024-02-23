@@ -151,6 +151,7 @@
     <ClInclude Include="globalVar.h" />
     <ClInclude Include="gl_func.h" />
     <ClInclude Include="Icon.h" />
+    <ClInclude Include="White.h" />
     <ClInclude Include="ZZZ.h" />
     <ClInclude Include="screen.h" />
     <ClInclude Include="shader.h" />

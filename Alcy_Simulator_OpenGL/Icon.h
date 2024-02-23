@@ -45,7 +45,9 @@ public:
 				iconTransparent = 0;
 		}
 
-		iconBeatEffect = (cam.zoom - 1) / 4;
+		if (playFunc) {
+			iconBeatEffect = (cam.zoom - 1) / 4;
+		}
 	}
 
 	void updateOnCursor() {  // 커서 선택 업데이트
@@ -111,7 +113,7 @@ public:
 	void setTransform(int idx) {
 		using namespace glm;
 		scaleMatrix = scale(scaleMatrix, vec3(0.2 / cam.zoom, 0.2 / cam.zoom, 0.0));
-		translateMatrix = translate(translateMatrix, vec3(-cam.camX * ratio_ + (-0.53 + idx * 0.35) / cam.zoom, -cam.camY + (- 0.33 + iconBeatEffect) / cam.zoom, 0.002));
+		translateMatrix = translate(translateMatrix, vec3(-cam.camX * ratio_ + (-0.53 + idx * 0.35) / cam.zoom, - cam.camY + (-0.33 + iconBeatEffect) / cam.zoom, 0.002));
 		rotateMatrix = rotate(rotateMatrix, radians(-cam.camRot), vec3(0.0, 0.0, 1.0));
 		transparent = iconTransparent;
 

@@ -6,6 +6,7 @@
 #include "UI.h"
 #include "ZZZ.h"
 #include "Icon.h"
+#include "White.h"
 
 // 프레임
 int lastElapsedTime, elapsedTime;
@@ -86,6 +87,8 @@ void timerOperation(int value) {
             cam.metronomeEffect(musicTrack);
             break;
         }
+
+        alcy.updateAlcyBeat();
     }
 
     if (gameStarted) {  // 마우스 이벤트를 실시간으로 처리하기 위한 더블 싱크
@@ -122,6 +125,8 @@ void timerOperation(int value) {
 
     for(int i = 0; i < 3; i ++)
      zzz[i].update();
+
+    white.update();
 
     checkIconSituation();
 

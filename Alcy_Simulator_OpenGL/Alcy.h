@@ -59,9 +59,10 @@ public:
     GLfloat sleepHeight, sleepNum;  // 잠을 잘 때 위 아래로 조금씩 움직인다.
     int breatheType;  // 들숨 / 날숨
     bool breatheSound;  // 중복 재생 방지
-
-    GLfloat delay;
+    GLfloat delay;  // 숨쉬는 소리 딜레이
     
+    GLfloat beatX, beatY;  // 음악 박자 효과
+    int beatDir;
 
     Alcy() {
         dir = m;
@@ -315,6 +316,33 @@ public:
         }
     }
 
+    void updateAlcyBeat() {
+        if (beatDelay >= interval) {
+            beatDir += 1;
+
+            if (beatDir % 2 == 0) {  // 왼쪽 오른쪽 번갈아 가며 머리를 흔든다.
+                beatX = (cam.zoom - 1.0) / 2;
+                beatY = -1 * (cam.zoom - 1.0);
+            }
+            else if (beatDir % 2 == 1) {
+                beatX = -1 * (cam.zoom - 1.0) / 2;
+                beatY = -1 * (cam.zoom - 1.0);
+            }
+        }
+
+        else {
+            if (beatDir % 2 == 0) {  // 왼쪽 오른쪽 번갈아 가며 머리를 흔든다.
+                beatX = (cam.zoom - 1.0) / 2;
+                beatY = -1 * (cam.zoom - 1.0);
+            }
+            else if (beatDir % 2 == 1) {
+                beatX = -1 * (cam.zoom - 1.0) / 2;
+                beatY = -1 * (cam.zoom - 1.0);
+            }
+        }
+
+    }
+
     void bindVertex(int idx) {  // 변환 전달 
         glBindVertexArray(VAO_ALCY[idx]);  // 각 모델마다 지정된 VAO만 사용
     }
@@ -340,7 +368,7 @@ public:
         case head_:
             translateMatrix = translate(translateMatrix, vec3(0.0, -0.1, -0.00001));
             translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
-            translateMatrix = translate(translateMatrix, vec3((headPos - headRot / 150), 0.22 + sleepHeight, -0.0001));
+            translateMatrix = translate(translateMatrix, vec3(headPos - headRot / 150 + beatX, 0.22 + sleepHeight + beatY, -0.0001));
             break;
 
         case eye_:
@@ -401,7 +429,7 @@ public:
             break;
 
         case head_:  // 카메라가 초기 상태일 때 이미지를 업데이트 한다.
-            if (cam.camRot == 0 && !cam.camR && !cam.camL && !squeak && !tired && !sleeping) {
+            if (cam.camRot == 0 && !cam.camR && !cam.camL && !squeak && !tired && !sleeping && !playFunc) {
                 switch (dir) {
                 case l: glBindTexture(GL_TEXTURE_2D, alcyHead[1]);  // head left
                     break;
@@ -411,12 +439,20 @@ public:
                     break;
                 }
             }
-            else   // 카메라 회전 시 앞을 보도록 함
-                glBindTexture(GL_TEXTURE_2D, alcyHead[0]);  // head middle
+            else {  // 카메라 회전 시 앞을 보도록 함
+                if(!playFunc)
+                    glBindTexture(GL_TEXTURE_2D, alcyHead[0]);  // head middle
+                else {
+                    glBindTexture(GL_TEXTURE_2D, alcyHead[3]);  // head house
+                }
+            }
             glDrawArrays(GL_TRIANGLES, 0, 6);
             break;
 
         case eye_:  // 카메라가 초기 상태일 때 이미지를 업데이트 한다.
+            if (playFunc)  // 노래 플레이 중인 경우 필요 없으므로 출력 비활성화
+                break;
+
             if (cam.camRot == 0 && !cam.camR && !cam.camL && !squeak && !tired && !sleeping) {
                     switch (dir) {
                     case l: glBindTexture(GL_TEXTURE_2D, eye[1]);  // eye left
@@ -436,12 +472,14 @@ public:
                 else
                     glBindTexture(GL_TEXTURE_2D, eye[0]);  // eye middle
             }
-
             if (!blinkEnable && !touchEnable && !sleeping)  // 눈을 깜빡이지 않을 때, 쓰다듬지 않을 때 출력한다.
                 glDrawArrays(GL_TRIANGLES, 0, 6);
             break;
 
         case dot_:  // 카메라가 초기 상태일 때만 이미지를 업데이트 한다.
+            if (playFunc)  // 노래 플레이 중인 경우 필요 없으므로 출력 비활성화
+                break;
+
             if (cam.camRot == 0 && !cam.camR && !cam.camL) {
                 switch (dir) {
                 case l: glBindTexture(GL_TEXTURE_2D, dot[1]);  // eye left
@@ -460,6 +498,9 @@ public:
             break;
 
         case brow_:  // 카메라가 초기 상태이면서 코를 누르지 않을 때만 이미지를 업데이트 한다.
+            if (playFunc)  // 노래 플레이 중인 경우 필요 없으므로 출력 비활성화
+                break;
+
             if (cam.camRot == 0 && !cam.camR && !cam.camL && !squeak && !tired && !sleeping) {
                 switch (dir) {
                 case l: glBindTexture(GL_TEXTURE_2D, brow[1]);  // brow left
@@ -476,6 +517,9 @@ public:
             break;
 
         case blink_:  // 카메라가 초기 상태이면서 코를 누르지 않을 때만 이미지를 업데이트 한다.
+            if (playFunc)  // 노래 플레이 중인 경우 필요 없으므로 출력 비활성화
+                break;
+
             if (cam.camRot == 0 && !cam.camR && !cam.camL && !squeak && !tired && !sleeping) {
                 switch (dir) {
                 case l: glBindTexture(GL_TEXTURE_2D, blink[1]);  // blink left

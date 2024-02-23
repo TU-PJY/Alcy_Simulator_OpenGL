@@ -14,7 +14,7 @@ unsigned int tip;
 unsigned int title;
 
 // 알키 리소스
-unsigned int alcyTail, alcyBody, alcyHair, alcyHead[3];
+unsigned int alcyTail, alcyBody, alcyHair, alcyHead[4];
 unsigned int eye[5], dot[3], eyeClose[3], brow[3], blink[3];
 
 unsigned char* texture_data;
@@ -122,6 +122,13 @@ void setAlcyTexture() {
 	glBindTexture(GL_TEXTURE_2D, alcyHead[2]);
 	parameteri();
 	texture_data = stbi_load("res//alcy//head_right.png", &alcyW, &alcyH, &channel, 4);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+	//alcy head house
+	glGenTextures(1, &alcyHead[3]);
+	glBindTexture(GL_TEXTURE_2D, alcyHead[3]);
+	parameteri();
+	texture_data = stbi_load("res//alcy//head_house.png", &alcyW, &alcyH, &channel, 4);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 
 
