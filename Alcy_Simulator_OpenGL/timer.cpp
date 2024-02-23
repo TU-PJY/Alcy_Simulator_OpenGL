@@ -99,6 +99,13 @@ void timerOperation(int value) {
         }
         if (ui.menuOpened && ui.menuEnable)
             syncIconSelection();
+
+        ui.updateMenu();
+
+        if (!playFunc) {
+            alcy.checkControl();
+            alcy.updateAlcySleep();
+        }
     }
 
     for (int i = 0; i < ICON_PART; i++) {
@@ -109,14 +116,6 @@ void timerOperation(int value) {
     ui.startGame();
     ui.exitGame();
     ui.updateTip();
-
-    if (gameStarted) {
-        ui.updateMenu();
-        if (!playFunc) {
-            alcy.checkControl();
-            alcy.updateAlcySleep();
-        }
-    }
     alcy.updateAlcyBlink();
     alcy.moveAlcyHead();
     alcy.updateAlcyTouch();

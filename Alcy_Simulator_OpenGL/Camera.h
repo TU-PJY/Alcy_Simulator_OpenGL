@@ -15,11 +15,6 @@ public:
 	bool camR, camL;  // 카메라 좌우 회전
     bool startFirst;  // 이전 시간을 측정하여 시간 차를 보간한다.
 
-    GLfloat beatAcc;
-
-    GLfloat testfloat;
-    GLfloat testacc;
-
     Camera() {
         if (INTRO == 0)
             zoom = 1.0;
@@ -59,12 +54,6 @@ public:
     }
 
     void updateZoom() {  // 카메라 줌
-        if (testfloat > -0.2) {
-            testfloat -= testacc * fs;
-            testacc += fs / 5;
-            cout << testacc << endl;
-        }  // 2.8
-
         if (zoomEnable) {
             zoom += zoomAcc * fs;
 
