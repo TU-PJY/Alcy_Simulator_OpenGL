@@ -47,10 +47,10 @@ void syncCursor() {
 
 void syncIconSelection() { 
     for (int i = 0; i < ICON_PART; i++) {
-        GLfloat iconX = (-1.0 * ratio + 0.15 * ratio + i * 0.35);
+        GLfloat iconX = (-0.53 + i * 0.35);
         GLfloat iconY = -0.33;
-        if (((iconX - 0.14) / cam.zoom <= mx / cam.zoom * ratio && mx / cam.zoom * ratio <= (iconX + 0.14) / cam.zoom) &&
-            ((iconY - 0.14) / cam.zoom <= my / cam.zoom && my / cam.zoom <= (iconY + 0.13) / cam.zoom)) {
+        if ((iconX - 0.14 <= mx * ratio && mx * ratio <= iconX + 0.14) &&
+            (iconY - 0.13 <= my && my <= iconY + 0.13)) {
             icon[i].isOnCursor = true;  // 선택된 아이콘은 살짝 투명해진다.
         }
         else {
@@ -60,7 +60,7 @@ void syncIconSelection() {
 }
 
 void checkIconSituation() {
-    if(playMusic) {  // 기능 실행 중에는 해당 아이콘이 달라진다.
+    if(playFunc) {  // 기능 실행 중에는 해당 아이콘이 달라진다.
         for (int i = 0; i < ICON_PART; i++) {
             if (icon[i].operating)
                 icon[i].operating = true;
@@ -80,7 +80,7 @@ void timerOperation(int value) {
     cam.introAnimation();
     cam.rotateCam();
     cam.updateZoom();
-    if (playMusic) {
+    if (playFunc) {
         switch (musicTrack) {
         case 0:
             cam.metronomeEffect();
@@ -90,7 +90,7 @@ void timerOperation(int value) {
 
     if (gameStarted) {  // 마우스 이벤트를 실시간으로 처리하기 위한 더블 싱크
         syncCamera();
-        if (!ui.menuEnable && !playMusic) {
+        if (!ui.menuEnable && !playFunc) {
             syncCursor();
             syncAlcyHead();
         }
@@ -109,7 +109,7 @@ void timerOperation(int value) {
 
     if (gameStarted) {
         ui.updateMenu();
-        if (!playMusic) {
+        if (!playFunc) {
             alcy.checkControl();
             alcy.updateAlcySleep();
         }

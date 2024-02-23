@@ -107,7 +107,7 @@ public:
 	void setTransform(int idx) {
 		using namespace glm;
 		scaleMatrix = scale(scaleMatrix, vec3(0.2 / cam.zoom, 0.2 / cam.zoom, 0.0));
-		translateMatrix = translate(translateMatrix, vec3(-cam.camX * ratio + (-1.0 * ratio + 0.15 * ratio + idx * 0.35) / cam.zoom, -cam.camY - 0.33 / cam.zoom, 0.002));
+		translateMatrix = translate(translateMatrix, vec3(-cam.camX * ratio + (-0.53 + idx * 0.35) / cam.zoom, -cam.camY - 0.33 / cam.zoom, 0.002));
 		rotateMatrix = rotate(rotateMatrix, radians(-cam.camRot), vec3(0.0, 0.0, 1.0));
 		transparent = iconTransparent;
 

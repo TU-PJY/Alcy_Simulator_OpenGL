@@ -93,7 +93,7 @@ public:
     void metronomeEffect() {
         functionOperationTime += fs;
         if (functionOperationTime > 160) {
-            playMusic = false; // 노래 길이 16초가 지나면 노래 재생 상태 비활성화
+            playFunc = false; // 노래 길이 16초가 지나면 노래 재생 상태 비활성화
             beatDelay = 0;  // 박자 지연 시간 초기화
             functionOperationTime = 0;
             channelMusic->stop();  // 다시 메인 테마곡을 재생한다.

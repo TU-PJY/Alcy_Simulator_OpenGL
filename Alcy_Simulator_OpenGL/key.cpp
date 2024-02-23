@@ -99,7 +99,7 @@ void keyDown(unsigned char KEY, int x, int y) {
 
 	case 'q':  // 카메라 좌측 회전
 		if (gameStarted) {
-			if (!alcy.touchEnable && !ui.menuEnable && !playMusic) {
+			if (!alcy.touchEnable && !ui.menuEnable && !playFunc) {
 				cam.camL = true;
 				mouseClickEnable = false;
 			}
@@ -109,7 +109,7 @@ void keyDown(unsigned char KEY, int x, int y) {
 
 	case 'e':  // 카메라 우측 회전
 		if (gameStarted) {
-			if (!alcy.touchEnable && !ui.menuEnable && !playMusic) {
+			if (!alcy.touchEnable && !ui.menuEnable && !playFunc) {
 				cam.camR = true;
 				mouseClickEnable = false;
 			}

@@ -15,7 +15,7 @@ extern int lastElapsedTime, elapsedTime;
 extern GLfloat fs;  // frame sync, 프레임 동기화
 
 // 음악 재생, true일 시 해당하는 음악이 재생되고, 박자에 맞추어 알키가 움직이고 카메라가 움직인다.
-extern bool playMusic;  
+extern bool playFunc;  
 extern int musicTrack;
 extern double beatDelay;  // 음악 효과에 사용되는 딜레이 변수
 
