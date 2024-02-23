@@ -59,6 +59,21 @@ void syncIconSelection() {
     }
 }
 
+void checkIconSituation() {
+    if(playMusic) {  // 기능 실행 중에는 해당 아이콘이 달라진다.
+        for (int i = 0; i < ICON_PART; i++) {
+            if (icon[i].operating)
+                icon[i].operating = true;
+        }
+    }
+
+    else {  // 기능 실행 중이 아니라면 원래의 아이콘을 출력한다.
+        for (int i = 0; i < ICON_PART; i++) {
+            icon[i].operating = false;
+        }
+    }
+}
+
 void timerOperation(int value) {
     syncFrame();
 
@@ -94,8 +109,10 @@ void timerOperation(int value) {
 
     if (gameStarted) {
         ui.updateMenu();
-        alcy.checkControl();
-        alcy.updateAlcySleep();
+        if (!playMusic) {
+            alcy.checkControl();
+            alcy.updateAlcySleep();
+        }
     }
     alcy.updateAlcyBlink();
     alcy.moveAlcyHead();
@@ -105,6 +122,8 @@ void timerOperation(int value) {
 
     for(int i = 0; i < 3; i ++)
      zzz[i].update();
+
+    checkIconSituation();
 
     glutTimerFunc(10, timerOperation, 1);
     if (glutGetWindow() != 0)

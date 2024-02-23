@@ -93,18 +93,24 @@ void clickSqueak() {
 	}
 }
 
-void executeFunc(int icon) {
+void executeFunc(int idx) {
 	channelMenu->stop();
 	ssystem->playSound(menuClick, 0, false, &channelMenu);
 	functionOperationTime = 0;
+	alcy.sleeping = false;  // 기능 실행 중에는 조작 유무 확인을 하지 않는다.
+	alcy.tired = false;
+	alcy.measureTime = false;
+	alcy.isLeave = false;
+	alcy.confirmLeave = false;
 
-	switch (icon) {  // 기능 실행 도중 같은 아이콘을 누르면 중지
+	switch (idx) {  // 기능 실행 도중 같은 아이콘을 누르면 중지
 	case 0:
 		if (!playMusic) {
 			channelTheme->stop();
 			channelMusic->stop();
 			ssystem->playSound(music1, 0, false, &channelMusic);
 			playMusic = true;
+			icon[idx].operating = true;
 			break;
 		}
 		else {
@@ -115,21 +121,24 @@ void executeFunc(int icon) {
 			playMusic = false;
 		}
 		break;
+
 	case 1:
 		channelMusic->stop();
 		ssystem->playSound(music2, 0, false, &channelMusic);
 		break;
+
 	case 2:
 		channelMusic->stop();
 		ssystem->playSound(music3, 0, false, &channelMusic);
 		break;
+
 	case 3:
 		channelMusic->stop();
 		ssystem->playSound(music4, 0, false, &channelMusic);
 		break;
 	}
 
-	musicTrack = icon;  // 선택한 아이콘에 따라 이미지가 달라진다.
+	musicTrack = idx;  // 선택한 아이콘에 따라 이미지가 달라진다.
 }
 
 void clickMenuIcon() {

@@ -18,11 +18,12 @@ public:
 	GLfloat iconTransparent;
 	GLfloat Xpos;
 
-	unsigned int iconTex;
+	unsigned int iconTex[2]; // 0: 일반 아이콘, 1: 실행 중지 아이콘
 	int iconW, iconH;
 	int channel;
 
 	bool isOnCursor;  // true일 시 아이콘이 선택된 것
+	bool operating;  // 각 아이콘 별 실행 여부
 
 	Icon() {
 		iconTransparent = 0.0;
@@ -66,8 +67,8 @@ public:
 	}
 
 	void setTexture(int idx) {
-		glGenTextures(1, &iconTex);
-		glBindTexture(GL_TEXTURE_2D, iconTex);
+		glGenTextures(1, &iconTex[0]);
+		glBindTexture(GL_TEXTURE_2D, iconTex[0]);
 		parameteri();
 		switch (idx) {  // 각 객체마다 다른 아이콘을 로드함
 			case 0: texture_data = stbi_load("res//ui//menu//icon_drum_base.png", &iconW, &iconH, &channel, 4);  // icon_drun
@@ -77,6 +78,23 @@ public:
 			case 2: texture_data = stbi_load("res//ui//menu//icon_guitar1.png", &iconW, &iconH, &channel, 4);  // icon_guitar1
 				break;
 			case 3: texture_data = stbi_load("res//ui//menu//icon_guitar2.png", &iconW, &iconH, &channel, 4);  // icon_guitar2
+				break;
+		}
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, iconW, iconH, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+	}
+
+	void setTexture2(int idx) {
+		glGenTextures(1, &iconTex[1]);
+		glBindTexture(GL_TEXTURE_2D, iconTex[1]);
+		parameteri();
+		switch (idx) {  // 각 객체마다 다른 아이콘을 로드함
+			case 0: texture_data = stbi_load("res//ui//menu//icon_drum_base_stop.png", &iconW, &iconH, &channel, 4);  // icon_drun
+				break;
+			case 1: texture_data = stbi_load("res//ui//menu//icon_electronic_stop.png", &iconW, &iconH, &channel, 4);  // icon_electronic
+				break;
+			case 2: texture_data = stbi_load("res//ui//menu//icon_guitar1_stop.png", &iconW, &iconH, &channel, 4);  // icon_guitar1
+				break;
+			case 3: texture_data = stbi_load("res//ui//menu//icon_guitar2_stop.png", &iconW, &iconH, &channel, 4);  // icon_guitar2
 				break;
 		}
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, iconW, iconH, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
@@ -99,7 +117,10 @@ public:
 	void modelOutput() {
 		using namespace glm;
 		glDepthMask(GL_FALSE);
-		glBindTexture(GL_TEXTURE_2D, iconTex);
+		if(operating)  // 실행 중일때는 중지하는 아이콘이 출력된다.
+			glBindTexture(GL_TEXTURE_2D, iconTex[1]);
+		else  // 실행 전에는 일반 아이콘이 출력된다.
+			glBindTexture(GL_TEXTURE_2D, iconTex[0]);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 		glDepthMask(GL_TRUE);
 	}

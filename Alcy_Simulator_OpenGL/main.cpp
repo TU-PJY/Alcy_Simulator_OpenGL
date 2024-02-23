@@ -134,6 +134,7 @@ void main(int argc, char** argv) {
 
 	for (int i = 0; i < ICON_PART; i++) {  // menu icon
 		icon[i].setTexture(i);
+		icon[i].setTexture2(i);
 	}
 
 	stbi_image_free(texture_data);
