@@ -113,6 +113,8 @@ void executeFunc(int idx) {
 	alcy.measureTime = false;
 	alcy.isLeave = false;
 	alcy.confirmLeave = false;
+	alcy.squeak = false;
+	alcy.squeakTime = 0;
 
 	if (idx != funcNumber && playFunc) {
 		for (int i = 0; i < ICON_PART; i++)  // 기능 실행 도중 다른 아이콘을 선택할 경우 먼저 모든 기능들을 false 상태로 만든다.
