@@ -20,6 +20,7 @@ bool gameStarted; // 게임 시작을 알리는 변수
 bool playFunc;  // 음악 재생 여부
 int musicTrack;  // 음악 구분
 double beatDelay;  // 음악 효과에 사용되는 딜레이 변수
+GLfloat beatVal;  // 음악 효과 수치
 GLfloat interpolation;
 GLfloat interval, playTime;
 GLfloat beatAcc;

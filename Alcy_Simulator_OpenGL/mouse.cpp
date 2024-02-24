@@ -113,14 +113,15 @@ void executeFunc(int idx) {
 			playFunc = true;
 			beatDelay = 4.688;
 			whiteTransparent = 1.0;
+			//cam.zoom = 1.0;
 			icon[idx].operating = true;
 			break;
 		}
 		else {
-			cam.zoom = 1.0;  // 다시 줌을 초기화 한다.
 			beatDelay = 0;
 			alcy.beatX = 0;
 			alcy.beatY = 0;
+			beatVal = 0;
 			whiteTransparent = 1.0;
 			channelMusic->stop();
 			ssystem->playSound(mainTheme, 0, false, &channelTheme);

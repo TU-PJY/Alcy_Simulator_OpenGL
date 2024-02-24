@@ -90,43 +90,12 @@ public:
         }
     }
 
-    // 메트로놈 함수
-    void metronomeEffect(int track) {
-        switch (track) {  // 트랙에 따라 박자 간격을 다르게 설정한다.
-        case 0: 
-            interval = 4.688;  // 128bpm
-            playTime = 317;  // 31.7sec
+    void updateCameraBeat() {
+        switch (musicTrack) {
+        case 0: zoom = 1.0 + beatVal;
             break;
         }
-
-        if (beatDelay >= interval) {
-            beatAcc = 0.08;
-            zoom = 1.15;
-            interpolation = beatDelay;
-            beatDelay = 0;
-            beatDelay = interpolation - interval;  // 초과 시간 보간
-        }
-
-        else {
-            zoom -= beatAcc * fs;
-            beatAcc -= fs / 50;
-            if (zoom < 1.0)
-                zoom = 1.0;
-            if (beatAcc < 0)
-                beatAcc = 0;
-        }
-
-        beatDelay += fs;
-        functionOperationTime += fs;
-       
-        if (functionOperationTime > playTime) {  // 31.7sec
-            playFunc = false; // 노래 길이 31.7sec 지나면 노래 재생 상태 비활성화
-            beatDelay = 0;  // 박자 지연 시간 초기화
-            functionOperationTime = 0;
-            whiteTransparent = 1.0;
-            channelMusic->stop();  // 다시 메인 테마곡을 재생한다.
-            ssystem->playSound(mainTheme, 0, false, &channelTheme);
-        }
+      
     }
 };
 

@@ -75,6 +75,46 @@ void checkIconSituation() {
     }
 }
 
+// 메트로놈 함수
+void metronomeEffect(int track) {
+    switch (track) {  // 트랙에 따라 박자 간격을 다르게 설정한다.
+    case 0:
+        interval = 4.688;  // 128bpm
+        playTime = 317;  // 31.7sec
+        break;
+    }
+
+    if (beatDelay >= interval) {
+        beatAcc = 0.08;
+        beatVal = 0.15;
+        interpolation = beatDelay;
+        beatDelay = 0;
+        beatDelay = interpolation - interval;  // 초과 시간 보간
+    }
+
+    else {
+        beatVal -= beatAcc * fs;
+        beatAcc -= fs / 50;
+        if (beatVal < 0.0)
+            beatVal = 0.0;
+        if (beatAcc < 0)
+            beatAcc = 0;
+    }
+
+    beatDelay += fs;
+    functionOperationTime += fs;
+
+    if (functionOperationTime > playTime) {  // 31.7sec
+        playFunc = false; // 노래 길이 31.7sec 지나면 노래 재생 상태 비활성화
+        beatDelay = 0;  // 박자 지연 시간 초기화
+        beatVal = 0;
+        functionOperationTime = 0;
+        whiteTransparent = 1.0;
+        channelMusic->stop();  // 다시 메인 테마곡을 재생한다.
+        ssystem->playSound(mainTheme, 0, false, &channelTheme);
+    }
+}
+
 void timerOperation(int value) {
     syncFrame();
 
@@ -84,11 +124,12 @@ void timerOperation(int value) {
     if (playFunc) {
         switch (musicTrack) {
         case 0:
-            cam.metronomeEffect(musicTrack);
+            metronomeEffect(musicTrack);
             break;
         }
 
         alcy.updateAlcyBeat();
+        cam.updateCameraBeat();
     }
 
     if (gameStarted) {  // 마우스 이벤트를 실시간으로 처리하기 위한 더블 싱크

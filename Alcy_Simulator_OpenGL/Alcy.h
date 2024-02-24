@@ -321,23 +321,23 @@ public:
             beatDir += 1;
 
             if (beatDir % 2 == 0) {  // 왼쪽 오른쪽 번갈아 가며 머리를 흔든다.
-                beatX = (cam.zoom - 1.0) / 2;
-                beatY = -1 * (cam.zoom - 1.0);
+                beatX = beatVal / 2;
+                beatY = -1 * (beatVal);
             }
             else if (beatDir % 2 == 1) {
-                beatX = -1 * (cam.zoom - 1.0) / 2;
-                beatY = -1 * (cam.zoom - 1.0);
+                beatX = -1 * beatVal / 2;
+                beatY = -1 * beatVal;
             }
         }
 
         else {
             if (beatDir % 2 == 0) {  // 왼쪽 오른쪽 번갈아 가며 머리를 흔든다.
-                beatX = (cam.zoom - 1.0) / 2;
-                beatY = -1 * (cam.zoom - 1.0);
+                beatX = beatVal / 2;
+                beatY = -1 * (beatVal);
             }
             else if (beatDir % 2 == 1) {
-                beatX = -1 * (cam.zoom - 1.0) / 2;
-                beatY = -1 * (cam.zoom - 1.0);
+                beatX = -1 * beatVal / 2;
+                beatY = -1 * beatVal;
             }
         }
 
@@ -387,7 +387,7 @@ public:
             translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
             if (cam.camRot == 0 && !cam.camR && !cam.camL)
                 translateMatrix = translate(translateMatrix,
-                    vec3(((headPos - headRot / 150) - (cam.camX / 2.5)), 0.22 - (cam.camY / 2), 0.00003));
+                    vec3(((headPos - headRot / 150) - (cam.camX / 2)), 0.22 - (cam.camY / 2), 0.00003));
             else
                 translateMatrix = translate(translateMatrix,vec3((headPos - headRot / 150), 0.22, 0.00003));
             break;

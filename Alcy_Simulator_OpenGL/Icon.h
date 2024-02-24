@@ -45,9 +45,8 @@ public:
 				iconTransparent = 0;
 		}
 
-		if (playFunc) {
-			iconBeatEffect = (cam.zoom - 1) / 4;
-		}
+		if (playFunc)
+			iconBeatEffect = beatVal / 4;
 	}
 
 	void updateOnCursor() {  // 커서 선택 업데이트
