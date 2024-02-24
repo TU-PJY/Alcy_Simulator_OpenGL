@@ -65,6 +65,8 @@ public:
     int beatDir;
     bool setOn;
 
+    GLfloat Imageidx;
+
     Alcy() {
         dir = m;
         delay = 2;
@@ -364,6 +366,12 @@ public:
         }
     }
 
+    void updateImageIndex() {
+        Imageidx += fs;
+        if (Imageidx > 4)
+            Imageidx = 0;
+    }
+
     void bindVertex(int idx) {  // 변환 전달 
         glBindVertexArray(VAO_ALCY[idx]);  // 각 모델마다 지정된 VAO만 사용
     }
@@ -473,10 +481,11 @@ public:
                     glBindTexture(GL_TEXTURE_2D, alcyHead[0]);  // head middle
                 }
                 else {
-                    if(funcNumber == 0) glBindTexture(GL_TEXTURE_2D, alcyHead[3]);  // head house
-                    else if (funcNumber == 1) glBindTexture(GL_TEXTURE_2D, alcyHead[3]);  // head house
-                }
-                    
+                    if(funcNumber == 0) 
+                        glBindTexture(GL_TEXTURE_2D, alcyHead[3]);  // head house
+                    else if (funcNumber == 1)
+                        glBindTexture(GL_TEXTURE_2D, alcyHead[(int)Imageidx + 4]);  // head glitch 1 ~ 5
+                }   
             }
             glDrawArrays(GL_TRIANGLES, 0, 6);
             break;

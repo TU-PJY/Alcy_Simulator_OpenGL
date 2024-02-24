@@ -190,6 +190,7 @@ void timerOperation(int value) {
                 break;
             case 1:
                 turntable.updateTurntableIndex();  // 턴테이블의 색상이 바뀌어야 하므로 인덱스를 계속 업데이트 한다.
+                alcy.updateImageIndex();
                 metronomeEffect(funcNumber);
                 break;
             }
