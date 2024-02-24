@@ -7,6 +7,8 @@
 #include "Icon.h"
 #include "Background.h"
 #include "White.h"
+#include "Turntable.h"
+#include "Speaker.h"
 // 프로젝트 전체 전역 변수 및 클래스
 
 GLfloat mx, my; // 마우스 좌표
@@ -18,7 +20,7 @@ bool startIntro;  // 인트로 재생, Camera 객체 전용
 bool gameStarted; // 게임 시작을 알리는 변수
 
 bool playFunc;  // 음악 재생 여부
-int musicTrack;  // 음악 구분
+int funcNumber;  // 음악 구분
 double beatDelay;  // 음악 효과에 사용되는 딜레이 변수
 GLfloat beatVal;  // 음악 효과 수치
 GLfloat interpolation;
@@ -36,3 +38,5 @@ ZZZ zzz[3];
 UI ui;
 Icon icon[ICON_PART];
 White white;
+Turntable turntable;
+Speaker speaker;

@@ -16,7 +16,7 @@ extern GLfloat fs;  // frame sync, 프레임 동기화
 
 // 음악 재생, true일 시 해당하는 음악이 재생되고, 박자에 맞추어 알키가 움직이고 카메라가 움직인다.
 extern bool playFunc;  
-extern int musicTrack;
+extern int funcNumber;
 extern double beatDelay;  // 음악 효과에 사용되는 딜레이 변수
 extern GLfloat interpolation;  // 음악 효과 속도를 보간하는 변수 
 extern GLfloat interval, playTime;  // 박자 간격, 음악 플레이 시간

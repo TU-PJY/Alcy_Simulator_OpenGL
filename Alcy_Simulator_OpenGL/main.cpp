@@ -13,6 +13,8 @@
 #include "Background.h"
 #include "White.h"
 #include "texture.h"
+#include "Turntable.h"
+#include "Speaker.h"
 #include "stb_image.h"
 
 int WIDTH = GetSystemMetrics(SM_CXSCREEN);
@@ -36,6 +38,17 @@ GLvoid displayOutput() {
 	background.bindVertex();
 	background.modelOutput();
 
+	// 스피커
+	if (playFunc) {
+		if (funcNumber == 0 || funcNumber == 1) {
+			initTransform();
+			speaker.setTransform();
+			transmit();
+			speaker.bindVertex();
+			speaker.modelOutput();
+		}
+	}
+
 	// Alcy
 	for (int i = 0; i < ALCY_PART; i++) {
 		initTransform();
@@ -43,6 +56,17 @@ GLvoid displayOutput() {
 		transmit();
 		alcy.bindVertex(i);
 		alcy.modelOutput(i);
+	}
+
+	// 턴테이블
+	if (playFunc) {
+		if (funcNumber == 0 || funcNumber == 1) {
+			initTransform();
+			turntable.setTransform();
+			transmit();
+			turntable.bindVertex();
+			turntable.modelOutput();
+		}
 	}
 
 	// ZZZ 이미지
@@ -73,11 +97,13 @@ GLvoid displayOutput() {
 	}
 	
 	//흰 배경
-	initTransform();
-	white.setTransform();
-	transmit();
-	white.bindVertex();
-	white.modelOutput();
+	if (whiteTransparent > 0.0) {
+		initTransform();
+		white.setTransform();
+		transmit();
+		white.bindVertex();
+		white.modelOutput();
+	}
 
 	glutSwapBuffers();
 }
@@ -130,6 +156,8 @@ void main(int argc, char** argv) {
 	for (int i = 0; i < ICON_PART; i++)  // 메뉴 아이콘 초기화
 		icon[i].setBuffer();
 	white.setBuffer();  // 흰 배경 초기화
+	turntable.setBuffer();  // 턴테이블 초기화
+	speaker.setBuffer(); // 스피커 초기화
 
 	// 텍스처 설정
 	background.setTexture();  // 배경
@@ -147,6 +175,8 @@ void main(int argc, char** argv) {
 	}
 	
 	white.setTexture();  // white
+	turntable.setTexture();  // turntable
+	speaker.setTexture();  // speaker
 
 	stbi_image_free(texture_data);
 	

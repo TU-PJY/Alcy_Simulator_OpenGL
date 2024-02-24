@@ -440,11 +440,13 @@ public:
                 }
             }
             else {  // 카메라 회전 시 앞을 보도록 함
-                if(!playFunc)
+                if (!playFunc) {
                     glBindTexture(GL_TEXTURE_2D, alcyHead[0]);  // head middle
-                else {
-                    glBindTexture(GL_TEXTURE_2D, alcyHead[3]);  // head house
                 }
+                else {
+                    if(funcNumber == 0) glBindTexture(GL_TEXTURE_2D, alcyHead[3]);  // head house
+                }
+                    
             }
             glDrawArrays(GL_TRIANGLES, 0, 6);
             break;

@@ -91,7 +91,7 @@ public:
     }
 
     void updateCameraBeat() {
-        switch (musicTrack) {
+        switch (funcNumber) {
         case 0: zoom = 1.0 + beatVal;
             break;
         }

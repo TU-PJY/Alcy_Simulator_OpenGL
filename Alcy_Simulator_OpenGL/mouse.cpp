@@ -34,20 +34,6 @@ void updateCursor() {  // 알키 머리에 커서를 가져다대면 커서가 바뀐다
 		ui.fingerEnable = false;
 }
 
-void selectIcon() {  // 커서로 아이콘 선택
-	for (int i = 0; i < ICON_PART; i++) {
-		GLfloat iconX = (-0.53 + i * 0.35);
-		GLfloat iconY = -0.33;
-		if ((iconX - 0.14 <= mx * ratio_ && mx * ratio_ <= iconX + 0.14) &&
-			(iconY - 0.13 <= my && my <= iconY + 0.13)) {
-			icon[i].isOnCursor = true;  // 선택된 아이콘은 살짝 투명해진다.
-		}
-		else {
-			icon[i].isOnCursor = false;  // 그 외의 아이콘은 그대로 있는다.
-		}
-	}
-}
-
 void startTouch() {
 	if (ui.handEnable && mouseClickEnable && cam.camRot == 0 && !alcy.squeak && !playFunc) {
 		channelTouch->stop();
@@ -94,6 +80,41 @@ void clickSqueak() {
 	}
 }
 
+void selectIcon() {  // 커서로 아이콘 선택
+	for (int i = 0; i < ICON_PART; i++) {
+		GLfloat iconX = (-0.53 + i * 0.35);
+		GLfloat iconY = -0.33;
+		if ((iconX - 0.14 <= mx * ratio_ && mx * ratio_ <= iconX + 0.14) &&
+			(iconY - 0.13 <= my && my <= iconY + 0.13)) {
+			icon[i].isOnCursor = true;  // 선택된 아이콘은 살짝 투명해진다.
+		}
+		else {
+			icon[i].isOnCursor = false;  // 그 외의 아이콘은 그대로 있는다.
+		}
+	}
+}
+
+void initFunc(int idx) {
+	alcy.dir = m;  // 알키 머리를 초기화 시킨다.
+	alcy.headPos = 0;
+	beatVal = 0;
+	whiteTransparent = 1.0;
+	cam.zoom = 1.0;
+	icon[idx].operating = true;
+	playFunc = true;
+}
+
+void stopFunc(int idx) {
+	beatDelay = 0;
+	alcy.beatX = 0;
+	alcy.beatY = 0;
+	beatVal = 0;
+	whiteTransparent = 1.0;
+	cam.zoom = 1.0;
+	icon[idx].operating = false;
+	playFunc = false;
+}
+
 void executeFunc(int idx) {
 	channelMenu->stop();
 	ssystem->playSound(menuClick, 0, false, &channelMenu);
@@ -104,34 +125,45 @@ void executeFunc(int idx) {
 	alcy.isLeave = false;
 	alcy.confirmLeave = false;
 
+	if (idx != funcNumber && playFunc) {
+		for (int i = 0; i < ICON_PART; i++) {  // 기능 실행 도중 다른 아이콘을 선택할 경우 먼저 모든 기능들을 false 상태로 만든다.
+			icon[i].operating = false;
+			playFunc = false;
+		}
+	}
+
 	switch (idx) {  // 기능 실행 도중 같은 아이콘을 누르면 중지
 	case 0:
 		if (!playFunc) {
 			channelTheme->stop();
 			channelMusic->stop();
 			ssystem->playSound(music1, 0, false, &channelMusic);
-			playFunc = true;
+			initFunc(idx);
 			beatDelay = 4.688;
-			whiteTransparent = 1.0;
-			//cam.zoom = 1.0;
-			icon[idx].operating = true;
 			break;
 		}
 		else {
-			beatDelay = 0;
-			alcy.beatX = 0;
-			alcy.beatY = 0;
-			beatVal = 0;
-			whiteTransparent = 1.0;
 			channelMusic->stop();
 			ssystem->playSound(mainTheme, 0, false, &channelTheme);
-			playFunc = false;
+			stopFunc(idx);
 		}
 		break;
 
 	case 1:
-		channelMusic->stop();
-		ssystem->playSound(music2, 0, false, &channelMusic);
+		if (!playFunc) {
+			channelTheme->stop();
+			channelMusic->stop();
+			ssystem->playSound(music2, 0, false, &channelMusic);
+			initFunc(idx);
+			cam.zoom = 1.0;
+			break;
+		}
+		else {
+			channelMusic->stop();
+			ssystem->playSound(mainTheme, 0, false, &channelTheme);
+			playFunc = false;
+			stopFunc(idx);
+		}
 		break;
 
 	case 2:
@@ -145,7 +177,7 @@ void executeFunc(int idx) {
 		break;
 	}
 
-	musicTrack = idx;  // 선택한 아이콘에 따라 이미지가 달라진다.
+	funcNumber = idx;  // 선택한 아이콘에 따라 이미지가 달라진다.
 }
 
 void clickMenuIcon() {
@@ -158,10 +190,6 @@ void clickMenuIcon() {
 				ui.menuSizeX = 1.02;
 				ui.menuSizeY = 0.51;
 				ui.menuAcc = 0.2;
-
-				cam.zoom = 1.0;  // 기능을 실행해햐 하므로 줌을 초기화한다.
-				alcy.dir = m;  // 알키 머리를 초기화 시킨다.
-				alcy.headPos = 0;
 
 				executeFunc(i);
 

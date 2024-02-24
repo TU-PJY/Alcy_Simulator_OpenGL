@@ -125,6 +125,12 @@
     <ClInclude Include="White.h">
       <Filter>헤더 파일\classes</Filter>
     </ClInclude>
+    <ClInclude Include="Turntable.h">
+      <Filter>헤더 파일\propClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="Speaker.h">
+      <Filter>헤더 파일\propClasses</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="glsl\GLSL_fragment.glsl">

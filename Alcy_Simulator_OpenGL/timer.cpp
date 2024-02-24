@@ -7,6 +7,7 @@
 #include "ZZZ.h"
 #include "Icon.h"
 #include "White.h"
+#include "speaker.h"
 
 // 프레임
 int lastElapsedTime, elapsedTime;
@@ -85,7 +86,7 @@ void metronomeEffect(int track) {
     }
 
     if (beatDelay >= interval) {
-        beatAcc = 0.08;
+        beatAcc = 0.077;
         beatVal = 0.15;
         interpolation = beatDelay;
         beatDelay = 0;
@@ -122,14 +123,15 @@ void timerOperation(int value) {
     cam.rotateCam();
     cam.updateZoom();
     if (playFunc) {
-        switch (musicTrack) {
-        case 0:
-            metronomeEffect(musicTrack);
-            break;
-        }
-
         alcy.updateAlcyBeat();
         cam.updateCameraBeat();
+        speaker.updateSpeakerBeat();
+
+        switch (funcNumber) {
+        case 0:
+            metronomeEffect(funcNumber);
+            break;
+        }
     }
 
     if (gameStarted) {  // 마우스 이벤트를 실시간으로 처리하기 위한 더블 싱크
