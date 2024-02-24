@@ -86,21 +86,19 @@ public:
 				break;
 		}
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, iconW, iconH, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
-	}
 
-	void setTexture2(int idx) {
 		glGenTextures(1, &iconTex[1]);
 		glBindTexture(GL_TEXTURE_2D, iconTex[1]);
 		parameteri();
 		switch (idx) {  // 각 객체마다 다른 아이콘을 로드함
-			case 0: texture_data = stbi_load("res//ui//menu//icon_house_stop.png", &iconW, &iconH, &channel, 4);  // icon_drun
-				break;
-			case 1: texture_data = stbi_load("res//ui//menu//icon_glitch_stop.png", &iconW, &iconH, &channel, 4);  // icon_electronic
-				break;
-			case 2: texture_data = stbi_load("res//ui//menu//icon_guitar1_stop.png", &iconW, &iconH, &channel, 4);  // icon_guitar1
-				break;
-			case 3: texture_data = stbi_load("res//ui//menu//icon_guitar2_stop.png", &iconW, &iconH, &channel, 4);  // icon_guitar2
-				break;
+		case 0: texture_data = stbi_load("res//ui//menu//icon_house_stop.png", &iconW, &iconH, &channel, 4);  // icon_drun
+			break;
+		case 1: texture_data = stbi_load("res//ui//menu//icon_glitch_stop.png", &iconW, &iconH, &channel, 4);  // icon_electronic
+			break;
+		case 2: texture_data = stbi_load("res//ui//menu//icon_guitar1_stop.png", &iconW, &iconH, &channel, 4);  // icon_guitar1
+			break;
+		case 3: texture_data = stbi_load("res//ui//menu//icon_guitar2_stop.png", &iconW, &iconH, &channel, 4);  // icon_guitar2
+			break;
 		}
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, iconW, iconH, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 	}

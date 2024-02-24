@@ -13,31 +13,11 @@ void convertToGLCoord(int x, int y) {  //GL좌표계로 변환
 	my = -(GLfloat)(y - (GLfloat)HEIGHT / 2.0) * (GLfloat)(1.0 / (GLfloat)(HEIGHT / 2.0));
 }
 
-void setDir() {  // 알키 바라보는 방향을 결정한다
-		if (mx / cam.zoom * ratio_ < -0.5 * ratio_)
-			alcy.dir = l;
-		else if (mx / cam.zoom * ratio_ > 0.5 * ratio_)
-			alcy.dir = r;
-		else
-			alcy.dir = m;
-}
-
-void updateCursor() {  // 알키 머리에 커서를 가져다대면 커서가 바뀐다
-	if ((mx / cam.zoom * ratio_ >= -0.4 && mx / cam.zoom * ratio_ <= 0.4) && (my / cam.zoom >= 0.1 && my / cam.zoom <= 0.5)) // 쓰다듬기
-		ui.handEnable = true;
-	else
-		ui.handEnable = false;
-
-	if ((mx / cam.zoom * ratio_ >= -0.03 && mx / cam.zoom * ratio_ <= 0.03) && (my / cam.zoom >= -0.2 && my / cam.zoom <= -0.15))  // 코 누르기
-		ui.fingerEnable = true;
-	else
-		ui.fingerEnable = false;
-}
-
 void startTouch() {
 	if (ui.handEnable && mouseClickEnable && cam.camRot == 0 && !alcy.squeak && !playFunc) {
 		channelTouch->stop();
 		ssystem->playSound(touch, 0, false, &channelTouch);   // 쓰다듬기 시작한 순간부터 소리를 반복 재생한다.
+
 		alcy.touchEnable = true;
 		lButtonDown = true;
 	}
@@ -45,12 +25,14 @@ void startTouch() {
 
 void stopTouch() {
 	if (ui.handEnable && mouseClickEnable && alcy.touchEnable) {
-		ui.handNum = 0;
 		alcy.headRot = 0;
 		alcy.tailNum = 0;
 		alcy.tailRot = 0;
 		alcy.bodyRot = 0;
 		alcy.touchEnable = false;
+
+		ui.handNum = 0;
+
 		channelTouch->stop();  // 쓰다듬기를 중단할 경우 소리를 정지한다.
 	}
 }
@@ -64,14 +46,11 @@ void clickSqueak() {
 		channelSqueak->stop();
 
 		switch (randomSound) {  // 3가지 중 하나를 재생한다.
-		case 1:
-			ssystem->playSound(squeak1, 0, false, &channelSqueak);
+		case 1: ssystem->playSound(squeak1, 0, false, &channelSqueak); 
 			break;
-		case 2:
-			ssystem->playSound(squeak2, 0, false, &channelSqueak);
+		case 2: ssystem->playSound(squeak2, 0, false, &channelSqueak); 
 			break;
-		case 3:
-			ssystem->playSound(squeak3, 0, false, &channelSqueak);
+		case 3: ssystem->playSound(squeak3, 0, false, &channelSqueak); 
 			break;
 		}
 
@@ -80,26 +59,15 @@ void clickSqueak() {
 	}
 }
 
-void selectIcon() {  // 커서로 아이콘 선택
-	for (int i = 0; i < ICON_PART; i++) {
-		GLfloat iconX = (-0.53 + i * 0.35);
-		GLfloat iconY = -0.33;
-		if ((iconX - 0.14 <= mx * ratio_ && mx * ratio_ <= iconX + 0.14) &&
-			(iconY - 0.13 <= my && my <= iconY + 0.13)) {
-			icon[i].isOnCursor = true;  // 선택된 아이콘은 살짝 투명해진다.
-		}
-		else {
-			icon[i].isOnCursor = false;  // 그 외의 아이콘은 그대로 있는다.
-		}
-	}
-}
-
 void initFunc(int idx) {
-	alcy.dir = m;  // 알키 머리를 초기화 시킨다.
+	cam.zoom = 1.0;  // 카메라 초기화
+
+	alcy.dir = m;  // 알키 머리 데이터  초기화
 	alcy.headPos = 0;
+
 	beatVal = 0;
 	whiteTransparent = 1.0;
-	cam.zoom = 1.0;
+	
 	icon[idx].operating = true;
 	playFunc = true;
 }
@@ -116,9 +84,11 @@ void stopFunc(int idx) {
 }
 
 void executeFunc(int idx) {
+	functionOperationTime = 0;
+
 	channelMenu->stop();
 	ssystem->playSound(menuClick, 0, false, &channelMenu);
-	functionOperationTime = 0;
+
 	alcy.sleeping = false;  // 기능 실행 중에는 조작 유무 확인을 하지 않는다.
 	alcy.tired = false;
 	alcy.measureTime = false;
@@ -126,10 +96,10 @@ void executeFunc(int idx) {
 	alcy.confirmLeave = false;
 
 	if (idx != funcNumber && playFunc) {
-		for (int i = 0; i < ICON_PART; i++) {  // 기능 실행 도중 다른 아이콘을 선택할 경우 먼저 모든 기능들을 false 상태로 만든다.
+		for (int i = 0; i < ICON_PART; i++)  // 기능 실행 도중 다른 아이콘을 선택할 경우 먼저 모든 기능들을 false 상태로 만든다.
 			icon[i].operating = false;
-			playFunc = false;
-		}
+
+		playFunc = false;
 	}
 
 	switch (idx) {  // 기능 실행 도중 같은 아이콘을 누르면 중지
@@ -184,10 +154,11 @@ void clickMenuIcon() {
 	if (ui.menuEnable) {  // 아이콘 선택 시 실행되면서 메뉴바가 닫힌다.
 		for (int i = 0; i < ICON_PART; i++) {
 			if (ui.menuOpened && icon[i].isOnCursor) {
-				ui.menuEnable = false;
+				ui.menuEnable = false; 
 				ui.menuOpened = false;  // 더 이상 커서와 아이콘이 상호작용하지 않는다.
+				
 				ui.menuTransparent = 0.743;  // 메뉴가 닫힌다.
-				ui.menuSizeX = 1.02;
+				ui.menuSizeX = 1.02; 
 				ui.menuSizeY = 0.51;
 				ui.menuAcc = 0.2;
 
@@ -217,43 +188,20 @@ void Mouse(int button, int state, int x, int y) {  // 마우스 클릭
 
 void pMotion(int x, int y) {  // 클릭 안할 때의 모션
 		convertToGLCoord(x, y);
-		if (gameStarted) {
-			cam.camX = (0.0 - mx) / 10 / cam.zoom;
-			cam.camY = (0.0 - my) / 10 / cam.zoom;
 
-			if (!ui.menuEnable && !playFunc) 
-				updateCursor();
-			if(ui.menuEnable && ui.menuOpened)
-				selectIcon();
-
-			if(!playFunc)
-				setDir();
-			
-
+		if (gameStarted) 
 			alcy.isLeave = false;  // 움직이면 컨트롤을 감지한다.
-		}
+		
 
 	glutPostRedisplay();
 }
 
 void Motion(int x, int y) {  // 클릭 할 때의 모션
-	if (gameStarted) {
-		if (!alcy.touchEnable) {  // 알키를 쓰다듬는 도중에는 마우스 업데이트를 하지 않는다.
-			convertToGLCoord(x, y);
-			cam.camX = (0.0 - mx) / 10 / cam.zoom;
-			cam.camY = (0.0 - my) / 10 / cam.zoom;
+	if(!alcy.touchEnable)
+		convertToGLCoord(x, y);
 
-			if (!ui.menuEnable && !playFunc)
-				updateCursor();
-			if (ui.menuEnable && ui.menuOpened)
-				selectIcon();
-
-			if (!playFunc)
-				setDir();
-		}
-
+	if (gameStarted)
 		alcy.isLeave = false;  // 움직이면 컨트롤을 감지한다.
-	}
 
 	glutPostRedisplay();
 }
@@ -261,19 +209,22 @@ void Motion(int x, int y) {  // 클릭 할 때의 모션
 void Wheel(int button, int dir, int x, int y) {  // 마우스 휠
 	if (gameStarted && !ui.menuEnable && !playFunc) {
 		if (dir > 0) {
-			channelScroll->stop();
-			ssystem->playSound(scroll, 0, false, &channelScroll);
+			if (cam.zoom <= 2.615) {
+				channelScroll->stop();
+				ssystem->playSound(scroll, 0, false, &channelScroll);
 
-			cam.zoomAcc = 0.25;
-			cam.zoomEnable = true;
+				cam.zoomAcc = 0.25;
+				cam.zoomEnable = true;
+			}
 
 			alcy.isLeave = false;
 		}
-		else if (dir < 0) {
-			channelScroll->stop();
-			ssystem->playSound(scroll, 0, false, &channelScroll);
 
+		else if (dir < 0) {
 			if (cam.zoom > 1.0) {
+				channelScroll->stop();
+				ssystem->playSound(scroll, 0, false, &channelScroll);
+
 				cam.zoomAcc = -0.25;
 				cam.zoomEnable = true;
 			}

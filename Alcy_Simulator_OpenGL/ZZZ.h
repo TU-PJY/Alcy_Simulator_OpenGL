@@ -95,6 +95,7 @@ public:
 
 	void setTransform() {
 		using namespace glm;
+
 		scaleMatrix = scale(scaleMatrix, vec3(size, size, 0.0));
 		translateMatrix = translate(translateMatrix, vec3(x, y, 0.0005));
 		transparent = zzzTransparent;
@@ -104,6 +105,7 @@ public:
 
 	void modelOutput() {
 		using namespace glm;
+
 		glDepthMask(GL_FALSE);
 		glBindTexture(GL_TEXTURE_2D, zzzTex);
 		glDrawArrays(GL_TRIANGLES, 0, 6);

@@ -162,14 +162,6 @@ public:
         }
     }
 
-    void playTiltSound() {  // 머리 기울이는 소리 재생
-        if (!tiltSoundPlayed) {
-            channelTilt->stop();
-            ssystem->playSound(tilt, 0, false, &channelTilt);
-            tiltSoundPlayed = true;
-        }
-    }
-
     void updateAlcyBlink() {  // 알키 눈 깜빡임 업데이트
         random_device rd;  mt19937 gen(rd());
         uniform_real_distribution <GLfloat> dis(0, 3);
@@ -188,61 +180,6 @@ public:
                 blinkInterval = dis(gen);  // 눈 깜빡이는 간격을 랜덤으로 설정한다
                 blinkEnable = false;
             }
-        }
-    }
-
-    void moveAlcyHead() {  // 바라보는 방향 전환 시 알키 머리 움직임
-        if (!cam.camR && !cam.camL && cam.camRot == 0 && !squeak && !tired && !sleeping) {
-            switch (dir) {
-            case l:  // 좌측 바라볼 시
-                headPos -= 0.04 * fs;
-                if (headPos < -0.08)
-                    headPos = -0.08;
-                break;
-
-            case r:  // 우측 바라볼 시
-                headPos += 0.04 * fs;
-                if (headPos > 0.08)
-                    headPos = 0.08;
-                break;
-
-            default:  // 가운데 바라볼 시
-                if (headPos < 0) {
-                    headPos += 0.04 * fs;
-                    if (headPos > 0)
-                        headPos = 0;
-                }
-                if (headPos > 0) {
-                    headPos -= 0.04 * fs;
-                    if (headPos < 0)
-                        headPos = 0;
-                }
-                break;
-            }
-        }
-        else {  // 아무 조작 없을 때
-            if (headPos < 0) {
-                headPos += 0.04 * fs;
-                if (headPos > 0)
-                    headPos = 0;
-            }
-            if (headPos > 0) {
-                headPos -= 0.04 * fs;
-                if (headPos < 0)
-                    headPos = 0;
-            }
-        }
-    }
-
-    void updateAlcyTouch() {  // 알키 머리 쓰다듬기
-        if (mouseClickEnable && ui.handEnable && touchEnable) {  // 손 커서인 상태로 머리를 쓰다듬을 수 있다
-            ui.handX = sin(ui.handNum) * 0.4;  // 쓰다듬는 중에는 손 커서가 좌우로 부드럽게 움직인다.
-            ui.handNum += fs / 4;
-
-            tailNum += fs / 10;  // 꼬리는 느린 속도로 별도로 움직인다.
-            tailRot = sin(tailNum) * 10;
-            headRot = -ui.handX * 17;  // 손의 움직임에 따라 머리도 같이 움직인다.
-            bodyRot = -headRot / 4;  // 몸통도 같이 움직인다.
         }
     }
 
@@ -302,6 +239,69 @@ public:
                     tailRot = 0;
                     tiltSoundPlayed = false;
                 }
+            }
+        }
+    }
+
+    void playTiltSound() {  // 머리 기울이는 소리 재생
+        if (!tiltSoundPlayed) {
+            channelTilt->stop();
+            ssystem->playSound(tilt, 0, false, &channelTilt);
+            tiltSoundPlayed = true;
+        }
+    }
+
+    void updateAlcyTouch() {  // 알키 머리 쓰다듬기
+        if (mouseClickEnable && ui.handEnable && touchEnable) {  // 손 커서인 상태로 머리를 쓰다듬을 수 있다
+            ui.handX = sin(ui.handNum) * 0.4;  // 쓰다듬는 중에는 손 커서가 좌우로 부드럽게 움직인다.
+            ui.handNum += fs / 4;
+
+            tailNum += fs / 10;  // 꼬리는 느린 속도로 별도로 움직인다.
+            tailRot = sin(tailNum) * 10;
+            headRot = -ui.handX * 17;  // 손의 움직임에 따라 머리도 같이 움직인다.
+            bodyRot = -headRot / 4;  // 몸통도 같이 움직인다.
+        }
+    }
+
+    void moveAlcyHead() {  // 바라보는 방향 전환 시 알키 머리 움직임
+        if (!cam.camR && !cam.camL && cam.camRot == 0 && !squeak && !tired && !sleeping) {
+            switch (dir) {
+            case l:  // 좌측 바라볼 시
+                headPos -= 0.04 * fs;
+                if (headPos < -0.08)
+                    headPos = -0.08;
+                break;
+
+            case r:  // 우측 바라볼 시
+                headPos += 0.04 * fs;
+                if (headPos > 0.08)
+                    headPos = 0.08;
+                break;
+
+            default:  // 가운데 바라볼 시
+                if (headPos < 0) {
+                    headPos += 0.04 * fs;
+                    if (headPos > 0)
+                        headPos = 0;
+                }
+                if (headPos > 0) {
+                    headPos -= 0.04 * fs;
+                    if (headPos < 0)
+                        headPos = 0;
+                }
+                break;
+            }
+        }
+        else {  // 아무 조작 없을 때
+            if (headPos < 0) {
+                headPos += 0.04 * fs;
+                if (headPos > 0)
+                    headPos = 0;
+            }
+            if (headPos > 0) {
+                headPos -= 0.04 * fs;
+                if (headPos < 0)
+                    headPos = 0;
             }
         }
     }
@@ -372,6 +372,8 @@ public:
             break;
 
         case eye_:
+            if (playFunc || blinkEnable) break;
+
             translateMatrix = translate(translateMatrix, vec3(0.0, -0.1, 0.0));
             translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
             if (cam.camRot == 0 && !cam.camR && !cam.camL && !squeak && !tired && !sleeping)
@@ -383,6 +385,8 @@ public:
             break;
 
         case dot_:
+            if (playFunc) break;
+
             translateMatrix = translate(translateMatrix, vec3(0.0, -0.1, 0.0));
             translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
             if (cam.camRot == 0 && !cam.camR && !cam.camL)
@@ -393,6 +397,8 @@ public:
             break;
 
         case brow_:
+            if (playFunc) break;
+
             translateMatrix = translate(translateMatrix, vec3(0.0, -0.1, 0.0));
             translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
             if (cam.camRot == 0 && !cam.camR && !cam.camL && !touchEnable && !squeak && !tired && !sleeping)
@@ -402,6 +408,8 @@ public:
             break;
 
         case blink_:
+            if (playFunc) break;
+
             translateMatrix = translate(translateMatrix, vec3(0.0, -0.1, 0.0));
             translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
             translateMatrix = translate(translateMatrix, vec3((headPos - headRot / 150), 0.22 + sleepHeight, 0.00004));
@@ -452,9 +460,8 @@ public:
             break;
 
         case eye_:  // 카메라가 초기 상태일 때 이미지를 업데이트 한다.
-            if (playFunc)  // 노래 플레이 중인 경우 필요 없으므로 출력 비활성화
-                break;
-
+            if (playFunc || blinkEnable || touchEnable) break;
+             
             if (cam.camRot == 0 && !cam.camR && !cam.camL && !squeak && !tired && !sleeping) {
                     switch (dir) {
                     case l: glBindTexture(GL_TEXTURE_2D, eye[1]);  // eye left
@@ -479,8 +486,7 @@ public:
             break;
 
         case dot_:  // 카메라가 초기 상태일 때만 이미지를 업데이트 한다.
-            if (playFunc)  // 노래 플레이 중인 경우 필요 없으므로 출력 비활성화
-                break;
+            if (playFunc || blinkEnable || touchEnable) break;
 
             if (cam.camRot == 0 && !cam.camR && !cam.camL) {
                 switch (dir) {
@@ -500,8 +506,7 @@ public:
             break;
 
         case brow_:  // 카메라가 초기 상태이면서 코를 누르지 않을 때만 이미지를 업데이트 한다.
-            if (playFunc)  // 노래 플레이 중인 경우 필요 없으므로 출력 비활성화
-                break;
+            if (playFunc) break;
 
             if (cam.camRot == 0 && !cam.camR && !cam.camL && !squeak && !tired && !sleeping) {
                 switch (dir) {
@@ -519,24 +524,23 @@ public:
             break;
 
         case blink_:  // 카메라가 초기 상태이면서 코를 누르지 않을 때만 이미지를 업데이트 한다.
-            if (playFunc)  // 노래 플레이 중인 경우 필요 없으므로 출력 비활성화
-                break;
+            if (playFunc) break;
 
-            if (cam.camRot == 0 && !cam.camR && !cam.camL && !squeak && !tired && !sleeping) {
-                switch (dir) {
-                case l: glBindTexture(GL_TEXTURE_2D, blink[1]);  // blink left
-                    break;
-                case r: glBindTexture(GL_TEXTURE_2D, blink[2]);  // blink right
-                    break;
-                case m: glBindTexture(GL_TEXTURE_2D, blink[0]);  // blink middle
-                    break;
+            if (blinkEnable || touchEnable || sleeping) { // 셋 중 하나가 true일 때만 출력
+                if (cam.camRot == 0 && !cam.camR && !cam.camL && !squeak && !tired && !sleeping) {
+                    switch (dir) {
+                    case l: glBindTexture(GL_TEXTURE_2D, blink[1]);  // blink left
+                        break;
+                    case r: glBindTexture(GL_TEXTURE_2D, blink[2]);  // blink right
+                        break;
+                    case m: glBindTexture(GL_TEXTURE_2D, blink[0]);  // blink middle
+                        break;
+                    }
                 }
-            }
-            else
-                glBindTexture(GL_TEXTURE_2D, blink[0]);  // blink middle
-
-            if (blinkEnable || touchEnable || sleeping)  // 셋 중 하나가 true일 때만 출력
+                else
+                    glBindTexture(GL_TEXTURE_2D, blink[0]);  // blink middle
                 glDrawArrays(GL_TRIANGLES, 0, 6);
+            }
             break;
         }
     }

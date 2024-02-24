@@ -22,6 +22,17 @@ public:
             zoom = 0.6;
     }
 
+    void introAnimation() {
+        if (startIntro) {
+            zoom += fs / 30;
+            if (zoom > 1.0) {
+                zoom = 1.0;
+                startIntro = false;
+                gameStarted = true;
+            }
+        }
+    }
+
     void rotateCam() {  // 카메라 회전
         if (camR) {  // 카메라 우측 회전 시
             camRot -= 3 * fs;
@@ -75,17 +86,6 @@ public:
                         zoom = 1.0;
                     zoomEnable = false;
                 }
-            }
-        }
-    }
-
-    void introAnimation() {
-        if (startIntro) {
-            zoom += fs / 30;
-            if (zoom > 1.0) {
-                zoom = 1.0;
-                startIntro = false;
-                gameStarted = true;
             }
         }
     }

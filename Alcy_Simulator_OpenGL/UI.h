@@ -146,12 +146,16 @@ public:
 
 		switch (idx) {
 		case title_:
+			if (gameStarted) break;
+
 			scaleMatrix = scale(scaleMatrix, vec3(titleSize / cam.zoom, titleSize / cam.zoom, 0.0));
 			translateMatrix = translate(translateMatrix, vec3(0.0, titleY, 0.05));
 			transparent = titleTransparent;
 			break;
 
 		case tip_:
+			if (tipTransparent == 0.0 || !gameStarted) break;
+
 			scaleMatrix = scale(scaleMatrix, vec3(0.5 / cam.zoom, 0.5 / cam.zoom, 0.0));
 			translateMatrix = translate(translateMatrix, vec3(-1.0 * ratio_ + 0.5 - cam.camX * ratio_, 0.5 - cam.camY, 0.0005));
 			rotateMatrix = rotate(rotateMatrix, radians(-cam.camRot), vec3(0.0, 0.0, 1.0));
@@ -159,6 +163,8 @@ public:
 			break;
 
 		case icon_:
+			if (exitTransparent == 0.0) break;
+
 			scaleMatrix = scale(scaleMatrix, vec3(0.5 / cam.zoom, 0.5 / cam.zoom, 0.0));
 			translateMatrix = translate(translateMatrix, vec3((0.0 - cam.camX) * ratio_, 0.0 - cam.camY, 0.001));
 			rotateMatrix = rotate(rotateMatrix, radians(-cam.camRot), vec3(0.0, 0.0, 1.0));
@@ -166,6 +172,8 @@ public:
 			break;
 
 		case bar_:  // 화면 크기에 따라 메뉴바의 최대 크기가 달라짐
+			if (!gameStarted) break;
+
 			scaleMatrix = scale(scaleMatrix, vec3((0.2 + menuSizeX) * ratio_ / cam.zoom, (0.01 + menuSizeY) / cam.zoom, 0.0));
 			rotateMatrix = rotate(rotateMatrix, radians(-cam.camRot), vec3(0.0, 0.0, 1.0));
 			translateMatrix = translate(translateMatrix, vec3(-cam.camX * ratio_, (menuY + menuSizeY / 1.2) / cam.zoom - cam.camY, 0.1));
@@ -173,8 +181,9 @@ public:
 			break;
 
 		case cursor_:
-			scaleMatrix = scale(scaleMatrix, vec3(0.15 / cam.zoom, 0.15 / cam.zoom, .0));
+			if (!gameStarted) break;
 
+			scaleMatrix = scale(scaleMatrix, vec3(0.15 / cam.zoom, 0.15 / cam.zoom, .0));
 			if (lButtonDown && handEnable)  // 쓰다듬을 때는 커서를 강제로 지정된 위치로 변환한다.
 				translateMatrix = translate(translateMatrix, vec3((handX - cam.camX), (0.3 - cam.camY), 0.0006));
 			else
@@ -188,12 +197,16 @@ public:
 	void modelOutput(int idx) {  // 모델 출력 
 		switch (idx) {
 		case title_:
+			if (gameStarted) break;
+
 			glBindTexture(GL_TEXTURE_2D, title);
 			if(INTRO == 1)
 				glDrawArrays(GL_TRIANGLES, 0, 6);
 			break;
 
 		case tip_:
+			if (tipTransparent == 0.0) break;
+
 			if (gameStarted) {
 				glDepthMask(GL_FALSE);
 				glBindTexture(GL_TEXTURE_2D, tip);
@@ -203,6 +216,8 @@ public:
 			break;
 
 		case icon_:
+			if (exitTransparent == 0.0) break;
+
 			glDepthMask(GL_FALSE);
 			glBindTexture(GL_TEXTURE_2D, uiIcon[0]);  // exit icon
 			glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -210,15 +225,18 @@ public:
 			break;
 
 		case bar_:
-			if (gameStarted) {
-				glDepthMask(GL_FALSE);
-				glBindTexture(GL_TEXTURE_2D, bar);  // exit icon
-				glDrawArrays(GL_TRIANGLES, 0, 6);
-				glDepthMask(GL_TRUE);
-			}
+			if (!gameStarted) break;
+
+			glDepthMask(GL_FALSE);
+			glBindTexture(GL_TEXTURE_2D, bar);  // exit icon
+			glDrawArrays(GL_TRIANGLES, 0, 6);
+			glDepthMask(GL_TRUE);
+			
 			break;
 
 		case cursor_:
+			if (!gameStarted) break;
+
 			if (handEnable)  // 손 커서
 				glBindTexture(GL_TEXTURE_2D, cursor[1]);
 			else if (fingerEnable)  // 손가락 커서
@@ -226,7 +244,7 @@ public:
 			else // 일반 커서
 				glBindTexture(GL_TEXTURE_2D, cursor[0]);
 
-			if (cam.camRot == 0 && !cam.camR && !cam.camL && gameStarted)  // 카메라 회전 시 커서를 숨김
+			if (cam.camRot == 0 && !cam.camR && !cam.camL)  // 카메라 회전 시 커서를 숨김
 				glDrawArrays(GL_TRIANGLES, 0, 6);
 			break;
 		}

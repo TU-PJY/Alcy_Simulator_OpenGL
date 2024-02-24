@@ -71,11 +71,13 @@ GLvoid displayOutput() {
 
 	// ZZZ 이미지
 	for (int i = 0; i < 3; i++) {
-		initTransform();
-		zzz[i].setTransform();
-		transmit();
-		zzz[i].bindVertex();
-		zzz[i].modelOutput();
+		if (zzz[i].zzzTransparent > 0.0) {
+			initTransform();
+			zzz[i].setTransform();
+			transmit();
+			zzz[i].bindVertex();
+			zzz[i].modelOutput();
+		}
 	}
 
 	// UI
@@ -89,11 +91,13 @@ GLvoid displayOutput() {
 
 	// 메뉴 아이콘
 	for (int i = 0; i < ICON_PART; i++) {
-		initTransform();
-		icon[i].setTransform(i);
-		transmit();
-		icon[i].bindVertex();
-		icon[i].modelOutput();
+		if (icon[i].iconTransparent > 0.0) {
+			initTransform();
+			icon[i].setTransform(i);
+			transmit();
+			icon[i].bindVertex();
+			icon[i].modelOutput();
+		}
 	}
 	
 	//흰 배경
@@ -169,10 +173,8 @@ void main(int argc, char** argv) {
 		zzz[i].setDelay(10 * i);
 	}
 
-	for (int i = 0; i < ICON_PART; i++) {  // menu icon
+	for (int i = 0; i < ICON_PART; i++)  // menu icon
 		icon[i].setTexture(i);
-		icon[i].setTexture2(i);
-	}
 	
 	white.setTexture();  // white
 	turntable.setTexture();  // turntable
