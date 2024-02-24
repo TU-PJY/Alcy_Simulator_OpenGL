@@ -61,24 +61,43 @@ void clickSqueak() {
 
 void initFunc(int idx) {
 	cam.zoom = 1.0;  // 카메라 초기화
+	cam.camRot = 0;
 
+	alcy.beatX = 0;
+	alcy.beatY = 0;
 	alcy.dir = m;  // 알키 머리 데이터  초기화
 	alcy.headPos = 0;
+	alcy.headRot = 0;
 
 	beatVal = 0;
 	whiteTransparent = 1.0;
+
+	for (int i = 0; i < ICON_PART; i++) {  // 아이콘 효과 초기화
+		icon[i].iconBeatRot = 0;
+		icon[i].iconBeatEffect = 0;
+	}
 	
 	icon[idx].operating = true;
 	playFunc = true;
 }
 
 void stopFunc(int idx) {
-	beatDelay = 0;
+	cam.zoom = 1.0;
+	cam.camRot = 0;
+
 	alcy.beatX = 0;
-	alcy.beatY = 0;
+	alcy.beatY = 0; 
+	alcy.headPos = 0;
+
+	beatDelay = 0;
 	beatVal = 0;
 	whiteTransparent = 1.0;
-	cam.zoom = 1.0;
+
+	for (int i = 0; i < ICON_PART; i++) {  // 아이콘 효과 초기화
+		icon[i].iconBeatRot = 0;
+		icon[i].iconBeatEffect = 0;
+	}
+
 	icon[idx].operating = false;
 	playFunc = false;
 }
@@ -109,7 +128,7 @@ void executeFunc(int idx) {
 			channelMusic->stop();
 			ssystem->playSound(music1, 0, false, &channelMusic);
 			initFunc(idx);
-			beatDelay = 4.688;
+			beatDelay = 4.688;  // 128 bpm
 			break;
 		}
 		else {
@@ -125,7 +144,7 @@ void executeFunc(int idx) {
 			channelMusic->stop();
 			ssystem->playSound(music2, 0, false, &channelMusic);
 			initFunc(idx);
-			cam.zoom = 1.0;
+			beatDelay = 5.455;  // 110 bpm
 			break;
 		}
 		else {

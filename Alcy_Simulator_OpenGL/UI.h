@@ -184,6 +184,7 @@ public:
 			if (!gameStarted) break;
 
 			scaleMatrix = scale(scaleMatrix, vec3(0.15 / cam.zoom, 0.15 / cam.zoom, .0));
+			rotateMatrix = rotate(rotateMatrix, radians(-cam.camRot), vec3(0.0, 0.0, 1.0));
 			if (lButtonDown && handEnable)  // 쓰다듬을 때는 커서를 강제로 지정된 위치로 변환한다.
 				translateMatrix = translate(translateMatrix, vec3((handX - cam.camX), (0.3 - cam.camY), 0.0006));
 			else
@@ -244,7 +245,9 @@ public:
 			else // 일반 커서
 				glBindTexture(GL_TEXTURE_2D, cursor[0]);
 
-			if (cam.camRot == 0 && !cam.camR && !cam.camL)  // 카메라 회전 시 커서를 숨김
+			if (!playFunc && cam.camRot == 0 && !cam.camR && !cam.camL)  // 카메라 회전 시 커서를 숨김
+				glDrawArrays(GL_TRIANGLES, 0, 6);
+			else if (playFunc) 
 				glDrawArrays(GL_TRIANGLES, 0, 6);
 			break;
 		}

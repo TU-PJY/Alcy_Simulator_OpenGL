@@ -15,6 +15,8 @@ public:
 	bool camR, camL;  // 카메라 좌우 회전
     bool startFirst;  // 이전 시간을 측정하여 시간 차를 보간한다.
 
+    int i;
+
     Camera() {
         if (INTRO == 0)
             zoom = 1.0;
@@ -92,7 +94,10 @@ public:
 
     void updateCameraBeat() {
         switch (funcNumber) {
-        case 0: zoom = 1.0 + beatVal;
+        case 0: zoom = 1.0 + beatVal / 2;
+            break;
+        case 1: camRot = sin(i) * beatVal * 30;
+            i += fs * 10;
             break;
         }
       

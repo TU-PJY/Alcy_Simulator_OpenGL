@@ -8,6 +8,7 @@
 #include "Icon.h"
 #include "White.h"
 #include "speaker.h"
+#include "Turntable.h"
 
 // 프레임
 int lastElapsedTime, elapsedTime;
@@ -81,6 +82,10 @@ void metronomeEffect(int track) {
         interval = 4.688;  // 128bpm
         playTime = 317;  // 31.7sec
         break;
+    case 1:
+        interval = 5.455;  // 110bpm
+        playTime = 351;  //35.1sec
+        break;
     }
 
     if (beatDelay >= interval) {
@@ -105,10 +110,28 @@ void metronomeEffect(int track) {
 
     if (functionOperationTime > playTime) {  // 31.7sec
         playFunc = false; // 노래 길이 31.7sec 지나면 노래 재생 상태 비활성화
+
+        cam.zoom = 1.0;
+        cam.camRot = 0;
+
+        alcy.beatX = 0;
+        alcy.beatY = 0;
+        alcy.headPos = 0;
+
         beatDelay = 0;  // 박자 지연 시간 초기화
         beatVal = 0;
+
         functionOperationTime = 0;
         whiteTransparent = 1.0;
+
+        for (int i = 0; i < ICON_PART; i++) {  // 아이콘 효과 초기화
+            icon[i].iconBeatRot = 0;
+            icon[i].iconBeatEffect = 0;
+            icon[i].operating = false;
+        }
+
+        
+
         channelMusic->stop();  // 다시 메인 테마곡을 재생한다.
         ssystem->playSound(mainTheme, 0, false, &channelTheme);
     }
@@ -163,6 +186,10 @@ void timerOperation(int value) {
 
             switch (funcNumber) {
             case 0:
+                metronomeEffect(funcNumber);
+                break;
+            case 1:
+                turntable.updateTurntableIndex();  // 턴테이블의 색상이 바뀌어야 하므로 인덱스를 계속 업데이트 한다.
                 metronomeEffect(funcNumber);
                 break;
             }

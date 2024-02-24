@@ -14,13 +14,20 @@ class Turntable {
 public:
 	GLuint VAO_TT;
 
-	unsigned int thTex[2];
+	unsigned int thTex[6];
 	int W, H;
 	int channel;
 	GLfloat ttBeatEffect;
+	GLfloat idx;
 
 	Turntable() {
 		int W = 1500; int H = 1500;
+	}
+
+	void updateTurntableIndex() {
+		idx += fs;
+		if (idx > 4)
+			idx = 0;
 	}
 
 	void setBuffer() {  // 프롭 버퍼 초기화
@@ -47,7 +54,31 @@ public:
 		glGenTextures(1, &thTex[1]);
 		glBindTexture(GL_TEXTURE_2D, thTex[1]);
 		parameteri();
-		texture_data = stbi_load("res//prop//turntable_house.png", &W, &H, &channel, 4);
+		texture_data = stbi_load("res//prop//turntable_glitch_1.png", &W, &H, &channel, 4);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, W, H, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+		glGenTextures(1, &thTex[2]);
+		glBindTexture(GL_TEXTURE_2D, thTex[2]);
+		parameteri();
+		texture_data = stbi_load("res//prop//turntable_glitch_2.png", &W, &H, &channel, 4);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, W, H, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+		glGenTextures(1, &thTex[3]);
+		glBindTexture(GL_TEXTURE_2D, thTex[3]);
+		parameteri();
+		texture_data = stbi_load("res//prop//turntable_glitch_3.png", &W, &H, &channel, 4);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, W, H, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+		glGenTextures(1, &thTex[4]);
+		glBindTexture(GL_TEXTURE_2D, thTex[4]);
+		parameteri();
+		texture_data = stbi_load("res//prop//turntable_glitch_4.png", &W, &H, &channel, 4);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, W, H, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+		glGenTextures(1, &thTex[5]);
+		glBindTexture(GL_TEXTURE_2D, thTex[5]);
+		parameteri();
+		texture_data = stbi_load("res//prop//turntable_glitch_5.png", &W, &H, &channel, 4);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, W, H, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 	}
 
@@ -57,7 +88,8 @@ public:
 
 	void setTransform() {
 		using namespace glm;
-		translateMatrix = translate(translateMatrix, vec3(0.0, -0.75, 0.0009));
+		scaleMatrix = scale(scaleMatrix, vec3(1.5, 1.5, 0.0));
+		translateMatrix = translate(translateMatrix, vec3(0.0, -0.65, 0.0009));
 
 		transformMatrix = rotateMatrix * translateMatrix * scaleMatrix;  // 최종 변환
 	}
@@ -65,7 +97,10 @@ public:
 	void modelOutput() {
 		using namespace glm;
 		glDepthMask(GL_FALSE);
-		glBindTexture(GL_TEXTURE_2D, thTex[0]);
+		if(funcNumber == 0)  // 선택한 아이콘에 따라 턴테이블 형태가 달라진다.
+			glBindTexture(GL_TEXTURE_2D, thTex[0]);
+		else if(funcNumber == 1)
+			glBindTexture(GL_TEXTURE_2D, thTex[(int)idx + 1]);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 		glDepthMask(GL_TRUE);
 	}

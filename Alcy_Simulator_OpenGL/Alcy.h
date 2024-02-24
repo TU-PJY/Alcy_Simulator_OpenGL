@@ -63,6 +63,7 @@ public:
     
     GLfloat beatX, beatY;  // 음악 박자 효과
     int beatDir;
+    bool setOn;
 
     Alcy() {
         dir = m;
@@ -317,30 +318,50 @@ public:
     }
 
     void updateAlcyBeat() {
-        if (beatDelay >= interval) {
-            beatDir += 1;
+        if (funcNumber == 0) {
+            if (beatDelay >= interval) {
+                beatDir += 1;
 
-            if (beatDir % 2 == 0) {  // 왼쪽 오른쪽 번갈아 가며 머리를 흔든다.
-                beatX = beatVal / 2;
-                beatY = -1 * (beatVal);
+                if (beatDir % 2 == 0) {  // 왼쪽 오른쪽 번갈아 가며 머리를 흔든다.
+                    beatX = beatVal / 2;
+                    beatY = -1 * beatVal;
+                }
+                else if (beatDir % 2 == 1) {
+                    beatX = -1 * beatVal / 2;
+                    beatY = -1 * beatVal;
+                }
             }
-            else if (beatDir % 2 == 1) {
-                beatX = -1 * beatVal / 2;
-                beatY = -1 * beatVal;
+
+            else {
+                if (beatDir % 2 == 0) {  // 왼쪽 오른쪽 번갈아 가며 머리를 흔든다.
+                    beatX = beatVal / 2;
+                    beatY = -1 * beatVal;
+                }
+                else if (beatDir % 2 == 1) {
+                    beatX = -1 * beatVal / 2;
+                    beatY = -1 * beatVal;
+                }
             }
         }
 
-        else {
-            if (beatDir % 2 == 0) {  // 왼쪽 오른쪽 번갈아 가며 머리를 흔든다.
-                beatX = beatVal / 2;
-                beatY = -1 * (beatVal);
+        if (funcNumber == 1) {
+            if (beatDelay >= interval)
+                setOn = true;
+
+            if (setOn) {
+                beatY -= fs / 5;
+                if (beatY < -0.15) {
+                    beatY = -0.15;
+                    setOn = false;
+                }
             }
-            else if (beatDir % 2 == 1) {
-                beatX = -1 * beatVal / 2;
-                beatY = -1 * beatVal;
+
+            else if (!setOn) {
+                beatY += fs / 30;
+                if (beatY > 0)
+                    beatY = 0;
             }
         }
-
     }
 
     void bindVertex(int idx) {  // 변환 전달 
@@ -378,7 +399,7 @@ public:
             translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
             if (cam.camRot == 0 && !cam.camR && !cam.camL && !squeak && !tired && !sleeping)
                 translateMatrix = translate(translateMatrix,
-                    vec3(((headPos - headRot / 150) - (cam.camX / 4)), 0.22 - (cam.camY / 4), 0.00001));
+                    vec3(((headPos - headRot / 150) - (cam.camX / 2.3)), 0.22 - (cam.camY / 2.3), 0.00001));
             else
                 translateMatrix = translate(translateMatrix,
                     vec3((headPos - headRot / 150), 0.22, 0.00001));
@@ -391,7 +412,7 @@ public:
             translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
             if (cam.camRot == 0 && !cam.camR && !cam.camL)
                 translateMatrix = translate(translateMatrix,
-                    vec3(((headPos - headRot / 150) - (cam.camX / 2)), 0.22 - (cam.camY / 2), 0.00003));
+                    vec3(((headPos - headRot / 150) - (cam.camX / 1.5)), 0.22 - (cam.camY / 1.5), 0.00003));
             else
                 translateMatrix = translate(translateMatrix,vec3((headPos - headRot / 150), 0.22, 0.00003));
             break;
@@ -453,6 +474,7 @@ public:
                 }
                 else {
                     if(funcNumber == 0) glBindTexture(GL_TEXTURE_2D, alcyHead[3]);  // head house
+                    else if (funcNumber == 1) glBindTexture(GL_TEXTURE_2D, alcyHead[3]);  // head house
                 }
                     
             }

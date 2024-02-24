@@ -26,6 +26,9 @@ public:
 	bool operating;  // 각 아이콘 별 실행 여부
 
 	GLfloat iconBeatEffect;
+	GLfloat iconBeatRot;
+
+	int i;
 
 	Icon() {
 		iconTransparent = 0.0;
@@ -45,8 +48,14 @@ public:
 				iconTransparent = 0;
 		}
 
-		if (playFunc)
-			iconBeatEffect = beatVal / 4;
+		if (playFunc) {
+			if(funcNumber == 0)
+				iconBeatEffect = beatVal / 4;
+			else if (funcNumber == 1) {
+				iconBeatRot = sin(i) * beatVal * 60;
+				i += fs * 10;
+			}
+		}
 	}
 
 	void updateOnCursor() {  // 커서 선택 업데이트
@@ -112,6 +121,7 @@ public:
 		scaleMatrix = scale(scaleMatrix, vec3(0.2 / cam.zoom, 0.2 / cam.zoom, 0.0));
 		translateMatrix = translate(translateMatrix, vec3(-cam.camX * ratio_ + (-0.53 + idx * 0.35) / cam.zoom, - cam.camY + (-0.33 + iconBeatEffect) / cam.zoom, 0.002));
 		rotateMatrix = rotate(rotateMatrix, radians(-cam.camRot), vec3(0.0, 0.0, 1.0));
+		translateMatrix = rotate(translateMatrix, radians(iconBeatRot), vec3(0.0, 0.0, 1.0));
 		transparent = iconTransparent;
 
 		transformMatrix = rotateMatrix * translateMatrix * scaleMatrix;  // 최종 변환
