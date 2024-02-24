@@ -157,7 +157,7 @@ public:
 			if (tipTransparent == 0.0 || !gameStarted) break;
 
 			scaleMatrix = scale(scaleMatrix, vec3(0.5 / cam.zoom, 0.5 / cam.zoom, 0.0));
-			translateMatrix = translate(translateMatrix, vec3(-1.0 * ratio_ + 0.5 - cam.camX * ratio_, 0.5 - cam.camY, 0.0005));
+			translateMatrix = translate(translateMatrix, vec3(-1.0 * ratio_ / cam.zoom + 0.5 / cam.zoom - cam.camX * ratio_, 0.5 / cam.zoom - cam.camY, 0.0005));
 			rotateMatrix = rotate(rotateMatrix, radians(-cam.camRot), vec3(0.0, 0.0, 1.0));
 			transparent = tipTransparent;
 			break;
