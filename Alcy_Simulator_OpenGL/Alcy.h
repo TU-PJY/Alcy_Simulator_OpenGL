@@ -459,7 +459,10 @@ public:
     void modelOutput(int idx) {  // ¸ðµ¨ Ãâ·Â 
         switch (idx) {
         case tail_:
-            glBindTexture(GL_TEXTURE_2D, alcyTail);
+            if(playFunc && funcNumber == 2)
+                glBindTexture(GL_TEXTURE_2D, alcyTail[1]);
+            else
+                glBindTexture(GL_TEXTURE_2D, alcyTail[0]);
             glDrawArrays(GL_TRIANGLES, 0, 6);
             break;
 
@@ -472,7 +475,10 @@ public:
             break;
 
         case hair_:
-            glBindTexture(GL_TEXTURE_2D, alcyHair);
+            if(playFunc && funcNumber == 2)
+                glBindTexture(GL_TEXTURE_2D, alcyHair[1]);
+            else
+                glBindTexture(GL_TEXTURE_2D, alcyHair[0]);
             glDrawArrays(GL_TRIANGLES, 0, 6);
             break;
 

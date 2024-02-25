@@ -11,6 +11,7 @@
 #include "Speaker.h"
 #include "Guitar.h"
 #include "Arm.h"
+#include "Light.h"
 // 프로젝트 전체 전역 변수 및 클래스
 
 GLfloat mx, my; // 마우스 좌표
@@ -44,3 +45,4 @@ Turntable turntable;
 Speaker speaker;
 Guitar guitar;
 Arm arm;
+Light light;

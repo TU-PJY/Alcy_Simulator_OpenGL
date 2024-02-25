@@ -153,6 +153,7 @@
     <ClInclude Include="gl_func.h" />
     <ClInclude Include="Guitar.h" />
     <ClInclude Include="Icon.h" />
+    <ClInclude Include="Light.h" />
     <ClInclude Include="Speaker.h" />
     <ClInclude Include="Turntable.h" />
     <ClInclude Include="White.h" />

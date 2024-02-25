@@ -148,7 +148,7 @@ public:
 		case title_:
 			if (gameStarted) break;
 
-			scaleMatrix = scale(scaleMatrix, vec3(titleSize / cam.zoom, titleSize / cam.zoom, 0.0));
+			scaleMatrix = scale(scaleMatrix, vec3(titleSize / cam.zoom, titleSize / cam.zoom, 1.0));
 			translateMatrix = translate(translateMatrix, vec3(0.0, titleY, 0.05));
 			transparent = titleTransparent;
 			break;
@@ -157,7 +157,7 @@ public:
 			if (tipTransparent == 0.0 || !gameStarted) break;
 
 			scaleMatrix = scale(scaleMatrix, vec3(0.5 / cam.zoom, 0.5 / cam.zoom, 0.0));
-			translateMatrix = translate(translateMatrix, vec3(-1.0 * ratio_ / cam.zoom + 0.5 / cam.zoom - cam.camX * ratio_, 0.5 / cam.zoom - cam.camY, 0.0005));
+			translateMatrix = translate(translateMatrix, vec3(-1.0 * ratio_ / cam.zoom + 0.5 / cam.zoom - cam.camX * ratio_, 0.5 / cam.zoom - cam.camY, 1.0));
 			rotateMatrix = rotate(rotateMatrix, radians(-cam.camRot), vec3(0.0, 0.0, 1.0));
 			transparent = tipTransparent;
 			break;
@@ -166,7 +166,7 @@ public:
 			if (exitTransparent == 0.0) break;
 
 			scaleMatrix = scale(scaleMatrix, vec3(0.5 / cam.zoom, 0.5 / cam.zoom, 0.0));
-			translateMatrix = translate(translateMatrix, vec3((0.0 - cam.camX) * ratio_, 0.0 - cam.camY, 0.001));
+			translateMatrix = translate(translateMatrix, vec3((0.0 - cam.camX) * ratio_, 0.0 - cam.camY, 1.0));
 			rotateMatrix = rotate(rotateMatrix, radians(-cam.camRot), vec3(0.0, 0.0, 1.0));
 			transparent = exitTransparent;
 			break;
@@ -176,7 +176,7 @@ public:
 
 			scaleMatrix = scale(scaleMatrix, vec3((0.2 + menuSizeX) * ratio_ / cam.zoom, (0.01 + menuSizeY) / cam.zoom, 0.0));
 			rotateMatrix = rotate(rotateMatrix, radians(-cam.camRot), vec3(0.0, 0.0, 1.0));
-			translateMatrix = translate(translateMatrix, vec3(-cam.camX * ratio_, (menuY + menuSizeY / 1.2) / cam.zoom - cam.camY, 0.1));
+			translateMatrix = translate(translateMatrix, vec3(-cam.camX * ratio_, (menuY + menuSizeY / 1.2) / cam.zoom - cam.camY, 1.0));
 			transparent = menuTransparent;
 			break;
 

@@ -1,5 +1,5 @@
-#ifndef ARM_H
-#define ARM_H
+#ifndef LIGHT_H
+#define LIGHT_H
 #include "config.h"
 #include "shader.h"
 #include "buffer.h"
@@ -10,25 +10,16 @@
 #include "Camera.h"
 #include "stb_image.h"
 
-class Arm {
+class Light {
 public:
-	GLuint VAO_A;
-
-	unsigned int aTex;
-	int W = 1500, H = 1500;
+	GLuint VAO_L;
+	unsigned int lightTex;
+	int W = 1500; int H = 1500;
 	int channel;
 
-	GLfloat armRot;
-	GLfloat num;
-
-	void update() {
-		armRot = sin(num) * 5;
-		num += fs;
-	}
-
 	void setBuffer() {  // 프롭 버퍼 초기화
-		glGenVertexArrays(1, &VAO_A);
-		glBindVertexArray(VAO_A);
+		glGenVertexArrays(1, &VAO_L);
+		glBindVertexArray(VAO_L);
 		glGenBuffers(1, &VBO);
 
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
@@ -41,32 +32,33 @@ public:
 	}
 
 	void setTexture() {
-		glGenTextures(1, &aTex);
-		glBindTexture(GL_TEXTURE_2D, aTex);
+		glGenTextures(1, &lightTex);
+		glBindTexture(GL_TEXTURE_2D, lightTex);
 		parameteri();
-		texture_data = stbi_load("res//prop//arm_guitar1.png", &W, &H, &channel, 4);
+		texture_data = stbi_load("res//prop//light.png", &W, &H, &channel, 4);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, W, H, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 	}
 
 	void bindVertex() {
-		glBindVertexArray(VAO_A);
+		glBindVertexArray(VAO_L);
 	}
 
 	void setTransform() {
 		using namespace glm;
-		translateMatrix = translate(translateMatrix, vec3(-0.395, -0.6, 0.0));
-		translateMatrix = rotate(translateMatrix, radians(armRot), vec3(0.0, 0.0, 1.0));
+		scaleMatrix = scale(scaleMatrix, vec3(2.0, 3.0, 0.0));
+		translateMatrix = translate(translateMatrix, vec3(0.0, 0.5, 0.05));
 		transformMatrix = rotateMatrix * translateMatrix * scaleMatrix;  // 최종 변환
 	}
 
 	void modelOutput() {
 		using namespace glm;
 
-		glBindTexture(GL_TEXTURE_2D, aTex);
+		glBindTexture(GL_TEXTURE_2D, lightTex);
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 	}
 };
 
-extern Arm arm;
+extern Light light;
+
 
 #endif

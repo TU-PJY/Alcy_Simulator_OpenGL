@@ -14,7 +14,7 @@ unsigned int tip;
 unsigned int title;
 
 // 알키 리소스
-unsigned int alcyTail, alcyBody[2], alcyHair, alcyHead[9];
+unsigned int alcyTail[2], alcyBody[2], alcyHair[2], alcyHead[9];
 unsigned int eye[5], dot[3], eyeClose[3], brow[3], blink[3];
 
 unsigned char* texture_data;
@@ -83,10 +83,17 @@ void setAlcyTexture() {
 	stbi_set_flip_vertically_on_load(true);
 
 	// tail
-	glGenTextures(1, &alcyTail);
-	glBindTexture(GL_TEXTURE_2D, alcyTail);
+	glGenTextures(1, &alcyTail[0]);
+	glBindTexture(GL_TEXTURE_2D, alcyTail[0]);
 	parameteri();
 	texture_data = stbi_load("res//alcy//tail.png", &alcyW, &alcyH, &channel, 4);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+	// tail guitar 1
+	glGenTextures(1, &alcyTail[1]);
+	glBindTexture(GL_TEXTURE_2D, alcyTail[1]);
+	parameteri();
+	texture_data = stbi_load("res//alcy//tail_guitar1.png", &alcyW, &alcyH, &channel, 4);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 
 	// alcy body
@@ -100,14 +107,21 @@ void setAlcyTexture() {
 	glGenTextures(1, &alcyBody[1]);
 	glBindTexture(GL_TEXTURE_2D, alcyBody[1]);
 	parameteri();
-	texture_data = stbi_load("res//alcy//body_guitar.png", &alcyW, &alcyH, &channel, 4);
+	texture_data = stbi_load("res//alcy//body_guitar1.png", &alcyW, &alcyH, &channel, 4);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 
 	// alcy hair
-	glGenTextures(1, &alcyHair);
-	glBindTexture(GL_TEXTURE_2D, alcyHair);
+	glGenTextures(1, &alcyHair[0]);
+	glBindTexture(GL_TEXTURE_2D, alcyHair[0]);
 	parameteri();
 	texture_data = stbi_load("res//alcy//hair.png", &alcyW, &alcyH, &channel, 4);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+	// alcy hair guitar 1
+	glGenTextures(1, &alcyHair[1]);
+	glBindTexture(GL_TEXTURE_2D, alcyHair[1]);
+	parameteri();
+	texture_data = stbi_load("res//alcy//hair_guitar1.png", &alcyW, &alcyH, &channel, 4);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 
 	// alcy head middle

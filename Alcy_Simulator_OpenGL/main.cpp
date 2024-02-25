@@ -17,6 +17,7 @@
 #include "Speaker.h"
 #include "Guitar.h"
 #include "Arm.h"
+#include "Light.h"
 #include "stb_image.h"
 
 int WIDTH = GetSystemMetrics(SM_CXSCREEN);
@@ -82,6 +83,12 @@ GLvoid displayOutput() {
 			transmit();
 			arm.bindVertex();
 			arm.modelOutput();
+
+			/*initTransform();
+			light.setTransform();
+			transmit();
+			light.bindVertex();
+			light.modelOutput();*/
 		}
 	}
 
@@ -180,6 +187,7 @@ void main(int argc, char** argv) {
 	speaker.setBuffer(); // 스피커 초기화
 	guitar.setBuffer(); // 기타 초기화
 	arm.setBuffer(); // 팔 초기화
+	light.setBuffer();
 
 	// 텍스처 설정
 	background.setTexture();  // 배경
@@ -199,6 +207,7 @@ void main(int argc, char** argv) {
 	speaker.setTexture();  // speaker
 	guitar.setTexture();
 	arm.setTexture();
+	light.setTexture();
 
 	stbi_image_free(texture_data);
 	
