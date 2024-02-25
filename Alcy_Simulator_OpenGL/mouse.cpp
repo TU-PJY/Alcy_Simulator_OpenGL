@@ -66,9 +66,12 @@ void initFunc(int idx) {  // 메뉴바 기능 실행 또는 중지 시 초기화 하는 함수
 	alcy.beatX = 0;
 	alcy.beatY = 0;
 
-	alcy.dir = m;  // 알키 머리 데이터  초기화
+	alcy.dir = m;  // 알키 데이터 초기화
 	alcy.headPos = 0;
 	alcy.headRot = 0;
+	alcy.headNum = 0;
+	alcy.tailRot = 0;
+	alcy.tailNum = 0;
 
 	alcy.sleeping = false;  // 알키의 모든 상태 해제
 	alcy.tired = false;
@@ -145,8 +148,19 @@ void executeFunc(int idx) {
 		break;
 
 	case 2:
-		channelMusic->stop();
-		ssystem->playSound(music3, 0, false, &channelMusic);
+		if (!playFunc) {
+			channelTheme->stop();
+			channelMusic->stop();
+			ssystem->playSound(music3, 0, false, &channelMusic);
+			initFunc(idx);
+			break;
+		}
+		else {
+			channelMusic->stop();
+			ssystem->playSound(mainTheme, 0, false, &channelTheme);
+			playFunc = false;
+			initFunc(idx);
+		}
 		break;
 
 	case 3:

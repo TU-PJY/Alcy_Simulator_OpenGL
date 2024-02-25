@@ -143,6 +143,7 @@
     <ClCompile Include="timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Arm.h" />
     <ClInclude Include="Background.h" />
     <ClInclude Include="buffer.h" />
     <ClInclude Include="Alcy.h" />
@@ -150,6 +151,7 @@
     <ClInclude Include="config.h" />
     <ClInclude Include="globalVar.h" />
     <ClInclude Include="gl_func.h" />
+    <ClInclude Include="Guitar.h" />
     <ClInclude Include="Icon.h" />
     <ClInclude Include="Speaker.h" />
     <ClInclude Include="Turntable.h" />

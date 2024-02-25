@@ -11,7 +11,7 @@ extern unsigned int tip;  // 팁
 extern unsigned int title;  // 타이틀
 
 // 알키
-extern unsigned int alcyTail, alcyBody, alcyHair, alcyHead[9];  // 알키 파츠
+extern unsigned int alcyTail, alcyBody[2], alcyHair, alcyHead[9];  // 알키 파츠
 extern unsigned int eye[5], dot[3], eyeClose[3], brow[3], blink[3]; // 알키 얼굴 파츠
 
 

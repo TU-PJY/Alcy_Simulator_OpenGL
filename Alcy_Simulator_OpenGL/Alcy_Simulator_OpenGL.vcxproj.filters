@@ -131,6 +131,12 @@
     <ClInclude Include="Speaker.h">
       <Filter>헤더 파일\propClasses</Filter>
     </ClInclude>
+    <ClInclude Include="Guitar.h">
+      <Filter>헤더 파일\propClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="Arm.h">
+      <Filter>헤더 파일\propClasses</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="glsl\GLSL_fragment.glsl">

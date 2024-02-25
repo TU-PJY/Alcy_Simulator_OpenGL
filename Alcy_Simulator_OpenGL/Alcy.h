@@ -66,6 +66,7 @@ public:
     bool setOn;
 
     GLfloat Imageidx;
+    GLfloat headNum;
 
     Alcy() {
         dir = m;
@@ -372,6 +373,13 @@ public:
             Imageidx = 0;
     }
 
+    void updateAlcyGuitarPlay() {
+        headRot = 10 + sin(headNum) * 3;
+        tailRot = sin(tailNum) * 2;
+        headNum += fs / 5;
+        tailNum += fs / 5;
+    }
+
     void bindVertex(int idx) {  // 변환 전달 
         glBindVertexArray(VAO_ALCY[idx]);  // 각 모델마다 지정된 VAO만 사용
     }
@@ -456,7 +464,10 @@ public:
             break;
 
         case body_:
-            glBindTexture(GL_TEXTURE_2D, alcyBody);
+            if(playFunc && funcNumber == 2)
+                glBindTexture(GL_TEXTURE_2D, alcyBody[1]);
+            else
+                glBindTexture(GL_TEXTURE_2D, alcyBody[0]);
             glDrawArrays(GL_TRIANGLES, 0, 6);
             break;
 
@@ -484,7 +495,9 @@ public:
                     if(funcNumber == 0) 
                         glBindTexture(GL_TEXTURE_2D, alcyHead[3]);  // head house
                     else if (funcNumber == 1)
-                        glBindTexture(GL_TEXTURE_2D, alcyHead[(int)Imageidx + 4]);  // head glitch 1 ~ 5
+                        glBindTexture(GL_TEXTURE_2D, alcyHead[(int)Imageidx + 4]);  // head glitch 1 ~ 4 (idx = 4 ~ 7)
+                    else if(funcNumber == 2)
+                        glBindTexture(GL_TEXTURE_2D, alcyHead[8]);  // head guitar1
                 }   
             }
             glDrawArrays(GL_TRIANGLES, 0, 6);

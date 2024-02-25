@@ -9,6 +9,8 @@
 #include "White.h"
 #include "Turntable.h"
 #include "Speaker.h"
+#include "Guitar.h"
+#include "Arm.h"
 // 프로젝트 전체 전역 변수 및 클래스
 
 GLfloat mx, my; // 마우스 좌표
@@ -40,3 +42,5 @@ Icon icon[ICON_PART];
 White white;
 Turntable turntable;
 Speaker speaker;
+Guitar guitar;
+Arm arm;

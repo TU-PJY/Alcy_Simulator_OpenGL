@@ -14,7 +14,7 @@ unsigned int tip;
 unsigned int title;
 
 // 알키 리소스
-unsigned int alcyTail, alcyBody, alcyHair, alcyHead[9];
+unsigned int alcyTail, alcyBody[2], alcyHair, alcyHead[9];
 unsigned int eye[5], dot[3], eyeClose[3], brow[3], blink[3];
 
 unsigned char* texture_data;
@@ -90,10 +90,17 @@ void setAlcyTexture() {
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 
 	// alcy body
-	glGenTextures(1, &alcyBody);
-	glBindTexture(GL_TEXTURE_2D, alcyBody);
+	glGenTextures(1, &alcyBody[0]);
+	glBindTexture(GL_TEXTURE_2D, alcyBody[0]);
 	parameteri();
 	texture_data = stbi_load("res//alcy//body.png", &alcyW, &alcyH, &channel, 4);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+	// alcy body guitar
+	glGenTextures(1, &alcyBody[1]);
+	glBindTexture(GL_TEXTURE_2D, alcyBody[1]);
+	parameteri();
+	texture_data = stbi_load("res//alcy//body_guitar.png", &alcyW, &alcyH, &channel, 4);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 
 	// alcy hair
@@ -155,13 +162,14 @@ void setAlcyTexture() {
 	parameteri();
 	texture_data = stbi_load("res//alcy//head_glitch_4.png", &alcyW, &alcyH, &channel, 4);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+	///////////////
 
+	// alcy head guitar1
 	glGenTextures(1, &alcyHead[8]);
 	glBindTexture(GL_TEXTURE_2D, alcyHead[8]);
 	parameteri();
-	texture_data = stbi_load("res//alcy//head_glitch_5.png", &alcyW, &alcyH, &channel, 4);
+	texture_data = stbi_load("res//alcy//head_guitar1.png", &alcyW, &alcyH, &channel, 4);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
-	///////////////
 
 
 	// eye middle

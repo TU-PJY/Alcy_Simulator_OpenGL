@@ -9,6 +9,8 @@
 #include "White.h"
 #include "speaker.h"
 #include "Turntable.h"
+#include "Guitar.h"
+#include "Arm.h"
 
 // 프레임
 int lastElapsedTime, elapsedTime;
@@ -76,7 +78,7 @@ void updateIconType() {
 }
 
 // 메트로놈 함수
-void metronomeEffect(int track) {
+void updateFuncOperation(int track) {
     switch (track) {  // 트랙에 따라 박자 간격을 다르게 설정한다.
     case 0:
         interval = 4.688;  // 128bpm
@@ -86,30 +88,37 @@ void metronomeEffect(int track) {
         interval = 5.455;  // 110bpm
         playTime = 351;  //35.1sec
         break;
+    case 2:
+        interval = 0;
+        playTime = 213;
+        break;
     }
 
-    if (beatDelay >= interval) {
-        beatAcc = 0.077;
-        beatVal = 0.15;
-        interpolation = beatDelay;
-        beatDelay = 0;
-        beatDelay = interpolation - interval;  // 초과 시간 보간
+    if (track == 0 || track == 1) {
+        if (beatDelay >= interval) {
+            beatAcc = 0.077;
+            beatVal = 0.15;
+            interpolation = beatDelay;
+            beatDelay = 0;
+            beatDelay = interpolation - interval;  // 초과 시간 보간
+        }
+
+        else {
+            beatVal -= beatAcc * fs;
+            beatAcc -= fs / 50;
+            if (beatVal < 0.0)
+                beatVal = 0.0;
+            if (beatAcc < 0)
+                beatAcc = 0;
+        }
+
+        beatDelay += fs;
     }
 
-    else {
-        beatVal -= beatAcc * fs;
-        beatAcc -= fs / 50;
-        if (beatVal < 0.0)
-            beatVal = 0.0;
-        if (beatAcc < 0)
-            beatAcc = 0;
-    }
-
-    beatDelay += fs;
     functionOperationTime += fs;
 
-    if (functionOperationTime > playTime) {  // 31.7sec
-        playFunc = false; // 노래 길이 31.7sec 지나면 노래 재생 상태 비활성화
+    if (functionOperationTime > playTime) { 
+        playFunc = false;
 
         cam.zoom = 1.0;
         cam.camRot = 0;
@@ -117,6 +126,10 @@ void metronomeEffect(int track) {
         alcy.beatX = 0;
         alcy.beatY = 0;
         alcy.headPos = 0;
+        alcy.headRot = 0;
+        alcy.headNum = 0;
+        alcy.tailRot = 0;
+        alcy.tailNum = 0;
 
         beatDelay = 0;  // 박자 지연 시간 초기화
         beatVal = 0;
@@ -129,8 +142,6 @@ void metronomeEffect(int track) {
             icon[i].iconBeatEffect = 0;
             icon[i].operating = false;
         }
-
-        
 
         channelMusic->stop();  // 다시 메인 테마곡을 재생한다.
         ssystem->playSound(mainTheme, 0, false, &channelTheme);
@@ -186,13 +197,19 @@ void timerOperation(int value) {
 
             switch (funcNumber) {
             case 0:
-                metronomeEffect(funcNumber);
+                updateFuncOperation(funcNumber);
                 break;
             case 1:
                 turntable.updateTurntableIndex();  // 턴테이블의 색상이 바뀌어야 하므로 인덱스를 계속 업데이트 한다.
                 speaker.updateImageIndex();
                 alcy.updateImageIndex();
-                metronomeEffect(funcNumber);
+                updateFuncOperation(funcNumber);
+                break;
+            case 2:
+                arm.update();
+                guitar.update();
+                alcy.updateAlcyGuitarPlay();
+                updateFuncOperation(funcNumber);
                 break;
             }
         }

@@ -15,6 +15,8 @@
 #include "texture.h"
 #include "Turntable.h"
 #include "Speaker.h"
+#include "Guitar.h"
+#include "Arm.h"
 #include "stb_image.h"
 
 int WIDTH = GetSystemMetrics(SM_CXSCREEN);
@@ -66,6 +68,20 @@ GLvoid displayOutput() {
 			transmit();
 			turntable.bindVertex();
 			turntable.modelOutput();
+		}
+		// 기타, 팔
+		else if (funcNumber == 2) {
+			initTransform();
+			guitar.setTransform();
+			transmit();
+			guitar.bindVertex();
+			guitar.modelOutput();
+
+			initTransform();
+			arm.setTransform();
+			transmit();
+			arm.bindVertex();
+			arm.modelOutput();
 		}
 	}
 
@@ -162,6 +178,8 @@ void main(int argc, char** argv) {
 	white.setBuffer();  // 흰 배경 초기화
 	turntable.setBuffer();  // 턴테이블 초기화
 	speaker.setBuffer(); // 스피커 초기화
+	guitar.setBuffer(); // 기타 초기화
+	arm.setBuffer(); // 팔 초기화
 
 	// 텍스처 설정
 	background.setTexture();  // 배경
@@ -179,6 +197,8 @@ void main(int argc, char** argv) {
 	white.setTexture();  // white
 	turntable.setTexture();  // turntable
 	speaker.setTexture();  // speaker
+	guitar.setTexture();
+	arm.setTexture();
 
 	stbi_image_free(texture_data);
 	

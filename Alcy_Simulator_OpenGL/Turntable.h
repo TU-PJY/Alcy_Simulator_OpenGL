@@ -14,7 +14,7 @@ class Turntable {
 public:
 	GLuint VAO_TT;
 
-	unsigned int thTex[6];
+	unsigned int thTex[5];
 	int W, H;
 	int channel;
 	GLfloat ttBeatEffect;
@@ -73,12 +73,6 @@ public:
 		glBindTexture(GL_TEXTURE_2D, thTex[4]);
 		parameteri();
 		texture_data = stbi_load("res//prop//turntable_glitch_4.png", &W, &H, &channel, 4);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, W, H, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
-
-		glGenTextures(1, &thTex[5]);
-		glBindTexture(GL_TEXTURE_2D, thTex[5]);
-		parameteri();
-		texture_data = stbi_load("res//prop//turntable_glitch_5.png", &W, &H, &channel, 4);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, W, H, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 	}
 
