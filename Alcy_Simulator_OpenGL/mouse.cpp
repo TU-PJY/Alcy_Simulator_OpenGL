@@ -59,15 +59,24 @@ void clickSqueak() {
 	}
 }
 
-void initFunc(int idx) {
+void initFunc(int idx) {  // 메뉴바 기능 실행 또는 중지 시 초기화 하는 함수
 	cam.zoom = 1.0;  // 카메라 초기화
 	cam.camRot = 0;
 
 	alcy.beatX = 0;
 	alcy.beatY = 0;
+
 	alcy.dir = m;  // 알키 머리 데이터  초기화
 	alcy.headPos = 0;
 	alcy.headRot = 0;
+
+	alcy.sleeping = false;  // 알키의 모든 상태 해제
+	alcy.tired = false;
+	alcy.measureTime = false;
+	alcy.isLeave = false;
+	alcy.confirmLeave = false;
+	alcy.squeak = false;
+	alcy.squeakTime = 0;
 
 	beatVal = 0;
 	whiteTransparent = 1.0;
@@ -77,44 +86,22 @@ void initFunc(int idx) {
 		icon[i].iconBeatEffect = 0;
 	}
 	
-	icon[idx].operating = true;
-	playFunc = true;
-}
-
-void stopFunc(int idx) {
-	cam.zoom = 1.0;
-	cam.camRot = 0;
-
-	alcy.beatX = 0;
-	alcy.beatY = 0; 
-	alcy.headPos = 0;
-
-	beatDelay = 0;
-	beatVal = 0;
-	whiteTransparent = 1.0;
-
-	for (int i = 0; i < ICON_PART; i++) {  // 아이콘 효과 초기화
-		icon[i].iconBeatRot = 0;
-		icon[i].iconBeatEffect = 0;
+	if (!icon[idx].operating) {
+		icon[idx].operating = true;
+		playFunc = true;
 	}
 
-	icon[idx].operating = false;
-	playFunc = false;
+	else {
+		icon[idx].operating = false;
+		playFunc = false;
+	}
+
+	functionOperationTime = 0;
 }
 
 void executeFunc(int idx) {
-	functionOperationTime = 0;
-
 	channelMenu->stop();
 	ssystem->playSound(menuClick, 0, false, &channelMenu);
-
-	alcy.sleeping = false;  // 기능 실행 중에는 조작 유무 확인을 하지 않는다.
-	alcy.tired = false;
-	alcy.measureTime = false;
-	alcy.isLeave = false;
-	alcy.confirmLeave = false;
-	alcy.squeak = false;
-	alcy.squeakTime = 0;
 
 	if (idx != funcNumber && playFunc) {
 		for (int i = 0; i < ICON_PART; i++)  // 기능 실행 도중 다른 아이콘을 선택할 경우 먼저 모든 기능들을 false 상태로 만든다.
@@ -136,7 +123,7 @@ void executeFunc(int idx) {
 		else {
 			channelMusic->stop();
 			ssystem->playSound(mainTheme, 0, false, &channelTheme);
-			stopFunc(idx);
+			initFunc(idx);
 		}
 		break;
 
@@ -153,7 +140,7 @@ void executeFunc(int idx) {
 			channelMusic->stop();
 			ssystem->playSound(mainTheme, 0, false, &channelTheme);
 			playFunc = false;
-			stopFunc(idx);
+			initFunc(idx);
 		}
 		break;
 

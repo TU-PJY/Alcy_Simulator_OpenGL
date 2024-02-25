@@ -14,11 +14,13 @@ class Speaker {
 public:
 	GLuint VAO_SP;
 
-	unsigned int spTex[2];
+	unsigned int spTex[7];
 	int W, H;
 	int channel;
 	int count;
 	int dir;
+
+	GLfloat imageIdx;
 
 	Speaker() {
 		int W = 1500; int H = 1500;
@@ -27,6 +29,12 @@ public:
 	void updateSpeakerBeat() {
 		if (beatDelay >= interval)
 			count++;
+	}
+
+	void updateImageIndex() {
+		imageIdx += fs;
+		if (imageIdx > 4)
+			imageIdx = 0;
 	}
 
 	void setBuffer() {  // 프롭 버퍼 초기화
@@ -55,6 +63,36 @@ public:
 		parameteri();
 		texture_data = stbi_load("res//prop//speaker_2.png", &W, &H, &channel, 4);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, W, H, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+		glGenTextures(1, &spTex[2]);
+		glBindTexture(GL_TEXTURE_2D, spTex[2]);
+		parameteri();
+		texture_data = stbi_load("res//prop//speaker_glitch_1.png", &W, &H, &channel, 4);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, W, H, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+		glGenTextures(1, &spTex[3]);
+		glBindTexture(GL_TEXTURE_2D, spTex[3]);
+		parameteri();
+		texture_data = stbi_load("res//prop//speaker_glitch_2.png", &W, &H, &channel, 4);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, W, H, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+		glGenTextures(1, &spTex[4]);
+		glBindTexture(GL_TEXTURE_2D, spTex[4]);
+		parameteri();
+		texture_data = stbi_load("res//prop//speaker_glitch_3.png", &W, &H, &channel, 4);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, W, H, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+		glGenTextures(1, &spTex[5]);
+		glBindTexture(GL_TEXTURE_2D, spTex[5]);
+		parameteri();
+		texture_data = stbi_load("res//prop//speaker_glitch_4.png", &W, &H, &channel, 4);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, W, H, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+		glGenTextures(1, &spTex[6]);
+		glBindTexture(GL_TEXTURE_2D, spTex[6]);
+		parameteri();
+		texture_data = stbi_load("res//prop//speaker_glitch_5.png", &W, &H, &channel, 4);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, W, H, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 	}
 
 	void bindVertex() {
@@ -71,10 +109,16 @@ public:
 
 	void modelOutput() {
 		using namespace glm;
-		if(count % 2 == 0)
-			glBindTexture(GL_TEXTURE_2D, spTex[0]);
-		else if(count % 2 == 1)
-			glBindTexture(GL_TEXTURE_2D, spTex[1]);
+		if (funcNumber == 0) {
+			if (count % 2 == 0)
+				glBindTexture(GL_TEXTURE_2D, spTex[0]);
+			else if (count % 2 == 1)
+				glBindTexture(GL_TEXTURE_2D, spTex[1]);
+		}
+
+		else if (funcNumber == 1) 
+			glBindTexture(GL_TEXTURE_2D, spTex[(int)imageIdx + 2]);
+
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 	}
 };
