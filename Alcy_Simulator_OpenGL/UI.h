@@ -19,6 +19,21 @@ enum ui_name {
 
 class UI {
 public:
+	GLuint VAO_UI;
+
+	unsigned int cursor[3];  // 배경, 커서
+	unsigned int bar;  //메뉴바
+	unsigned int uiIcon[3];  // 아이콘
+	unsigned int tip;  // 팁
+	unsigned int title;  // 타이틀
+
+	int channel;
+	int titleW = 1500, titleH = 1500;
+	int cursorW = 200, cursorH = 200;
+	int iconW = 512, iconH = 512;
+	int tipW = 500, tipH = 500;
+	int barW = 512, barH = 512;
+
 	bool handEnable;  // 손커서 전환 여부
 	GLfloat handX;  // 손커서 x좌표, 쓰다듬기 시 사용
 	GLfloat handNum;  // 손 커서 애니메이션에 사용되는 수치
@@ -137,12 +152,140 @@ public:
 		}
 	}
 
-	void bindVertex(int idx) {
-		glBindVertexArray(VAO_UI[idx]);  // 각 모델마다 지정된 VAO만 사용
+	void setBuffer() {
+		glGenVertexArrays(1, &VAO_UI);
+		glBindVertexArray(VAO_UI);
+		glGenBuffers(1, &VBO);
+
+		glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		vertexInput();
+
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)0); // 위치 속성
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(6 * sizeof(GLfloat))); // 텍스처 좌표 속성 
+		glEnableVertexAttribArray(2);
 	}
 
-	void setTransform(int idx) {  // 변환 세팅
+	void setTexture() {
+		// title
+		glGenTextures(1, &title);
+		glBindTexture(GL_TEXTURE_2D, title);
+		parameteri();
+		texture_data = stbi_load("res//ui//title.png", &titleW, &titleH, &channel, 4);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, titleW, titleH, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+		// cursor
+		glGenTextures(1, &cursor[0]);
+		glBindTexture(GL_TEXTURE_2D, cursor[0]);
+		parameteri();
+		texture_data = stbi_load("res//ui//cursor.png", &cursorW, &cursorH, &channel, 4);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, cursorW, cursorH, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+		// cursor hand
+		glGenTextures(1, &cursor[1]);
+		glBindTexture(GL_TEXTURE_2D, cursor[1]);
+		parameteri();
+		texture_data = stbi_load("res//ui//cursor_hand.png", &cursorW, &cursorH, &channel, 4);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, cursorW, cursorH, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+		// cursor finger
+		glGenTextures(1, &cursor[2]);
+		glBindTexture(GL_TEXTURE_2D, cursor[2]);
+		parameteri();
+		texture_data = stbi_load("res//ui//cursor_finger.png", &cursorW, &cursorH, &channel, 4);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, cursorW, cursorH, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+		// exit icon
+		glGenTextures(1, &uiIcon[0]);
+		glBindTexture(GL_TEXTURE_2D, uiIcon[0]);
+		parameteri();
+		texture_data = stbi_load("res//ui//icon_exit.png", &iconW, &iconH, &channel, 4);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, iconW, iconH, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+		// info icon
+		glGenTextures(1, &uiIcon[1]);
+		glBindTexture(GL_TEXTURE_2D, uiIcon[1]);
+		parameteri();
+		texture_data = stbi_load("res//ui//icon_info.png", &iconW, &iconH, &channel, 4);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, iconW, iconH, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+		// tip
+		glGenTextures(1, &tip);
+		glBindTexture(GL_TEXTURE_2D, tip);
+		parameteri();
+		texture_data = stbi_load("res//ui//tip.png", &tipW, &tipH, &channel, 4);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tipW, tipH, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+		// bar
+		glGenTextures(1, &bar);
+		glBindTexture(GL_TEXTURE_2D, bar);
+		parameteri();
+		texture_data = stbi_load("res//ui//bar.png", &barW, &barH, &channel, 4);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, barW, barH, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+	}
+
+	void modelOutput(int idx) {  // 모델 출력 
+		switch (idx) {
+		case title_:
+			if (gameStarted) break;
+
+			glBindTexture(GL_TEXTURE_2D, title);
+			if (INTRO == 1)
+				glDrawArrays(GL_TRIANGLES, 0, 6);
+			break;
+
+		case tip_:
+			if (tipTransparent == 0.0) break;
+
+			if (gameStarted) {
+				glDepthMask(GL_FALSE);
+				glBindTexture(GL_TEXTURE_2D, tip);
+				glDrawArrays(GL_TRIANGLES, 0, 6);
+				glDepthMask(GL_TRUE);
+			}
+			break;
+
+		case icon_:
+			if (exitTransparent == 0.0) break;
+
+			glDepthMask(GL_FALSE);
+			glBindTexture(GL_TEXTURE_2D, uiIcon[0]);  // exit icon
+			glDrawArrays(GL_TRIANGLES, 0, 6);
+			glDepthMask(GL_TRUE);
+			break;
+
+		case bar_:
+			if (!gameStarted) break;
+
+			glDepthMask(GL_FALSE);
+			glBindTexture(GL_TEXTURE_2D, bar);  // exit icon
+			glDrawArrays(GL_TRIANGLES, 0, 6);
+			glDepthMask(GL_TRUE);
+
+			break;
+
+		case cursor_:
+			if (!gameStarted) break;
+
+			if (handEnable)  // 손 커서
+				glBindTexture(GL_TEXTURE_2D, cursor[1]);
+			else if (fingerEnable)  // 손가락 커서
+				glBindTexture(GL_TEXTURE_2D, cursor[2]);
+			else // 일반 커서
+				glBindTexture(GL_TEXTURE_2D, cursor[0]);
+
+			if (!playFunc && cam.camRot == 0 && !cam.camR && !cam.camL)  // 카메라 회전 시 커서를 숨김
+				glDrawArrays(GL_TRIANGLES, 0, 6);
+			else if (playFunc)
+				glDrawArrays(GL_TRIANGLES, 0, 6);
+			break;
+		}
+	}
+
+	void setObject(int idx) {  // 변환 세팅
 		using namespace glm;
+
+		initTransform();
 
 		switch (idx) {
 		case title_:
@@ -193,64 +336,11 @@ public:
 		}
 
 		transformMatrix = rotateMatrix * translateMatrix * scaleMatrix;  // 최종 변환
-	}
+		transmit();
 
-	void modelOutput(int idx) {  // 모델 출력 
-		switch (idx) {
-		case title_:
-			if (gameStarted) break;
+		glBindVertexArray(VAO_UI);  // 각 모델마다 지정된 VAO만 사용
 
-			glBindTexture(GL_TEXTURE_2D, title);
-			if(INTRO == 1)
-				glDrawArrays(GL_TRIANGLES, 0, 6);
-			break;
-
-		case tip_:
-			if (tipTransparent == 0.0) break;
-
-			if (gameStarted) {
-				glDepthMask(GL_FALSE);
-				glBindTexture(GL_TEXTURE_2D, tip);
-				glDrawArrays(GL_TRIANGLES, 0, 6);
-				glDepthMask(GL_TRUE);
-			}
-			break;
-
-		case icon_:
-			if (exitTransparent == 0.0) break;
-
-			glDepthMask(GL_FALSE);
-			glBindTexture(GL_TEXTURE_2D, uiIcon[0]);  // exit icon
-			glDrawArrays(GL_TRIANGLES, 0, 6);
-			glDepthMask(GL_TRUE);
-			break;
-
-		case bar_:
-			if (!gameStarted) break;
-
-			glDepthMask(GL_FALSE);
-			glBindTexture(GL_TEXTURE_2D, bar);  // exit icon
-			glDrawArrays(GL_TRIANGLES, 0, 6);
-			glDepthMask(GL_TRUE);
-			
-			break;
-
-		case cursor_:
-			if (!gameStarted) break;
-
-			if (handEnable)  // 손 커서
-				glBindTexture(GL_TEXTURE_2D, cursor[1]);
-			else if (fingerEnable)  // 손가락 커서
-				glBindTexture(GL_TEXTURE_2D, cursor[2]);
-			else // 일반 커서
-				glBindTexture(GL_TEXTURE_2D, cursor[0]);
-
-			if (!playFunc && cam.camRot == 0 && !cam.camR && !cam.camL)  // 카메라 회전 시 커서를 숨김
-				glDrawArrays(GL_TRIANGLES, 0, 6);
-			else if (playFunc) 
-				glDrawArrays(GL_TRIANGLES, 0, 6);
-			break;
-		}
+		modelOutput(idx);
 	}
 };
 

@@ -134,6 +134,7 @@
   <ItemGroup>
     <ClCompile Include="globalVar.cpp" />
     <ClCompile Include="bufferSet.cpp" />
+    <ClCompile Include="main2.cpp" />
     <ClCompile Include="sound.cpp" />
     <ClCompile Include="transform.cpp" />
     <ClCompile Include="key.cpp" />
@@ -154,6 +155,7 @@
     <ClInclude Include="Guitar.h" />
     <ClInclude Include="Icon.h" />
     <ClInclude Include="Light.h" />
+    <ClInclude Include="main2.h" />
     <ClInclude Include="Speaker.h" />
     <ClInclude Include="Turntable.h" />
     <ClInclude Include="White.h" />

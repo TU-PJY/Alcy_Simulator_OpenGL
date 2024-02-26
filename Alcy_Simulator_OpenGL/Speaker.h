@@ -8,7 +8,6 @@
 #include "screen.h"
 #include "globalVar.h"
 #include "Camera.h"
-#include "stb_image.h"
 
 class Speaker {
 public:
@@ -33,7 +32,7 @@ public:
 
 	void updateImageIndex() {
 		imageIdx += fs;
-		if (imageIdx > 4)
+		if (imageIdx > 3.99999)
 			imageIdx = 0;
 	}
 
@@ -43,7 +42,7 @@ public:
 		glGenBuffers(1, &VBO);
 
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		vertexInput(0);
+		vertexInput();
 
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)0); // 위치 속성
 		glEnableVertexAttribArray(0);
@@ -89,28 +88,27 @@ public:
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, W, H, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 	}
 
-	void bindVertex() {
-		glBindVertexArray(VAO_SP);
-	}
-
-	void setTransform() {
+	void setObject() {
 		using namespace glm;
+
+		initTransform();
+
 		scaleMatrix = scale(scaleMatrix, vec3(3.0, 3.0, 0.0));
 		translateMatrix = translate(translateMatrix, vec3(cam.camX / 2, -0.3 + cam.camY / 2, -0.05));
 
 		transformMatrix = rotateMatrix * translateMatrix * scaleMatrix;  // 최종 변환
-	}
 
-	void modelOutput() {
-		using namespace glm;
+		transmit();
+		glBindVertexArray(VAO_SP);
+
+
 		if (funcNumber == 0) {
 			if (count % 2 == 0)
 				glBindTexture(GL_TEXTURE_2D, spTex[0]);
 			else if (count % 2 == 1)
 				glBindTexture(GL_TEXTURE_2D, spTex[1]);
 		}
-
-		else if (funcNumber == 1) 
+		else if (funcNumber == 1)
 			glBindTexture(GL_TEXTURE_2D, spTex[(int)imageIdx + 2]);
 
 		glDrawArrays(GL_TRIANGLES, 0, 6);

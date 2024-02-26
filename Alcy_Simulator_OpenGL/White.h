@@ -8,7 +8,6 @@
 #include "screen.h"
 #include "globalVar.h"
 #include "Camera.h"
-#include "stb_image.h"
 
 class White {
 public:
@@ -36,7 +35,7 @@ public:
 		glGenBuffers(1, &VBO);
 
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		vertexInput(0);
+		vertexInput();
 
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)0); // 위치 속성
 		glEnableVertexAttribArray(0);
@@ -52,21 +51,20 @@ public:
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, W, H, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 	}
 
-	void bindVertex() {
-		glBindVertexArray(VAO_WHITE);
-	}
-
-	void setTransform() {
+	void setObject() {
 		using namespace glm;
+
+		initTransform();
+
 		scaleMatrix = scale(scaleMatrix, vec3(10.0 * ratio_, 10.0, 0.0));
 		translateMatrix = translate(translateMatrix, vec3(0.0, 0.0, 1.0));
 		transparent = whiteTransparent;
 
 		transformMatrix = rotateMatrix * translateMatrix * scaleMatrix;  // 최종 변환
-	}
 
-	void modelOutput() {
-		using namespace glm;
+		transmit();
+		glBindVertexArray(VAO_WHITE);
+
 		glDepthMask(GL_FALSE);
 		glBindTexture(GL_TEXTURE_2D, whiteTex);
 		glDrawArrays(GL_TRIANGLES, 0, 6);

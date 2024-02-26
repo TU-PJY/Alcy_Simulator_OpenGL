@@ -10,7 +10,6 @@
 #include "Camera.h"
 #include "Alcy.h"
 #include "Ui.h"
-#include "stb_image.h"
 
 class Icon {
 public:
@@ -72,7 +71,7 @@ public:
 		glGenBuffers(1, &VBO);
 
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		vertexInput(0);
+		vertexInput();
 
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)0); // 위치 속성
 		glEnableVertexAttribArray(0);
@@ -84,6 +83,7 @@ public:
 		glGenTextures(1, &iconTex[0]);
 		glBindTexture(GL_TEXTURE_2D, iconTex[0]);
 		parameteri();
+
 		switch (idx) {  // 각 객체마다 다른 아이콘을 로드함
 			case 0: texture_data = stbi_load("res//ui//menu//icon_house.png", &iconW, &iconH, &channel, 4);  // icon_drun
 				break;
@@ -99,6 +99,7 @@ public:
 		glGenTextures(1, &iconTex[1]);
 		glBindTexture(GL_TEXTURE_2D, iconTex[1]);
 		parameteri();
+
 		switch (idx) {  // 각 객체마다 다른 아이콘을 로드함
 		case 0: texture_data = stbi_load("res//ui//menu//icon_house_stop.png", &iconW, &iconH, &channel, 4);  // icon_drun
 			break;
@@ -112,12 +113,10 @@ public:
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, iconW, iconH, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 	}
 
-	void bindVertex() {
-		glBindVertexArray(VAO_ICON);
-	}
-
-	void setTransform(int idx) {
+	void setObject(int idx) {
 		using namespace glm;
+		initTransform();
+
 		scaleMatrix = scale(scaleMatrix, vec3(0.2 / cam.zoom, 0.2 / cam.zoom, 0.0));
 		translateMatrix = translate(translateMatrix, vec3(-cam.camX * ratio_ + (-0.53 + idx * 0.35) / cam.zoom, - cam.camY + (-0.33 + iconBeatEffect) / cam.zoom, 1.0));
 		rotateMatrix = rotate(rotateMatrix, radians(-cam.camRot), vec3(0.0, 0.0, 1.0));
@@ -125,12 +124,12 @@ public:
 		transparent = iconTransparent;
 
 		transformMatrix = rotateMatrix * translateMatrix * scaleMatrix;  // 최종 변환
-	}
+		transmit();
 
-	void modelOutput() {
-		using namespace glm;
+		glBindVertexArray(VAO_ICON);
+
 		glDepthMask(GL_FALSE);
-		if(operating)  // 실행 중일때는 중지하는 아이콘이 출력된다.
+		if (operating)  // 실행 중일때는 중지하는 아이콘이 출력된다.
 			glBindTexture(GL_TEXTURE_2D, iconTex[1]);
 		else  // 실행 전에는 일반 아이콘이 출력된다.
 			glBindTexture(GL_TEXTURE_2D, iconTex[0]);

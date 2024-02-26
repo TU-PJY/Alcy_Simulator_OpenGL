@@ -142,7 +142,6 @@ void executeFunc(int idx) {
 		else {
 			channelMusic->stop();
 			ssystem->playSound(mainTheme, 0, false, &channelTheme);
-			playFunc = false;
 			initFunc(idx);
 		}
 		break;
@@ -158,14 +157,23 @@ void executeFunc(int idx) {
 		else {
 			channelMusic->stop();
 			ssystem->playSound(mainTheme, 0, false, &channelTheme);
-			playFunc = false;
 			initFunc(idx);
 		}
 		break;
 
 	case 3:
-		channelMusic->stop();
-		ssystem->playSound(music4, 0, false, &channelMusic);
+		if (!playFunc) {
+			channelTheme->stop();
+			channelMusic->stop();
+			ssystem->playSound(music4, 0, false, &channelMusic);
+			initFunc(idx);
+			break;
+		}
+		else {
+			channelMusic->stop();
+			ssystem->playSound(mainTheme, 0, false, &channelTheme);
+			initFunc(idx);
+		}
 		break;
 	}
 

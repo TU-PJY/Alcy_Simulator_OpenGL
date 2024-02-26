@@ -8,12 +8,11 @@
 #include "screen.h"
 #include "globalVar.h"
 #include "Camera.h"
-#include "stb_image.h"
 
 class Background {
 public:
 	GLuint VAO_BACK;
-	unsigned int backTex[2];
+	unsigned int backTex[3];
 	int backgroundW, backgroundH;
 	int channel;
 
@@ -27,7 +26,7 @@ public:
 		glGenBuffers(1, &VBO);
 
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		vertexInput(0);
+		vertexInput();
 
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)0); // 위치 속성
 		glEnableVertexAttribArray(0);
@@ -47,25 +46,34 @@ public:
 		parameteri();
 		texture_data = stbi_load("res//background//sunset.png", &backgroundW, &backgroundH, &channel, 4);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, backgroundW, backgroundH, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+		glGenTextures(1, &backTex[2]);
+		glBindTexture(GL_TEXTURE_2D, backTex[2]);
+		parameteri();
+		texture_data = stbi_load("res//background//wall.png", &backgroundW, &backgroundH, &channel, 4);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, backgroundW, backgroundH, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 	}
 
-	void bindVertex() {
-		glBindVertexArray(VAO_BACK);
-	}
-
-	void setTransform() {
+	void setObject() {
 		using namespace glm;
+
+		initTransform();
+
 		scaleMatrix = scale(scaleMatrix, vec3(3.0 / cam.zoom, 3.0 / cam.zoom, 0.0));
 		translateMatrix = translate(translateMatrix, vec3(cam.camX / 5 * ratio_, (cam.camY / 5) / cam.zoom, -0.1));
 
 		transformMatrix = rotateMatrix * translateMatrix * scaleMatrix;  // 최종 변환
-	}
+		transmit();
 
-	void modelOutput() {
-		if(playFunc && funcNumber == 2)
+		glBindVertexArray(VAO_BACK);
+
+		if (playFunc && funcNumber == 2)
 			glBindTexture(GL_TEXTURE_2D, backTex[1]);
+		else if (playFunc && funcNumber == 3)
+			glBindTexture(GL_TEXTURE_2D, backTex[2]);
 		else
 			glBindTexture(GL_TEXTURE_2D, backTex[0]);
+
 		glDrawArrays(GL_TRIANGLES, 0, 6);
 	}
 };

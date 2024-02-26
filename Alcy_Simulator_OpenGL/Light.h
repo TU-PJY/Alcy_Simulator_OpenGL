@@ -8,7 +8,6 @@
 #include "screen.h"
 #include "globalVar.h"
 #include "Camera.h"
-#include "stb_image.h"
 
 class Light {
 public:
@@ -23,7 +22,7 @@ public:
 		glGenBuffers(1, &VBO);
 
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
-		vertexInput(0);
+		vertexInput();
 
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)0); // 위치 속성
 		glEnableVertexAttribArray(0);
@@ -39,19 +38,18 @@ public:
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, W, H, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 	}
 
-	void bindVertex() {
-		glBindVertexArray(VAO_L);
-	}
-
-	void setTransform() {
+	void setObject() {
 		using namespace glm;
+
+		initTransform();
+
 		scaleMatrix = scale(scaleMatrix, vec3(2.0, 3.0, 0.0));
 		translateMatrix = translate(translateMatrix, vec3(0.0, 0.5, 0.05));
-		transformMatrix = rotateMatrix * translateMatrix * scaleMatrix;  // 최종 변환
-	}
 
-	void modelOutput() {
-		using namespace glm;
+		transformMatrix = rotateMatrix * translateMatrix * scaleMatrix;  // 최종 변환
+
+		transmit();
+		glBindVertexArray(VAO_L);
 
 		glBindTexture(GL_TEXTURE_2D, lightTex);
 		glDrawArrays(GL_TRIANGLES, 0, 6);

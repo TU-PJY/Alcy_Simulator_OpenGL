@@ -39,7 +39,4 @@ void initFmod() {
 	ssystem->createSound("res//sound//music//guitar1.mp3", FMOD_DEFAULT, 0, &music3);
 	ssystem->createSound("res//sound//music//guitar2.mp3", FMOD_DEFAULT, 0, &music4);
 	ssystem->createSound("res//sound//music//main_theme.mp3", FMOD_LOOP_NORMAL, 0, &mainTheme);
-
-	if(INTRO == 0)  // 인트로를 비활성화 했을 경우 메인 음악을 바로 킨다
-	    ssystem->playSound(mainTheme, 0, false, &channelTheme);  // 메인 브금
 }

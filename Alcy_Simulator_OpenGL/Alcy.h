@@ -5,6 +5,7 @@
 #include "buffer.h"
 #include "transform.h"
 #include "texture.h"
+#include "stb_image.h"
 #include "screen.h"
 #include "globalVar.h"
 #include "sound.h"
@@ -32,6 +33,14 @@ enum breathe {
 
 class Alcy {
 public:
+    GLuint VAO_ALCY;
+
+    unsigned int alcyTail[2], alcyBody[3], alcyHair[2], alcyHead[9];
+    unsigned int eye[5], dot[3], eyeClose[3], brow[3], blink[3];
+
+    int channel;
+    int alcyW = 1500, alcyH = 1500;
+
 	int dir;  // 알키 바라보는 방향, 초기값 m
 
 	bool blinkEnable; // 눈 깜빡임 여부, true일 시 깜빡임 활성화
@@ -369,7 +378,7 @@ public:
 
     void updateImageIndex() {
         Imageidx += fs;
-        if (Imageidx > 4)
+        if (Imageidx > 3.99999)
             Imageidx = 0;
     }
 
@@ -380,12 +389,378 @@ public:
         tailNum += fs / 5;
     }
 
-    void bindVertex(int idx) {  // 변환 전달 
-        glBindVertexArray(VAO_ALCY[idx]);  // 각 모델마다 지정된 VAO만 사용
+    void setBuffer() {  // 알키 버퍼 초기화
+        glGenVertexArrays(1, &VAO_ALCY);
+        glBindVertexArray(VAO_ALCY);
+        glGenBuffers(1, &VBO);
+
+        glBindBuffer(GL_ARRAY_BUFFER, VBO);
+        vertexInput();
+
+        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)0); // 위치 속성
+        glEnableVertexAttribArray(0);
+        glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(GLfloat), (void*)(6 * sizeof(GLfloat))); // 텍스처 좌표 속성 
+        glEnableVertexAttribArray(2);
     }
 
-    void setTransform(int idx) {  // 변환 세팅
+    void setTexture() {
+        // tail
+        glGenTextures(1, &alcyTail[0]);
+        glBindTexture(GL_TEXTURE_2D, alcyTail[0]);
+        parameteri();
+        texture_data = stbi_load("res//alcy//tail.png", &alcyW, &alcyH, &channel, 4);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+        // tail guitar 1
+        glGenTextures(1, &alcyTail[1]);
+        glBindTexture(GL_TEXTURE_2D, alcyTail[1]);
+        parameteri();
+        texture_data = stbi_load("res//alcy//tail_guitar1.png", &alcyW, &alcyH, &channel, 4);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+        // alcy body
+        glGenTextures(1, &alcyBody[0]);
+        glBindTexture(GL_TEXTURE_2D, alcyBody[0]);
+        parameteri();
+        texture_data = stbi_load("res//alcy//body.png", &alcyW, &alcyH, &channel, 4);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+        // alcy body guitar
+        glGenTextures(1, &alcyBody[1]);
+        glBindTexture(GL_TEXTURE_2D, alcyBody[1]);
+        parameteri();
+        texture_data = stbi_load("res//alcy//body_guitar1.png", &alcyW, &alcyH, &channel, 4);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+        // alcy body guitar2
+        glGenTextures(1, &alcyBody[2]);
+        glBindTexture(GL_TEXTURE_2D, alcyBody[2]);
+        parameteri();
+        texture_data = stbi_load("res//alcy//body_guitar2.png", &alcyW, &alcyH, &channel, 4);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+        // alcy hair
+        glGenTextures(1, &alcyHair[0]);
+        glBindTexture(GL_TEXTURE_2D, alcyHair[0]);
+        parameteri();
+        texture_data = stbi_load("res//alcy//hair.png", &alcyW, &alcyH, &channel, 4);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+        // alcy hair guitar 1
+        glGenTextures(1, &alcyHair[1]);
+        glBindTexture(GL_TEXTURE_2D, alcyHair[1]);
+        parameteri();
+        texture_data = stbi_load("res//alcy//hair_guitar1.png", &alcyW, &alcyH, &channel, 4);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+        // alcy head middle
+        glGenTextures(1, &alcyHead[0]);
+        glBindTexture(GL_TEXTURE_2D, alcyHead[0]);
+        parameteri();
+        texture_data = stbi_load("res//alcy//head_middle.png", &alcyW, &alcyH, &channel, 4);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+        // alcy head left
+        glGenTextures(1, &alcyHead[1]);
+        glBindTexture(GL_TEXTURE_2D, alcyHead[1]);
+        parameteri();
+        texture_data = stbi_load("res//alcy//head_left.png", &alcyW, &alcyH, &channel, 4);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+        // alcy head right
+        glGenTextures(1, &alcyHead[2]);
+        glBindTexture(GL_TEXTURE_2D, alcyHead[2]);
+        parameteri();
+        texture_data = stbi_load("res//alcy//head_right.png", &alcyW, &alcyH, &channel, 4);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+        //alcy head house
+        glGenTextures(1, &alcyHead[3]);
+        glBindTexture(GL_TEXTURE_2D, alcyHead[3]);
+        parameteri();
+        texture_data = stbi_load("res//alcy//head_house.png", &alcyW, &alcyH, &channel, 4);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+        //alcy head glitch //////////////////
+        glGenTextures(1, &alcyHead[4]);
+        glBindTexture(GL_TEXTURE_2D, alcyHead[4]);
+        parameteri();
+        texture_data = stbi_load("res//alcy//head_glitch_1.png", &alcyW, &alcyH, &channel, 4);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+        glGenTextures(1, &alcyHead[5]);
+        glBindTexture(GL_TEXTURE_2D, alcyHead[5]);
+        parameteri();
+        texture_data = stbi_load("res//alcy//head_glitch_2.png", &alcyW, &alcyH, &channel, 4);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+        glGenTextures(1, &alcyHead[6]);
+        glBindTexture(GL_TEXTURE_2D, alcyHead[6]);
+        parameteri();
+        texture_data = stbi_load("res//alcy//head_glitch_3.png", &alcyW, &alcyH, &channel, 4);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+        glGenTextures(1, &alcyHead[7]);
+        glBindTexture(GL_TEXTURE_2D, alcyHead[7]);
+        parameteri();
+        texture_data = stbi_load("res//alcy//head_glitch_4.png", &alcyW, &alcyH, &channel, 4);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+        ///////////////
+
+        // alcy head guitar1
+        glGenTextures(1, &alcyHead[8]);
+        glBindTexture(GL_TEXTURE_2D, alcyHead[8]);
+        parameteri();
+        texture_data = stbi_load("res//alcy//head_guitar1.png", &alcyW, &alcyH, &channel, 4);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+
+        // eye middle
+        glGenTextures(1, &eye[0]);
+        glBindTexture(GL_TEXTURE_2D, eye[0]);
+        parameteri();
+        texture_data = stbi_load("res//alcy//face//eye_middle.png", &alcyW, &alcyH, &channel, 4);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+        // eye left
+        glGenTextures(1, &eye[1]);
+        glBindTexture(GL_TEXTURE_2D, eye[1]);
+        parameteri();
+        texture_data = stbi_load("res//alcy//face//eye_left.png", &alcyW, &alcyH, &channel, 4);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+        // eye right
+        glGenTextures(1, &eye[2]);
+        glBindTexture(GL_TEXTURE_2D, eye[2]);
+        parameteri();
+        texture_data = stbi_load("res//alcy//face//eye_right.png", &alcyW, &alcyH, &channel, 4);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+        // eye squeak
+        glGenTextures(1, &eye[3]);
+        glBindTexture(GL_TEXTURE_2D, eye[3]);
+        parameteri();
+        texture_data = stbi_load("res//alcy//face//eye_squeak.png", &alcyW, &alcyH, &channel, 4);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+        // eye tired
+        glGenTextures(1, &eye[4]);
+        glBindTexture(GL_TEXTURE_2D, eye[4]);
+        parameteri();
+        texture_data = stbi_load("res//alcy//face//eye_tired.png", &alcyW, &alcyH, &channel, 4);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+        // dot middle
+        glGenTextures(1, &dot[0]);
+        glBindTexture(GL_TEXTURE_2D, dot[0]);
+        parameteri();
+        texture_data = stbi_load("res//alcy//face//dot_middle.png", &alcyW, &alcyH, &channel, 4);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+        // dot left
+        glGenTextures(1, &dot[1]);
+        glBindTexture(GL_TEXTURE_2D, dot[1]);
+        parameteri();
+        texture_data = stbi_load("res//alcy//face//dot_left.png", &alcyW, &alcyH, &channel, 4);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+        // dot right
+        glGenTextures(1, &dot[2]);
+        glBindTexture(GL_TEXTURE_2D, dot[2]);
+        parameteri();
+        texture_data = stbi_load("res//alcy//face//dot_right.png", &alcyW, &alcyH, &channel, 4);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+
+
+        //brow middle
+        glGenTextures(1, &brow[0]);
+        glBindTexture(GL_TEXTURE_2D, brow[0]);
+        parameteri();
+        texture_data = stbi_load("res//alcy//face//brow_middle.png", &alcyW, &alcyH, &channel, 4);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+        //brow left
+        glGenTextures(1, &brow[1]);
+        glBindTexture(GL_TEXTURE_2D, brow[1]);
+        parameteri();
+        texture_data = stbi_load("res//alcy//face//brow_left.png", &alcyW, &alcyH, &channel, 4);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+        //brow right
+        glGenTextures(1, &brow[2]);
+        glBindTexture(GL_TEXTURE_2D, brow[2]);
+        parameteri();
+        texture_data = stbi_load("res//alcy//face//brow_right.png", &alcyW, &alcyH, &channel, 4);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+        //blink middle
+        glGenTextures(1, &blink[0]);
+        glBindTexture(GL_TEXTURE_2D, blink[0]);
+        parameteri();
+        texture_data = stbi_load("res//alcy//face//blink_middle.png", &alcyW, &alcyH, &channel, 4);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+        //blink left
+        glGenTextures(1, &blink[1]);
+        glBindTexture(GL_TEXTURE_2D, blink[1]);
+        parameteri();
+        texture_data = stbi_load("res//alcy//face//blink_left.png", &alcyW, &alcyH, &channel, 4);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+        //blink right
+        glGenTextures(1, &blink[2]);
+        glBindTexture(GL_TEXTURE_2D, blink[2]);
+        parameteri();
+        texture_data = stbi_load("res//alcy//face//blink_right.png", &alcyW, &alcyH, &channel, 4);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+    }
+
+    void modelOutput(int idx) {  // 모델 출력 
+        switch (idx) {
+        case tail_:
+            if (playFunc && funcNumber == 2)
+                glBindTexture(GL_TEXTURE_2D, alcyTail[1]);
+            else
+                glBindTexture(GL_TEXTURE_2D, alcyTail[0]);
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+            break;
+
+        case body_:
+            if (playFunc && funcNumber == 2)
+                glBindTexture(GL_TEXTURE_2D, alcyBody[1]);
+            else if (playFunc && funcNumber == 3)
+                glBindTexture(GL_TEXTURE_2D, alcyBody[2]);
+            else
+                glBindTexture(GL_TEXTURE_2D, alcyBody[0]);
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+            break;
+
+        case hair_:
+            if (playFunc && funcNumber == 2)
+                glBindTexture(GL_TEXTURE_2D, alcyHair[1]);
+            else
+                glBindTexture(GL_TEXTURE_2D, alcyHair[0]);
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+            break;
+
+        case head_:  // 카메라가 초기 상태일 때 이미지를 업데이트 한다.
+            if (cam.camRot == 0 && !cam.camR && !cam.camL && !squeak && !tired && !sleeping && !playFunc) {
+                switch (dir) {
+                case l: glBindTexture(GL_TEXTURE_2D, alcyHead[1]);  // head left
+                    break;
+                case r: glBindTexture(GL_TEXTURE_2D, alcyHead[2]);  // head right
+                    break;
+                case m: glBindTexture(GL_TEXTURE_2D, alcyHead[0]);  // head middle
+                    break;
+                }
+            }
+            else {  // 카메라 회전 시 앞을 보도록 함
+                if (!playFunc) {
+                    glBindTexture(GL_TEXTURE_2D, alcyHead[0]);  // head middle
+                }
+                else {
+                    if (funcNumber == 0)
+                        glBindTexture(GL_TEXTURE_2D, alcyHead[3]);  // head house
+                    else if (funcNumber == 1)
+                        glBindTexture(GL_TEXTURE_2D, alcyHead[(int)Imageidx + 4]);  // head glitch 1 ~ 4 (idx = 4 ~ 7)
+                    else if (funcNumber == 2)
+                        glBindTexture(GL_TEXTURE_2D, alcyHead[8]);  // head guitar1
+                }
+            }
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+            break;
+
+        case eye_:  // 카메라가 초기 상태일 때 이미지를 업데이트 한다.
+            if (playFunc || blinkEnable || touchEnable) break;
+
+            if (cam.camRot == 0 && !cam.camR && !cam.camL && !squeak && !tired && !sleeping) {
+                switch (dir) {
+                case l: glBindTexture(GL_TEXTURE_2D, eye[1]);  // eye left
+                    break;
+                case r: glBindTexture(GL_TEXTURE_2D, eye[2]);  // eye right
+                    break;
+                case m: glBindTexture(GL_TEXTURE_2D, eye[0]);  // eye middle
+                    break;
+                }
+            }
+
+            else { // 카메라 회전 시 앞을 보도록 하고, 상태에 맞는 이미지로 고정되어 출력된다.
+                if (squeak)
+                    glBindTexture(GL_TEXTURE_2D, eye[3]);  // eye squeak
+                else if (tired)
+                    glBindTexture(GL_TEXTURE_2D, eye[4]);  // eye tired
+                else
+                    glBindTexture(GL_TEXTURE_2D, eye[0]);  // eye middle
+            }
+            if (!blinkEnable && !touchEnable && !sleeping)  // 눈을 깜빡이지 않을 때, 쓰다듬지 않을 때 출력한다.
+                glDrawArrays(GL_TRIANGLES, 0, 6);
+            break;
+
+        case dot_:  // 카메라가 초기 상태일 때만 이미지를 업데이트 한다.
+            if (playFunc || blinkEnable || touchEnable) break;
+
+            if (cam.camRot == 0 && !cam.camR && !cam.camL) {
+                switch (dir) {
+                case l: glBindTexture(GL_TEXTURE_2D, dot[1]);  // eye left
+                    break;
+                case r: glBindTexture(GL_TEXTURE_2D, dot[2]);  // eye right
+                    break;
+                case m: glBindTexture(GL_TEXTURE_2D, dot[0]);  // eye middle
+                    break;
+                }
+            }
+            else  // 카메라 회전 시 앞을 보도록 함
+                glBindTexture(GL_TEXTURE_2D, dot[0]);  // eye middle
+
+            if (!blinkEnable && !touchEnable && !squeak && !tired)  // 눈을 깜빡이지 않을 때, 쓰다듬지 않을 때, 코를 누르지 않을 때 출력한다.
+                glDrawArrays(GL_TRIANGLES, 0, 6);
+            break;
+
+        case brow_:  // 카메라가 초기 상태이면서 코를 누르지 않을 때만 이미지를 업데이트 한다.
+            if (playFunc) break;
+
+            if (cam.camRot == 0 && !cam.camR && !cam.camL && !squeak && !tired && !sleeping) {
+                switch (dir) {
+                case l: glBindTexture(GL_TEXTURE_2D, brow[1]);  // brow left
+                    break;
+                case r: glBindTexture(GL_TEXTURE_2D, brow[2]);  // brow right
+                    break;
+                case m: glBindTexture(GL_TEXTURE_2D, brow[0]);  // brow middle
+                    break;
+                }
+            }
+            else  // 카메라 회전 시 앞을 보도록 함
+                glBindTexture(GL_TEXTURE_2D, brow[0]);  // brow middle
+            glDrawArrays(GL_TRIANGLES, 0, 6);
+            break;
+
+        case blink_:  // 카메라가 초기 상태이면서 코를 누르지 않을 때만 이미지를 업데이트 한다.
+            if (playFunc) break;
+
+            if (blinkEnable || touchEnable || sleeping) { // 셋 중 하나가 true일 때만 출력
+                if (cam.camRot == 0 && !cam.camR && !cam.camL && !squeak && !tired && !sleeping) {
+                    switch (dir) {
+                    case l: glBindTexture(GL_TEXTURE_2D, blink[1]);  // blink left
+                        break;
+                    case r: glBindTexture(GL_TEXTURE_2D, blink[2]);  // blink right
+                        break;
+                    case m: glBindTexture(GL_TEXTURE_2D, blink[0]);  // blink middle
+                        break;
+                    }
+                }
+                else
+                    glBindTexture(GL_TEXTURE_2D, blink[0]);  // blink middle
+                glDrawArrays(GL_TRIANGLES, 0, 6);
+            }
+            break;
+        }
+    }
+
+    void setObject(int idx) {  // 변환 세팅
         using namespace glm;
+
+        initTransform();
 
         switch (idx) {  // 변환 추가
         case tail_:
@@ -454,145 +829,10 @@ public:
         }
 
         transformMatrix = rotateMatrix * translateMatrix * scaleMatrix;  // 최종 변환
-    }
+        transmit();
 
-    void modelOutput(int idx) {  // 모델 출력 
-        switch (idx) {
-        case tail_:
-            if(playFunc && funcNumber == 2)
-                glBindTexture(GL_TEXTURE_2D, alcyTail[1]);
-            else
-                glBindTexture(GL_TEXTURE_2D, alcyTail[0]);
-            glDrawArrays(GL_TRIANGLES, 0, 6);
-            break;
-
-        case body_:
-            if(playFunc && funcNumber == 2)
-                glBindTexture(GL_TEXTURE_2D, alcyBody[1]);
-            else
-                glBindTexture(GL_TEXTURE_2D, alcyBody[0]);
-            glDrawArrays(GL_TRIANGLES, 0, 6);
-            break;
-
-        case hair_:
-            if(playFunc && funcNumber == 2)
-                glBindTexture(GL_TEXTURE_2D, alcyHair[1]);
-            else
-                glBindTexture(GL_TEXTURE_2D, alcyHair[0]);
-            glDrawArrays(GL_TRIANGLES, 0, 6);
-            break;
-
-        case head_:  // 카메라가 초기 상태일 때 이미지를 업데이트 한다.
-            if (cam.camRot == 0 && !cam.camR && !cam.camL && !squeak && !tired && !sleeping && !playFunc) {
-                switch (dir) {
-                case l: glBindTexture(GL_TEXTURE_2D, alcyHead[1]);  // head left
-                    break;
-                case r: glBindTexture(GL_TEXTURE_2D, alcyHead[2]);  // head right
-                    break;
-                case m: glBindTexture(GL_TEXTURE_2D, alcyHead[0]);  // head middle
-                    break;
-                }
-            }
-            else {  // 카메라 회전 시 앞을 보도록 함
-                if (!playFunc) {
-                    glBindTexture(GL_TEXTURE_2D, alcyHead[0]);  // head middle
-                }
-                else {
-                    if(funcNumber == 0) 
-                        glBindTexture(GL_TEXTURE_2D, alcyHead[3]);  // head house
-                    else if (funcNumber == 1)
-                        glBindTexture(GL_TEXTURE_2D, alcyHead[(int)Imageidx + 4]);  // head glitch 1 ~ 4 (idx = 4 ~ 7)
-                    else if(funcNumber == 2)
-                        glBindTexture(GL_TEXTURE_2D, alcyHead[8]);  // head guitar1
-                }   
-            }
-            glDrawArrays(GL_TRIANGLES, 0, 6);
-            break;
-
-        case eye_:  // 카메라가 초기 상태일 때 이미지를 업데이트 한다.
-            if (playFunc || blinkEnable || touchEnable) break;
-             
-            if (cam.camRot == 0 && !cam.camR && !cam.camL && !squeak && !tired && !sleeping) {
-                    switch (dir) {
-                    case l: glBindTexture(GL_TEXTURE_2D, eye[1]);  // eye left
-                        break;
-                    case r: glBindTexture(GL_TEXTURE_2D, eye[2]);  // eye right
-                        break;
-                    case m: glBindTexture(GL_TEXTURE_2D, eye[0]);  // eye middle
-                        break;
-                    }
-            }
-
-            else { // 카메라 회전 시 앞을 보도록 하고, 상태에 맞는 이미지로 고정되어 출력된다.
-                if (squeak)
-                    glBindTexture(GL_TEXTURE_2D, eye[3]);  // eye squeak
-                else if (tired)
-                    glBindTexture(GL_TEXTURE_2D, eye[4]);  // eye tired
-                else
-                    glBindTexture(GL_TEXTURE_2D, eye[0]);  // eye middle
-            }
-            if (!blinkEnable && !touchEnable && !sleeping)  // 눈을 깜빡이지 않을 때, 쓰다듬지 않을 때 출력한다.
-                glDrawArrays(GL_TRIANGLES, 0, 6);
-            break;
-
-        case dot_:  // 카메라가 초기 상태일 때만 이미지를 업데이트 한다.
-            if (playFunc || blinkEnable || touchEnable) break;
-
-            if (cam.camRot == 0 && !cam.camR && !cam.camL) {
-                switch (dir) {
-                case l: glBindTexture(GL_TEXTURE_2D, dot[1]);  // eye left
-                    break;
-                case r: glBindTexture(GL_TEXTURE_2D, dot[2]);  // eye right
-                    break;
-                case m: glBindTexture(GL_TEXTURE_2D, dot[0]);  // eye middle
-                    break;
-                }
-            }
-            else  // 카메라 회전 시 앞을 보도록 함
-                glBindTexture(GL_TEXTURE_2D, dot[0]);  // eye middle
-
-            if (!blinkEnable && !touchEnable && !squeak && !tired )  // 눈을 깜빡이지 않을 때, 쓰다듬지 않을 때, 코를 누르지 않을 때 출력한다.
-                glDrawArrays(GL_TRIANGLES, 0, 6);
-            break;
-
-        case brow_:  // 카메라가 초기 상태이면서 코를 누르지 않을 때만 이미지를 업데이트 한다.
-            if (playFunc) break;
-
-            if (cam.camRot == 0 && !cam.camR && !cam.camL && !squeak && !tired && !sleeping) {
-                switch (dir) {
-                case l: glBindTexture(GL_TEXTURE_2D, brow[1]);  // brow left
-                    break;
-                case r: glBindTexture(GL_TEXTURE_2D, brow[2]);  // brow right
-                    break;
-                case m: glBindTexture(GL_TEXTURE_2D, brow[0]);  // brow middle
-                    break;
-                }
-            }
-            else  // 카메라 회전 시 앞을 보도록 함
-                glBindTexture(GL_TEXTURE_2D, brow[0]);  // brow middle
-            glDrawArrays(GL_TRIANGLES, 0, 6);
-            break;
-
-        case blink_:  // 카메라가 초기 상태이면서 코를 누르지 않을 때만 이미지를 업데이트 한다.
-            if (playFunc) break;
-
-            if (blinkEnable || touchEnable || sleeping) { // 셋 중 하나가 true일 때만 출력
-                if (cam.camRot == 0 && !cam.camR && !cam.camL && !squeak && !tired && !sleeping) {
-                    switch (dir) {
-                    case l: glBindTexture(GL_TEXTURE_2D, blink[1]);  // blink left
-                        break;
-                    case r: glBindTexture(GL_TEXTURE_2D, blink[2]);  // blink right
-                        break;
-                    case m: glBindTexture(GL_TEXTURE_2D, blink[0]);  // blink middle
-                        break;
-                    }
-                }
-                else
-                    glBindTexture(GL_TEXTURE_2D, blink[0]);  // blink middle
-                glDrawArrays(GL_TRIANGLES, 0, 6);
-            }
-            break;
-        }
+        glBindVertexArray(VAO_ALCY);  // 각 모델마다 지정된 VAO만 사용
+        modelOutput(idx);
     }
 };
 

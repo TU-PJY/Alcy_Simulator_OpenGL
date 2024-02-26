@@ -18,7 +18,7 @@ GLfloat fs;  // frame sync, 프레임 동기화
 
 void syncFrame() {  // 프레임 동기화
     elapsedTime = glutGet(GLUT_ELAPSED_TIME);
-    fs = (elapsedTime - lastElapsedTime) / 100.0; // Convert milliseconds to seconds
+    fs = (elapsedTime - lastElapsedTime) / 100.0; // Convert milliseconds to seconds(0.1sec unit, ex: 31.1s = GLfloat(311))
     lastElapsedTime = elapsedTime;
 }
 
@@ -77,9 +77,9 @@ void updateIconType() {
     }
 }
 
-// 메트로놈 함수
-void updateFuncOperation(int track) {
-    switch (track) {  // 트랙에 따라 박자 간격을 다르게 설정한다.
+// 메뉴바 기능 실행 함수
+void updateFuncOperation(int num) {
+    switch (num) {
     case 0:
         interval = 4.688;  // 128bpm
         playTime = 317;  // 31.7sec
@@ -92,9 +92,13 @@ void updateFuncOperation(int track) {
         interval = 0;
         playTime = 213;
         break;
+    case 3:
+        interval = 0;
+        playTime = 200;
+        break;
     }
 
-    if (track == 0 || track == 1) {
+    if (num == 0 || num == 1) {
         if (beatDelay >= interval) {
             beatAcc = 0.077;
             beatVal = 0.15;
@@ -169,6 +173,9 @@ void timerOperation(int value) {
         // 메뉴바
         ui.updateMenu();
 
+        // 팁
+        ui.updateTip();
+
         // 아이콘
         for (int i = 0; i < ICON_PART; i++) {
             icon[i].updateIcon();
@@ -211,6 +218,12 @@ void timerOperation(int value) {
                 alcy.updateAlcyGuitarPlay();
                 updateFuncOperation(funcNumber);
                 break;
+            case 3:
+                arm.update();
+                guitar.update();
+                alcy.updateAlcyGuitarPlay();
+                updateFuncOperation(funcNumber);
+                break;
             }
         }
 
@@ -225,7 +238,6 @@ void timerOperation(int value) {
 
     // 게임 시작 여부 상관없이 항상 동작하는 코드 모음
     ui.exitGame();
-    ui.updateTip();
     alcy.updateAlcyBlink();
 
     glutTimerFunc(10, timerOperation, 1);

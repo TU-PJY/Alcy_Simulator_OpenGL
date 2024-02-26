@@ -15,6 +15,7 @@
 #include <gl/glew.h>
 #include <gl/freeglut.h>
 #include <gl/freeglut_ext.h>
+#include "stb_image.h"
 #include "fmod.hpp"
 #include "fmod_errors.h"
 #define ALCY_PART 8  // 알키 파트 개수

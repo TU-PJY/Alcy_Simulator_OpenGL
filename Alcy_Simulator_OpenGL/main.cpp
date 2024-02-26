@@ -2,23 +2,12 @@
 #include "shader.h"  // 셰이더 생성
 #include "buffer.h"  // 버퍼
 #include "transform.h"  // 변환
+#include "texture.h"
 #include "gl_func.h"  // GL 기능 함수
 #include "screen.h"  // 윈도우 사이즈
 #include "sound.h"  // 사운드
 #include "globalVar.h"
-#include "Alcy.h"  
-#include "UI.h"
-#include "ZZZ.h"
-#include "Icon.h"
-#include "Background.h"
-#include "White.h"
-#include "texture.h"
-#include "Turntable.h"
-#include "Speaker.h"
-#include "Guitar.h"
-#include "Arm.h"
-#include "Light.h"
-#include "stb_image.h"
+#include "main2.h"
 
 int WIDTH = GetSystemMetrics(SM_CXSCREEN);
 int HEIGHT = GetSystemMetrics(SM_CYSCREEN);  // 화면 사이즈에 맞추어 창을 출력한다
@@ -33,105 +22,8 @@ GLvoid displayOutput() {
 	glUseProgram(ID);
 
 	setWindowView();
-	// 아래로 갈 수록 위에 그려짐
-	// 배경
-	initTransform();
-	background.setTransform();
-	transmit();
-	background.bindVertex();
-	background.modelOutput();
-
-	// 스피커
-	if (playFunc) {
-		if (funcNumber == 0 || funcNumber == 1) {
-			initTransform();
-			speaker.setTransform();
-			transmit();
-			speaker.bindVertex();
-			speaker.modelOutput();
-		}
-	}
-
-	// Alcy
-	for (int i = 0; i < ALCY_PART; i++) {
-		initTransform();
-		alcy.setTransform(i);
-		transmit();
-		alcy.bindVertex(i);
-		alcy.modelOutput(i);
-	}
-
-	// 턴테이블
-	if (playFunc) {
-		if (funcNumber == 0 || funcNumber == 1) {
-			initTransform();
-			turntable.setTransform();
-			transmit();
-			turntable.bindVertex();
-			turntable.modelOutput();
-		}
-		// 기타, 팔
-		else if (funcNumber == 2) {
-			initTransform();
-			guitar.setTransform();
-			transmit();
-			guitar.bindVertex();
-			guitar.modelOutput();
-
-			initTransform();
-			arm.setTransform();
-			transmit();
-			arm.bindVertex();
-			arm.modelOutput();
-
-			/*initTransform();
-			light.setTransform();
-			transmit();
-			light.bindVertex();
-			light.modelOutput();*/
-		}
-	}
-
-	// ZZZ 이미지
-	for (int i = 0; i < 3; i++) {
-		if (zzz[i].zzzTransparent > 0.0) {
-			initTransform();
-			zzz[i].setTransform();
-			transmit();
-			zzz[i].bindVertex();
-			zzz[i].modelOutput();
-		}
-	}
-
-	// UI
-	for (int i = 0; i < UI_PART; i++) {
-		initTransform();
-		ui.setTransform(i);
-		transmit();
-		ui.bindVertex(i);
-		ui.modelOutput(i);
-	}
-
-	// 메뉴 아이콘
-	for (int i = 0; i < ICON_PART; i++) {
-		if (icon[i].iconTransparent > 0.0) {
-			initTransform();
-			icon[i].setTransform(i);
-			transmit();
-			icon[i].bindVertex();
-			icon[i].modelOutput();
-		}
-	}
+	objectOutput();  // 오브젝트 출력
 	
-	//흰 배경
-	if (whiteTransparent > 0.0) {
-		initTransform();
-		white.setTransform();
-		transmit();
-		white.bindVertex();
-		white.modelOutput();
-	}
-
 	glutSwapBuffers();
 }
 
@@ -156,7 +48,6 @@ void main(int argc, char** argv) {
 		glEnable(GL_ALPHA_TEST);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		//glDepthFunc(GL_ALWAYS);
 		stbi_set_flip_vertically_on_load(true);
 
 		makeShaderProgram();
@@ -171,45 +62,9 @@ void main(int argc, char** argv) {
 			gameStarted = false;
 
 		initFmod();
+		initObject();  // 오브젝트 세팅
+		stbi_image_free(texture_data);
 	}
-
-	background.setBuffer();  // 배경 초기화
-	for (int i = 0; i < ALCY_PART; i++) // 알키 버퍼 초기화
-		setBufferAlcy(i);  
-	for (int i = 0; i < UI_PART; i++) // UI 버퍼 초기화
-		setBufferUI(i); 
-	for(int i = 0; i < 3; i ++)  // zzz오브젝트 초기화
-		zzz[i].setBuffer();
-	for (int i = 0; i < ICON_PART; i++)  // 메뉴 아이콘 초기화
-		icon[i].setBuffer();
-	white.setBuffer();  // 흰 배경 초기화
-	turntable.setBuffer();  // 턴테이블 초기화
-	speaker.setBuffer(); // 스피커 초기화
-	guitar.setBuffer(); // 기타 초기화
-	arm.setBuffer(); // 팔 초기화
-	light.setBuffer();
-
-	// 텍스처 설정
-	background.setTexture();  // 배경
-	setAlcyTexture();  // 알키
-	setUITexture();  // UI
-
-	for (int i = 0; i < 3; i++) {  // zzz오브젝트
-		zzz[i].setTexture();
-		zzz[i].setDelay(10 * i);
-	}
-
-	for (int i = 0; i < ICON_PART; i++)  // menu icon
-		icon[i].setTexture(i);
-	
-	white.setTexture();  // white
-	turntable.setTexture();  // turntable
-	speaker.setTexture();  // speaker
-	guitar.setTexture();
-	arm.setTexture();
-	light.setTexture();
-
-	stbi_image_free(texture_data);
 	
 	glutDisplayFunc(displayOutput);
 	glutReshapeFunc(displayReshape);
@@ -221,5 +76,10 @@ void main(int argc, char** argv) {
 	glutMouseWheelFunc(Wheel);
 
 	glutTimerFunc(10, timerOperation, 1);
+
+	if (INTRO == 0)  // 인트로를 비활성화 했을 경우 메인 음악을 바로 킨다
+		ssystem->playSound(mainTheme, 0, false, &channelTheme);  // 메인 브금
+
 	glutMainLoop();
+
 }
