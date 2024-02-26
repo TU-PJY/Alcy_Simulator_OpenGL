@@ -1,7 +1,6 @@
 #ifndef SPEAKRER_H
 #define SPEAKER_H
 #include "config.h"
-#include "shader.h"
 #include "buffer.h"
 #include "transform.h"
 #include "texture.h"

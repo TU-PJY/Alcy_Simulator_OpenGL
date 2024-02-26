@@ -39,22 +39,7 @@ void stopTouch() {
 
 void clickSqueak() {
 	if (ui.fingerEnable && mouseClickEnable && cam.camRot == 0 && !alcy.squeak && !playFunc) {
-		random_device rd;  mt19937 gen(rd());
-		uniform_int_distribution <int> dis(1, 3);
-		int randomSound = dis(gen);
-
-		channelSqueak->stop();
-
-		switch (randomSound) {  // 3가지 중 하나를 재생한다.
-		case 1: ssystem->playSound(squeak1, 0, false, &channelSqueak); 
-			break;
-		case 2: ssystem->playSound(squeak2, 0, false, &channelSqueak); 
-			break;
-		case 3: ssystem->playSound(squeak3, 0, false, &channelSqueak); 
-			break;
-		}
-
-		alcy.squeak = true;
+		alcy.playAlcySqueakSound();
 		lButtonDown = true;
 	}
 }
@@ -103,9 +88,6 @@ void initFunc(int idx) {  // 메뉴바 기능 실행 또는 중지 시 초기화 하는 함수
 }
 
 void executeFunc(int idx) {
-	channelMenu->stop();
-	ssystem->playSound(menuClick, 0, false, &channelMenu);
-
 	if (idx != funcNumber && playFunc) {
 		for (int i = 0; i < ICON_PART; i++)  // 기능 실행 도중 다른 아이콘을 선택할 경우 먼저 모든 기능들을 false 상태로 만든다.
 			icon[i].operating = false;
@@ -192,6 +174,7 @@ void clickMenuIcon() {
 				ui.menuSizeY = 0.51;
 				ui.menuAcc = 0.2;
 
+				icon[0].playClickSound();
 				executeFunc(i);
 
 				for (int i = 0; i < ICON_PART; i++)

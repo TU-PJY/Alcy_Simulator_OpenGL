@@ -262,18 +262,6 @@ public:
         }
     }
 
-    void updateAlcyTouch() {  // 알키 머리 쓰다듬기
-        if (mouseClickEnable && ui.handEnable && touchEnable) {  // 손 커서인 상태로 머리를 쓰다듬을 수 있다
-            ui.handX = sin(ui.handNum) * 0.4;  // 쓰다듬는 중에는 손 커서가 좌우로 부드럽게 움직인다.
-            ui.handNum += fs / 4;
-
-            tailNum += fs / 10;  // 꼬리는 느린 속도로 별도로 움직인다.
-            tailRot = sin(tailNum) * 10;
-            headRot = -ui.handX * 17;  // 손의 움직임에 따라 머리도 같이 움직인다.
-            bodyRot = -headRot / 4;  // 몸통도 같이 움직인다.
-        }
-    }
-
     void moveAlcyHead() {  // 바라보는 방향 전환 시 알키 머리 움직임
         if (!cam.camR && !cam.camL && cam.camRot == 0 && !squeak && !tired && !sleeping) {
             switch (dir) {
@@ -317,6 +305,18 @@ public:
         }
     }
 
+    void updateAlcyTouch() {  // 알키 머리 쓰다듬기
+        if (mouseClickEnable && ui.handEnable && touchEnable) {  // 손 커서인 상태로 머리를 쓰다듬을 수 있다
+            ui.handX = sin(ui.handNum) * 0.4;  // 쓰다듬는 중에는 손 커서가 좌우로 부드럽게 움직인다.
+            ui.handNum += fs / 4;
+
+            tailNum += fs / 10;  // 꼬리는 느린 속도로 별도로 움직인다.
+            tailRot = sin(tailNum) * 10;
+            headRot = -ui.handX * 17;  // 손의 움직임에 따라 머리도 같이 움직인다.
+            bodyRot = -headRot / 4;  // 몸통도 같이 움직인다.
+        }
+    }
+
     void squeakAlcyNose() {  // 코 누르기
         if (squeak) {  // 일정시간동안 알키는 자기 코를 바라본다
             squeakTime += fs;
@@ -325,6 +325,25 @@ public:
                 squeakTime = 0;
             }
         }
+    }
+
+    void playAlcySqueakSound() {
+        random_device rd;  mt19937 gen(rd());
+        uniform_int_distribution <int> dis(1, 3);
+        int randomSound = dis(gen);
+
+        channelSqueak->stop();
+
+        switch (randomSound) {  // 3가지 중 하나를 재생한다.
+        case 1: ssystem->playSound(squeak1, 0, false, &channelSqueak);
+            break;
+        case 2: ssystem->playSound(squeak2, 0, false, &channelSqueak);
+            break;
+        case 3: ssystem->playSound(squeak3, 0, false, &channelSqueak);
+            break;
+        }
+
+        squeak = true;
     }
 
     void updateAlcyBeat() {

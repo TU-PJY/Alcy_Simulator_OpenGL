@@ -1,7 +1,6 @@
 #ifndef WHITE_H
 #define WHITE_H
 #include "config.h"
-#include "shader.h"
 #include "buffer.h"
 #include "transform.h"
 #include "texture.h"

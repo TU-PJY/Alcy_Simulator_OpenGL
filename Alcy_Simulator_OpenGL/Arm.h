@@ -1,7 +1,6 @@
 #ifndef ARM_H
 #define ARM_H
 #include "config.h"
-#include "shader.h"
 #include "buffer.h"
 #include "transform.h"
 #include "texture.h"

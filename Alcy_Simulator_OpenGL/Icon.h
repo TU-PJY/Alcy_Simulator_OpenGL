@@ -1,7 +1,6 @@
 #ifndef ICON_H
 #define ICON_H
 #include "config.h"
-#include "shader.h"
 #include "buffer.h"
 #include "transform.h"
 #include "texture.h"
@@ -63,6 +62,11 @@ public:
 			if (iconTransparent < 0.5)
 				iconTransparent = 0.5;
 		}
+	}
+
+	void playClickSound() {
+		channelMenu->stop();
+		ssystem->playSound(menuClick, 0, false, &channelMenu);
 	}
 
 	void setBuffer() {  // 프롭 버퍼 초기화
