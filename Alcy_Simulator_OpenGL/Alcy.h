@@ -53,6 +53,7 @@ public:
 	GLfloat tailRot;  // 쓰다듬기 시 꼬리 회전 각도
 	GLfloat bodyRot;  // 쓰다듬기 시 몸통 회전 각도
 	GLfloat tailNum; // 꼬리 회전에 사용되는 수치
+    GLfloat headNum;
 	bool headTiltR, headTiltL;  // 카메라 기울였을 때 알키 머리 기울이기 여부
     bool tiltSoundPlayed;  // 알키 머리 기울이는 소리 재생 여부, 중복 재생 방지
 
@@ -71,9 +72,8 @@ public:
     GLfloat beatX, beatY;  // 음악 박자 효과
     int beatDir;
     bool setOn;
-
     GLfloat Imageidx;
-    GLfloat headNum;
+
 
     Alcy() {
         dir = m;
