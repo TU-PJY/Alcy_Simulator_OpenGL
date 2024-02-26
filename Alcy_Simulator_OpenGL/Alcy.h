@@ -1,11 +1,9 @@
 #ifndef ALCY_H
 #define ALCY_H
 #include "config.h"
-#include "shader.h"
 #include "buffer.h"
 #include "transform.h"
 #include "texture.h"
-#include "stb_image.h"
 #include "screen.h"
 #include "globalVar.h"
 #include "sound.h"

@@ -94,7 +94,7 @@ public:
 		initTransform();
 
 		scaleMatrix = scale(scaleMatrix, vec3(3.0, 3.0, 0.0));
-		translateMatrix = translate(translateMatrix, vec3(cam.camX / 2, -0.3 + cam.camY / 2, -0.05));
+		translateMatrix = translate(translateMatrix, vec3(-cam.camX / 2, -0.3 - cam.camY / 2, -0.05));
 
 		transformMatrix = rotateMatrix * translateMatrix * scaleMatrix;  // 최종 변환
 

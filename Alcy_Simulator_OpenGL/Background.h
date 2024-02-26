@@ -60,7 +60,7 @@ public:
 		initTransform();
 
 		scaleMatrix = scale(scaleMatrix, vec3(3.0 / cam.zoom, 3.0 / cam.zoom, 0.0));
-		translateMatrix = translate(translateMatrix, vec3(cam.camX / 5 * ratio_, (cam.camY / 5) / cam.zoom, -0.1));
+		translateMatrix = translate(translateMatrix, vec3(-cam.camX / 2 * ratio_, (-cam.camY / 2) / cam.zoom, -0.1));
 
 		transformMatrix = rotateMatrix * translateMatrix * scaleMatrix;  // 최종 변환
 		transmit();
