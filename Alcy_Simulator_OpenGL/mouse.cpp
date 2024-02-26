@@ -86,7 +86,7 @@ void initFunc(int idx) {  // 메뉴바 기능 실행 또는 중지 시 초기화 하는 함수
 
 	for (int i = 0; i < ICON_PART; i++) {  // 아이콘 효과 초기화
 		icon[i].iconBeatRot = 0;
-		icon[i].iconBeatEffect = 0;
+		icon[i].iconBeatX = 0;
 	}
 	
 	if (!icon[idx].operating) {

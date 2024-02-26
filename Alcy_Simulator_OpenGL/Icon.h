@@ -24,7 +24,7 @@ public:
 	bool isOnCursor;  // true일 시 아이콘이 선택된 것
 	bool operating;  // 각 아이콘 별 실행 여부
 
-	GLfloat iconBeatEffect;
+	GLfloat iconBeatX;
 	GLfloat iconBeatRot;
 
 	int i;
@@ -49,7 +49,7 @@ public:
 
 		if (playFunc) {
 			if(funcNumber == 0)
-				iconBeatEffect = beatVal / 4;
+				iconBeatX = beatVal / 4;
 			else if (funcNumber == 1) {
 				iconBeatRot = sin(i) * beatVal * 60;
 				i += fs * 10;
@@ -118,7 +118,7 @@ public:
 		initTransform();
 
 		scaleMatrix = scale(scaleMatrix, vec3(0.2 / cam.zoom, 0.2 / cam.zoom, 0.0));
-		translateMatrix = translate(translateMatrix, vec3(-cam.camX * ratio_ + (-0.53 + idx * 0.35) / cam.zoom, - cam.camY + (-0.33 + iconBeatEffect) / cam.zoom, 1.0));
+		translateMatrix = translate(translateMatrix, vec3(-cam.camX * ratio_ + (-0.53 + idx * 0.35) / cam.zoom, - cam.camY + (-0.33 + iconBeatX) / cam.zoom, 1.0));
 		rotateMatrix = rotate(rotateMatrix, radians(-cam.camRot), vec3(0.0, 0.0, 1.0));
 		translateMatrix = rotate(translateMatrix, radians(iconBeatRot), vec3(0.0, 0.0, 1.0));
 		transparent = iconTransparent;

@@ -143,7 +143,7 @@ void updateFuncOperation(int num) {
 
         for (int i = 0; i < ICON_PART; i++) {  // 아이콘 효과 초기화
             icon[i].iconBeatRot = 0;
-            icon[i].iconBeatEffect = 0;
+            icon[i].iconBeatX = 0;
             icon[i].operating = false;
         }
 
