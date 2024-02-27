@@ -33,7 +33,7 @@ class Alcy {
 public:
     GLuint VAO_ALCY;
 
-    unsigned int alcyTail[2], alcyBody[3], alcyHair[2], alcyHead[9];
+    unsigned int alcyTail[2], alcyBody[3], alcyHair[2], alcyHead[10];
     unsigned int eye[5], dot[3], eyeClose[3], brow[3], blink[3];
 
     int channel;
@@ -48,7 +48,8 @@ public:
 	bool touchEnable;  // 알키 머리 쓰다듬기 여부
 
 	//알키 머리, 얼굴 파츠 움직임
-	GLfloat headPos;  // 방향 전환 시 전환한 방향으로 움직임
+	GLfloat headPos;  // 방향 전환 시 전환한 방향으로 움직임, x방향
+    GLfloat headPosY;  // y방향
 	GLfloat headRot;  // 쓰다듬기 시 머리 회전 각도
 	GLfloat tailRot;  // 쓰다듬기 시 꼬리 회전 각도
 	GLfloat bodyRot;  // 쓰다듬기 시 몸통 회전 각도
@@ -400,10 +401,19 @@ public:
     }
 
     void updateAlcyGuitarPlay() {
-        headRot = 10 + sin(headNum) * 3;
-        tailRot = sin(tailNum) * 2;
-        headNum += fs / 5;
-        tailNum += fs / 5;
+        if (funcNumber == 2) {
+            headRot = 10 + sin(headNum) * 3;
+            tailRot = sin(tailNum) * 2;
+            headNum += fs / 5;
+            tailNum += fs / 5;
+        }
+        else if (funcNumber == 3) {
+            headPos = sin(headNum) * -0.02;
+            headPosY = -0.01 + sin(headNum) * 0.01;
+            tailRot = sin(tailNum) * 2;
+            headNum += fs * 1.1;
+            tailNum += fs * 1.1;
+        }
     }
 
     void setBuffer() {  // 알키 버퍼 초기화
@@ -529,6 +539,13 @@ public:
         glBindTexture(GL_TEXTURE_2D, alcyHead[8]);
         parameteri();
         texture_data = stbi_load("res//alcy//head_guitar1.png", &alcyW, &alcyH, &channel, 4);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
+
+        // alcy head guitar2
+        glGenTextures(1, &alcyHead[9]);
+        glBindTexture(GL_TEXTURE_2D, alcyHead[9]);
+        parameteri();
+        texture_data = stbi_load("res//alcy//head_guitar2.png", &alcyW, &alcyH, &channel, 4);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 1500, 1500, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 
 
@@ -683,6 +700,8 @@ public:
                         glBindTexture(GL_TEXTURE_2D, alcyHead[(int)Imageidx + 4]);  // head glitch 1 ~ 4 (idx = 4 ~ 7)
                     else if (funcNumber == 2)
                         glBindTexture(GL_TEXTURE_2D, alcyHead[8]);  // head guitar1
+                    else if(funcNumber == 3)
+                        glBindTexture(GL_TEXTURE_2D, alcyHead[9]);  // head guitar2
                 }
             }
             glDrawArrays(GL_TRIANGLES, 0, 6);
@@ -797,7 +816,7 @@ public:
         case head_:
             translateMatrix = translate(translateMatrix, vec3(0.0, -0.1, -0.00001));
             translateMatrix = rotate(translateMatrix, radians(headRot), vec3(0.0, 0.0, 1.0));
-            translateMatrix = translate(translateMatrix, vec3(headPos - headRot / 150 + beatX, 0.22 + sleepHeight + beatY, -0.0001));
+            translateMatrix = translate(translateMatrix, vec3(headPos - headRot / 150 + beatX, 0.22 + sleepHeight + beatY + headPosY, -0.0001));
             break;
 
         case eye_:

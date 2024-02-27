@@ -1,6 +1,7 @@
 ﻿// 타이머
 #include "gl_func.h"
 #include "globalVar.h"
+#include "Background.h"
 #include "Alcy.h"
 #include "Camera.h"
 #include "UI.h"
@@ -11,6 +12,8 @@
 #include "Turntable.h"
 #include "Guitar.h"
 #include "Arm.h"
+#include "Light.h"
+#include "Note.h"
 
 // 프레임
 int lastElapsedTime, elapsedTime;
@@ -204,10 +207,12 @@ void timerOperation(int value) {
 
             switch (funcNumber) {
             case 0:
+                light.updateLightTransparent();
                 updateFuncOperation(funcNumber);
                 break;
             case 1:
-                turntable.updateTurntableIndex();  // 턴테이블의 색상이 바뀌어야 하므로 인덱스를 계속 업데이트 한다.
+                background.updateBackgroundIdx();
+;                turntable.updateTurntableIndex();  // 턴테이블의 색상이 바뀌어야 하므로 인덱스를 계속 업데이트 한다.
                 speaker.updateImageIndex();
                 alcy.updateImageIndex();
                 updateFuncOperation(funcNumber);
@@ -216,6 +221,7 @@ void timerOperation(int value) {
                 arm.update();
                 guitar.update();
                 alcy.updateAlcyGuitarPlay();
+                note.update();
                 updateFuncOperation(funcNumber);
                 break;
             case 3:

@@ -44,6 +44,7 @@ public:
 
 	// info 아이콘
 	bool infoEnable;
+	bool setInfo;  // true일 시 아이콘이 커지며 정보를 띄운다.
 	GLfloat infoTransparent;
 
 	//팁
@@ -90,11 +91,12 @@ public:
 	}
 
     void exitGame() {  // esc를 길게 눌러 게임 종료
-        if (exitEnable) {
+        if (exitEnable || infoEnable) {
             exitTransparent += fs / 6;  // 종료 아이콘이 완전히 나타나면 게임을 종료한다.
             if (exitTransparent > 1.0) {
                 exitTransparent = 1.0;
-                glutDestroyWindow(1);
+				if (ExitOrInfo == 0)
+					glutDestroyWindow(1);
             }
         }
         else {
@@ -248,7 +250,10 @@ public:
 			if (exitTransparent == 0.0) break;
 
 			glDepthMask(GL_FALSE);
-			glBindTexture(GL_TEXTURE_2D, uiIcon[0]);  // exit icon
+			if(ExitOrInfo == 0)
+				glBindTexture(GL_TEXTURE_2D, uiIcon[0]);  // exit icon
+			else if(ExitOrInfo == 1)
+				glBindTexture(GL_TEXTURE_2D, uiIcon[1]);  // info icon
 			glDrawArrays(GL_TRIANGLES, 0, 6);
 			glDepthMask(GL_TRUE);
 			break;

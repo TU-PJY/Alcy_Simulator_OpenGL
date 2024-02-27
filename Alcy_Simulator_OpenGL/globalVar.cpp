@@ -12,6 +12,9 @@
 #include "Guitar.h"
 #include "Arm.h"
 #include "Light.h"
+#include "Mic.h"
+#include "Neon.h"
+#include "Note.h"
 // 프로젝트 전체 전역 변수 및 클래스
 
 GLfloat mx, my; // 마우스 좌표
@@ -33,6 +36,8 @@ GLfloat functionOperationTime;
 
 GLfloat whiteTransparent;  // 흰 배경 투명도
 
+int ExitOrInfo = 0;  // 0: exit, 1: info
+
 // 여기에 클래스 선언하고 사용
 Background background;
 Camera cam;
@@ -40,9 +45,12 @@ Alcy alcy;
 ZZZ zzz[3];
 UI ui;
 Icon icon[ICON_PART];
-White white;
 Turntable turntable;
 Speaker speaker;
 Guitar guitar;
 Arm arm;
 Light light;
+Mic mic;
+Neon neon;
+Note note;
+White white;

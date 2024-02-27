@@ -146,6 +146,15 @@
     <ClInclude Include="main2.h">
       <Filter>헤더 파일\global</Filter>
     </ClInclude>
+    <ClInclude Include="Mic.h">
+      <Filter>헤더 파일\classesProp</Filter>
+    </ClInclude>
+    <ClInclude Include="Neon.h">
+      <Filter>헤더 파일\classesProp</Filter>
+    </ClInclude>
+    <ClInclude Include="Note.h">
+      <Filter>헤더 파일\classesProp</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="glsl\GLSL_fragment.glsl">

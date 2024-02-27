@@ -24,7 +24,7 @@ public:
 	int channel;
 
 	ZZZ() {
-		x = 0.5, y = 0.5;
+		x = 0.4, y = 0.4;
 	}
 
 	void update() {  // 애니메이션 업데이트

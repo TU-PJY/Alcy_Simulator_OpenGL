@@ -24,6 +24,8 @@ extern GLfloat beatAcc;
 extern GLfloat beatVal;
 extern GLfloat functionOperationTime;
 
+extern int ExitOrInfo;
+
 extern GLfloat whiteTransparent;  // 흰 배경 투명도
 
 #endif

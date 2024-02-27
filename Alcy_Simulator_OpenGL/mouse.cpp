@@ -7,6 +7,7 @@
 #include "UI.h"
 #include "Icon.h"
 #include "White.h"
+#include "Note.h"
 
 void convertToGLCoord(int x, int y) {  //GL좌표계로 변환
 	mx = (GLfloat)(x - (GLfloat)WIDTH / 2.0) * (GLfloat)(1.0 / (GLfloat)(WIDTH / 2.0));
@@ -134,6 +135,11 @@ void executeFunc(int idx) {
 			channelMusic->stop();
 			ssystem->playSound(music3, 0, false, &channelMusic);
 			initFunc(idx);
+
+			note.num = 0; note.num2 = 0;
+			note.rot = 0; note.noteTransparent = 0;
+			note.x = 0.4; note.y = 0.4;
+
 			break;
 		}
 		else {

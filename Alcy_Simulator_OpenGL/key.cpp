@@ -55,12 +55,13 @@ void closeMenu() {
 void keyDown(unsigned char KEY, int x, int y) {
 	switch (KEY) {
 	case 27:  // ESC
-		if (!escSoundPlayed && !ui.menuEnable) {  // 중복 재생 방지
+		if (!escSoundPlayed && !ui.menuEnable && !ui.infoEnable) {  // 중복 재생 방지
 			channelEscDown->stop();
 			ssystem->playSound(escDown, 0, false, &channelEscDown);
 			escSoundPlayed = true;
+			ExitOrInfo = 0;
 		}
-		if (!ui.menuEnable) {
+		if (!ui.menuEnable && !ui.infoEnable) {
 			ui.exitEnable = true;
 			alcy.isLeave = false;
 		}
@@ -118,11 +119,12 @@ void keyDown(unsigned char KEY, int x, int y) {
 		break;
 
 	case 'i':  // info 보기
-		if (gameStarted && !ui.menuEnable) {
+		if (gameStarted && !ui.menuEnable && !ui.exitEnable) {
 			if (!escSoundPlayed) {  // 중복 재생 방지
 				channelEscDown->stop();
 				ssystem->playSound(escDown, 0, false, &channelEscDown);
 				escSoundPlayed = true;
+				ExitOrInfo = 1;
 			}
 			ui.infoEnable = true;  // info 활성화
 		}
@@ -135,7 +137,7 @@ void keyDown(unsigned char KEY, int x, int y) {
 void keyUp(unsigned char KEY, int x, int y) {
 	switch (KEY) {
 	case 27:
-		if (!ui.menuEnable) {
+		if (!ui.menuEnable && !ui.infoEnable) {
 			channelEscUp->stop();
 			ssystem->playSound(escUp, 0, false, &channelEscUp);
 			escSoundPlayed = false;
@@ -155,7 +157,7 @@ void keyUp(unsigned char KEY, int x, int y) {
 		break;
 
 	case 'i':
-		if (gameStarted && !ui.menuEnable) {
+		if (gameStarted && !ui.menuEnable && !ui.exitEnable) {
 			channelEscUp->stop();
 			ssystem->playSound(escUp, 0, false, &channelEscUp);
 			escSoundPlayed = false;

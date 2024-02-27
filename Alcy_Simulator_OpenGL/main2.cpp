@@ -15,6 +15,9 @@
 #include "Guitar.h"
 #include "Arm.h"
 #include "Light.h"
+#include "Mic.h"
+#include "Neon.h"
+#include "Note.h"
 #include "main2.h"
 
 // 이미지 출력 cpp
@@ -29,6 +32,9 @@ void initObject() {
 	guitar.setBuffer(); // 기타 초기화
 	arm.setBuffer(); // 팔 초기화
 	light.setBuffer();  // 빛 초기화
+	mic.setBuffer();
+	neon.setBuffer();
+	note.setBuffer();
 	white.setBuffer();  // 흰 배경 초기화
 
 	for (int i = 0; i < ICON_PART; i++)  // 메뉴 아이콘 초기화
@@ -45,8 +51,11 @@ void initObject() {
 	speaker.setTexture();
 	guitar.setTexture(); 
 	arm.setTexture();
-	white.setTexture();
 	light.setTexture();
+	mic.setTexture();
+	neon.setTexture();
+	note.setTexture();
+	white.setTexture();
 
 	for (int i = 0; i < ICON_PART; i++)
 		icon[i].setTexture(i);
@@ -61,6 +70,12 @@ void initObject() {
 void objectOutput() {
 	// 배경
 	background.setObject();
+
+	if (playFunc && funcNumber == 3)
+		neon.setObject();
+
+	if (playFunc && funcNumber == 0)
+		light.setObject();
 
 	// 스피커
 	if (playFunc && (funcNumber == 0 || funcNumber == 1)) 
@@ -80,8 +95,10 @@ void objectOutput() {
 			guitar.setObject();
 			arm.setObject();
 
-			if (funcNumber == 3)  // 빛
+			if (funcNumber == 3) {  // 빛
 				light.setObject();
+				mic.setObject();
+			}
 		}
 	}
 
@@ -89,6 +106,9 @@ void objectOutput() {
 	for (int i = 0; i < 3; i++)
 		if (zzz[i].zzzTransparent > 0.0)
 			zzz[i].setObject();
+
+	if (playFunc && funcNumber == 2)
+		note.setObject();
 
 	// UI
 	for (int i = 0; i < UI_PART; i++)
