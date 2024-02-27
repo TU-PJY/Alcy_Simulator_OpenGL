@@ -2,13 +2,13 @@
 
 FMOD::System* ssystem;
 
-FMOD::Sound* click, * escDown, * escUp, * scroll, *menuOpen, *menuClose, *menuClick;
+FMOD::Sound* click, * escDown, * escUp, * scroll, *menuOpen, *menuClose, *menuClick, *logoSound;
 FMOD::Sound* squeak1, * squeak2, * squeak3, * touch, * tilt, *breatheIn, *breatheOut;
 FMOD::Sound* music1, *music2, *music3, *music4, *mainTheme;
 
 FMOD::Channel* channelClick = 0, *channelEscDown = 0, *channelEscUp = 0, *channelMenu = 0;
 FMOD::Channel* channelSqueak = 0, *channelTouch = 0, *channelTilt = 0, *channelBreathe = 0, * channelScroll = 0;
-FMOD::Channel* channelMusic = 0, * channelTheme = 0;
+FMOD::Channel* channelMusic = 0, * channelTheme = 0, * channelLogo = 0;
 
 void* extradriverdata = 0;
 FMOD_RESULT result;
@@ -16,8 +16,6 @@ FMOD_RESULT result;
 bool escSoundPlayed;  // 중복 재생 방지
 
 void initFmod() {
-	ssystem->init(64, FMOD_INIT_NORMAL, extradriverdata);
-
 	ssystem->createSound("res//sound//UI//button_click.wav", FMOD_DEFAULT, 0, &click);
 	ssystem->createSound("res//sound//UI//button_down.wav", FMOD_DEFAULT, 0, &escDown);
 	ssystem->createSound("res//sound//UI//button_up.wav", FMOD_DEFAULT, 0, &escUp);

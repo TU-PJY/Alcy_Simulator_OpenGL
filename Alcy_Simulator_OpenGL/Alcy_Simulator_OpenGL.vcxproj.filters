@@ -158,6 +158,9 @@
     <ClInclude Include="Info.h">
       <Filter>헤더 파일\classesMain</Filter>
     </ClInclude>
+    <ClInclude Include="Start.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="glsl\GLSL_fragment.glsl">

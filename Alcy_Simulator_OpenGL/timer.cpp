@@ -15,6 +15,7 @@
 #include "Light.h"
 #include "Note.h"
 #include "Info.h"
+#include "Start.h"
 
 // 프레임
 int lastElapsedTime, elapsedTime;
@@ -170,95 +171,107 @@ void updateFuncOperation(int num) {
 
 void timerOperation(int value) {
     syncFrame();
-    if (ui.intro)
-        ui.startGame();
 
-    if(!gameStarted)
-        cam.introAnimation();
-
-    if (gameStarted) { // 게임 시작 후에만 동작하는 코드 모음
-        //카메라
-        updateCamera(); // 마우스 이벤트를 실시간으로 처리하기 위한 더블 싱크
-        cam.rotateCam();
-        cam.updateZoom();
-
-        // 커서
-        if (!ui.menuEnable && !playFunc && !setInfo && !ui.exitEnable && !ui.infoEnable)
-            updateCursorType();
-
-        // 메뉴바
-        ui.updateMenu();
-
-        // 팁
-        ui.updateTip();
-
-        // 아이콘
-        for (int i = 0; i < ICON_PART; i++) {
-            icon[i].updateIcon();
-            icon[i].updateOnCursor();
+    if (INTRO == 1) {
+        if (!gameStarted) {  // 게임 로딩 부분
+            if (!LoadingEnd)
+                start.loading();
+            if (LoadingEnd)  // 로딩 이후부터 아래 타이머 코드 실행 시작
+                start.updateLoadingDisplay();  // 로딩 화면 업데이트
         }
-        if (ui.menuOpened && ui.menuEnable)
-            checkIsOnCursorIcon();
-        updateIconType();
-
-        // 알키
-        if (!playFunc) {
-            updateAlcyHeadDir();
-            alcy.moveAlcyHead();
-            alcy.updateAlcyTouch();
-            alcy.tiltAlcyHead();
-            alcy.squeakAlcyNose();
-            alcy.checkControl();
-            alcy.updateAlcySleep();
-        }
-        
-        //알키
-        if (playFunc) {
-            alcy.updateAlcyBeat();
-            cam.updateCameraBeat();
-            speaker.updateSpeakerBeat();
-
-            switch (funcNumber) {
-            case 0:
-                light.updateLightTransparent();
-                updateFuncOperation(funcNumber);
-                break;
-            case 1:
-                background.updateBackgroundIdx();
-;                turntable.updateTurntableIndex();  // 턴테이블의 색상이 바뀌어야 하므로 인덱스를 계속 업데이트 한다.
-                speaker.updateImageIndex();
-                alcy.updateImageIndex();
-                updateFuncOperation(funcNumber);
-                break;
-            case 2:
-                arm.update();
-                guitar.update();
-                alcy.updateAlcyGuitarPlay();
-                note.update();
-                updateFuncOperation(funcNumber);
-                break;
-            case 3:
-                arm.update();
-                guitar.update();
-                alcy.updateAlcyGuitarPlay();
-                updateFuncOperation(funcNumber);
-                break;
-            }
-        }
-
-        // zzz 오브젝트
-        for (int i = 0; i < 3; i++) 
-            zzz[i].update();
-
-        // 흰배경
-        if (whiteTransparent > 0.0)
-            white.update();
     }
 
-    // 게임 시작 여부 상관없이 항상 동작하는 코드 모음
-    ui.exitGame();
-    info.update();
-    alcy.updateAlcyBlink();
+    if (LoadingEnd) {  // 로딩 시작 이후부터 리소스 타이머 작업 시작
+        if (ui.intro)
+            ui.startGame();
+
+        if (!gameStarted)
+            cam.introAnimation();
+
+        if (gameStarted) { // 게임 시작 후에만 동작하는 코드 모음
+            //카메라
+            updateCamera(); // 마우스 이벤트를 실시간으로 처리하기 위한 더블 싱크
+            cam.rotateCam();
+            cam.updateZoom();
+
+            // 커서
+            if (!ui.menuEnable && !playFunc && !setInfo && !ui.exitEnable && !ui.infoEnable)
+                updateCursorType();
+
+            // 메뉴바
+            ui.updateMenu();
+
+            // 팁
+            ui.updateTip();
+
+            // 아이콘
+            for (int i = 0; i < ICON_PART; i++) {
+                icon[i].updateIcon();
+                icon[i].updateOnCursor();
+            }
+            if (ui.menuOpened && ui.menuEnable)
+                checkIsOnCursorIcon();
+            updateIconType();
+
+            // 알키
+            if (!playFunc) {
+                updateAlcyHeadDir();
+                alcy.moveAlcyHead();
+                alcy.updateAlcyTouch();
+                alcy.tiltAlcyHead();
+                alcy.squeakAlcyNose();
+                alcy.checkControl();
+                alcy.updateAlcySleep();
+            }
+
+            //알키
+            if (playFunc) {
+                alcy.updateAlcyBeat();
+                cam.updateCameraBeat();
+                speaker.updateSpeakerBeat();
+
+                switch (funcNumber) {
+                case 0:
+                    light.updateLightTransparent();
+                    updateFuncOperation(funcNumber);
+                    break;
+                case 1:
+                    background.updateBackgroundIdx();
+                    ;                turntable.updateTurntableIndex();  // 턴테이블의 색상이 바뀌어야 하므로 인덱스를 계속 업데이트 한다.
+                    speaker.updateImageIndex();
+                    alcy.updateImageIndex();
+                    updateFuncOperation(funcNumber);
+                    break;
+                case 2:
+                    arm.update();
+                    guitar.update();
+                    alcy.updateAlcyGuitarPlay();
+                    note.update();
+                    updateFuncOperation(funcNumber);
+                    break;
+                case 3:
+                    arm.update();
+                    guitar.update();
+                    alcy.updateAlcyGuitarPlay();
+                    updateFuncOperation(funcNumber);
+                    break;
+                }
+            }
+
+            // zzz 오브젝트
+            for (int i = 0; i < 3; i++)
+                zzz[i].update();
+
+            // 흰배경
+            if (whiteTransparent > 0.0)
+                white.update();
+        }
+
+        // 게임 시작 여부 상관없이 항상 동작하는 코드 모음
+        ui.exitGame();
+        info.update();
+        alcy.updateAlcyBlink();
+    }
 
     glutTimerFunc(10, timerOperation, 1);
     if (glutGetWindow() != 0)

@@ -7,10 +7,13 @@
 #include "screen.h"  // 윈도우 사이즈
 #include "sound.h"  // 사운드
 #include "globalVar.h"
+#include "Start.h"
 #include "main2.h"
 
 int WIDTH = GetSystemMetrics(SM_CXSCREEN);
 int HEIGHT = GetSystemMetrics(SM_CYSCREEN);  // 화면 사이즈에 맞추어 창을 출력한다
+
+bool LoadingEnd;  // 로고가 표시된 이후부터 리소스 로딩을 시작한다.
 
 GLvoid displayReshape(int w, int h) {
 	glViewport(0, 0, w, h);
@@ -22,7 +25,15 @@ GLvoid displayOutput() {
 	glUseProgram(ID);
 
 	setWindowView();
-	objectOutput();  // 오브젝트 출력
+
+	if(LoadingEnd)
+		objectOutput();  // 오브젝트 출력
+
+	if (INTRO == 1) {
+		if (!gameStarted)
+			for (int i = 0; i < 3; i++)
+				start.setObject(i);  // 로딩 화면 출력
+	}
 	
 	glutSwapBuffers();
 }
@@ -56,29 +67,35 @@ void main(int argc, char** argv) {
 		if (result != FMOD_OK)
 			exit(0);
 
-		if (INTRO == 0)  // 개발 시에는 인트로 생략
+		if (INTRO == 0) {  // 개발 모드, 로딩화면 및 인트로를 건너뜀
 			gameStarted = true;
-		else
-			gameStarted = false;
+			LoadingEnd = true;
+			initObject();
+			ssystem->init(64, FMOD_INIT_NORMAL, extradriverdata);
+			initFmod();
+			glutKeyboardFunc(keyDown);  // glut 기능 활성화
+			glutKeyboardUpFunc(keyUp);
+			glutMouseFunc(Mouse);
+			glutMotionFunc(Motion);
+			glutPassiveMotionFunc(pMotion);
+			glutMouseWheelFunc(Wheel);
 
-		initFmod();
-		initObject();  // 오브젝트 세팅
-		stbi_image_free(texture_data);
+			stbi_image_free(texture_data);
+
+			ssystem->playSound(mainTheme, 0, false, &channelTheme);
+		}
+		else {  // 배포 모드, 로딩화면 및 인트로를 거침
+			gameStarted = false;
+			ssystem->init(64, FMOD_INIT_NORMAL, extradriverdata);
+			ssystem->createSound("res//sound//UI//logo.wav", FMOD_DEFAULT, 0, &logoSound); // 로고 사운드를 출력해야 하므로 먼저 로딩한다
+			start.setBuffer();
+			start.setTexture();
+		}
 	}
 	
 	glutDisplayFunc(displayOutput);
 	glutReshapeFunc(displayReshape);
-	glutKeyboardFunc(keyDown);
-	glutKeyboardUpFunc(keyUp);
-	glutMouseFunc(Mouse);
-	glutMotionFunc(Motion);
-	glutPassiveMotionFunc(pMotion);
-	glutMouseWheelFunc(Wheel);
-
 	glutTimerFunc(10, timerOperation, 1);
-
-	if (INTRO == 0)  // 인트로를 비활성화 했을 경우 메인 음악을 바로 킨다
-		ssystem->playSound(mainTheme, 0, false, &channelTheme);  // 메인 브금
 
 	glutMainLoop();
 

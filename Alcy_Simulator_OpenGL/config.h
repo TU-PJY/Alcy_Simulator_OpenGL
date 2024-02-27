@@ -19,9 +19,11 @@
 #include "fmod.hpp"
 #include "fmod_errors.h"
 #define ALCY_PART 8  // 알키 파트 개수
-#define UI_PART 5  // ui 파트 개수
+#define UI_PART 6  // ui 파트 개수
 #define ICON_PART 4  // 메뉴 아이콘 개수
 #define INTRO 1  // 1: true, 0: false
+
+extern bool LoadingEnd;  // 로고가 출력된 이후부터 리소스 로딩을 시작한다.
 
 using namespace std;
 

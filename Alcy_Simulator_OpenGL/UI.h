@@ -10,6 +10,7 @@
 #include "Info.h"
 
 enum ui_name {
+	press_,
 	title_,
 	tip_,
 	icon_,
@@ -21,6 +22,7 @@ class UI {
 public:
 	GLuint VAO_UI;
 
+	unsigned int press;  // press space 안내 문구
 	unsigned int cursor[3];  // 배경, 커서
 	unsigned int bar;  //메뉴바
 	unsigned int uiIcon[3];  // 아이콘
@@ -180,6 +182,12 @@ public:
 	}
 
 	void setTexture() {
+		// press space
+		glGenTextures(1, &press);
+		glBindTexture(GL_TEXTURE_2D, press);
+		parameteri();
+		texture_data = stbi_load("res//ui//press_space.png", &tipW, &tipH, &channel, 4);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, tipW, tipH, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 		// title
 		glGenTextures(1, &title);
 		glBindTexture(GL_TEXTURE_2D, title);
@@ -239,6 +247,14 @@ public:
 
 	void modelOutput(int idx) {  // 모델 출력 
 		switch (idx) {
+		case press_:
+			if (gameStarted) break;
+
+			glBindTexture(GL_TEXTURE_2D, press);
+			if (INTRO == 1)
+				glDrawArrays(GL_TRIANGLES, 0, 6);
+			break;
+
 		case title_:
 			if (gameStarted) break;
 
@@ -304,10 +320,18 @@ public:
 		initTransform();
 
 		switch (idx) {
+		case press_:
+			if (gameStarted) break;
+
+			scaleMatrix = scale(scaleMatrix, vec3(0.4 / cam.zoom, 0.4 / cam.zoom, 0.0));
+			translateMatrix = translate(translateMatrix, vec3(0.0, -0.9 / cam.zoom, 0.1));
+			transparent = titleTransparent;
+			break;
+
 		case title_:
 			if (gameStarted) break;
 
-			scaleMatrix = scale(scaleMatrix, vec3(titleSize / cam.zoom, titleSize / cam.zoom, 1.0));
+			scaleMatrix = scale(scaleMatrix, vec3(titleSize / cam.zoom, titleSize / cam.zoom, 0.0));
 			translateMatrix = translate(translateMatrix, vec3(0.0, titleY, 0.05));
 			transparent = titleTransparent;
 			break;

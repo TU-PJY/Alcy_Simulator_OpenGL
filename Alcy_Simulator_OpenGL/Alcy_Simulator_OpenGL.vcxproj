@@ -156,6 +156,7 @@
     <ClInclude Include="Icon.h" />
     <ClInclude Include="Info.h" />
     <ClInclude Include="Light.h" />
+    <ClInclude Include="Start.h" />
     <ClInclude Include="main2.h" />
     <ClInclude Include="Mic.h" />
     <ClInclude Include="Neon.h" />

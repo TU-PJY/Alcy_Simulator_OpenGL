@@ -100,6 +100,7 @@ void keyDown(unsigned char KEY, int x, int y) {
 		if (!gameStarted && INTRO == 1) {  // 게임 시작 시 인트로 출력
 			startIntro = true;  // 카메라 애니메이션 활성화
 			ui.intro = true;
+			ssystem->playSound(menuClick, 0, false, &channelMenu);
 		}
 
 		else if (gameStarted && !setInfo) {  // 게임 시작 이후에는 메뉴를 여는 기능을 한다.

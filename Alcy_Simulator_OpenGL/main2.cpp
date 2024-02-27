@@ -117,12 +117,14 @@ void objectOutput() {
 	for (int i = 0; i < UI_PART; i++)
 		ui.setObject(i);
 
-	info.setObject();
-
 	// 메뉴 아이콘
 	for (int i = 0; i < ICON_PART; i++) 
 		if (icon[i].iconTransparent > 0.0) 
 			icon[i].setObject(i);
+
+	// 정보
+	if(info.size > 0.0)
+		info.setObject();
 
 	//흰 배경
 	if (whiteTransparent > 0.0) 
