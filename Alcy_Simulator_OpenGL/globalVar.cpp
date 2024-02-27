@@ -38,6 +38,7 @@ GLfloat functionOperationTime;
 GLfloat whiteTransparent;  // 흰 배경 투명도
 
 int ExitOrInfo = 0;  // 0: exit, 1: info
+bool setInfo;  // true일 시 정보 표시 활성화
 
 // 여기에 클래스 선언하고 사용
 Background background;
@@ -55,6 +56,4 @@ Mic mic;
 Neon neon;
 Note note;
 White white;
-
-bool setInfo;  // true일 시 정보 표시 활성화
 Info info;

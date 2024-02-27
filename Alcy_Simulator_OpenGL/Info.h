@@ -53,7 +53,7 @@ public:
 		glGenTextures(1, &iTex);
 		glBindTexture(GL_TEXTURE_2D, iTex);
 		parameteri();
-		texture_data = stbi_load("res//ui//info_back.png", &W, &H, &channel, 4);
+		texture_data = stbi_load("res//ui//info.png", &W, &H, &channel, 4);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, W, H, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 	}
 

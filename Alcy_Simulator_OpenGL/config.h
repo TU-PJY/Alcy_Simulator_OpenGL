@@ -21,7 +21,7 @@
 #define ALCY_PART 8  // 알키 파트 개수
 #define UI_PART 5  // ui 파트 개수
 #define ICON_PART 4  // 메뉴 아이콘 개수
-#define INTRO 0  // 1: true, 0: false
+#define INTRO 1  // 1: true, 0: false
 
 using namespace std;
 
