@@ -45,10 +45,7 @@ void clickSqueak() {
 	}
 }
 
-void initFunc(int idx) {  // 메뉴바 기능 실행 또는 중지 시 초기화 하는 함수
-	cam.zoom = 1.0;  // 카메라 초기화
-	cam.camRot = 0;
-
+void initAlcyMouse() {
 	alcy.beatX = 0;
 	alcy.beatY = 0;
 
@@ -66,6 +63,13 @@ void initFunc(int idx) {  // 메뉴바 기능 실행 또는 중지 시 초기화 하는 함수
 	alcy.confirmLeave = false;
 	alcy.squeak = false;
 	alcy.squeakTime = 0;
+}
+
+void initFunc(int idx) {  // 메뉴바 기능 실행 또는 중지 시 초기화 하는 함수
+	cam.zoom = 1.0;  // 카메라 초기화
+	cam.camRot = 0;
+
+	initAlcyMouse();
 
 	beatVal = 0;
 	whiteTransparent = 1.0;

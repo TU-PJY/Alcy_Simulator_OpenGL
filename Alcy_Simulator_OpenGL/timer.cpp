@@ -81,8 +81,7 @@ void updateIconType() {
     }
 }
 
-// 메뉴바 기능 실행 함수
-void updateFuncOperation(int num) {
+void setFuncRunningTime(int num) {
     switch (num) {
     case 0:
         interval = 4.688;  // 128bpm
@@ -101,27 +100,46 @@ void updateFuncOperation(int num) {
         playTime = 200;
         break;
     }
+}
 
-    if (num == 0 || num == 1) {
-        if (beatDelay >= interval) {
-            beatAcc = 0.077;
-            beatVal = 0.15;
-            interpolation = beatDelay;
-            beatDelay = 0;
-            beatDelay = interpolation - interval;  // 초과 시간 보간
-        }
+void initAlcyFunc() {
+    alcy.beatX = 0;
+    alcy.beatY = 0;
+    alcy.headPos = 0;
+    alcy.headRot = 0;
+    alcy.headNum = 0;
+    alcy.tailRot = 0;
+    alcy.tailNum = 0;
 
-        else {
-            beatVal -= beatAcc * fs;
-            beatAcc -= fs / 50;
-            if (beatVal < 0.0)
-                beatVal = 0.0;
-            if (beatAcc < 0)
-                beatAcc = 0;
-        }
+}
 
-        beatDelay += fs;
+void updateBeatDelay() {
+    if (beatDelay >= interval) {
+        beatAcc = 0.077;
+        beatVal = 0.15;
+        interpolation = beatDelay;
+        beatDelay = 0;
+        beatDelay = interpolation - interval;  // 초과 시간 보간
     }
+
+    else {
+        beatVal -= beatAcc * fs;
+        beatAcc -= fs / 50;
+        if (beatVal < 0.0)
+            beatVal = 0.0;
+        if (beatAcc < 0)
+            beatAcc = 0;
+    }
+
+    beatDelay += fs;
+}
+
+// 메뉴바 기능 실행 함수
+void updateFuncOperation(int num) {
+    setFuncRunningTime(num);
+
+    if (num == 0 || num == 1)
+        updateBeatDelay();
 
     functionOperationTime += fs;
 
@@ -131,13 +149,7 @@ void updateFuncOperation(int num) {
         cam.zoom = 1.0;
         cam.camRot = 0;
 
-        alcy.beatX = 0;
-        alcy.beatY = 0;
-        alcy.headPos = 0;
-        alcy.headRot = 0;
-        alcy.headNum = 0;
-        alcy.tailRot = 0;
-        alcy.tailNum = 0;
+        initAlcyFunc();
 
         beatDelay = 0;  // 박자 지연 시간 초기화
         beatVal = 0;

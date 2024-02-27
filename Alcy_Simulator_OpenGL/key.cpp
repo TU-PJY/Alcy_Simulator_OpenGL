@@ -54,6 +54,15 @@ void closeMenu() {
 		icon[i].isOnCursor = false;
 }
 
+void initAlcyKey() {  // 알키 초기화
+	ui.handEnable = false; ui.fingerEnable = false;  // 쓰다듬기 도중 누를경우 취소한다.
+	alcy.touchEnable = false;
+	ui.handNum = 0; alcy.headRot = 0;
+	alcy.tailNum = 0; alcy.tailRot = 0;
+	lButtonDown = false;
+	channelTouch->stop();  // 쓰다듬기를 중단할 경우 소리를 정지한다.
+}
+
 void keyDown(unsigned char KEY, int x, int y) {
 	switch (KEY) {
 	case 27:  // ESC
@@ -81,14 +90,8 @@ void keyDown(unsigned char KEY, int x, int y) {
 				ui.exitEnable = true;
 			}
 
-			if (!playFunc) {
-				ui.handEnable = false; ui.fingerEnable = false;  // 쓰다듬기 도중 누를경우 취소한다.
-				alcy.touchEnable = false;
-				ui.handNum = 0; alcy.headRot = 0;
-				alcy.tailNum = 0; alcy.tailRot = 0;
-				lButtonDown = false;
-				channelTouch->stop();  // 쓰다듬기를 중단할 경우 소리를 정지한다.
-			}
+			if (!playFunc) 
+				initAlcyKey();
 		}
 		alcy.isLeave = false;
 		break;
@@ -157,14 +160,8 @@ void keyDown(unsigned char KEY, int x, int y) {
 				ExitOrInfo = 1;
 				ui.infoEnable = true;  // info 활성화
 			}
-			if (!playFunc) {
-				ui.handEnable = false; ui.fingerEnable = false;
-				alcy.touchEnable = false;
-				ui.handNum = 0; alcy.headRot = 0;
-				alcy.tailNum = 0; alcy.tailRot = 0;
-				lButtonDown = false;
-				channelTouch->stop();  // 쓰다듬기를 중단할 경우 소리를 정지한다.
-			}
+			if (!playFunc)
+				initAlcyKey();
 		}
 		alcy.isLeave = false;
 		break;

@@ -90,14 +90,16 @@ public:
 		}
 	}
 
-    void exitGame() {  // esc를 길게 눌러 게임 종료
+    void exitGame() {  // esc를 길게 눌러 게임 종료, 정보창 띄위기와 공용
         if (exitEnable || infoEnable) {
             exitTransparent += fs / 6;  // 종료 아이콘이 완전히 나타나면 게임을 종료한다.
             if (exitTransparent > 1.0) {
                 exitTransparent = 1.0;
-				if (ExitOrInfo == 0)
+
+				if (ExitOrInfo == 0)  // 종료
 					glutDestroyWindow(1);
-				if (ExitOrInfo == 1) {
+
+				if (ExitOrInfo == 1) {  // 정보창 활성화
 					setInfo = true;
 					infoEnable = false;
 					exitTransparent = 0.0;
@@ -109,11 +111,11 @@ public:
 				}
             }
         }
+
         else {
             exitTransparent -= fs / 6;  // 종료 도중 그만 둘 경우 아이콘은 다시 투명해진다.
-            if (exitTransparent < 0) {
+            if (exitTransparent < 0)
                 exitTransparent = 0;
-            }
         }
     }
 
