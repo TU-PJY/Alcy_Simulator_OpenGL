@@ -107,6 +107,7 @@ void initAlcyFunc() {
     alcy.beatX = 0;
     alcy.beatY = 0;
     alcy.headPos = 0;
+    alcy.headPosY = 0;
     alcy.headRot = 0;
     alcy.headNum = 0;
     alcy.tailRot = 0;

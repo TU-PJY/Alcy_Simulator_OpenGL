@@ -51,10 +51,12 @@ void initAlcyMouse() {
 
 	alcy.dir = m;  // 알키 데이터 초기화
 	alcy.headPos = 0;
+	alcy.headPosY = 0;
 	alcy.headRot = 0;
 	alcy.headNum = 0;
 	alcy.tailRot = 0;
 	alcy.tailNum = 0;
+	alcy.sleepHeight = 0;
 
 	alcy.sleeping = false;  // 알키의 모든 상태 해제
 	alcy.tired = false;

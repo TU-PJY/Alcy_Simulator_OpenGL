@@ -59,6 +59,7 @@ void initAlcyKey() {  // 알키 초기화
 	alcy.touchEnable = false;
 	ui.handNum = 0; alcy.headRot = 0;
 	alcy.tailNum = 0; alcy.tailRot = 0;
+	alcy.headPosY = 0;
 	lButtonDown = false;
 	channelTouch->stop();  // 쓰다듬기를 중단할 경우 소리를 정지한다.
 }
