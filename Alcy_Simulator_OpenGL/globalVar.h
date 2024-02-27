@@ -25,6 +25,7 @@ extern GLfloat beatVal;
 extern GLfloat functionOperationTime;
 
 extern int ExitOrInfo;
+extern bool setInfo;  // true일 시 정보 표시 활성화
 
 extern GLfloat whiteTransparent;  // 흰 배경 투명도
 

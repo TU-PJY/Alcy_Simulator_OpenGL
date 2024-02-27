@@ -18,6 +18,7 @@
 #include "Mic.h"
 #include "Neon.h"
 #include "Note.h"
+#include "Info.h"
 #include "main2.h"
 
 // 이미지 출력 cpp
@@ -35,6 +36,7 @@ void initObject() {
 	mic.setBuffer();
 	neon.setBuffer();
 	note.setBuffer();
+	info.setBuffer();
 	white.setBuffer();  // 흰 배경 초기화
 
 	for (int i = 0; i < ICON_PART; i++)  // 메뉴 아이콘 초기화
@@ -55,6 +57,7 @@ void initObject() {
 	mic.setTexture();
 	neon.setTexture();
 	note.setTexture();
+	info.setTexture();
 	white.setTexture();
 
 	for (int i = 0; i < ICON_PART; i++)
@@ -113,6 +116,8 @@ void objectOutput() {
 	// UI
 	for (int i = 0; i < UI_PART; i++)
 		ui.setObject(i);
+
+	info.setObject();
 
 	// 메뉴 아이콘
 	for (int i = 0; i < ICON_PART; i++) 

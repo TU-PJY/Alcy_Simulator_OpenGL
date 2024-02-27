@@ -155,6 +155,9 @@
     <ClInclude Include="Note.h">
       <Filter>헤더 파일\classesProp</Filter>
     </ClInclude>
+    <ClInclude Include="Info.h">
+      <Filter>헤더 파일\classesMain</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="glsl\GLSL_fragment.glsl">

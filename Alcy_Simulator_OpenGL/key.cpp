@@ -48,6 +48,8 @@ void closeMenu() {
 	ui.menuSizeY = 0.51;
 	ui.menuAcc = 0.2;
 
+	lButtonDown = false;
+
 	for (int i = 0; i < ICON_PART; i++)
 		icon[i].isOnCursor = false;
 }
@@ -55,16 +57,38 @@ void closeMenu() {
 void keyDown(unsigned char KEY, int x, int y) {
 	switch (KEY) {
 	case 27:  // ESC
-		if (!escSoundPlayed && !ui.menuEnable && !ui.infoEnable) {  // 중복 재생 방지
-			channelEscDown->stop();
-			ssystem->playSound(escDown, 0, false, &channelEscDown);
-			escSoundPlayed = true;
-			ExitOrInfo = 0;
-		}
-		if (!ui.menuEnable && !ui.infoEnable) {
-			ui.exitEnable = true;
+		if (setInfo) {  // 정보창을 띄웠을 때에는 정보창을 끄는 역할을 한다.
+			if (!escSoundPlayed) {
+				channelEscDown->stop();
+				ssystem->playSound(escDown, 0, false, &channelEscDown);
+				escSoundPlayed = true;
+			}
+			setInfo = false;
 			alcy.isLeave = false;
+			break;
 		}
+
+		if (!ui.menuEnable && !ui.infoEnable) {  // 중복 재생 방지
+			if (!escSoundPlayed) {
+				channelEscDown->stop();
+				ssystem->playSound(escDown, 0, false, &channelEscDown);
+				escSoundPlayed = true;
+				ui.exitTransparent = 0.0;
+			}
+
+			if (!setInfo) {  // 정보창을 띄우지 않았을 때만 종료 가능
+				ExitOrInfo = 0;
+				ui.exitEnable = true;
+			}
+
+			ui.handEnable = false; ui.fingerEnable = false;  // 쓰다듬기 도중 누를경우 취소한다.
+			alcy.touchEnable = false;
+			ui.handNum = 0; alcy.headRot = 0;
+			alcy.tailNum = 0; alcy.tailRot = 0;
+			lButtonDown = false;
+			channelTouch->stop();  // 쓰다듬기를 중단할 경우 소리를 정지한다.
+		}
+		alcy.isLeave = false;
 		break;
 
 	case 32:  // space
@@ -73,7 +97,7 @@ void keyDown(unsigned char KEY, int x, int y) {
 			ui.intro = true;
 		}
 
-		else if (gameStarted) {  // 게임 시작 이후에는 메뉴를 여는 기능을 한다.
+		else if (gameStarted && !setInfo) {  // 게임 시작 이후에는 메뉴를 여는 기능을 한다.
 			if (!ui.menuEnable)
 				openMenu();
 			else
@@ -119,15 +143,27 @@ void keyDown(unsigned char KEY, int x, int y) {
 		break;
 
 	case 'i':  // info 보기
-		if (gameStarted && !ui.menuEnable && !ui.exitEnable) {
+		if (!ui.menuEnable && !ui.exitEnable) {
 			if (!escSoundPlayed) {  // 중복 재생 방지
 				channelEscDown->stop();
 				ssystem->playSound(escDown, 0, false, &channelEscDown);
 				escSoundPlayed = true;
-				ExitOrInfo = 1;
+				ui.exitTransparent = 0.0;
 			}
-			ui.infoEnable = true;  // info 활성화
+			
+			if (!setInfo) {
+				ExitOrInfo = 1;
+				ui.infoEnable = true;  // info 활성화
+			}
+
+			ui.handEnable = false; ui.fingerEnable = false;
+			alcy.touchEnable = false;
+			ui.handNum = 0; alcy.headRot = 0;
+			alcy.tailNum = 0; alcy.tailRot = 0;
+			lButtonDown = false;
+			channelTouch->stop();  // 쓰다듬기를 중단할 경우 소리를 정지한다.
 		}
+		alcy.isLeave = false;
 		break;
 	}
 	if (glutGetWindow() != 0)
@@ -137,12 +173,11 @@ void keyDown(unsigned char KEY, int x, int y) {
 void keyUp(unsigned char KEY, int x, int y) {
 	switch (KEY) {
 	case 27:
-		if (!ui.menuEnable && !ui.infoEnable) {
+		if (!ui.menuEnable) {
 			channelEscUp->stop();
 			ssystem->playSound(escUp, 0, false, &channelEscUp);
 			escSoundPlayed = false;
 		}
-
 		ui.exitEnable = false;
 		break;
 
@@ -157,13 +192,13 @@ void keyUp(unsigned char KEY, int x, int y) {
 		break;
 
 	case 'i':
-		if (gameStarted && !ui.menuEnable && !ui.exitEnable) {
+		if (!ui.menuEnable) {
 			channelEscUp->stop();
 			ssystem->playSound(escUp, 0, false, &channelEscUp);
 			escSoundPlayed = false;
-
-			ui.infoEnable = false;
 		}
+		ui.infoEnable = false;
+
 		break;
 	}
 	if (glutGetWindow() != 0)

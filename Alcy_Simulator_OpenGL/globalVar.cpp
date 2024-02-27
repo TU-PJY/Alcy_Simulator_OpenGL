@@ -15,6 +15,7 @@
 #include "Mic.h"
 #include "Neon.h"
 #include "Note.h"
+#include "Info.h"
 // 프로젝트 전체 전역 변수 및 클래스
 
 GLfloat mx, my; // 마우스 좌표
@@ -54,3 +55,6 @@ Mic mic;
 Neon neon;
 Note note;
 White white;
+
+bool setInfo;  // true일 시 정보 표시 활성화
+Info info;

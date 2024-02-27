@@ -7,6 +7,7 @@
 #include "screen.h"
 #include "globalVar.h"
 #include "Camera.h"
+#include "Info.h"
 
 enum ui_name {
 	title_,
@@ -44,7 +45,6 @@ public:
 
 	// info 아이콘
 	bool infoEnable;
-	bool setInfo;  // true일 시 아이콘이 커지며 정보를 띄운다.
 	GLfloat infoTransparent;
 
 	//팁
@@ -97,6 +97,16 @@ public:
                 exitTransparent = 1.0;
 				if (ExitOrInfo == 0)
 					glutDestroyWindow(1);
+				if (ExitOrInfo == 1) {
+					setInfo = true;
+					infoEnable = false;
+					exitTransparent = 0.0;
+
+					// 정보창 초기화
+					info.infoTransparent = 1.0;
+					info.size = 0.5;
+					info.acc = 0.5;
+				}
             }
         }
         else {

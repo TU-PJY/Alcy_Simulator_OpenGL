@@ -14,6 +14,7 @@
 #include "Arm.h"
 #include "Light.h"
 #include "Note.h"
+#include "Info.h"
 
 // 프레임
 int lastElapsedTime, elapsedTime;
@@ -170,7 +171,7 @@ void timerOperation(int value) {
         cam.updateZoom();
 
         // 커서
-        if (!ui.menuEnable && !playFunc)
+        if (!ui.menuEnable && !playFunc && !setInfo && !ui.exitEnable && !ui.infoEnable)
             updateCursorType();
 
         // 메뉴바
@@ -244,6 +245,7 @@ void timerOperation(int value) {
 
     // 게임 시작 여부 상관없이 항상 동작하는 코드 모음
     ui.exitGame();
+    info.update();
     alcy.updateAlcyBlink();
 
     glutTimerFunc(10, timerOperation, 1);
