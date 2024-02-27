@@ -112,7 +112,7 @@ void initAlcyFunc() {
     alcy.headNum = 0;
     alcy.tailRot = 0;
     alcy.tailNum = 0;
-
+    alcy.sleepHeight = 0;
 }
 
 void updateBeatDelay() {
