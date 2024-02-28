@@ -21,7 +21,7 @@ public:
 		backgroundW = 1440, backgroundH = 1440;
 	}
 
-	void updateBackgroundIdx() {
+	void updateBackgroundIdx() {  // 배경 인덱스 업데이트
 		idx += fs;
 		if (idx > 3.99999)
 			idx = 0;
@@ -92,7 +92,7 @@ public:
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, backgroundW, backgroundH, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 	}
 
-	void setObject() {
+	void objectOut() {
 		using namespace glm;
 
 		initTransform();

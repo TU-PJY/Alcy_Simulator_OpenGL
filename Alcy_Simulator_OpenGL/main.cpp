@@ -2,18 +2,16 @@
 #include "shader.h"  // 셰이더 생성
 #include "buffer.h"  // 버퍼
 #include "transform.h"  // 변환
-#include "texture.h"
+#include "texture.h"  // 텍스처
 #include "gl_func.h"  // GL 기능 함수
 #include "screen.h"  // 윈도우 사이즈
 #include "sound.h"  // 사운드
-#include "globalVar.h"
-#include "Start.h"
-#include "main2.h"
+#include "globalVar.h"  // 프로젝트 전역 변수
+#include "Start.h"  // 게임 시작 작업
+#include "main2.h"  // 오브젝트 세팅 및 출력
 
-int WIDTH = GetSystemMetrics(SM_CXSCREEN);
-int HEIGHT = GetSystemMetrics(SM_CYSCREEN);  // 화면 사이즈에 맞추어 창을 출력한다
-
-bool LoadingEnd;  // 로고가 표시된 이후부터 리소스 로딩을 시작한다.
+int WIDTH = GetSystemMetrics(SM_CXSCREEN);  // 화면 사이즈에 맞추어 창을 출력한다
+int HEIGHT = GetSystemMetrics(SM_CYSCREEN);  
 
 GLvoid displayReshape(int w, int h) {
 	glViewport(0, 0, w, h);
@@ -27,12 +25,12 @@ GLvoid displayOutput() {
 	setWindowView();
 
 	if(LoadingEnd)
-		objectOutput();  // 오브젝트 출력
+		objectOutput();  // 로딩이 모두 끝난 순간부터 인게임 오브젝트 출력을 시작한다.
 
 	if (INTRO == 1) {
-		if (!gameStarted)
+		if (!gameStarted)  // 게임 시작 전까지는 로고 및 로딩 화면을 출력한다. 게임 시작 시 더 이상 출력하지 않는다.
 			for (int i = 0; i < 3; i++)
-				start.setObject(i);  // 로딩 화면 출력
+				start.objectOut(i);  // 로딩 화면 출력
 	}
 	
 	glutSwapBuffers();
@@ -59,7 +57,7 @@ void main(int argc, char** argv) {
 		glEnable(GL_ALPHA_TEST);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		stbi_set_flip_vertically_on_load(true);
+		stbi_set_flip_vertically_on_load(true);  // 이미지 뒤집힘 방지
 
 		makeShaderProgram();
 

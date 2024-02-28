@@ -7,6 +7,8 @@
 #include "Camera.h"
 #include "globalVar.h"
 
+// 변환 관련 변수들을 여기에 선언 및 사용
+
 glm::vec3 cameraPos, cameraDirection, cameraUp, lightPos, objColor;
 glm::mat4 transformMatrix, view, projection, lightMatrix, scaleMatrix, rotateMatrix, translateMatrix, camMaxtrix;
 glm::vec3 selectedColor, threshold;
@@ -33,7 +35,7 @@ void setWindowView() {  // 시점 세팅
 	projection = ortho(-1.0 * ratio_ / cam.zoom, 1.0 * ratio_ / cam.zoom, -1.0 / cam.zoom, 1.0 / cam.zoom, -100.0, 100.0);
 }
 
-void initTransform() {
+void initTransform() {  // 변환 초기화
     using namespace glm;
     transformMatrix = mat4(1.0f);  // 최종 행렬
 
@@ -46,7 +48,7 @@ void initTransform() {
     transparent = 1.0f;
 }
 
-void transmit() {  // transmit transform data to glsl
+void transmit() {  // glsl 코드로 변환 데이터 전달
     transparencyLocation = glGetUniformLocation(ID, "transparency");
     glUniform1f(transparencyLocation, transparent);
 

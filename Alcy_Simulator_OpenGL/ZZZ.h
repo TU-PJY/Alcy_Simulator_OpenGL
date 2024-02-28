@@ -28,7 +28,7 @@ public:
 	}
 
 	void update() {  // 애니메이션 업데이트
-		if (alcy.sleeping) {
+		if (alcy.sleeping) {  // 알키가 잠을 자면 업데이트 한다.
 			if (delay >= 0) {
 				delay -= fs;
 			}
@@ -48,7 +48,7 @@ public:
 			}
 		}
 
-		else {
+		else {  // 아니라면 초기화 후 하지 않는다.
 			zzzTransparent -= fs / 10;  // 중간에 알키를 깨우면 서서히 사라진다.
 			if (zzzTransparent < 0) {
 				zzzTransparent = 0;
@@ -87,7 +87,7 @@ public:
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, zzzW, zzzH, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 	}
 
-	void setObject() {
+	void objectOut() {
 		using namespace glm;
 
 		initTransform();

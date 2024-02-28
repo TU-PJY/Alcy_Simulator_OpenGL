@@ -9,7 +9,7 @@
 #include "Camera.h"
 #include "Info.h"
 
-enum ui_name {
+enum ui_name {  // 여기에 정의하는 순서대로 이미지 출력
 	press_,
 	title_,
 	tip_,
@@ -36,10 +36,11 @@ public:
 	int tipW = 500, tipH = 500;
 	int barW = 512, barH = 512;
 
+	// 커서
 	bool handEnable;  // 손커서 전환 여부
+	bool fingerEnable; // 손가락 커서 전환 여부
 	GLfloat handX;  // 손커서 x좌표, 쓰다듬기 시 사용
 	GLfloat handNum;  // 손 커서 애니메이션에 사용되는 수치
-	bool fingerEnable; // 손가락 커서 전환 여부
 
 	// 나가기 아이콘
 	bool exitEnable;
@@ -57,19 +58,19 @@ public:
 	GLfloat titleY, titleTransparent, titleSize;
 
 	// 게임 시작
-	bool intro;  // 인트로 애니메이션
+	bool intro;  // 인트로 애니메이션 활성화 여부
 
-	bool menuEnable;  // 메뉴 활성화 여부
-	bool menuOpened;  // 메뉴 아이콘 사용 가능 여부
-	GLfloat menuY;  // 메뉴 높이
-	GLfloat menuSizeX;  // 메뉴 크기
-	GLfloat menuSizeY;
+	// 메뉴바
+	bool menuEnable;  // 메뉴바 활성화 여부
+	bool menuOpened;  // 메뉴바 아이콘 상호작용 가능 여부
+	GLfloat menuY;  // 메뉴바 y 좌표
+	GLfloat menuSizeX;  // 메뉴바 좌우 크기
+	GLfloat menuSizeY;  // 메뉴바 상하 크기
 	GLfloat menuAcc;  // 메뉴를 열 때 사용하는 가속값
-	GLfloat menuTransparent;
+	GLfloat menuTransparent;  // 메뉴바 투명도
 
 	UI() {
-		mouseClickEnable = true;
-		tipEnable = true;
+		tipEnable = true;  // 팁은 활성화 상태가 기본값
 		tipTransparent = 1.0f;
 
 		titleTransparent = 1.0f;
@@ -81,8 +82,8 @@ public:
 	}
 
     // ui
-	void startGame() {
-		if (!gameStarted && intro) {
+	void startGame() {  // 게임 시작 애니메이션
+		if (!gameStarted && intro) {  // 타이틀이 투명해지며 위로 올라간다.
 			titleTransparent -= fs / 5;
 			titleY += fs / 30;
 			titleSize += fs / 20;
@@ -92,9 +93,9 @@ public:
 		}
 	}
 
-    void exitGame() {  // esc를 길게 눌러 게임 종료, 정보창 띄위기와 공용
+    void exitGame() {  // 게임 종료, 정보창 띄우기와 공용
         if (exitEnable || infoEnable) {
-            exitTransparent += fs / 6;  // 종료 아이콘이 완전히 나타나면 게임을 종료한다.
+            exitTransparent += fs / 6;  // 아이콘이 완전히 나타나면 게임을 종료하거나 정보창을 띄운다.
             if (exitTransparent > 1.0) {
                 exitTransparent = 1.0;
 
@@ -106,7 +107,7 @@ public:
 					infoEnable = false;
 					exitTransparent = 0.0;
 
-					// 정보창 초기화
+					// 정보창 값 초기화
 					info.infoTransparent = 1.0;
 					info.size = 0.5;
 					info.acc = 0.5;
@@ -115,7 +116,7 @@ public:
         }
 
         else {
-            exitTransparent -= fs / 6;  // 종료 도중 그만 둘 경우 아이콘은 다시 투명해진다.
+            exitTransparent -= fs / 6;  // 도중에 그만 둘 경우 아이콘은 다시 투명해진다.
             if (exitTransparent < 0)
                 exitTransparent = 0;
         }
@@ -134,8 +135,8 @@ public:
         }
     }
 
-	void updateMenu() {
-		if (menuEnable) {
+	void updateMenu() {  // 메뉴바 업데이트
+		if (menuEnable) {  // 메뉴바가 활성화 되면 부드럽게 커지며 열린다.
 			menuSizeX += menuAcc * 2 * fs;
 			menuSizeY += menuAcc * fs;
 			menuTransparent -= menuAcc / 2 * fs;
@@ -147,11 +148,11 @@ public:
 				menuSizeX = 1.02;
 				menuSizeY = 0.51;
 				menuAcc = 0;
-				menuOpened = true;
+				menuOpened = true;  // 커서와 아이콘의 상호작용 활성화
 			}
 		}
 
-		else {
+		else {  // 메뉴바가 작아지며 닫힌다.
 			menuSizeX -= menuAcc * 2 * fs;
 			menuSizeY -= menuAcc * fs;
 			menuTransparent += menuAcc / 2 * fs;
@@ -314,7 +315,7 @@ public:
 		}
 	}
 
-	void setObject(int idx) {  // 변환 세팅
+	void setTransform(int idx) {  // 변환 세팅
 		using namespace glm;
 
 		initTransform();
@@ -381,6 +382,11 @@ public:
 		glBindVertexArray(VAO_UI);  // 각 모델마다 지정된 VAO만 사용
 
 		modelOutput(idx);
+	}
+
+	void objectOut() {  // 오브젝트 출력
+		for (int i = 0; i < UI_PART; i++)
+			setTransform(i);
 	}
 };
 

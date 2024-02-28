@@ -20,7 +20,7 @@ public:
 		W = 512; H = 512;
 	}
 
-	void update() {
+	void update() {  // 투명도가 0을 넘으면 0이 될때까지 감소시킨다.
 		if (whiteTransparent > 0.0)
 			whiteTransparent -= fs / 2;
 
@@ -50,7 +50,7 @@ public:
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, W, H, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 	}
 
-	void setObject() {
+	void objectOut() {
 		using namespace glm;
 
 		initTransform();

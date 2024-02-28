@@ -24,12 +24,12 @@ public:
 		int W = 1500; int H = 1500;
 	}
 
-	void updateSpeakerBeat() {
+	void updateSpeakerBeat() {  // 스피커 박자 효과 업데이트
 		if (beatDelay >= interval)
 			count++;
 	}
 
-	void updateImageIndex() {
+	void updateImageIndex() {  // 스피커 이미지 인덱스 업데이트
 		imageIdx += fs;
 		if (imageIdx > 3.99999)
 			imageIdx = 0;
@@ -87,7 +87,7 @@ public:
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, W, H, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 	}
 
-	void setObject() {
+	void objectOut() {
 		using namespace glm;
 
 		initTransform();

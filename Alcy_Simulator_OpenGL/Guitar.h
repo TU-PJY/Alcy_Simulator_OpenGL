@@ -19,7 +19,7 @@ public:
 	GLfloat guitarRot;
 	GLfloat num;
 
-	void update() {
+	void update() {  // 기타 움직임 업데이트
 		if (funcNumber == 2) {
 			guitarRot = sin(num) * 1.5;
 			num += fs / 2;
@@ -58,7 +58,7 @@ public:
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, W, H, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 	}
 
-	void setObject() {
+	void objectOut() {
 		using namespace glm;
 
 		initTransform();

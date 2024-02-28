@@ -37,7 +37,7 @@ public:
     unsigned int eye[5], dot[3], eyeClose[3], brow[3], blink[3];
 
     int channel;
-    int alcyW = 1500, alcyH = 1500;
+    int alcyW = 1500, alcyH = 1500;  // 이미지 사이즈
 
 	int dir;  // 알키 바라보는 방향, 초기값 m
 
@@ -47,52 +47,52 @@ public:
 	GLfloat keepTimer;  // 눈을 감은 상태를 아주 짧게 유지한다
 	bool touchEnable;  // 알키 머리 쓰다듬기 여부
 
-	//알키 머리, 얼굴 파츠 움직임
-	GLfloat headPos;  // 방향 전환 시 전환한 방향으로 움직임, x방향
-    GLfloat headPosY;  // y방향
+	GLfloat headPos;  // 방향 전환 시 전환한 방향으로 움직임, x 위치
+    GLfloat headPosY;  // y 위치
 	GLfloat headRot;  // 쓰다듬기 시 머리 회전 각도
 	GLfloat tailRot;  // 쓰다듬기 시 꼬리 회전 각도
 	GLfloat bodyRot;  // 쓰다듬기 시 몸통 회전 각도
 	GLfloat tailNum; // 꼬리 회전에 사용되는 수치
-    GLfloat headNum;
+    GLfloat headNum;  // 머리 회전에 사용되는 수치
 	bool headTiltR, headTiltL;  // 카메라 기울였을 때 알키 머리 기울이기 여부
     bool tiltSoundPlayed;  // 알키 머리 기울이는 소리 재생 여부, 중복 재생 방지
 
     bool squeak; // 알키 코 누름 여부
     GLfloat squeakTime;  // 코 눌림 상태동안의 시간
 
-    bool measureTime, isLeave, confirmLeave;
-    time_t checkStartTime1, checkEndTime1, checkStartTime2, checkEndTime2;
-    bool tired, sleeping;
-    time_t sleepReadyTime, sleepCheckTime;
-    GLfloat sleepHeight, sleepNum;  // 잠을 잘 때 위 아래로 조금씩 움직인다.
-    int breatheType;  // 들숨 / 날숨
-    bool breatheSound;  // 중복 재생 방지
-    GLfloat delay;  // 숨쉬는 소리 딜레이
-    
-    GLfloat beatX, beatY;  // 음악 박자 효과
-    int beatDir;
-    bool setOn;
-    GLfloat Imageidx;
+    bool measureTime, isLeave, confirmLeave;  // 컨트롤 부재 시간 측정 변수
+    time_t checkStartTime1, checkEndTime1, checkStartTime2, checkEndTime2;  // "
 
+    bool tired, sleeping;  // 피곤함, 잠자기 상태 여부
+    time_t sleepReadyTime, sleepCheckTime; // 잠자기 상태 이전의 시간 측정 변수
+    GLfloat sleepHeight, sleepNum;  // 높이, 높이에 사용되는 수치, 잠을 잘 때 위 아래로 조금씩 움직인다.
+
+    int breatheType;  // 들숨 / 날숨
+    bool breatheSound;  // 숨쉬기 사운드 중복 재생 방지
+    GLfloat delay;  // 숨쉬기 소리 딜레이
+    
+    GLfloat beatX, beatY;  // 알키 전용 음악 박자 효과
+    int beatDir;  // 알키 머리 흔드는 방향
+    bool setOn;  // 알키 머리 내리기 여부
+    GLfloat Imageidx;  // 알키 이미지 인덱스
 
     Alcy() {
-        dir = m;
-        delay = 2;
-        breatheType = in_;
+        dir = m;  // 기본 방향 중앙
+        delay = 2;  // 숨쉬기 사운드 재생 딜레이
+        breatheType = in_;  // 기본 들숨
     }
 
-    void checkControl() {
+    void checkControl() {  // 컨트롤 부재 확인
         if (!tired) {
-            if (!measureTime) {
+            if (!measureTime) { // 컨트롤이 없다고 가정하여 시간 측정을 시작한다.
                 checkStartTime1 = time(NULL);
-                isLeave = true;  // 컨트롤이 없다고 가정하여 시간 측정을 시작한다.
+                isLeave = true;  // 어떠한 컨트롤이 감지되면 false가 된다.
                 measureTime = true;
             }
 
-            if (measureTime && !confirmLeave) {
+            if (measureTime && !confirmLeave) { // 시간을 1초 간격으로 계속 측정한다.
                 checkEndTime1 = time(NULL);
-                if (checkEndTime1 - checkStartTime1 >= 1) { // 시간을 1초 간격으로 계속 측정한다.
+                if (checkEndTime1 - checkStartTime1 >= 1) { 
                     if (isLeave) {
                         checkStartTime2 = time(NULL);
                         confirmLeave = true;  // isLeave에 변동이 없다면 컨트롤이 없음을 확정한다.
@@ -118,9 +118,10 @@ public:
         }
     }
 
-    void updateAlcySleep() {
+    void updateAlcySleep() { // 알키 잠자기 업데이트
         if (tired && !sleeping) {  // 졸기 시작하면 마우스로 알키를 직접 클릭하지 않는 이상 꺠지 않는다.
             sleepCheckTime = time(NULL);
+
             if (lButtonDown) {  // 조는 도중 알키를 클릭할 경우 다시 상태가 초기화 된다.
                 measureTime = false;
                 confirmLeave = false;
@@ -132,15 +133,15 @@ public:
 
         if (tired && sleeping) {
             sleepNum += fs / 4;
-            
+
             sleepHeight = sin(sleepNum) / 80;  // 자는 동안에는 머리가 조금씩 위 아래로 움직인다.
             tailRot = sleepHeight * 100;
 
-            if (sin(sleepNum) > 0.99 && breatheType == in_) {
+            if (sin(sleepNum) > 0.99 && breatheType == in_) {  // 들숨
                 breatheType = out_;
                 breatheSound = true;
             }
-            if (sin(sleepNum) < -0.99 && breatheType == out_) {
+            if (sin(sleepNum) < -0.99 && breatheType == out_) {  // 날숨
                 breatheType = in_;
                 breatheSound = true;
             }
@@ -149,26 +150,30 @@ public:
                 sleepHeight = 0;
                 sleepNum = 0;
                 tailRot = 0;
+
                 measureTime = false;
                 confirmLeave = false;
+
                 tired = false;
                 sleeping = false;
+
                 breatheSound = false;
                 delay = 2;
+
                 channelBreathe->stop();
             }
 
             if (breatheSound) {  // 들숨, 날숨 소리가 다르다.
                 delay -= fs;
 
-                if (delay < 0) {
+                if (delay < 0) {  // 사운드 재생 딜레이가 0이 되면 사운드를 출력한다.
                     channelBreathe->stop();
-                    if (breatheType == in_)
+                    if (breatheType == in_)  // 들숨, 날숨 사운드를 구분 재생한다.
                         ssystem->playSound(breatheIn, 0, false, &channelBreathe);
                     else if (breatheType == out_)
                         ssystem->playSound(breatheOut, 0, false, &channelBreathe);
                     breatheSound = false;
-                    delay = 1;
+                    delay = 1;  // 이후부터는 1 간격으로 사운드를 재생한다.
                 }
             }
         }
@@ -195,8 +200,8 @@ public:
         }
     }
 
-    void tiltAlcyHead() {
-        if (!squeak && !tired && !sleeping) {  // 코를 누르는 상태가 아닐 때 머리 각도를 업데이트 한다.
+    void tiltAlcyHead() {  // 알키 머리 기울기 업데이트
+        if (!squeak && !tired && !sleeping) {  // 해당 상태가 아닐 때에만 업데이트 한다.
             if (cam.camRot < -9.9) {  // 카메라가 완전히 기울어진 후  알키가 머리를 기울인다
                 headTiltL = false;
                 headTiltR = true;
@@ -256,14 +261,14 @@ public:
     }
 
     void playTiltSound() {  // 머리 기울이는 소리 재생
-        if (!tiltSoundPlayed) {
+        if (!tiltSoundPlayed) {  // 한 번에 1회만 재생하도록 한다.
             channelTilt->stop();
             ssystem->playSound(tilt, 0, false, &channelTilt);
             tiltSoundPlayed = true;
         }
     }
 
-    void moveAlcyHead() {  // 바라보는 방향 전환 시 알키 머리 움직임
+    void moveAlcyHead() {  // 바라보는 방향 전환 시 알키 머리 움직임 업데이트
         if (!cam.camR && !cam.camL && cam.camRot == 0 && !squeak && !tired && !sleeping) {
             switch (dir) {
             case l:  // 좌측 바라볼 시
@@ -292,7 +297,7 @@ public:
                 break;
             }
         }
-        else {  // 아무 조작 없을 때
+        else {  // 위에서 표기한 상태 이외일 때에는 자동으로 중앙으로 이동시킨다.
             if (headPos < 0) {
                 headPos += 0.04 * fs;
                 if (headPos > 0)
@@ -307,7 +312,7 @@ public:
     }
 
     void updateAlcyTouch() {  // 알키 머리 쓰다듬기
-        if (mouseClickEnable && ui.handEnable && touchEnable) {  // 손 커서인 상태로 머리를 쓰다듬을 수 있다
+        if (mouseClickEnable && ui.handEnable && touchEnable) {  // 손 커서인 상태에서만 머리를 쓰다듬을 수 있다
             ui.handX = sin(ui.handNum) * 0.4;  // 쓰다듬는 중에는 손 커서가 좌우로 부드럽게 움직인다.
             ui.handNum += fs / 4;
 
@@ -318,17 +323,7 @@ public:
         }
     }
 
-    void squeakAlcyNose() {  // 코 누르기
-        if (squeak) {  // 일정시간동안 알키는 자기 코를 바라본다
-            squeakTime += fs;
-            if (squeakTime > 15) {  // 1.5초 후 해제
-                squeak = false;
-                squeakTime = 0;
-            }
-        }
-    }
-
-    void playAlcySqueakSound() {
+    void playAlcySqueakSound() {  // 알키의 코를 누르면 3가지 중 하나의 사운드를 랜덤 재생한다.
         random_device rd;  mt19937 gen(rd());
         uniform_int_distribution <int> dis(1, 3);
         int randomSound = dis(gen);
@@ -347,7 +342,17 @@ public:
         squeak = true;
     }
 
-    void updateAlcyBeat() {
+    void squeakAlcyNose() {  // 코 누르기
+        if (squeak) {  // 일정시간동안 알키는 자기 코를 바라본다
+            squeakTime += fs;
+            if (squeakTime > 15) {  // 1.5초 후 해제
+                squeak = false;
+                squeakTime = 0;
+            }
+        }
+    }
+
+    void updateAlcyBeat() {  // 알키 박자 효과 업데이트
         if (funcNumber == 0) {
             if (beatDelay >= interval) {
                 beatDir += 1;
@@ -375,8 +380,8 @@ public:
         }
 
         if (funcNumber == 1) {
-            if (beatDelay >= interval)
-                setOn = true;
+            if (beatDelay >= interval)  // 박자에 맞추어 머리를 위 아래로 흔든다.
+                setOn = true;  // true일시 머리 내려감, false일 시 머리 올라감
 
             if (setOn) {
                 beatY -= fs / 5;
@@ -394,13 +399,13 @@ public:
         }
     }
 
-    void updateImageIndex() {
+    void updateImageIndex() {  // 알키 이미지 인덱스 업데이트
         Imageidx += fs;
         if (Imageidx > 3.99999)
             Imageidx = 0;
     }
 
-    void updateAlcyGuitarPlay() {
+    void updateAlcyGuitarPlay() {  // 알키 기카 연주 애니메이션 업데이트
         if (funcNumber == 2) {
             headRot = 10 + sin(headNum) * 3;
             tailRot = sin(tailNum) * 2;
@@ -793,7 +798,7 @@ public:
         }
     }
 
-    void setObject(int idx) {  // 변환 세팅
+    void setTransform(int idx) {  // 변환 세팅
         using namespace glm;
 
         initTransform();
@@ -869,6 +874,11 @@ public:
 
         glBindVertexArray(VAO_ALCY);  // 각 모델마다 지정된 VAO만 사용
         modelOutput(idx);
+    }
+
+    void objectOut() {  // 오브젝트 출력
+        for (int i = 0; i < ALCY_PART; i++)
+            setTransform(i);
     }
 };
 

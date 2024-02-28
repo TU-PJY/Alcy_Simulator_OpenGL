@@ -22,7 +22,7 @@ public:
 		int W = 1500; int H = 1500;
 	}
 
-	void updateTurntableIndex() {
+	void updateTurntableIndex() {  // 턴테이블 이미지 인덱스 업데이트
 		idx += fs;
 		if (idx > 3.99999)
 			idx = 0;
@@ -74,7 +74,7 @@ public:
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, W, H, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 	}
 
-	void setObject() {
+	void objectOut() {
 		using namespace glm;
 		initTransform();
 

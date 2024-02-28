@@ -11,17 +11,17 @@
 #include "main2.h"
 #include "stb_image.h"
 
-class Start {
+class Start {  // 게임 시작 시 로딩 및 로고 인트로 담당
 public:
 	GLuint VAO_L;
 	GLfloat backTransparent;  // 로딩 화면 투명도
-	GLfloat logoTransparent;
+	GLfloat logoTransparent;  // 로고 투명도
 	GLfloat soundDelay;  // 로고 사운드 출력 지연 시간
 	GLfloat logoTime; // 로고 출력 시간
 	GLfloat loadingDelay;  // 로딩 화면 전환 지연 시간
 
+	GLfloat size;  // 로고 사이즈
 	GLfloat logoAcc; // 로고 등장 애니메이션 가속값
-	GLfloat size;
 
 	bool logoSoundPlayed; // 로고 사운드 중복 재생 방지
 	bool loadingStart;  // 로고 사운드 출력 후 로딩을 시작한다.
@@ -93,7 +93,7 @@ public:
 			if (backTransparent < 0.0)
 				backTransparent = 0.0;
 
-			if (!themeSoundPlayed) {
+			if (!themeSoundPlayed) {  // 타이틀 화면에 진입하면 메인 테마곡을 재생한다.
 				ssystem->playSound(mainTheme, 0, false, &channelTheme);
 				themeSoundPlayed = true;
 			}
@@ -134,7 +134,7 @@ public:
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, logoW, logoH, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 	}
 
-	void setObject(int idx) {
+	void objectOut(int idx) {
 		using namespace glm;
 
 		initTransform();

@@ -13,7 +13,6 @@ public:
 	GLfloat zoomAcc;  // 줌 가속도
 	bool zoomEnable;  // 줌 여부
 	bool camR, camL;  // 카메라 좌우 회전
-    bool startFirst;  // 이전 시간을 측정하여 시간 차를 보간한다.
 
     int i;
 
@@ -24,13 +23,13 @@ public:
             zoom = 0.6;
     }
 
-    void introAnimation() {
+    void introAnimation() {  // 카메라 인트로 애니메이션
         if (startIntro) {
             zoom += fs / 30;
             if (zoom > 1.0) {
                 zoom = 1.0;
                 startIntro = false;
-                gameStarted = true;
+                gameStarted = true;  // 카메라 인트로 애니메이션이 끝나면 게임이 시작된다.
             }
         }
     }
@@ -92,11 +91,11 @@ public:
         }
     }
 
-    void updateCameraBeat() {
+    void updateCameraBeat() {  // 카메라 박자 효과 업데이트
         switch (funcNumber) {
-        case 0: zoom = 1.0 + beatVal / 2;
+        case 0: zoom = 1.0 + beatVal / 2;  // 박자에 맞투어 카메라 줌을 확대-축소를 반복한다.
             break;
-        case 1: camRot = sin(i) * beatVal * 30;
+        case 1: camRot = sin(i) * beatVal * 30;  // 박자에 맞추어 카메라를 흔든다.
             i += fs * 10;
             break;
         }

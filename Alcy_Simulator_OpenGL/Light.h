@@ -17,7 +17,7 @@ public:
 
 	GLfloat lightTransparent;
 
-	void updateLightTransparent() {
+	void updateLightTransparent() {  // 빛 투명도 업데이트
 		if (beatDelay >= interval) 
 			lightTransparent = 1.0;
 		else {
@@ -56,7 +56,7 @@ public:
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, W, H, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 	}
 
-	void setObject() {
+	void objectOut() {
 		using namespace glm;
 
 		initTransform();
@@ -66,7 +66,7 @@ public:
 			translateMatrix = translate(translateMatrix, vec3(0.0, 0.5, 0.05));
 		}
 
-		else if (funcNumber == 0) {
+		else if (funcNumber == 0) {  // 0번 기능 활성화일 때만 투명도를 적용한다.
 			scaleMatrix = scale(scaleMatrix, vec3(3.0 / cam.zoom, 3.0 / cam.zoom, 0.0));
 			translateMatrix = translate(translateMatrix, vec3(-cam.camX / 2 / cam.zoom, -cam.camY / 2 / cam.zoom, -0.08));
 			transparent = lightTransparent;
@@ -76,6 +76,7 @@ public:
 
 		transmit();
 		glBindVertexArray(VAO_L);
+
 		glDepthMask(GL_FALSE);
 		if(funcNumber == 3)
 			glBindTexture(GL_TEXTURE_2D, lightTex[0]);

@@ -21,34 +21,40 @@
 #include "Info.h"
 #include "main2.h"
 
-// 이미지 출력 cpp
+// 오브젝트 설정 및 출력
 
-void initObject() {
-	// 버퍼 초기화
-	background.setBuffer();  // 배경 초기화
-	alcy.setBuffer();  // 알키 초기화
-	ui.setBuffer();  // ui 초기화
-	turntable.setBuffer();  // 턴테이블 초기화
-	speaker.setBuffer(); // 스피커 초기화
-	guitar.setBuffer(); // 기타 초기화
-	arm.setBuffer(); // 팔 초기화
-	light.setBuffer();  // 빛 초기화
+void initObject() {  // 오브젝트 설정
+	// 오브젝트 버퍼 설정
+	// 메인 오브젝트
+	background.setBuffer(); 
+	alcy.setBuffer();
+
+	// 서브 오브젝트
+	turntable.setBuffer(); 
+	speaker.setBuffer();
+	guitar.setBuffer();
+	arm.setBuffer();
+	light.setBuffer();
 	mic.setBuffer();
 	neon.setBuffer();
 	note.setBuffer();
-	info.setBuffer();
-	white.setBuffer();  // 흰 배경 초기화
-
-	for (int i = 0; i < ICON_PART; i++)  // 메뉴 아이콘 초기화
-		icon[i].setBuffer();
-	for (int i = 0; i < 3; i++)  // zzz오브젝트 초기화
+	for (int i = 0; i < 3; i++)
 		zzz[i].setBuffer();
 
+	// UI 오브젝트
+	ui.setBuffer();
+	info.setBuffer();
+	white.setBuffer();
+	for (int i = 0; i < ICON_PART; i++) 
+		icon[i].setBuffer();
 
-	// 텍스처 설정
-	background.setTexture();  // 배경
-	alcy.setTexture();  // 알키
-	ui.setTexture();  // UI
+
+	// 오브젝트 텍스처 설정
+	// 메인 오브젝트
+	background.setTexture();
+	alcy.setTexture();
+
+	// 서브 오브젝트
 	turntable.setTexture();
 	speaker.setTexture();
 	guitar.setTexture(); 
@@ -57,76 +63,66 @@ void initObject() {
 	mic.setTexture();
 	neon.setTexture();
 	note.setTexture();
+	for (int i = 0; i < 3; i++) {
+		zzz[i].setTexture();
+		zzz[i].setDelay(i);  // 각 객체의 딜레이 시작 설정
+	}
+
+	// UI 오브젝트
+	ui.setTexture();
 	info.setTexture();
 	white.setTexture();
-
 	for (int i = 0; i < ICON_PART; i++)
 		icon[i].setTexture(i);
-	for (int i = 0; i < 3; i++) {// zzz오브젝트
-		zzz[i].setTexture();
-		zzz[i].setDelay(i);
-	}
 }
 
 
-//  아래로 갈 수록 위 레이어에 그려짐
+//  (중요) 아래로 갈 수록 위에 그려짐
 void objectOutput() {
-	// 배경
-	background.setObject();
-
-	if (playFunc && funcNumber == 3)
-		neon.setObject();
-
-	if (playFunc && funcNumber == 0)
-		light.setObject();
-
-	// 스피커
-	if (playFunc && (funcNumber == 0 || funcNumber == 1)) 
-		speaker.setObject();
-
-	// Alcy
-	for (int i = 0; i < ALCY_PART; i++)
-		alcy.setObject(i);
+	background.objectOut();
 
 	if (playFunc) {
-		// 턴테이블
+		if(funcNumber == 3)
+			neon.objectOut();
+		if(funcNumber == 0)
+			light.objectOut();
+		if(funcNumber == 0 || funcNumber == 1)
+			speaker.objectOut();
+	}
+
+	alcy.objectOut();
+
+	if (playFunc) {  // 기능에 해당하는 오브젝트만 출력한다.
 		if (funcNumber == 0 || funcNumber == 1) 
-			turntable.setObject();
+			turntable.objectOut();
 
-		// 기타, 팔
 		else if (funcNumber == 2 || funcNumber == 3) {
-			guitar.setObject();
-			arm.setObject();
+			guitar.objectOut();
+			arm.objectOut();
 
-			if (funcNumber == 3) {  // 빛
-				light.setObject();
-				mic.setObject();
+			if(funcNumber == 2)
+				note.objectOut();
+
+			if (funcNumber == 3) {
+				light.objectOut();
+				mic.objectOut();
 			}
 		}
 	}
 
-	// ZZZ 이미지
 	for (int i = 0; i < 3; i++)
 		if (zzz[i].zzzTransparent > 0.0)
-			zzz[i].setObject();
+			zzz[i].objectOut();
 
-	if (playFunc && funcNumber == 2)
-		note.setObject();
+	ui.objectOut();
 
-	// UI
-	for (int i = 0; i < UI_PART; i++)
-		ui.setObject(i);
-
-	// 메뉴 아이콘
 	for (int i = 0; i < ICON_PART; i++) 
 		if (icon[i].iconTransparent > 0.0) 
-			icon[i].setObject(i);
+			icon[i].objectOut(i);
 
-	// 정보
 	if(info.size > 0.0)
-		info.setObject();
+		info.objectOut();
 
-	//흰 배경
 	if (whiteTransparent > 0.0) 
-		white.setObject();
+		white.objectOut();
 }

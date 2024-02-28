@@ -27,7 +27,7 @@ public:
 		x = 0.4; y = 0.4;
 	}
 
-	void update() {
+	void update() {  // 음표 오브젝트 애니메이션 업데이트
 		rot = sin(num) * 10;
 		num += fs;
 
@@ -66,7 +66,7 @@ public:
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, W, H, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 	}
 
-	void setObject() {
+	void objectOut() {
 		using namespace glm;
 
 		initTransform();

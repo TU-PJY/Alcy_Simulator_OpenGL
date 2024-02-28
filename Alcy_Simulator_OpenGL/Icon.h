@@ -20,13 +20,13 @@ public:
 	int iconW, iconH;
 	int channel;
 
-	bool isOnCursor;  // true일 시 아이콘이 선택된 것
-	bool operating;  // 각 아이콘 별 실행 여부
+	bool isOnCursor;  // true일 시 아이콘이 조금 투명해진다.
+	bool operating;  // 각 아이콘 별 실행 여부, true일 시 아이콘이 중단 아이콘으로 출력된다.
 
-	GLfloat iconBeatX;
-	GLfloat iconBeatRot;
+	GLfloat iconBeatX;  // 아이콘 박자 효과 
+	GLfloat iconBeatRot;  // 아이콘 박자 회전 효과
 
-	int i;
+	int i;  // 박자 효과 흔들림에 사용되는 수치
 
 	Icon() {
 		iconTransparent = 0.0;
@@ -46,7 +46,7 @@ public:
 				iconTransparent = 0;
 		}
 
-		if (playFunc) {
+		if (playFunc) {  // 박자 효과가 구동되는 일부 기능 실행 시 아이콘도 박자 효과를 낸다.
 			if(funcNumber == 0)
 				iconBeatX = beatVal / 4;
 			else if (funcNumber == 1) {
@@ -64,7 +64,7 @@ public:
 		}
 	}
 
-	void playClickSound() {
+	void playClickSound() {  // 아이콘 클릭 사운드 재생
 		channelMenu->stop();
 		ssystem->playSound(menuClick, 0, false, &channelMenu);
 	}
@@ -117,7 +117,7 @@ public:
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, iconW, iconH, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 	}
 
-	void setObject(int idx) {
+	void objectOut(int idx) {
 		using namespace glm;
 		initTransform();
 
