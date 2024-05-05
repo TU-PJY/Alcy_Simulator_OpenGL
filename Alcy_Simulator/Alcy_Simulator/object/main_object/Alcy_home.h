@@ -342,8 +342,4 @@ public:
 		layer = l;
 		tag = str;
 	}
-
-	~Alcy_home() {
-		ssys->release();
-	}
 };
