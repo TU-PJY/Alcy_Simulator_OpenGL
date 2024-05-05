@@ -238,6 +238,7 @@ public:
 				face.tell_touch_angle(touch_angle);
 				head.tell_touch_angle(touch_angle);
 				tail.tell_touch_angle(touch_angle);
+				hair.tell_touch_angle(touch_angle);
 			}
 		}
 
@@ -248,6 +249,7 @@ public:
 			face.tell_touch_angle(touch_angle);
 			head.tell_touch_angle(touch_angle);
 			tail.tell_touch_angle(touch_angle);
+			hair.tell_touch_angle(touch_angle);
 		}
 	}
 

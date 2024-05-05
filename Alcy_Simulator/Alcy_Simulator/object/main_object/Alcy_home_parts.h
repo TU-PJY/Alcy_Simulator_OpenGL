@@ -352,6 +352,10 @@ public:
 		tilt_angle = a;
 	}
 
+	void tell_touch_angle(GLfloat a) {
+		touch_angle = a;
+	}
+
 	void render() {
 		init_transform();
 
