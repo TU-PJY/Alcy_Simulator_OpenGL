@@ -156,6 +156,7 @@
     <ClInclude Include="object\main_object\Alcy_home_parts.h" />
     <ClInclude Include="object\main_object\Background_home.h" />
     <ClInclude Include="object\main_object\Cursor_home.h" />
+    <ClInclude Include="object\sound_object\BGM_home.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cpp\home_mode.cpp" />
@@ -165,7 +166,6 @@
     <ClCompile Include="cpp\math_utils.cpp" />
     <ClCompile Include="cpp\mouse.cpp" />
     <ClCompile Include="cpp\shader_conf.cpp" />
-    <ClCompile Include="cpp\sound.cpp" />
     <ClCompile Include="cpp\view.cpp" />
   </ItemGroup>
   <ItemGroup>

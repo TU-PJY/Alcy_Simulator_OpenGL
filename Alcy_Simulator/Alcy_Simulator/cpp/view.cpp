@@ -31,7 +31,11 @@ void set_view() {  // 시점 세팅using namespace glm;
     view = translate(view, vec3(0.0, 1.0, 0.0));
     view = translate(view, vec3(cam.x, cam.y, 0.0));
 
-    projection = ortho(-1.0 * ratio, 1.0 * ratio, -1.0, 1.0, -100.0, 100.0);
+    projection = ortho(-1.0 * ratio / cam.zoom, 
+                        1.0 * ratio / cam.zoom, 
+                        -1.0 / cam.zoom, 
+                        1.0 / cam.zoom, 
+                        -100.0, 100.0);
 }
 
 
@@ -59,6 +63,8 @@ glm::mat4 scale_image(GLfloat x, GLfloat y) {
 }
 
 void set_object_static(GLfloat x, GLfloat y) {
+    s_mat *= scale_image(1 / cam.zoom, 1 / cam.zoom);
+
     t_mat *= move_image(-cam.x, -cam.y);
     t_mat *= move_image(0.0, -1.0);
     t_mat *= rotate_image(-cam.angle);

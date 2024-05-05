@@ -1,5 +1,6 @@
 #pragma once
 #include "HEADER.h"
+#include "sound.h"
 
 enum rotate_dir {
 	rotate_left,
@@ -8,6 +9,14 @@ enum rotate_dir {
 };
 
 class Camera {
+private:
+	fm ssys;
+	ch ch{};
+	void* extdvdata{};
+	FMOD_RESULT result;
+
+	sound scroll_sound;
+
 public:
 	// 회전 각도
 	GLfloat angle{};
@@ -23,6 +32,13 @@ public:
 
 	// 카메라 움직임 잠금 상태
 	bool camera_lock_state{};
+
+
+	// 카메라 줌 결과값
+	GLfloat zoom = 1;
+
+	// 카메라 줌 목표 값
+	GLfloat zoom_value = 1;
 
 
 	// 키 조작
@@ -50,6 +66,21 @@ public:
 		}
 	}
 
+	// 스크롤 조작
+	void scroll(int dir) {
+		if (dir > 0)
+			if (zoom_value <= 2.2) {
+				ssys->playSound(scroll_sound, 0, false, &ch);
+				zoom_value += 0.2;
+			}
+
+		if (dir < 0)
+			if (zoom_value >= 0.8) {
+				ssys->playSound(scroll_sound, 0, false, &ch);
+				zoom_value -= 0.2;
+			}
+	}
+
 	// 카메라 회전 조작
 	void rotate_camera_home_mode() {
 		if (rotate_dir == rotate_right && angle > -10.0)
@@ -66,6 +97,11 @@ public:
 	void move_camera_home_mode() {
 		x = std::lerp(x, -mx * ratio / 10, fw.calc_ft(15));
 		y = std::lerp(y, -my / 10, fw.calc_ft(15));
+	}
+
+	// 카메라 줌
+	void zoom_camera_home_mode() {
+		zoom = std::lerp(zoom, zoom_value, fw.calc_ft(10));
 	}
 
 	// 카메라 잠금 상태 업데이트
@@ -94,6 +130,7 @@ public:
 	//홈 모드 카메라 업데이트
 	void update_home_mode() {
 		rotate_camera_home_mode();
+		zoom_camera_home_mode();
 
 		if (!camera_lock_state) {
 			update_key_state();
@@ -106,6 +143,14 @@ public:
 
 		if (fw.get_current_mode() == "home_mode") 
 			update_home_mode();
+	}
+
+	Camera() {
+		result = FMOD::System_Create(&ssys);
+		if (result != FMOD_OK)	exit(0);
+		ssys->init(32, FMOD_INIT_NORMAL, extdvdata);
+
+		ssys->createSound("res//sound//UI//scroll.wav", FMOD_DEFAULT, 0, &scroll_sound);
 	}
 };
 

@@ -1,4 +1,5 @@
 #include "../header/gl_func.h"
+#include "../header/Camera.h"
 
 GLfloat mx, my;
 
@@ -45,12 +46,8 @@ void mouse_motion(int x, int y) {
 
 // ¸¶¿ì½º ÈÙ
 void mouse_wheel(int button, int dir, int x, int y) { 
-	if (dir > 0) {
 
-	}
-
-	else if (dir < 0) {
-
-	}
+	if (fw.get_current_mode() == "home_mode")
+		cam.scroll(dir);
 }
 

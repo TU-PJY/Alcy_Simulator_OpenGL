@@ -98,18 +98,20 @@ public:
 		auto ptr = fw.get_ptr(alcy_layer, 0);
 
 		if (ptr != nullptr) {
-			touch_state = false;
-			ptr->tell_touch_state(touch_state);
+			if (touch_state) {
+				touch_state = false;
+				ptr->tell_touch_state(touch_state);
 
-			touch_x = 0;
-			touch_number = 0;
+				touch_x = 0;
+				touch_number = 0;
+			}
 		}
 	}
 
 	// 알키 쓰다듬기 커서 움직임 업데이트
 	void move_cursor_touch_state() {
 		if (touch_state) {
-			touch_number += fw.calc_ft(3);
+			touch_number += fw.calc_ft(2.5);
 			touch_x = sin(touch_number) / 4;
 		}
 	}
@@ -125,8 +127,8 @@ public:
 		}
 
 		else {
-			x = mx * ratio;
-			y = my;
+			x = mx * ratio / cam.zoom;
+			y = my / cam.zoom;
 		}
 	}
 

@@ -14,12 +14,23 @@ private:
 	Face face;
 	Hair hair;
 	Tail tail;
+	
+	//사운드
+	fm ssys;
+	ch ch{};
+	void* extdvdata{};
+	FMOD_RESULT result;
+
+	sound squeak1, squeak2, squeak3;
+	sound touch;
+	sound tilt;
 
 	// 머리 향하는 방향
 	int head_state = head_middle;
 
 	// 머리 회전 방향
 	int head_rotate_state = head_rotate_none;
+	int prev_rotate_state = head_rotate_none;
 
 	// 머리 위치
 	GLfloat head_position{};
@@ -61,7 +72,6 @@ private:
 	GLfloat touch_angle{};
 
 
-
 	// 코 누르기 활성화 영역
 	std::array<GLfloat, 4> squeak_zone = {
 		-0.05, 0.05, -0.3, -0.2
@@ -82,7 +92,15 @@ public:
 	std::array<GLfloat, 4> get_squeak_zone() const { return squeak_zone; }
 
 	// 쓰다듬기 상태 알림
-	void tell_touch_state(bool state) { touch_state = state; }
+	void tell_touch_state(bool state) { 
+		touch_state = state; 
+		
+		// 쓰다듬기 소리 출력
+		if (touch_state)
+			ssys->playSound(touch, 0, false, &ch);
+		else 
+			ch->stop();
+	}
 
 	// 코 누르기 상태 알림
 	void tell_squeak_state(bool state) { 
@@ -95,11 +113,11 @@ public:
 		int number = dis(gen);
 		switch (number) {
 		case 1:
-			play_sound(ch_effect, squeak1); break;
+			ssys->playSound(squeak1, 0, false, &ch); break;
 		case 2:
-			play_sound(ch_effect, squeak2); break;
+			ssys->playSound(squeak2, 0, false, &ch); break;
 		case 3:
-			play_sound(ch_effect, squeak3); break;
+			ssys->playSound(squeak3, 0, false, &ch); break;
 		}
 	}
 
@@ -153,6 +171,11 @@ public:
 			else if (!cam.key_state_right && !cam.key_state_left && cam.angle < 2.0 && cam.angle > -2.0) {
 				head_rotate_state = head_rotate_none;
 				face.unable_state_static();
+			}
+
+			if (prev_rotate_state != head_rotate_state) {
+				prev_rotate_state = head_rotate_state;
+				ssys->playSound(tilt, 0, false, &ch);
 			}
 		}
 	}
@@ -305,5 +328,22 @@ public:
 	Alcy_home(int l, std::string str) {
 		layer = l;
 		tag = str;
+
+		result = FMOD::System_Create(&ssys);
+		if (result != FMOD_OK)	exit(0);
+		ssys->init(32, FMOD_INIT_NORMAL, extdvdata);
+
+		// 사운드 로드
+		ssys->createSound("res//sound//alcy//squeak1.mp3", FMOD_DEFAULT, 0, &squeak1);
+		ssys->createSound("res//sound//alcy//squeak2.mp3", FMOD_DEFAULT, 0, &squeak2);
+		ssys->createSound("res//sound//alcy//squeak3.mp3", FMOD_DEFAULT, 0, &squeak3);
+
+		ssys->createSound("res//sound//alcy//touch.wav", FMOD_LOOP_NORMAL, 0, &touch);
+
+		ssys->createSound("res//sound//alcy//tilt.wav", FMOD_DEFAULT, 0, &tilt);
+	}
+
+	~Alcy_home() {
+		ssys->release();
 	}
 };

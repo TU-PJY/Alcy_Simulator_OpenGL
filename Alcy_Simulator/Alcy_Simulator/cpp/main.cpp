@@ -75,7 +75,7 @@ void main(int argc, char** argv) {
 		stbi_set_flip_vertically_on_load(true);
 
 		set_shader();
-		set_fmod();
+		//set_fmod();
 	}
 	
 	glutDisplayFunc(gl_main);
