@@ -1,9 +1,9 @@
 #pragma once
 #include "../../header/Camera.h"
-#include "Alcy_parts.h"
+#include "Alcy_home_parts.h"
 
 
-class Alcy : public FUNCTION {
+class Alcy_home : public FUNCTION {
 private:
 	int layer{};
 	std::string tag{};
@@ -31,7 +31,7 @@ private:
 	bool blink_state{};
 
 	// 눈 깜빡임 시작 측정
-	time_t start_time, end_time{};
+	time_t start_time{}, end_time{};
 
 	// 눈 감은 상태 유지하는 시간
 	GLfloat blink_time{};
@@ -39,11 +39,41 @@ private:
 	// 눈 깜빡임 간격
 	GLfloat blink_interval{};
 
+
+	// 머리 쓰다듬기 활성화 영역
+	// x min, x max, y min, y max
+	std::array<GLfloat, 4> touch_zone = {
+		-0.15, 0.15, 0.05, 0.3
+	};
+
+	// 머리 쓰다듬기 상태
+	bool touch_state{};
+
+	// 머리 쓰다듬기 가능 상태
+	bool interaction_available_state{};
+
+	// 머리 쓰다듬기 각도
+	GLfloat touch_angle{};
+
+
 public:
+	// 쓰다듬기 활성화 영역 리턴
+	std::array<GLfloat, 4> get_touch_zone() const { return touch_zone; }
+	GLfloat get_head_angle() const { return head_angle; }
+
+	// 쓰다듬기 상태 알림
+	void tell_touch_state(bool state) {
+		touch_state = state;
+	}
+
+	// 커서 - 알키 상호작용 가능 상태 리턴
+	bool get_intercation_available_state() const { return interaction_available_state; }
+
+
 	// 머리 방향 업데이트
 	void update_head_dir() {
 		// 카메라 회전 도중에는 앞을 바라본다
-		if (cam.key_state_left || cam.key_state_right || head_rotate_state != head_rotate_none)
+		if (cam.key_state_left || cam.key_state_right || head_rotate_state != head_rotate_none || touch_state)
 			head_state = head_middle;
 
 		else {
@@ -99,7 +129,7 @@ public:
 			head_angle = std::lerp(head_angle, 0.0, fw.calc_ft(4));
 	}
 
-
+	// 눈 깜빡임 업데이트
 	void update_blink() {  // 알키 눈 깜빡임 업데이트
 		std::random_device rd;  std::mt19937 gen(rd());
 		std::uniform_real_distribution <GLfloat> dis(0, 3);
@@ -119,6 +149,42 @@ public:
 				blink_interval = dis(gen);  // 눈 깜빡이는 간격을 랜덤으로 설정한다
 				blink_state = false;
 			}
+		}
+	}
+
+	// 커서 - 알키 상호작용 가능 상태 업데이트
+	void update_intercation_state() {
+		if (head_rotate_state == head_rotate_none && cam.angle < 2.0 && cam.angle > -2.0)
+			interaction_available_state = true;
+
+		else
+			interaction_available_state = false;
+	}
+
+	// 알키 쓰다듬기 업데이트
+	void update_touch_state() {
+		// 쓰다듬는 동안에는 눈을 계속 감도록 한다
+		if (touch_state) {
+			face.enable_state_static();
+			face.tell_blink_state(true);
+
+			auto ptr = fw.get_ptr(ui_layer, 0);
+			if (ptr != nullptr) {
+				touch_angle = -ptr->get_cursor_touch_x() * 20;
+
+				face.tell_touch_angle(touch_angle);
+				head.tell_touch_angle(touch_angle);
+				tail.tell_touch_angle(touch_angle);
+			}
+		}
+
+		// 쓰다듬기를 멈추면 머리 각도를 다시 되돌린다
+		else {
+			touch_angle = std::lerp(touch_angle, 0, fw.calc_ft(10));
+
+			face.tell_touch_angle(touch_angle);
+			head.tell_touch_angle(touch_angle);
+			tail.tell_touch_angle(touch_angle);
 		}
 	}
 
@@ -150,12 +216,19 @@ public:
 		head.tell_head_position(head_position);
 		face.tell_head_position(head_position);
 
+		// 눈 깜빡임
 		update_blink();
 		face.tell_blink_state(blink_state);
+
+		// 커서 상호작용 가능 여부 업데이트
+		update_intercation_state();
+
+		// 쓰다듬기 상태 업데이트
+		update_touch_state();
 	}
 
 	void check_collision() {
-
+		
 	}
 
 	void render() {
@@ -171,7 +244,7 @@ public:
 
 	}
 
-	Alcy(int l, std::string str) {
+	Alcy_home(int l, std::string str) {
 		layer = l;
 		tag = str;
 	}

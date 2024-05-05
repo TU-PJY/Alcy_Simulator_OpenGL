@@ -1,6 +1,7 @@
 #ifndef FWL_CONFIG_H
 #define FWL_CONFIG_H
 
+#include <array>
 #include <vector>
 #include <string>
 #include "../header/HEADER.h"
@@ -51,9 +52,19 @@ public:
 	virtual std::string get_tag() { return {}; }
 
 	// cursor
-	virtual GLfloat get_cursor_x() { return {}; }
-	virtual GLfloat get_cursor_y() { return {}; }
+	virtual GLfloat get_cursor_x() const { return {}; }
+	virtual GLfloat get_cursor_y() const { return {}; }
+	virtual GLfloat get_cursor_touch_x() const { return {}; }
+	virtual bool get_touch_state() const { return {}; }
 
+	virtual void mouse_left_button_down(int button, int state) {}
+	virtual void mouse_left_button_up(int button, int state) {}
+
+
+	// alcy 
+	virtual std::array<GLfloat, 4> get_touch_zone() const { return {}; }
+	virtual bool get_intercation_available_state() const { return {}; }
+	virtual void tell_touch_state(bool state) {}
 
 	virtual     ~FUNCTION() {}
 };

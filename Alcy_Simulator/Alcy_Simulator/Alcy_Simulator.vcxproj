@@ -147,9 +147,9 @@
     <ClInclude Include="header\mode_header.h" />
     <ClInclude Include="header\shader.h" />
     <ClInclude Include="header\view.h" />
-    <ClInclude Include="object\main_object\Alcy.h" />
-    <ClInclude Include="object\main_object\Alcy_parts.h" />
-    <ClInclude Include="object\main_object\Cursor.h" />
+    <ClInclude Include="object\main_object\Alcy_home.h" />
+    <ClInclude Include="object\main_object\Alcy_home_parts.h" />
+    <ClInclude Include="object\main_object\Cursor_home.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cpp\home_mode.cpp" />

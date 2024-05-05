@@ -56,6 +56,8 @@ private:
 	GLfloat position{};
 	GLfloat tilt_angle{};
 
+	GLfloat touch_angle{};
+
 	// 머리 방향
 	int head_state{};
 	
@@ -82,6 +84,10 @@ public:
 		tilt_angle = a;
 	}
 
+	void tell_touch_angle(GLfloat a) {
+		touch_angle = a;
+	}
+
 	// 머리 회전 여부 활성화 / 비활성화
 	void enable_state_static() {
 		head_rotate_state = true;
@@ -100,8 +106,10 @@ public:
 		GLfloat x = mx / 50;
 		GLfloat y = my / 50;
 
+		GLfloat angle = touch_angle + tilt_angle;
+
 		t_mat *= move_image(0.0, -0.5);
-		t_mat *= rotate_image(tilt_angle);
+		t_mat *= rotate_image(angle);
 		t_mat *= move_image(0.0, 0.5);
 
 		if(!head_rotate_state)
@@ -118,8 +126,10 @@ public:
 		GLfloat x = mx / 50;
 		GLfloat y = my / 50;
 
+		GLfloat angle = touch_angle + tilt_angle;
+
 		t_mat *= move_image(0.0, -0.5);
-		t_mat *= rotate_image(tilt_angle);
+		t_mat *= rotate_image(angle);
 		t_mat *= move_image(0.0, 0.5);
 
 		if (!head_rotate_state)
@@ -135,8 +145,11 @@ public:
 
 		GLfloat x = mx / 25;
 		GLfloat y = my / 25;
+
+		GLfloat angle = touch_angle + tilt_angle;
+
 		t_mat *= move_image(0.0, -0.5);
-		t_mat *= rotate_image(tilt_angle);
+		t_mat *= rotate_image(angle);
 		t_mat *= move_image(0.0, 0.5);
 		
 		if (!head_rotate_state)
@@ -152,8 +165,11 @@ public:
 
 		GLfloat x = mx / 50;
 		GLfloat y = my / 50;
+
+		GLfloat angle = touch_angle + tilt_angle;
+
 		t_mat *= move_image(0.0, -0.5);
-		t_mat *= rotate_image(tilt_angle);
+		t_mat *= rotate_image(angle);
 		t_mat *= move_image(0.0, 0.5);
 
 		if (!head_rotate_state)
@@ -207,6 +223,8 @@ private:
 	GLfloat position{};
 	GLfloat tilt_angle{};
 
+	GLfloat touch_angle{};
+
 	// 머리 방향
 	int head_state{};
 	
@@ -224,13 +242,20 @@ public:
 		tilt_angle = a;
 	}
 
+	void tell_touch_angle(GLfloat a) {
+		touch_angle = a;
+	}
+
 
 	void render() {
 		init_transform();
+
+		GLfloat angle = touch_angle + tilt_angle;
+
 		s_mat *= scale_image(7.0, 7.0);
 
 		t_mat *= move_image(0.0, -0.5);
-		t_mat *= rotate_image(tilt_angle);
+		t_mat *= rotate_image(angle);
 		t_mat *= move_image(0.0, 0.5);
 
 		t_mat *= move_image(position, 0.0);
@@ -292,16 +317,20 @@ private:
 
 	GLfloat tilt_angle{};
 
+	GLfloat touch_angle{};
+
 public:
 	void tell_head_angle(GLfloat a) {
 		tilt_angle = a;
 	}
 
-
 	void render() {
 		init_transform();
+
+		GLfloat angle = touch_angle + tilt_angle;
+
 		s_mat *= scale_image(7.0, 7.0);
-		t_mat *= move_image(0.0, -0.75 - tilt_angle / 200);
+		t_mat *= move_image(0.0, -0.75 - angle / 200);
 		draw_image(tex[0], VAO);
 	}
 
@@ -323,17 +352,26 @@ private:
 
 	GLfloat tilt_angle{};
 
+	GLfloat touch_angle{};
+
 public:
 	void tell_head_angle(GLfloat a) {
 		tilt_angle = a;
 	}
 
+	void tell_touch_angle(GLfloat a) {
+		touch_angle = a;
+	}
+
 
 	void render() {
 		init_transform();
+		
+		GLfloat angle = tilt_angle + touch_angle;
+
 		s_mat *= scale_image(7.0, 7.0);
 		t_mat *= move_image(-0.19, -0.75);
-		t_mat *= rotate_image(tilt_angle / 2);
+		t_mat *= rotate_image(angle / 2);
 		draw_image(tex[0], VAO);
 	}
 

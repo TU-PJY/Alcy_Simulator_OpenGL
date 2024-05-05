@@ -21,8 +21,11 @@ public:
 	// 키 누름 상태
 	bool key_state_left{}, key_state_right{};
 
+	// 카메라 움직임 잠금 상태
+	bool camera_lock_state{};
 
 
+	// 키 조작
 	void key_down(unsigned char KEY) {
 		switch (KEY) {
 		case 'q':
@@ -48,7 +51,7 @@ public:
 	}
 
 	// 카메라 회전 조작
-	void rotate_camera() {
+	void rotate_camera_home_mode() {
 		if (rotate_dir == rotate_right && angle > -10.0)
 			angle = std::lerp(angle, -10.0, fw.calc_ft(4));
 
@@ -60,11 +63,21 @@ public:
 	}
 
 	// 카메라 이동
-	void move_camera() {
+	void move_camera_home_mode() {
 		x = std::lerp(x, -mx * ratio / 10, fw.calc_ft(15));
 		y = std::lerp(y, -my / 10, fw.calc_ft(15));
 	}
 
+	// 카메라 잠금 상태 업데이트
+	void update_camera_lock() {
+		auto ptr = fw.get_ptr(ui_layer, 0);
+		if (ptr != nullptr) {
+			if (ptr->get_touch_state())
+				camera_lock_state = true;
+			else
+				camera_lock_state = false;
+		}
+	}
 
 	// 키 누름 상태 업데이트
 	void update_key_state() {
@@ -78,12 +91,21 @@ public:
 			rotate_dir = rotate_none;
 	}
 
+	//홈 모드 카메라 업데이트
+	void update_home_mode() {
+		rotate_camera_home_mode();
+
+		if (!camera_lock_state) {
+			update_key_state();
+			move_camera_home_mode();
+		}
+	}
 
 	void update_camera() {
-		update_key_state();
+		update_camera_lock();
 
-		rotate_camera();
-		move_camera();
+		if (fw.get_current_mode() == "home_mode") 
+			update_home_mode();
 	}
 };
 

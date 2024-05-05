@@ -10,11 +10,17 @@ void convert_cursor_position(int x, int y) {  //GL좌표계로 변환
 
 
 void mouse_button(int button, int state, int x, int y) {  // 마우스 클릭
-	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
+	// 홈 모드 마우스 조작
+	if (fw.get_current_mode() == "home_mode") {
+		auto ptr = fw.get_ptr(ui_layer, 0);
 
-	}
-	else if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
+		if (ptr != nullptr) {
+			if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+				ptr->mouse_left_button_down(button, state);
 
+			else if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) 
+				ptr->mouse_left_button_up(button, state);
+		}
 	}
 
 	glutPostRedisplay();

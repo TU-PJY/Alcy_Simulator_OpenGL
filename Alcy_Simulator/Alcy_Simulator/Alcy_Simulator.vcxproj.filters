@@ -44,11 +44,11 @@
     <Filter Include="[6]__________opoup_mode">
       <UniqueIdentifier>{58c6b24d-3a53-4d42-8573-ec2fa258b21f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[8]__________OBJ_main\[1]------Alcy">
-      <UniqueIdentifier>{5be108f0-33a4-4c91-888e-a6dac9634f9f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="[8]__________OBJ_main\[2]------UI">
       <UniqueIdentifier>{d36476a1-b0c3-4d25-b37f-6ffe155e285c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[8]__________OBJ_main\[1]------Alcy">
+      <UniqueIdentifier>{5be108f0-33a4-4c91-888e-a6dac9634f9f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -79,13 +79,13 @@
     <ClInclude Include="header\Camera.h">
       <Filter>[7]__________view</Filter>
     </ClInclude>
-    <ClInclude Include="object\main_object\Alcy.h">
+    <ClInclude Include="object\main_object\Alcy_home.h">
       <Filter>[8]__________OBJ_main\[1]------Alcy</Filter>
     </ClInclude>
-    <ClInclude Include="object\main_object\Alcy_parts.h">
+    <ClInclude Include="object\main_object\Alcy_home_parts.h">
       <Filter>[8]__________OBJ_main\[1]------Alcy</Filter>
     </ClInclude>
-    <ClInclude Include="object\main_object\Cursor.h">
+    <ClInclude Include="object\main_object\Cursor_home.h">
       <Filter>[8]__________OBJ_main\[2]------UI</Filter>
     </ClInclude>
   </ItemGroup>
