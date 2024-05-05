@@ -149,6 +149,7 @@
     <ClInclude Include="header\view.h" />
     <ClInclude Include="object\main_object\Alcy_home.h" />
     <ClInclude Include="object\main_object\Alcy_home_parts.h" />
+    <ClInclude Include="object\main_object\Background_home.h" />
     <ClInclude Include="object\main_object\Cursor_home.h" />
   </ItemGroup>
   <ItemGroup>

@@ -16,9 +16,6 @@
     <Filter Include="[8]__________OBJ_main">
       <UniqueIdentifier>{34a4c570-5a55-4759-a6fc-bee3c9035ca3}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[9]__________OBJ_popup">
-      <UniqueIdentifier>{d628f5b4-cce2-4bb9-b651-2b79cfcf8ad2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="[10]_________global_header">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
@@ -49,6 +46,12 @@
     </Filter>
     <Filter Include="[8]__________OBJ_main\[1]------Alcy">
       <UniqueIdentifier>{5be108f0-33a4-4c91-888e-a6dac9634f9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[8]__________OBJ_main\[0]------Background">
+      <UniqueIdentifier>{3d8dddb0-b1b8-420e-bdae-3621c518bcea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[9]__________OBJ_popup">
+      <UniqueIdentifier>{d628f5b4-cce2-4bb9-b651-2b79cfcf8ad2}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -87,6 +90,9 @@
     </ClInclude>
     <ClInclude Include="object\main_object\Cursor_home.h">
       <Filter>[8]__________OBJ_main\[2]------UI</Filter>
+    </ClInclude>
+    <ClInclude Include="object\main_object\Background_home.h">
+      <Filter>[8]__________OBJ_main\[0]------Background</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
