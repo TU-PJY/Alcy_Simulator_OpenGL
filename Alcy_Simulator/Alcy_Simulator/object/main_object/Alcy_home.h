@@ -231,7 +231,7 @@ public:
 			face.enable_state_static();
 			face.tell_blink_state(true);
 
-			auto ptr = fw.get_ptr(ui_layer, 0);
+			auto ptr = fw.get_ptr(cursor_layer, 0);
 			if (ptr != nullptr) {
 				touch_angle = -ptr->get_cursor_touch_x() * 20;
 

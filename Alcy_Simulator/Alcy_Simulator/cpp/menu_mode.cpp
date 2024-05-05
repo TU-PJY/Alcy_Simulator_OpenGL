@@ -1,0 +1,9 @@
+#include "../header/mode_header.h"
+
+#include "../object/popup_object/Menu.h"
+#include "../object/popup_object/Cursor_menu.h"
+
+void menu_mode() {
+	fw.add_popup_object(new Menu(layer1, "menu"), layer1);
+	fw.add_popup_object(new Cursor_menu(layer3, "cursor_menu"), layer3);
+}

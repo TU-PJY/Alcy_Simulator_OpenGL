@@ -59,6 +59,9 @@
     <Filter Include="[8]__________OBJ_main\[3]------BGM">
       <UniqueIdentifier>{d8b55fa0-cc38-4ef5-a0f9-401cb6cf3ec7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="[9]__________OBJ_popup\[0]-----UI">
+      <UniqueIdentifier>{af715378-ad6b-4b11-aebd-0761b1893948}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\FWL_config.h">
@@ -106,6 +109,15 @@
     <ClInclude Include="object\sound_object\BGM_home.h">
       <Filter>[8]__________OBJ_main\[3]------BGM</Filter>
     </ClInclude>
+    <ClInclude Include="object\popup_object\Menu.h">
+      <Filter>[9]__________OBJ_popup\[0]-----UI</Filter>
+    </ClInclude>
+    <ClInclude Include="object\popup_object\Cursor_menu.h">
+      <Filter>[9]__________OBJ_popup\[0]-----UI</Filter>
+    </ClInclude>
+    <ClInclude Include="object\popup_object\Icon.h">
+      <Filter>[9]__________OBJ_popup\[0]-----UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cpp\mouse.cpp">
@@ -131,6 +143,9 @@
     </ClCompile>
     <ClCompile Include="cpp\home_mode.cpp">
       <Filter>[5]__________main_mode</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\menu_mode.cpp">
+      <Filter>[6]__________opoup_mode</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

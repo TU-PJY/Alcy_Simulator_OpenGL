@@ -11,5 +11,6 @@ void home_mode() {
 
 	fw.add_object(new BackGround_home(background_layer, "background_home"), background_layer);
 	fw.add_object(new Alcy_home(alcy_layer, "alcy_home"), alcy_layer);
-	fw.add_object(new Cursor_home(ui_layer, "cursor_home"), ui_layer);
+
+	fw.add_object(new Cursor_home(cursor_layer, "cursor_home"), cursor_layer);
 }

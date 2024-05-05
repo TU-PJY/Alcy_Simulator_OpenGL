@@ -7,7 +7,7 @@
 #include "../header/HEADER.h"
 
 #define          USING_FWL
-#define          NUMBER_OF_LAYER 4
+#define          NUMBER_OF_LAYER 7
 
 #define          USING_POPUP_MODE
 #define          NUMBER_OF_POPUP_LAYER 4
@@ -51,6 +51,8 @@ public:
 
 	virtual std::string get_tag() { return {}; }
 
+	////////////////// home mode
+	// 
 	// cursor
 	virtual GLfloat get_cursor_x() const { return {}; }
 	virtual GLfloat get_cursor_y() const { return {}; }
@@ -59,6 +61,10 @@ public:
 
 	virtual void mouse_left_button_down(int button, int state) {}
 	virtual void mouse_left_button_up(int button, int state) {}
+	virtual void reset_mouse_state() {}
+
+	virtual void set_cursor_invisible() {}
+	virtual void set_cursor_visible() {}
 
 
 	// alcy 
@@ -67,6 +73,8 @@ public:
 	virtual bool get_interaction_available_state() const { return {}; }
 	virtual void tell_touch_state(bool state) {}
 	virtual void tell_squeak_state(bool state) {}
+
+	////////////////////
 
 	virtual     ~FUNCTION() {}
 };
@@ -84,6 +92,12 @@ public:
 	virtual void check_delete() {}
 
 	virtual std::string get_tag() { return {}; }
+
+	//menu mode
+	virtual size_t get_icon_number() const { return {}; }
+	virtual std::array<GLfloat, 4> get_icon_zone() const { return {}; }
+	virtual void tell_on_cursor(int idx) {}
+	virtual void tell_not_on_cursor(int idx) {}
 
 	virtual     ~POPUP_FUNCTION() {}
 };

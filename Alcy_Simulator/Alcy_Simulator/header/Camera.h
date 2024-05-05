@@ -66,6 +66,14 @@ public:
 		}
 	}
 
+
+	// 키 조작 상태 초기화
+	void reset_key_state() {
+		key_state_left = false;
+		key_state_right = false;
+	}
+
+
 	// 스크롤 조작
 	void scroll(int dir) {
 		if (dir > 0)
@@ -106,7 +114,7 @@ public:
 
 	// 카메라 잠금 상태 업데이트
 	void update_camera_lock() {
-		auto ptr = fw.get_ptr(ui_layer, 0);
+		auto ptr = fw.get_ptr(cursor_layer, 0);
 		if (ptr != nullptr) {
 			if (ptr->get_touch_state())
 				camera_lock_state = true;
@@ -140,9 +148,7 @@ public:
 
 	void update_camera() {
 		update_camera_lock();
-
-		if (fw.get_current_mode() == "home_mode") 
-			update_home_mode();
+		update_home_mode();
 	}
 
 	Camera() {

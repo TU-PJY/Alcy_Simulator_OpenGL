@@ -54,7 +54,10 @@ enum main_layers {
 	background_layer,
 	alcy_layer,
 	prop_layer,
+	prop_layer2,
+	prop_layer3,
 	ui_layer,
+	cursor_layer,
 };
 
 enum popup_layers {

@@ -156,6 +156,9 @@
     <ClInclude Include="object\main_object\Alcy_home_parts.h" />
     <ClInclude Include="object\main_object\Background_home.h" />
     <ClInclude Include="object\main_object\Cursor_home.h" />
+    <ClInclude Include="object\popup_object\Cursor_menu.h" />
+    <ClInclude Include="object\popup_object\Icon.h" />
+    <ClInclude Include="object\popup_object\Menu.h" />
     <ClInclude Include="object\sound_object\BGM_home.h" />
   </ItemGroup>
   <ItemGroup>
@@ -164,6 +167,7 @@
     <ClCompile Include="cpp\keyboard.cpp" />
     <ClCompile Include="cpp\main.cpp" />
     <ClCompile Include="cpp\math_utils.cpp" />
+    <ClCompile Include="cpp\menu_mode.cpp" />
     <ClCompile Include="cpp\mouse.cpp" />
     <ClCompile Include="cpp\shader_conf.cpp" />
     <ClCompile Include="cpp\view.cpp" />

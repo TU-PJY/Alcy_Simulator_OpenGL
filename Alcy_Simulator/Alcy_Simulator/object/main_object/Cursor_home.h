@@ -30,10 +30,8 @@ private:
 	GLfloat touch_x{};
 	GLfloat touch_number{};
 
-
-
-	// 코 누름 상태
-	//bool suqeak_state{};
+	// 마우스 커서 보이는 상태
+	bool visible = true;
 
 
 public:
@@ -41,6 +39,8 @@ public:
 	GLfloat get_cursor_y() const { return y; }
 	bool get_touch_state() const { return touch_state; }
 	GLfloat get_cursor_touch_x() const { return touch_x; }
+	void set_cursor_invisible() { visible = false; }
+	void set_cursor_visible() { visible = true; }
 
 	// 커서 타입 업데이트
 	void update_cursor_type() {
@@ -74,6 +74,21 @@ public:
 				tex_number = 0;
 		}
 	}
+
+
+	// 마우스 클릭 초기화
+	void reset_mouse_state() {
+		auto ptr = fw.get_ptr(alcy_layer, 0);
+
+		if (ptr != nullptr && touch_state) {
+			touch_state = false;
+			ptr->tell_touch_state(touch_state);
+
+			touch_x = 0;
+			touch_number = 0;
+		}
+	}
+
 
 	// 마우스 왼쪽 버튼 클릭
 	void mouse_left_button_down(int button, int state) {
@@ -139,7 +154,9 @@ public:
 	void render() {
 		init_transform();
 		set_object_static(x, y);
-		draw_image(tex[tex_number], VAO);
+
+		if(visible)
+			draw_image(tex[tex_number], VAO);
 	}
 
 	void check_delete() {

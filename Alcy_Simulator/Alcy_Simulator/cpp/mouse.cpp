@@ -13,7 +13,7 @@ void convert_cursor_position(int x, int y) {  //GL좌표계로 변환
 void mouse_button(int button, int state, int x, int y) {  // 마우스 클릭
 	// 홈 모드 마우스 조작
 	if (fw.get_current_mode() == "home_mode") {
-		auto ptr = fw.get_ptr(ui_layer, 0);
+		auto ptr = fw.get_ptr(cursor_layer, 0);
 
 		if (ptr != nullptr) {
 			if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
