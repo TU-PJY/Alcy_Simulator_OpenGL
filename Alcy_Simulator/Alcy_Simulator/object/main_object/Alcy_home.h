@@ -2,6 +2,7 @@
 #include "../../header/Camera.h"
 #include "Alcy_home_parts.h"
 #include "../../header/sound.h"
+#include "Welcome_messege.h"
 
 
 class Alcy_home : public FUNCTION {
@@ -24,6 +25,13 @@ private:
 	sound squeak1, squeak2, squeak3;
 	sound touch;
 	sound tilt;
+	sound welcome;
+
+	// 홈 모드 진입 후 잠시 후에 환영 사운드를 출력한다
+	GLfloat welcome_timer{};
+
+	// 환영 메시지 출력 여부
+	bool welcome_state{};
 
 	// 머리 향하는 방향
 	int head_state = head_middle;
@@ -268,8 +276,22 @@ public:
 		}
 	}
 
+	void update_welcome_timer() {
+		if (!welcome_state) {
+			welcome_timer += fw.calc_ft(1);
+			if (welcome_timer > 1.0) {
+				ssys->playSound(welcome, 0, false, &ch);
+				fw.add_object(new Welcome_messege(prop_layer, "welcome_messege"), prop_layer);
+				welcome_state = true;
+			}
+		}
+	}
+
 
 	void update() {
+		// 환영 메시지 타이머 업데이트
+		update_welcome_timer();
+
 		//머리 방향 업데이트
 		update_head_dir();
 
@@ -343,6 +365,8 @@ public:
 		ssys->createSound("res//sound//alcy//touch.wav", FMOD_LOOP_NORMAL, 0, &touch);
 
 		ssys->createSound("res//sound//alcy//tilt.wav", FMOD_DEFAULT, 0, &tilt);
+
+		ssys->createSound("res//sound//alcy//welcome.mp3", FMOD_DEFAULT, 0, &welcome);
 	}
 
 	~Alcy_home() {

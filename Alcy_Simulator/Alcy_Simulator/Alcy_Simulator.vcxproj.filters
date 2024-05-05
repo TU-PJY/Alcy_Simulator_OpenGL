@@ -121,6 +121,9 @@
     <ClInclude Include="object\popup_object\Back.h">
       <Filter>[9]__________OBJ_popup\[0]-----UI</Filter>
     </ClInclude>
+    <ClInclude Include="object\main_object\Welcome_messege.h">
+      <Filter>[8]__________OBJ_main\[1]------Alcy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cpp\mouse.cpp">
