@@ -59,15 +59,12 @@ private:
 public:
 	// 쓰다듬기 활성화 영역 리턴
 	std::array<GLfloat, 4> get_touch_zone() const { return touch_zone; }
-	GLfloat get_head_angle() const { return head_angle; }
 
 	// 쓰다듬기 상태 알림
-	void tell_touch_state(bool state) {
-		touch_state = state;
-	}
+	void tell_touch_state(bool state) { touch_state = state; }
 
 	// 커서 - 알키 상호작용 가능 상태 리턴
-	bool get_intercation_available_state() const { return interaction_available_state; }
+	bool get_interaction_available_state() const { return interaction_available_state; }
 
 
 	// 머리 방향 업데이트

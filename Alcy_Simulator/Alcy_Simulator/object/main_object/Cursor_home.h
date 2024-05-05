@@ -52,7 +52,7 @@ public:
 
 			// 특정 영역에 커서가 위치하면 커서가 바뀐다.
 			// 알키 쓰다듬기 영역
-			if (ptr->get_intercation_available_state()) {
+			if (ptr->get_interaction_available_state()) {
 				if (touch_zone[0] < x && x < touch_zone[1] && touch_zone[2] < y && y < touch_zone[3])
 					tex_number = 1;
 				else
@@ -70,7 +70,7 @@ public:
 		auto ptr = fw.get_ptr(alcy_layer, 0);
 
 		if (ptr != nullptr) {
-			if(ptr->get_intercation_available_state() && tex_number == 1) {
+			if(ptr->get_interaction_available_state() && tex_number == 1) {
 				touch_state = true;
 				ptr->tell_touch_state(touch_state);
 			}
