@@ -1,0 +1,126 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="[1]__________FrameWork">
+      <UniqueIdentifier>{4506a736-51e4-4ee4-af3a-10ce73bbf095}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[3]__________mouse">
+      <UniqueIdentifier>{21dd3a3c-5ca8-47e4-97d4-8f7d7e04bd0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[4]__________keyboard">
+      <UniqueIdentifier>{e086e961-ed60-4268-81a7-3922e7f67d2b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[2]__________main">
+      <UniqueIdentifier>{4213f66f-1787-4cc8-99d2-0bb7a8e2ed2e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[8]__________OBJ_main">
+      <UniqueIdentifier>{34a4c570-5a55-4759-a6fc-bee3c9035ca3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[9]__________OBJ_popup">
+      <UniqueIdentifier>{d628f5b4-cce2-4bb9-b651-2b79cfcf8ad2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[10]_________global_header">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="[11]__________image_text">
+      <UniqueIdentifier>{5f422df7-249f-4898-a155-be891bd45bbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[12]__________math">
+      <UniqueIdentifier>{8183e576-462b-451b-be9e-9e2e6ab332f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[13]_________shader">
+      <UniqueIdentifier>{bd930d4a-8f6f-42e0-b5c6-62e061f0b518}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[14]_________GLSL">
+      <UniqueIdentifier>{3d8c6262-a099-4cf3-aa9f-f0224eb7e91e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[7]__________view">
+      <UniqueIdentifier>{38bc1faf-7d4f-41e1-82b3-da6b95c3748a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[5]__________main_mode">
+      <UniqueIdentifier>{46b11d49-c673-4526-8dbb-78c6243976fc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[6]__________opoup_mode">
+      <UniqueIdentifier>{58c6b24d-3a53-4d42-8573-ec2fa258b21f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[8]__________OBJ_main\[1]------Alcy">
+      <UniqueIdentifier>{5be108f0-33a4-4c91-888e-a6dac9634f9f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[8]__________OBJ_main\[2]------UI">
+      <UniqueIdentifier>{d36476a1-b0c3-4d25-b37f-6ffe155e285c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Framework\FWL_config.h">
+      <Filter>[1]__________FrameWork</Filter>
+    </ClInclude>
+    <ClInclude Include="header\HEADER.h">
+      <Filter>[10]_________global_header</Filter>
+    </ClInclude>
+    <ClInclude Include="header\gl_func.h">
+      <Filter>[10]_________global_header</Filter>
+    </ClInclude>
+    <ClInclude Include="header\view.h">
+      <Filter>[7]__________view</Filter>
+    </ClInclude>
+    <ClInclude Include="header\image_text_util.h">
+      <Filter>[11]__________image_text</Filter>
+    </ClInclude>
+    <ClInclude Include="header\math_util.h">
+      <Filter>[12]__________math</Filter>
+    </ClInclude>
+    <ClInclude Include="header\shader.h">
+      <Filter>[13]_________shader</Filter>
+    </ClInclude>
+    <ClInclude Include="header\mode_header.h">
+      <Filter>[10]_________global_header</Filter>
+    </ClInclude>
+    <ClInclude Include="header\Camera.h">
+      <Filter>[7]__________view</Filter>
+    </ClInclude>
+    <ClInclude Include="object\main_object\Alcy.h">
+      <Filter>[8]__________OBJ_main\[1]------Alcy</Filter>
+    </ClInclude>
+    <ClInclude Include="object\main_object\Alcy_parts.h">
+      <Filter>[8]__________OBJ_main\[1]------Alcy</Filter>
+    </ClInclude>
+    <ClInclude Include="object\main_object\Cursor.h">
+      <Filter>[8]__________OBJ_main\[2]------UI</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="cpp\mouse.cpp">
+      <Filter>[3]__________mouse</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\keyboard.cpp">
+      <Filter>[4]__________keyboard</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\main.cpp">
+      <Filter>[2]__________main</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\view.cpp">
+      <Filter>[7]__________view</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\image_text_utils.cpp">
+      <Filter>[11]__________image_text</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\math_utils.cpp">
+      <Filter>[12]__________math</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\shader_conf.cpp">
+      <Filter>[13]_________shader</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\home_mode.cpp">
+      <Filter>[5]__________main_mode</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="GLSL\GLSL_fragment.glsl">
+      <Filter>[14]_________GLSL</Filter>
+    </None>
+    <None Include="GLSL\GLSL_vertex.glsl">
+      <Filter>[14]_________GLSL</Filter>
+    </None>
+  </ItemGroup>
+</Project>
