@@ -5,6 +5,7 @@
 #include "../header/Camera.h"
 #include "../header/mode_header.h"
 #include "../header/sound.h"
+#include "../header/image_text_util.h"
 
 // framework
 FWL fw;
@@ -41,6 +42,10 @@ GLvoid display_reshape(int w, int h) {
 
 void main(int argc, char** argv) {
 	{  // fold here
+		// 게임에 필요한 폰트 설치
+		install_font("res//font//Somatic-Rounded.otf");
+		install_font("res//font//joystix monospace.otf");
+
 		glutInit(&argc, argv);
 		glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GL_MULTISAMPLE);
 

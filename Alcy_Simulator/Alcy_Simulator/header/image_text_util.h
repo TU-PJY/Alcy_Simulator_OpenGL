@@ -17,3 +17,4 @@ GLvoid build_font(const char* fontName, int fontSize, int type, GLuint& base, HD
 GLvoid kill_text(GLuint base);
 int set_font(const char* font_name, int size, int type, GLuint& base, HDC& hDC);
 GLvoid draw_text(unsigned int tex, GLuint VAO, GLuint base, const char* fmt, ...);
+bool install_font(const std::string& fontFilePath);

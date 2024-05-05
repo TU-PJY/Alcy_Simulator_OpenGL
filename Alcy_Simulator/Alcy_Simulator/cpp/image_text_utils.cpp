@@ -80,11 +80,11 @@ void set_text(unsigned int& tex, std::string type) {
 	int width = 10, height = 10, channel = 1;
 
 	if (type == "black")
-		texture_data = stbi_load("res//util//text//text_skin_black.png", &width, &height, &channel, 4);
+		texture_data = stbi_load("res//util//text_skin_black.png", &width, &height, &channel, 4);
 	else if (type == "white")
-		texture_data = stbi_load("res//util//text//text_skin_white.png", &width, &height, &channel, 4);
+		texture_data = stbi_load("res//util//text_skin_white.png", &width, &height, &channel, 4);
 	else if (type == "red")
-		texture_data = stbi_load("res//util//text//text_skin_red.png", &width, &height, &channel, 4);
+		texture_data = stbi_load("res//util//text_skin_red.png", &width, &height, &channel, 4);
 
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 }
@@ -179,4 +179,20 @@ GLvoid draw_text(unsigned int tex, GLuint VAO, GLuint base, const char* fmt, ...
 
 	glCallLists(strlen(text), GL_UNSIGNED_BYTE, text);  // Draws The Display List Text
 	glPopAttrib();                      // Pops The Display List Bits
+}
+
+
+bool install_font(const std::string& fontFilePath) {
+	// Add the font resource
+	int result = AddFontResource(fontFilePath.c_str());
+	if (result == 0) {
+		std::cerr << "Failed to install font." << std::endl;
+		return false;
+	}
+
+	// Send WM_FONTCHANGE message to notify other applications of the font change
+	HWND hwnd = nullptr;  // Broadcast to all top-level windows
+	SendMessage(hwnd, WM_FONTCHANGE, 0, 0);
+
+	return true;
 }
