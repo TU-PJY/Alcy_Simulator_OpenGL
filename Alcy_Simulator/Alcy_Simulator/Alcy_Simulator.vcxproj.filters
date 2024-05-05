@@ -56,11 +56,11 @@
     <Filter Include="[9]__________OBJ_popup\[0]-----UI">
       <UniqueIdentifier>{af715378-ad6b-4b11-aebd-0761b1893948}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[13]_________data">
-      <UniqueIdentifier>{95da8ba4-621c-49c1-8993-20c638002d05}</UniqueIdentifier>
-    </Filter>
     <Filter Include="[12]__________sound">
       <UniqueIdentifier>{26f0f726-4811-4f22-aba7-92c1fc38e395}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[16]_________data">
+      <UniqueIdentifier>{95da8ba4-621c-49c1-8993-20c638002d05}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -122,7 +122,7 @@
       <Filter>[8]__________OBJ_main\[1]------Alcy</Filter>
     </ClInclude>
     <ClInclude Include="header\data_util.h">
-      <Filter>[13]_________data</Filter>
+      <Filter>[16]_________data</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -157,7 +157,7 @@
       <Filter>[12]__________sound</Filter>
     </ClCompile>
     <ClCompile Include="cpp\data_util.cpp">
-      <Filter>[13]_________data</Filter>
+      <Filter>[16]_________data</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
