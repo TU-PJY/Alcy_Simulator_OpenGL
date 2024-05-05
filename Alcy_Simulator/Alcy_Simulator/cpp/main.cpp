@@ -86,6 +86,7 @@ void main(int argc, char** argv) {
 		// 세이브 파일이 존재하지 않으면 세이프 파일을 신규 생성한다
 		create_save_file();
 
+		load_sound_file();
 		set_shader();
 		fw.init(home_mode, "home_mode");
 
