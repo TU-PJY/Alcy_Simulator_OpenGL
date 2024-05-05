@@ -40,7 +40,7 @@ public:
 
 		if (num2 == 0) {
 			timer += fw.calc_ft(1);
-			if (timer > 1.0) {
+			if (timer > 2.0) {
 				num3 = std::lerp(num3, 0.0, fw.calc_ft(10));
 				transparent = std::lerp(transparent, 0.0, fw.calc_ft(10));
 
@@ -73,5 +73,7 @@ public:
 
 		set_canvas(VAO);
 		set_texture(tex, "res//prop//welcome_messege.png", 256, 256, 1);
+
+		ssys->playSound(welcome, 0, false, &ch_alcy);
 	}
 };

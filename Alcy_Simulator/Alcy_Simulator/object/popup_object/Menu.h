@@ -68,5 +68,11 @@ public:
 
 		set_canvas(VAO);
 		set_texture(tex, "res//ui//menu_back.png", 100, 100, 1);
+
+		ssys_ui->playSound(menu_open, 0, false, &ch_ui);
+	}
+
+	~Menu() {
+		ssys_ui->playSound(menu_close, 0, false, &ch_ui);
 	}
 };

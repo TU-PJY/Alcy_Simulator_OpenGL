@@ -46,6 +46,7 @@ void main(int argc, char** argv) {
 		install_font("res//font//Somatic-Rounded.otf");
 		install_font("res//font//joystix monospace.otf");
 
+
 		glutInit(&argc, argv);
 		glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH | GL_MULTISAMPLE);
 
@@ -80,6 +81,8 @@ void main(int argc, char** argv) {
 		stbi_set_flip_vertically_on_load(true);
 
 		set_shader();
+		load_sound_file();
+		fw.init(home_mode, "home_mode");
 	}
 	
 	glutDisplayFunc(gl_main);
@@ -93,6 +96,5 @@ void main(int argc, char** argv) {
 	glutPassiveMotionFunc(mouse_passive_motion);
 	glutMouseWheelFunc(mouse_wheel);
 
-	fw.init(home_mode, "home_mode");
 	glutMainLoop();
 }

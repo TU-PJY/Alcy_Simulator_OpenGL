@@ -9,14 +9,6 @@ enum rotate_dir {
 };
 
 class Camera {
-private:
-	fm ssys;
-	ch ch{};
-	void* extdvdata{};
-	FMOD_RESULT result;
-
-	sound scroll_sound;
-
 public:
 	// 회전 각도
 	GLfloat angle{};
@@ -78,13 +70,13 @@ public:
 	void scroll(int dir) {
 		if (dir > 0)
 			if (zoom_value <= 2.2) {
-				ssys->playSound(scroll_sound, 0, false, &ch);
+				ssys_ui->playSound(scroll_sound, 0, false, &ch_ui);
 				zoom_value += 0.2;
 			}
 
 		if (dir < 0)
 			if (zoom_value >= 0.8) {
-				ssys->playSound(scroll_sound, 0, false, &ch);
+				ssys_ui->playSound(scroll_sound, 0, false, &ch_ui);
 				zoom_value -= 0.2;
 			}
 	}
@@ -149,14 +141,6 @@ public:
 	void update_camera() {
 		update_camera_lock();
 		update_home_mode();
-	}
-
-	Camera() {
-		result = FMOD::System_Create(&ssys);
-		if (result != FMOD_OK)	exit(0);
-		ssys->init(32, FMOD_INIT_NORMAL, extdvdata);
-
-		ssys->createSound("res//sound//UI//scroll.wav", FMOD_DEFAULT, 0, &scroll_sound);
 	}
 };
 

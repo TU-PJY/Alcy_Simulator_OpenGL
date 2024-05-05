@@ -161,7 +161,6 @@
     <ClInclude Include="object\popup_object\Cursor_menu.h" />
     <ClInclude Include="object\popup_object\Icon.h" />
     <ClInclude Include="object\popup_object\Menu.h" />
-    <ClInclude Include="object\sound_object\BGM_home.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cpp\home_mode.cpp" />
@@ -172,6 +171,7 @@
     <ClCompile Include="cpp\menu_mode.cpp" />
     <ClCompile Include="cpp\mouse.cpp" />
     <ClCompile Include="cpp\shader_conf.cpp" />
+    <ClCompile Include="cpp\sound_list.cpp" />
     <ClCompile Include="cpp\view.cpp" />
   </ItemGroup>
   <ItemGroup>
