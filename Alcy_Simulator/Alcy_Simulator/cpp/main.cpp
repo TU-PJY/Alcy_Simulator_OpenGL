@@ -1,4 +1,6 @@
 ﻿#define STB_IMAGE_IMPLEMENTATION
+
+#include "../header/data_util.h"
 #include "../header/shader.h"
 #include "../header/view.h"
 #include "../header/gl_func.h"
@@ -78,11 +80,15 @@ void main(int argc, char** argv) {
 		glEnable(GL_ALPHA_TEST);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 		stbi_set_flip_vertically_on_load(true);
 
+		// 세이브 파일이 존재하지 않으면 세이프 파일을 신규 생성한다
+		create_save_file();
+
 		set_shader();
-		load_sound_file();
 		fw.init(home_mode, "home_mode");
+
 	}
 	
 	glutDisplayFunc(gl_main);

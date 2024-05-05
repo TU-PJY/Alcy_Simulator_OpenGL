@@ -12,7 +12,6 @@
 #include <gl/freeglut_ext.h>
 
 #include "../framework/FWL.h"
-
 #include "stb_image.h"
 
 #include "fmod.hpp"

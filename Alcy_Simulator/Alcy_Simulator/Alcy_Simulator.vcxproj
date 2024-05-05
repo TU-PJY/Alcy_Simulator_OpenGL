@@ -52,7 +52,7 @@
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
-    <EnableUnitySupport>true</EnableUnitySupport>
+    <EnableUnitySupport>false</EnableUnitySupport>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -126,7 +126,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <ConformanceMode>true</ConformanceMode>
+      <ConformanceMode>false</ConformanceMode>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
@@ -144,6 +144,7 @@
   <ItemGroup>
     <ClInclude Include="Framework\FWL_config.h" />
     <ClInclude Include="header\Camera.h" />
+    <ClInclude Include="header\data_util.h" />
     <ClInclude Include="header\gl_func.h" />
     <ClInclude Include="header\HEADER.h" />
     <ClInclude Include="header\image_text_util.h" />
@@ -163,6 +164,7 @@
     <ClInclude Include="object\popup_object\Menu.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="cpp\data_util.cpp" />
     <ClCompile Include="cpp\home_mode.cpp" />
     <ClCompile Include="cpp\image_text_utils.cpp" />
     <ClCompile Include="cpp\keyboard.cpp" />
