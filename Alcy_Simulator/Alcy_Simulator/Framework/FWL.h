@@ -560,6 +560,8 @@ public:
 
 			++it;
 		}
+
+		popup_cont[layer].clear();
 	}
 
 
@@ -574,7 +576,7 @@ public:
 			f_messege.process_popup_err("FWL popup init error::Invalid initialization");
 
 
-		for (int i = 0; i < NUMBER_OF_LAYER; ++i) {
+		for (int i = 0; i < NUMBER_OF_POPUP_LAYER; ++i) {
 			for (auto it = popup_cont[i].begin(); it != popup_cont[i].end();) {
 				auto target = std::find(popup_cont[i].begin(), popup_cont[i].end(), *it);
 
@@ -584,6 +586,9 @@ public:
 				++it;
 			}
 		}
+
+		for (int i = 0; i < NUMBER_OF_POPUP_LAYER; ++i)
+			popup_cont[i].clear();
 	}
 
 #endif

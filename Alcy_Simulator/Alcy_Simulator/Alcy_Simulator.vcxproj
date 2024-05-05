@@ -156,6 +156,7 @@
     <ClInclude Include="object\main_object\Alcy_home_parts.h" />
     <ClInclude Include="object\main_object\Background_home.h" />
     <ClInclude Include="object\main_object\Cursor_home.h" />
+    <ClInclude Include="object\popup_object\Back.h" />
     <ClInclude Include="object\popup_object\Cursor_menu.h" />
     <ClInclude Include="object\popup_object\Icon.h" />
     <ClInclude Include="object\popup_object\Menu.h" />
