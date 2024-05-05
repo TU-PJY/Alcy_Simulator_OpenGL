@@ -35,8 +35,8 @@ public:
 		auto ptr = fw.get_popup_ptr(layer1, 1);
 		if (ptr != nullptr) {
 			for (int i = 0; i < ptr->get_icon_number(); ++i) {
-				if (ptr->get_icon_zone()[0] + 0.25 * i < x && x < ptr->get_icon_zone()[1] + 0.25 * i &&
-					ptr->get_icon_zone()[2] < y && y < ptr->get_icon_zone()[3])
+				if ((ptr->get_icon_zone()[0] + 0.25 * i) / cam.zoom < x && x < (ptr->get_icon_zone()[1] + 0.25 * i) / cam.zoom &&
+					ptr->get_icon_zone()[2] / cam.zoom < y && y < ptr->get_icon_zone()[3] / cam.zoom)
 
 					ptr->tell_on_cursor(i);
 

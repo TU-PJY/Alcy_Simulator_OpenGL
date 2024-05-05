@@ -132,10 +132,10 @@ public:
 			head_state = head_middle;
 
 		else {
-			if (mx > 0.5)
+			if (mx > 0.65)
 				head_state = head_right;
 
-			else if (mx < -0.5)
+			else if (mx < -0.65)
 				head_state = head_left;
 
 			else

@@ -45,7 +45,7 @@ public:
 
 
 		init_transform();
-		set_object_static(text_x, 0.8);
+		set_object_static(text_x / cam.zoom, 0.8 / cam.zoom);
 		alpha = text_transparent;
 
 		draw_text(text_tex, VAO, base, "MENU");
@@ -113,7 +113,7 @@ public:
 
 
 		init_transform();
-		set_object_static(text_x, 0.8);
+		set_object_static(text_x / cam.zoom, 0.8 / cam.zoom);
 		alpha = text_transparent;
 
 		draw_text(text_tex, VAO, base, "MENU");

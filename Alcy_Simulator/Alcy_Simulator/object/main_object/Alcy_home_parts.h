@@ -104,8 +104,8 @@ public:
 		t_mat *= move_image(position, 0.0);
 
 		
-		GLfloat x = mx / 50;
-		GLfloat y = my / 50;
+		GLfloat x = mx / 45;
+		GLfloat y = my / 45;
 
 		GLfloat angle = touch_angle + tilt_angle;
 

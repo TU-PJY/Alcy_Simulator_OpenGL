@@ -1,5 +1,6 @@
 #include "../header/gl_func.h"
 #include "../header/Camera.h"
+#include "../header/mode_header.h"
 
 GLfloat mx, my;
 
@@ -21,6 +22,21 @@ void mouse_button(int button, int state, int x, int y) {  // 마우스 클릭
 
 			else if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) 
 				ptr->mouse_left_button_up(button, state);
+		}
+	}
+
+	// 메뉴 열기
+	if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN) {
+		if (fw.get_current_mode() == "menu_mode")
+			fw.end_popup();
+
+		else {
+			fw.init_popup(menu_mode, "menu_mode");
+			cam.reset_key_state();  // 카메라 조작 상태를 초기화한다 
+
+			auto ptr = fw.get_ptr(cursor_layer, 0); // 마우스 조작 상태를 초기화 한다
+			if (ptr != nullptr)
+				ptr->reset_mouse_state();
 		}
 	}
 
