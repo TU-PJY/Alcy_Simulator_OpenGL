@@ -12,13 +12,18 @@
 #include <gl/freeglut_ext.h>
 
 #include "../framework/FWL.h"
+
 #include "stb_image.h"
+
+#include "fmod.hpp"
+#include "fmod_errors.h"
 
 #include <windows.h>
 #include <stdio.h>   // Header File For Standard Input/Output
 #include <stdarg.h>  // Header File For Variable Argument Routines
 #include <iostream>
 #include <vector>
+#include <list>
 #include <array>
 #include <algorithm>
 #include <cmath>

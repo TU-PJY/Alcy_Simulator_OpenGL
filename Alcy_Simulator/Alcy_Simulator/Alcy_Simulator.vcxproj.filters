@@ -23,15 +23,6 @@
     <Filter Include="[11]__________image_text">
       <UniqueIdentifier>{5f422df7-249f-4898-a155-be891bd45bbc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[12]__________math">
-      <UniqueIdentifier>{8183e576-462b-451b-be9e-9e2e6ab332f2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[13]_________shader">
-      <UniqueIdentifier>{bd930d4a-8f6f-42e0-b5c6-62e061f0b518}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[14]_________GLSL">
-      <UniqueIdentifier>{3d8c6262-a099-4cf3-aa9f-f0224eb7e91e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="[7]__________view">
       <UniqueIdentifier>{38bc1faf-7d4f-41e1-82b3-da6b95c3748a}</UniqueIdentifier>
     </Filter>
@@ -53,6 +44,18 @@
     <Filter Include="[9]__________OBJ_popup">
       <UniqueIdentifier>{d628f5b4-cce2-4bb9-b651-2b79cfcf8ad2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="[13]__________math">
+      <UniqueIdentifier>{8183e576-462b-451b-be9e-9e2e6ab332f2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[14]_________shader">
+      <UniqueIdentifier>{bd930d4a-8f6f-42e0-b5c6-62e061f0b518}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[15]_________GLSL">
+      <UniqueIdentifier>{3d8c6262-a099-4cf3-aa9f-f0224eb7e91e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[12__________sound">
+      <UniqueIdentifier>{26f0f726-4811-4f22-aba7-92c1fc38e395}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\FWL_config.h">
@@ -71,10 +74,10 @@
       <Filter>[11]__________image_text</Filter>
     </ClInclude>
     <ClInclude Include="header\math_util.h">
-      <Filter>[12]__________math</Filter>
+      <Filter>[13]__________math</Filter>
     </ClInclude>
     <ClInclude Include="header\shader.h">
-      <Filter>[13]_________shader</Filter>
+      <Filter>[14]_________shader</Filter>
     </ClInclude>
     <ClInclude Include="header\mode_header.h">
       <Filter>[10]_________global_header</Filter>
@@ -94,6 +97,9 @@
     <ClInclude Include="object\main_object\Background_home.h">
       <Filter>[8]__________OBJ_main\[0]------Background</Filter>
     </ClInclude>
+    <ClInclude Include="header\sound.h">
+      <Filter>[12__________sound</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cpp\mouse.cpp">
@@ -112,21 +118,24 @@
       <Filter>[11]__________image_text</Filter>
     </ClCompile>
     <ClCompile Include="cpp\math_utils.cpp">
-      <Filter>[12]__________math</Filter>
+      <Filter>[13]__________math</Filter>
     </ClCompile>
     <ClCompile Include="cpp\shader_conf.cpp">
-      <Filter>[13]_________shader</Filter>
+      <Filter>[14]_________shader</Filter>
     </ClCompile>
     <ClCompile Include="cpp\home_mode.cpp">
       <Filter>[5]__________main_mode</Filter>
     </ClCompile>
+    <ClCompile Include="cpp\sound.cpp">
+      <Filter>[12__________sound</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="GLSL\GLSL_fragment.glsl">
-      <Filter>[14]_________GLSL</Filter>
+      <Filter>[15]_________GLSL</Filter>
     </None>
     <None Include="GLSL\GLSL_vertex.glsl">
-      <Filter>[14]_________GLSL</Filter>
+      <Filter>[15]_________GLSL</Filter>
     </None>
   </ItemGroup>
 </Project>

@@ -1,6 +1,7 @@
 #pragma once
 #include "../../header/Camera.h"
 #include "Alcy_home_parts.h"
+#include "../../header/sound.h"
 
 
 class Alcy_home : public FUNCTION {
@@ -84,7 +85,23 @@ public:
 	void tell_touch_state(bool state) { touch_state = state; }
 
 	// 코 누르기 상태 알림
-	void tell_squeak_state(bool state) { squeak_state = state; }
+	void tell_squeak_state(bool state) { 
+		squeak_state = state; 
+
+		// 랜덤 사운드 재생
+		std::random_device rd;  std::mt19937 gen(rd());
+		std::uniform_int_distribution <int> dis(1, 3);
+
+		int number = dis(gen);
+		switch (number) {
+		case 1:
+			play_sound(ch_effect, squeak1); break;
+		case 2:
+			play_sound(ch_effect, squeak2); break;
+		case 3:
+			play_sound(ch_effect, squeak3); break;
+		}
+	}
 
 	// 커서 - 알키 상호작용 가능 상태 리턴
 	bool get_interaction_available_state() const { return interaction_available_state; }

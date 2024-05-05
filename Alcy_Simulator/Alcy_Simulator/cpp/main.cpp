@@ -4,6 +4,7 @@
 #include "../header/gl_func.h"
 #include "../header/Camera.h"
 #include "../header/mode_header.h"
+#include "../header/sound.h"
 
 // framework
 FWL fw;
@@ -74,6 +75,7 @@ void main(int argc, char** argv) {
 		stbi_set_flip_vertically_on_load(true);
 
 		set_shader();
+		set_fmod();
 	}
 	
 	glutDisplayFunc(gl_main);
