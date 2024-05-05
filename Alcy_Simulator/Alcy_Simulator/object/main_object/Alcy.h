@@ -26,6 +26,19 @@ private:
 	// 머리 회전 각도
 	GLfloat head_angle{};
 
+
+	// 눈 깜빡임 여부
+	bool blink_state{};
+
+	// 눈 깜빡임 시작 측정
+	time_t start_time, end_time{};
+
+	// 눈 감은 상태 유지하는 시간
+	GLfloat blink_time{};
+
+	// 눈 깜빡임 간격
+	GLfloat blink_interval{};
+
 public:
 	// 머리 방향 업데이트
 	void update_head_dir() {
@@ -87,6 +100,29 @@ public:
 	}
 
 
+	void update_blink() {  // 알키 눈 깜빡임 업데이트
+		std::random_device rd;  std::mt19937 gen(rd());
+		std::uniform_real_distribution <GLfloat> dis(0, 3);
+
+		if (!blink_state) {
+			end_time = time(NULL);  // 시간을 실시간으로 측정하여 아래의 조건에 맞는지 검사한다
+			if (GLfloat(end_time - start_time) > blink_interval)  // 지정된 간격보다 시간이 지나면 눈 깜빡임이 활성화 된다.
+				blink_state = true;
+		}
+
+		else {
+			blink_time += fw.calc_ft(1);  // 아주 짧은 시간 동안 눈 감은 상태를 유지하다가 다시 눈을 뜬다.
+
+			if (blink_time > 0.2) {
+				start_time = time(NULL);
+				blink_time = 0;
+				blink_interval = dis(gen);  // 눈 깜빡이는 간격을 랜덤으로 설정한다
+				blink_state = false;
+			}
+		}
+	}
+
+
 	void update() {
 		//머리 방향 업데이트
 		update_head_dir();
@@ -113,6 +149,9 @@ public:
 		// 머리 위치
 		head.tell_head_position(head_position);
 		face.tell_head_position(head_position);
+
+		update_blink();
+		face.tell_blink_state(blink_state);
 	}
 
 	void check_collision() {
