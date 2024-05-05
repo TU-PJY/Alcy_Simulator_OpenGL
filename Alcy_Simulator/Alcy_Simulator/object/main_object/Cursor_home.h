@@ -31,6 +31,11 @@ private:
 	GLfloat touch_number{};
 
 
+
+	// 코 누름 상태
+	//bool suqeak_state{};
+
+
 public:
 	GLfloat get_cursor_x() const { return x; }
 	GLfloat get_cursor_y() const { return y; }
@@ -49,12 +54,17 @@ public:
 
 		if (ptr != nullptr) {
 			std::array<GLfloat, 4> touch_zone = ptr->get_touch_zone();
+			std::array<GLfloat, 4> squeak_zone = ptr->get_squeak_zone();
 
 			// 특정 영역에 커서가 위치하면 커서가 바뀐다.
 			// 알키 쓰다듬기 영역
 			if (ptr->get_interaction_available_state()) {
 				if (touch_zone[0] < x && x < touch_zone[1] && touch_zone[2] < y && y < touch_zone[3])
 					tex_number = 1;
+
+				else if (squeak_zone[0] < x && x < squeak_zone[1] && squeak_zone[2] < y && y < squeak_zone[3])
+					tex_number = 2;
+
 				else
 					tex_number = 0;
 			}
@@ -70,9 +80,15 @@ public:
 		auto ptr = fw.get_ptr(alcy_layer, 0);
 
 		if (ptr != nullptr) {
-			if(ptr->get_interaction_available_state() && tex_number == 1) {
-				touch_state = true;
-				ptr->tell_touch_state(touch_state);
+			if(ptr->get_interaction_available_state()) {
+				if (tex_number == 1) {
+					touch_state = true;
+					ptr->tell_touch_state(touch_state);
+				}
+
+				else if (tex_number == 2) {
+					ptr->tell_squeak_state(true);
+				}
 			}
 		}
 	}

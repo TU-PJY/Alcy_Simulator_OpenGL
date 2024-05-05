@@ -25,6 +25,7 @@ private:
 	std::array<unsigned int, 3> tex_blink{};
 	std::array<unsigned int, 3> tex_dot{};
 	std::array<unsigned int, 3> tex_brow{};
+	unsigned int tex_eye_squeak{};
 
 	std::array<const char*, 3> directory_eye = {
 		"res//alcy//face//eye_left.png",
@@ -50,6 +51,8 @@ private:
 		"res//alcy//face//brow_right.png",
 	};
 
+	const char* directory_eye_squeak = "res//alcy//face//eye_squeak.png";
+
 	// 눈 깜빡임 상태, true일 시 blink 출력, false일 시 eye 출력
 	bool blink_state{};
 
@@ -64,29 +67,27 @@ private:
 	// 머리 회전 여부
 	bool head_rotate_state{};
 
+	// 코 눌림 여부
+	bool squeak_state{};
+
 
 public:
-	void tell_head_state(int state) {
-		head_state = state;
-	}
+	void tell_head_state(int state) { head_state = state; }
 
 	// 눈 깜빡임 상태 알리기
-	void tell_blink_state(bool state) {
-		blink_state = state;
-	}
+	void tell_blink_state(bool state) { blink_state = state; }
 
 	// 머리 위치 알리기
-	void tell_head_position(GLfloat pos) {
-		position = pos;
-	}
+	void tell_head_position(GLfloat pos) { position = pos; }
 
-	void tell_head_angle(GLfloat a) {
-		tilt_angle = a;
-	}
+	// 머리 회전 각도 알리기
+	void tell_head_angle(GLfloat a) { tilt_angle = a; }
 
-	void tell_touch_angle(GLfloat a) {
-		touch_angle = a;
-	}
+	// 쓰다듬기 머리 회전 각도 알리기
+	void tell_touch_angle(GLfloat a) { touch_angle = a; }
+
+	// 코 누름 상태 알리기
+	void tell_squeak_state(bool state) { squeak_state = state; }
 
 	// 머리 회전 여부 활성화 / 비활성화
 	void enable_state_static() {
@@ -96,7 +97,7 @@ public:
 		head_rotate_state = false;
 	}
 
-
+	// 눈
 	void render_eye() {
 		init_transform();
 		s_mat *= scale_image(7.0, 7.0);
@@ -117,7 +118,28 @@ public:
 		draw_image(tex_eye[head_state], VAO);
 	}
 
+	// 코 누름 상태의 눈
+	void render_eye_squeak() {
+		init_transform();
+		s_mat *= scale_image(7.0, 7.0);
+		t_mat *= move_image(position, 0.0);
 
+		GLfloat x = mx / 50;
+		GLfloat y = my / 50;
+
+		GLfloat angle = touch_angle + tilt_angle;
+
+		t_mat *= move_image(0.0, -0.5);
+		t_mat *= rotate_image(angle);
+		t_mat *= move_image(0.0, 0.5);
+
+		if (!head_rotate_state)
+			t_mat *= move_image(x, y);
+
+		draw_image(tex_eye_squeak, VAO);
+	}
+
+	// 감은 눈
 	void render_blink() {
 		init_transform();
 		s_mat *= scale_image(7.0, 7.0);
@@ -137,7 +159,7 @@ public:
 		draw_image(tex_blink[head_state], VAO);
 	}
 
-
+	// 눈동자
 	void render_dot() {
 		init_transform();
 		s_mat *= scale_image(7.0, 7.0);
@@ -157,7 +179,7 @@ public:
 		draw_image(tex_dot[head_state], VAO);
 	}
 	
-
+	// 눈썹
 	void render_brow() {
 		init_transform();
 		s_mat *= scale_image(7.0, 7.0);
@@ -181,8 +203,12 @@ public:
 	void render() {
 		// blink state가 true이면 눈을 깜빡이는 것
 		if (!blink_state) {
-			render_eye();
-			render_dot();
+			if (!squeak_state) {
+				render_eye();
+				render_dot();
+			}
+			else
+				render_eye_squeak();
 		}
 
 		else
@@ -205,6 +231,8 @@ public:
 
 		for (int i = 0; i < directory_brow.size(); ++i)
 			set_texture(tex_brow[i], directory_brow[i], 1500, 1500, 1);
+
+		set_texture(tex_eye_squeak, directory_eye_squeak, 1500, 1500, 1);
 	}
 };
 

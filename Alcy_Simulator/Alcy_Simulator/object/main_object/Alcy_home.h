@@ -27,6 +27,7 @@ private:
 	GLfloat head_angle{};
 
 
+
 	// 눈 깜빡임 여부
 	bool blink_state{};
 
@@ -40,6 +41,12 @@ private:
 	GLfloat blink_interval{};
 
 
+
+	// 상호 작용 가능 상태
+	bool interaction_available_state{};
+
+
+
 	// 머리 쓰다듬기 활성화 영역
 	// x min, x max, y min, y max
 	std::array<GLfloat, 4> touch_zone = {
@@ -49,19 +56,35 @@ private:
 	// 머리 쓰다듬기 상태
 	bool touch_state{};
 
-	// 머리 쓰다듬기 가능 상태
-	bool interaction_available_state{};
-
 	// 머리 쓰다듬기 각도
 	GLfloat touch_angle{};
+
+
+
+	// 코 누르기 활성화 영역
+	std::array<GLfloat, 4> squeak_zone = {
+		-0.05, 0.05, -0.3, -0.2
+	};
+
+	// 코 눌림 상태
+	bool squeak_state{};
+
+	// 코 눌림 상태 유지 시간
+	GLfloat squeak_time{};
 
 
 public:
 	// 쓰다듬기 활성화 영역 리턴
 	std::array<GLfloat, 4> get_touch_zone() const { return touch_zone; }
+	
+	// 코 누르기 활성화 영역 리턴
+	std::array<GLfloat, 4> get_squeak_zone() const { return squeak_zone; }
 
 	// 쓰다듬기 상태 알림
 	void tell_touch_state(bool state) { touch_state = state; }
+
+	// 코 누르기 상태 알림
+	void tell_squeak_state(bool state) { squeak_state = state; }
 
 	// 커서 - 알키 상호작용 가능 상태 리턴
 	bool get_interaction_available_state() const { return interaction_available_state; }
@@ -70,7 +93,7 @@ public:
 	// 머리 방향 업데이트
 	void update_head_dir() {
 		// 카메라 회전 도중에는 앞을 바라본다
-		if (cam.key_state_left || cam.key_state_right || head_rotate_state != head_rotate_none || touch_state)
+		if (cam.key_state_left || cam.key_state_right || head_rotate_state != head_rotate_none || touch_state || squeak_state)
 			head_state = head_middle;
 
 		else {
@@ -99,18 +122,21 @@ public:
 
 	// 머리 회전 상태 업데이트
 	void update_head_rotate_state() {
-		if (cam.key_state_left || cam.key_state_right || head_rotate_state != head_rotate_none)
-			face.enable_state_static();
+		if (!squeak_state) {
 
-		if (cam.key_state_right && !cam.key_state_left && cam.angle < -7.0)
-			head_rotate_state = head_rotate_right;
-		
-		else if(!cam.key_state_right && cam.key_state_left && cam.angle > 7.0)
-			head_rotate_state = head_rotate_left;
+			if (cam.key_state_left || cam.key_state_right || head_rotate_state != head_rotate_none)
+				face.enable_state_static();
 
-		else if (!cam.key_state_right && !cam.key_state_left && cam.angle < 2.0 && cam.angle > -2.0) {
-			head_rotate_state = head_rotate_none;
-			face.unable_state_static();
+			if (cam.key_state_right && !cam.key_state_left && cam.angle < -7.0)
+				head_rotate_state = head_rotate_right;
+
+			else if (!cam.key_state_right && cam.key_state_left && cam.angle > 7.0)
+				head_rotate_state = head_rotate_left;
+
+			else if (!cam.key_state_right && !cam.key_state_left && cam.angle < 2.0 && cam.angle > -2.0) {
+				head_rotate_state = head_rotate_none;
+				face.unable_state_static();
+			}
 		}
 	}
 
@@ -151,7 +177,7 @@ public:
 
 	// 커서 - 알키 상호작용 가능 상태 업데이트
 	void update_intercation_state() {
-		if (head_rotate_state == head_rotate_none && cam.angle < 2.0 && cam.angle > -2.0)
+		if (head_rotate_state == head_rotate_none && cam.angle < 2.0 && cam.angle > -2.0 && !squeak_state)
 			interaction_available_state = true;
 
 		else
@@ -182,6 +208,21 @@ public:
 			face.tell_touch_angle(touch_angle);
 			head.tell_touch_angle(touch_angle);
 			tail.tell_touch_angle(touch_angle);
+		}
+	}
+
+	// 알키 코 누름 업데이트
+	void update_squeak_state() {  // 코 누르기
+		if (squeak_state) {  // 일정시간동안 알키는 자기 코를 바라본다
+			face.enable_state_static();
+			face.tell_squeak_state(squeak_state);
+			squeak_time += fw.calc_ft(1);
+
+			if (squeak_time > 1.5) {  // 1.5초 후 해제
+				squeak_state = false;
+				face.tell_squeak_state(squeak_state);
+				squeak_time = 0;
+			}
 		}
 	}
 
@@ -222,6 +263,9 @@ public:
 
 		// 쓰다듬기 상태 업데이트
 		update_touch_state();
+
+		// 코 누르기 상태 업데이트
+		update_squeak_state();
 	}
 
 	void check_collision() {
