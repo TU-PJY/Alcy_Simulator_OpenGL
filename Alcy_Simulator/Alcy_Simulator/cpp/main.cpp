@@ -88,8 +88,6 @@ void main(int argc, char** argv) {
 		// 세이브 파일의 버전이 현재 버전보다 낮을 경우 현재 버전에 맞는 세이브 파일로 업데이트 한다.
 		check_data_version();
 
-		reset_data();
-
 		load_sound_file();
 		set_shader();
 		fw.init(home_mode, "home_mode");
