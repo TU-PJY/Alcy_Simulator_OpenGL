@@ -130,6 +130,9 @@
     <ClInclude Include="object\main_object\Shadow.h">
       <Filter>[8]__________OBJ_main\[3]------Prop</Filter>
     </ClInclude>
+    <ClInclude Include="object\main_object\Front.h">
+      <Filter>[8]__________OBJ_main\[2]------UI</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cpp\mouse.cpp">

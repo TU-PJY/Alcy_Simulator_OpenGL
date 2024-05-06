@@ -101,7 +101,7 @@ public:
 	void render_eye() {
 		init_transform();
 		s_mat *= scale_image(7.0, 7.0);
-		t_mat *= move_image(position, 0.0);
+		t_mat *= move_image(position, 0.2);
 
 		
 		GLfloat x = mx / 45;
@@ -109,9 +109,9 @@ public:
 
 		GLfloat angle = touch_angle + tilt_angle;
 
-		t_mat *= move_image(0.0, -0.5);
+		t_mat *= move_image(0.0, -0.7);
 		t_mat *= rotate_image(angle);
-		t_mat *= move_image(0.0, 0.5);
+		t_mat *= move_image(0.0, 0.7);
 
 		if(!head_rotate_state)
 			t_mat *= move_image(x, y);
@@ -122,16 +122,16 @@ public:
 	void render_eye_squeak() {
 		init_transform();
 		s_mat *= scale_image(7.0, 7.0);
-		t_mat *= move_image(position, 0.0);
+		t_mat *= move_image(position, 0.2);
 
 		GLfloat x = mx / 50;
 		GLfloat y = my / 50;
 
 		GLfloat angle = touch_angle + tilt_angle;
 
-		t_mat *= move_image(0.0, -0.5);
+		t_mat *= move_image(0.0, -0.7);
 		t_mat *= rotate_image(angle);
-		t_mat *= move_image(0.0, 0.5);
+		t_mat *= move_image(0.0, 0.7);
 
 		if (!head_rotate_state)
 			t_mat *= move_image(x, y);
@@ -139,20 +139,20 @@ public:
 		draw_image(tex_eye_squeak, VAO);
 	}
 
-	// °¨Àº ´«
+	// ´« ±ôºýÀÓ
 	void render_blink() {
 		init_transform();
 		s_mat *= scale_image(7.0, 7.0);
-		t_mat *= move_image(position, 0.0);
+		t_mat *= move_image(position, 0.2);
 
 		GLfloat x = mx / 50;
 		GLfloat y = my / 50;
 
 		GLfloat angle = touch_angle + tilt_angle;
 
-		t_mat *= move_image(0.0, -0.5);
+		t_mat *= move_image(0.0, -0.7);
 		t_mat *= rotate_image(angle);
-		t_mat *= move_image(0.0, 0.5);
+		t_mat *= move_image(0.0, 0.7);
 
 		if (!head_rotate_state)
 			t_mat *= move_image(x, y);
@@ -163,7 +163,7 @@ public:
 	void render_dot() {
 		init_transform();
 		s_mat *= scale_image(7.0, 7.0);
-		t_mat *= move_image(position, 0.0);
+		t_mat *= move_image(position, 0.2);
 
 		GLfloat x{};
 		GLfloat y{};
@@ -180,9 +180,9 @@ public:
 
 		GLfloat angle = touch_angle + tilt_angle;
 
-		t_mat *= move_image(0.0, -0.5);
+		t_mat *= move_image(0.0, -0.7);
 		t_mat *= rotate_image(angle);
-		t_mat *= move_image(0.0, 0.5);
+		t_mat *= move_image(0.0, 0.7);
 		
 		if (!head_rotate_state)
 			t_mat *= move_image(x, y);
@@ -193,16 +193,16 @@ public:
 	void render_brow() {
 		init_transform();
 		s_mat *= scale_image(7.0, 7.0);
-		t_mat *= move_image(position, 0.0);
+		t_mat *= move_image(position, 0.2);
 
 		GLfloat x = mx / 50;
 		GLfloat y = my / 50;
 
 		GLfloat angle = touch_angle + tilt_angle;
 
-		t_mat *= move_image(0.0, -0.5);
+		t_mat *= move_image(0.0, -0.7);
 		t_mat *= rotate_image(angle);
-		t_mat *= move_image(0.0, 0.5);
+		t_mat *= move_image(0.0, 0.7);
 
 		if (!head_rotate_state)
 			t_mat *= move_image(x, y);
@@ -296,7 +296,7 @@ public:
 		t_mat *= rotate_image(angle);
 		t_mat *= move_image(0.0, 0.5);
 
-		t_mat *= move_image(position, 0.0);
+		t_mat *= move_image(position, 0.2);
 		draw_image(tex[head_state], VAO);
 	}
 
@@ -332,7 +332,7 @@ public:
 	void render() {
 		init_transform();
 		s_mat *= scale_image(7.0, 7.0);
-		t_mat *= move_image(0.0, -0.75);
+		t_mat *= move_image(0.0, -0.55);
 		draw_image(tex[0], VAO);
 	}
 
@@ -372,7 +372,7 @@ public:
 		GLfloat angle = touch_angle + tilt_angle;
 
 		s_mat *= scale_image(7.0, 7.0);
-		t_mat *= move_image(0.0, -0.75 - angle / 200);
+		t_mat *= move_image(0.0, -0.55 - angle / 200);
 		draw_image(tex[0], VAO);
 	}
 
@@ -412,7 +412,7 @@ public:
 		GLfloat angle = tilt_angle + touch_angle;
 
 		s_mat *= scale_image(7.0, 7.0);
-		t_mat *= move_image(-0.19, -0.75);
+		t_mat *= move_image(-0.19, -0.55);
 		t_mat *= rotate_image(angle / 2);
 		draw_image(tex[0], VAO);
 	}

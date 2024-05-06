@@ -60,7 +60,7 @@ private:
 	// 머리 쓰다듬기 활성화 영역
 	// x min, x max, y min, y max
 	std::array<GLfloat, 4> touch_zone = {
-		-0.15, 0.15, 0.05, 0.3
+		-0.15, 0.15, 0.25, 0.7
 	};
 
 	// 머리 쓰다듬기 상태
@@ -72,7 +72,7 @@ private:
 
 	// 코 누르기 활성화 영역
 	std::array<GLfloat, 4> squeak_zone = {
-		-0.05, 0.05, -0.3, -0.2
+		-0.05, 0.05, -0.1, 0.0
 	};
 
 	// 코 눌림 상태
@@ -182,13 +182,13 @@ public:
 	// 머리 회전 업데이트
 	void update_rotate_head() {
 		if (head_rotate_state == head_rotate_right)
-			head_angle = std::lerp(head_angle, -10.0, fw.calc_ft(4));
+			head_angle = std::lerp(head_angle, -10.0, fw.calc_ft(3));
 
 		else if (head_rotate_state == head_rotate_left)
-			head_angle = std::lerp(head_angle, 10.0, fw.calc_ft(4));
+			head_angle = std::lerp(head_angle, 10.0, fw.calc_ft(3));
 
 		if (head_rotate_state == head_rotate_none)
-			head_angle = std::lerp(head_angle, 0.0, fw.calc_ft(4));
+			head_angle = std::lerp(head_angle, 0.0, fw.calc_ft(3));
 	}
 
 	// 눈 깜빡임 업데이트
@@ -271,7 +271,7 @@ public:
 		if (!welcome_state) {
 			welcome_timer += fw.calc_ft(1);
 			if (welcome_timer > 1.0) {
-				fw.add_object(new Welcome_messege(prop_layer1, "welcome_messege"), prop_layer1);
+				fw.add_object(new Welcome_messege(prop_layer2, "welcome_messege"), prop_layer2);
 				welcome_state = true;
 			}
 		}

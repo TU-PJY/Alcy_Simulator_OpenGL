@@ -67,7 +67,7 @@ public:
 	void render() {
 		init_transform();
 		s_mat *= scale_image(size, size);
-		t_mat *= move_image(0.65, 0.5);
+		t_mat *= move_image(0.75, 0.5);
 		alpha = transparent;
 
 		draw_image(tex[number], VAO);

@@ -27,10 +27,10 @@ public:
 
 
 	// 카메라 줌 결과값
-	GLfloat zoom = 1;
+	GLfloat zoom = 1.0;
 
 	// 카메라 줌 목표 값
-	GLfloat zoom_value = 1;
+	GLfloat zoom_value = 1.0;
 
 
 	// 키 조작
@@ -83,11 +83,11 @@ public:
 
 	// 카메라 회전 조작
 	void rotate_camera_home_mode() {
-		if (rotate_dir == rotate_right && angle > -10.0)
-			angle = std::lerp(angle, -10.0, fw.calc_ft(4));
+		if (rotate_dir == rotate_right && angle > -8.0)
+			angle = std::lerp(angle, -8.0, fw.calc_ft(4));
 
-		else if(rotate_dir == rotate_left && angle < 10.0)
-			angle = std::lerp(angle, 10.0, fw.calc_ft(4));
+		else if(rotate_dir == rotate_left && angle < 8.0)
+			angle = std::lerp(angle, 8.0, fw.calc_ft(4));
 
 		else if(rotate_dir == rotate_none && angle != 0)
 			angle = std::lerp(angle, 0.0, fw.calc_ft(4));
@@ -95,13 +95,13 @@ public:
 
 	// 카메라 이동
 	void move_camera_home_mode() {
-		x = std::lerp(x, -mx * ratio / 10, fw.calc_ft(15));
-		y = std::lerp(y, -my / 10, fw.calc_ft(15));
+		x = std::lerp(x, -mx * ratio / 8, fw.calc_ft(15));
+		y = std::lerp(y, -my / 8, fw.calc_ft(15));
 	}
 
 	// 카메라 줌
 	void zoom_camera_home_mode() {
-		zoom = std::lerp(zoom, zoom_value, fw.calc_ft(10));
+		zoom = std::lerp(zoom, zoom_value, fw.calc_ft(5));
 	}
 
 	// 카메라 잠금 상태 업데이트

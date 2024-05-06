@@ -138,7 +138,7 @@ public:
 
 		if (touch_state) {
 			x = touch_x;
-			y = 0.2;
+			y = 0.4;
 		}
 
 		else {

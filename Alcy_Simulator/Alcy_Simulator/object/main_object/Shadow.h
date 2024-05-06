@@ -18,7 +18,7 @@ public:
 		init_transform();
 
 		s_mat *= scale_image(5.0, 4.0);
-		t_mat *= move_image(0.0, -1.17);
+		t_mat *= move_image(0.0, -0.97);
 		draw_image(tex, VAO);
 	}
 
