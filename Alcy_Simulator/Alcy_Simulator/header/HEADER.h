@@ -51,8 +51,8 @@ extern GLfloat mx, my;
 // layer names
 enum main_layers {
 	background_layer,
+	prop_layer1,
 	alcy_layer,
-	prop_layer,
 	prop_layer2,
 	prop_layer3,
 	ui_layer,

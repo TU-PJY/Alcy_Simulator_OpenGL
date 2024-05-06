@@ -62,6 +62,9 @@
     <Filter Include="[16]_________data">
       <UniqueIdentifier>{95da8ba4-621c-49c1-8993-20c638002d05}</UniqueIdentifier>
     </Filter>
+    <Filter Include="[8]__________OBJ_main\[3]------Prop">
+      <UniqueIdentifier>{51b93134-93e6-4408-81f8-1ffb053f0b19}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\FWL_config.h">
@@ -123,6 +126,9 @@
     </ClInclude>
     <ClInclude Include="header\data_util.h">
       <Filter>[16]_________data</Filter>
+    </ClInclude>
+    <ClInclude Include="object\main_object\Shadow.h">
+      <Filter>[8]__________OBJ_main\[3]------Prop</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

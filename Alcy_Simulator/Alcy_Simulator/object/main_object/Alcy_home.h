@@ -271,7 +271,7 @@ public:
 		if (!welcome_state) {
 			welcome_timer += fw.calc_ft(1);
 			if (welcome_timer > 1.0) {
-				fw.add_object(new Welcome_messege(prop_layer, "welcome_messege"), prop_layer);
+				fw.add_object(new Welcome_messege(prop_layer1, "welcome_messege"), prop_layer1);
 				welcome_state = true;
 			}
 		}
