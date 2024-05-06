@@ -165,8 +165,18 @@ public:
 		s_mat *= scale_image(7.0, 7.0);
 		t_mat *= move_image(position, 0.0);
 
-		GLfloat x = mx / 25;
-		GLfloat y = my / 25;
+		GLfloat x{};
+		GLfloat y{};
+
+		if (head_state == 1) {
+			x = mx / 18;
+			y = my / 18;
+		}
+
+		else if (head_state == 0 || head_state == 2) {
+			x = mx / 23;
+			y = my / 23;
+		}
 
 		GLfloat angle = touch_angle + tilt_angle;
 
