@@ -89,6 +89,10 @@ public:
 	// 코 누르기 활성화 영역 리턴
 	std::array<GLfloat, 4> get_squeak_zone() const { return squeak_zone; }
 
+	// 커서 - 알키 상호작용 가능 상태 리턴
+	bool get_interaction_available_state() const { return interaction_available_state; }
+
+
 	// 쓰다듬기 상태 알림
 	void tell_touch_state(bool state) { 
 		touch_state = state; 
@@ -118,9 +122,6 @@ public:
 			ssys->playSound(squeak3, 0, false, &ch_alcy); break;
 		}
 	}
-
-	// 커서 - 알키 상호작용 가능 상태 리턴
-	bool get_interaction_available_state() const { return interaction_available_state; }
 
 
 	// 머리 방향 업데이트

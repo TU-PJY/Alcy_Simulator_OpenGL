@@ -2,13 +2,25 @@
 #include "../../header/image_text_util.h"
 #include "../../header/view.h"
 #include "../../header/Camera.h"
+#include "../../header/data_util.h"
 
 // 환영 메시지
 class Welcome_messege : public FUNCTION {
 private:
 	GLuint VAO{};
-	unsigned int tex{};
+	std::array<unsigned int, 6> tex{};
+	std::array<const char*, 6> directory = {
+		"res//prop//welcome_messege_first.png",
+		"res//prop//welcome_messege_again_1.png",
+		"res//prop//welcome_messege_again_2.png",
+		"res//prop//welcome_messege_again_3.png",
+		"res//prop//welcome_messege_again_4.png",
+		"res//prop//welcome_messege_again_5.png",
+	};
+
+	int number{};
 	
+
 	int layer{};
 	std::string tag{};
 
@@ -22,6 +34,7 @@ private:
 	GLfloat timer{};
 
 	bool delete_flag{};
+
 
 public:
 	void update() {
@@ -57,7 +70,7 @@ public:
 		t_mat *= move_image(0.65, 0.5);
 		alpha = transparent;
 
-		draw_image(tex, VAO);
+		draw_image(tex[number], VAO);
 	}
 
 	void check_collision(){}
@@ -72,7 +85,21 @@ public:
 		tag = str;
 
 		set_canvas(VAO);
-		set_texture(tex, "res//prop//welcome_messege.png", 256, 256, 1);
+
+		// 처음 게임을 실행할 때와 나중에 실행 할 때의 말풍선이 다르다
+		if (load_data("play count") == 0) {
+			set_texture(tex[0], directory[0], 256, 256, 1);
+			update_data("play count", 1);
+		}
+
+		// 최초 실행 이후에는 5가지 말풍선 중 하나를 랜덤으로 출력한다
+		else {
+			std::random_device rd;  std::mt19937 gen(rd());
+			std::uniform_int_distribution <int> dis(1, 5);
+
+			number = dis(gen);
+			set_texture(tex[number], directory[number], 256, 256, 1);
+		}
 
 		ssys->playSound(welcome, 0, false, &ch_alcy);
 	}
