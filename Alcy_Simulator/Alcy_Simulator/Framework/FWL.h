@@ -36,6 +36,7 @@ private:
 
 	bool popup_mode_start{};
 	bool popup_initializtion{};
+	bool popup_mode_end{};
 	std::vector<std::string> popup_mode_list;
 #endif
 #endif
@@ -363,6 +364,7 @@ public:
 
 
 		popup_mode_start = true;
+		popup_mode_end = false;
 
 		auto target = std::find(popup_mode_list.begin(), popup_mode_list.end(), modename);
 		if (target == popup_mode_list.end())
@@ -378,6 +380,7 @@ public:
 
 		if (!main_mode_pause_option)  // stop main mode's update if pause option is true
 			pause = false;
+
 		f_messege.save_is_pause(pause);
 		f_messege.process_popup_init_messege();
 
@@ -431,6 +434,9 @@ public:
 
 		if (!popup_initializtion)
 			f_messege.process_popup_err("FWL popup init error::Invalid initialization");
+
+
+		popup_mode_end = true;
 
 		sweep_popup_all();
 
@@ -561,7 +567,8 @@ public:
 			++it;
 		}
 
-		popup_cont[layer].clear();
+		if(popup_mode_end)
+			popup_cont[layer].clear();
 	}
 
 
@@ -576,7 +583,7 @@ public:
 			f_messege.process_popup_err("FWL popup init error::Invalid initialization");
 
 
-		for (int i = 0; i < NUMBER_OF_POPUP_LAYER; ++i) {
+		for (int i = 0; i < NUMBER_OF_LAYER; ++i) {
 			for (auto it = popup_cont[i].begin(); it != popup_cont[i].end();) {
 				auto target = std::find(popup_cont[i].begin(), popup_cont[i].end(), *it);
 
@@ -587,8 +594,9 @@ public:
 			}
 		}
 
-		for (int i = 0; i < NUMBER_OF_POPUP_LAYER; ++i)
-			popup_cont[i].clear();
+		if(popup_mode_end)
+			for (int i = 0; i < NUMBER_OF_POPUP_LAYER; ++i) 
+				popup_cont[i].clear();
 	}
 
 #endif

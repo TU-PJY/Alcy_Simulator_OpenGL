@@ -1,56 +1,163 @@
 #include"../header/data_util.h"
 
+// game version
+#define VERSION 2
 
 
-std::vector<std::string> data_list = {
+std::vector<std::string> text_list = {
+	"[game version]=",
 	"[play count]=",
 	"[squeak count]=",
 	"[touch time]=",
 };
 
 
-std::vector<std::string> data_list2 = {
+std::vector<std::string> data_list = {
+	"game version",
 	"play count",
 	"squeak count",
 	"touch time",
 };
 
 
-void create_save_file() {
+// data file ppath
+std::filesystem::path folder_path = std::filesystem::path(getenv("USERPROFILE")) / "Documents" / "Alcy Simulator data";
+std::filesystem::path file_path = folder_path / "data.txt";
+
+
+void check_data_invalid() {
 	bool folder_new{};
 
-	std::filesystem::path folderPath = std::filesystem::path(getenv("USERPROFILE")) / "Documents" / "Alcy Simulator data";
-	if (!std::filesystem::exists(folderPath)) {
+	if (!std::filesystem::exists(folder_path)) {
 		folder_new = true;
-		if (!std::filesystem::create_directory(folderPath))  exit(1);
+
+		if (!std::filesystem::create_directory(folder_path))
+			exit(1);
 	}
 
 	if (folder_new) {
-		std::filesystem::path filePath = folderPath / "data.txt";
-		std::ofstream outputFile(filePath);
+		std::ofstream outputFile(file_path);
 
 		// 세이브 파일 최초 생성 시 필요한 내용들을 파일에 쓰기
 		if (outputFile.is_open())
-			for(auto &s : data_list)
+			for (auto& s : text_list)
 				outputFile << s << 0 << std::endl;
+		else  
+			exit(1);
 
-		else  exit(1);
+		// save version number to data
+		update_data("game version", VERSION);
 	}
 }
 
 
 
-void update_save_file(const std::string& target, int value) {
-	auto it = std::find(data_list2.begin(), data_list2.end(), target);
-	if (it == data_list2.end())  exit(1);
+void check_data_version() {
+	if (VERSION <= load_data("game version"))
+		return;
+
+	// 기존 값을 저장하는 백업 컨테이너
+	std::vector<int> back_up{};
+
+	// 기존 값 백업
+	for (auto& d : data_list)
+		back_up.push_back(load_data(d));
 
 
-	std::filesystem::path folderPath = std::filesystem::path(getenv("USERPROFILE")) / "Documents" / "Alcy Simulator data";
-	if (!std::filesystem::exists(folderPath))  exit(1);
+	// 파일에서 문자열 읽기
+	if (!std::filesystem::exists(folder_path))
+		exit(1);
 
-	std::filesystem::path filePath = folderPath / "data.txt";
-	std::ifstream inputFile(filePath);
-	if (!inputFile)  exit(1);
+	std::ifstream inputFile(file_path);
+	if (!inputFile)
+		exit(1);
+
+
+	std::string line{};
+
+	while (std::getline(inputFile, line)) {
+		// 문자열을 파싱하여 key와 value 분리
+		size_t pos = line.find('=');
+		if (pos != std::string::npos)
+			std::string str = line.substr(0, pos);
+	}
+
+	inputFile.close();
+
+
+	std::ofstream outputFile(file_path);
+
+	if (!outputFile)
+		exit(1);
+
+	// 모든 데이터를 0인 상태로 추가
+	for (const auto& str : text_list)
+		outputFile << str << "0\n";
+
+	outputFile.close();
+
+
+	// 기존 값 복원
+	for (int i = 0; i < data_list.size(); ++i)
+		update_data(data_list[i], back_up[i]);
+	
+	// 게임 버전 데이터 변경
+	update_data("game version", VERSION);
+}
+
+
+
+void reset_data() {
+	// 파일에서 문자열 읽기
+	if (!std::filesystem::exists(folder_path))
+		exit(1);
+
+	std::ifstream inputFile(file_path);
+	if (!inputFile)
+		exit(1);
+
+
+	std::string line{};
+
+	while (std::getline(inputFile, line)) {
+		// 문자열을 파싱하여 key와 value 분리
+		size_t pos = line.find('=');
+		if (pos != std::string::npos)
+			std::string str = line.substr(0, pos);
+	}
+
+	inputFile.close();
+
+
+
+	std::ofstream outputFile(file_path);
+
+	if (!outputFile)
+		exit(1);
+
+	// 모든 데이터를 0인 상태로 추가
+	for (const auto& str : text_list)
+		outputFile << str << "0\n";
+
+	outputFile.close();
+
+	// 버전만 저장
+	update_data("game version", VERSION);
+}
+
+
+
+void update_data(const std::string& target, int value) {
+	auto it = std::find(data_list.begin(), data_list.end(), target);
+	if (it == data_list.end())  
+		exit(1);
+
+	if (!std::filesystem::exists(folder_path))
+		exit(1);
+
+	std::ifstream inputFile(file_path);
+	if (!inputFile)  
+		exit(1);
 
 	std::string fileContent;
 
@@ -87,7 +194,7 @@ void update_save_file(const std::string& target, int value) {
 	}
 
 	// 텍스트 파일 열고 새로운 내용으로 덮어쓰기
-	std::ofstream outputFile(filePath);
+	std::ofstream outputFile(file_path);
 	outputFile << newContent;
 	outputFile.close();
 }
@@ -95,16 +202,17 @@ void update_save_file(const std::string& target, int value) {
 
 
 int load_data(std::string target) {
-	auto it = std::find(data_list2.begin(), data_list2.end(), target);
-	if (it == data_list2.end())  exit(1);
+	auto it = std::find(data_list.begin(), data_list.end(), target);
+	if (it == data_list.end())  
+		exit(1);
 
 	// 텍스트 파일 열기
-	std::filesystem::path folderPath = std::filesystem::path(getenv("USERPROFILE")) / "Documents" / "Alcy Simulator data";
-	if (!std::filesystem::exists(folderPath)) exit(1);
+	if (!std::filesystem::exists(folder_path))
+		exit(1);
 		
-	std::filesystem::path filePath = folderPath / "data.txt";
-	std::ifstream inputFile(filePath);
-	if (!inputFile) exit(1);
+	std::ifstream inputFile(file_path);
+	if (!inputFile) 
+		exit(1);
 		
 
 	int data_get{};

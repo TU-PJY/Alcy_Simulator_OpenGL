@@ -8,7 +8,11 @@
 #include <vector>
 #include <iostream>
 #include <map>
+#include <unordered_map>
 
-void create_save_file();
-void update_save_file(const std::string& target, int value);
+void update_data(const std::string& target, int value);
 int load_data(std::string target);
+
+void check_data_invalid();
+void check_data_version();
+void reset_data();

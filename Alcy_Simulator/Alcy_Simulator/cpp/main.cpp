@@ -83,8 +83,12 @@ void main(int argc, char** argv) {
 
 		stbi_set_flip_vertically_on_load(true);
 
-		// 세이브 파일이 존재하지 않으면 세이프 파일을 신규 생성한다
-		create_save_file();
+		// 세이브 파일이 존재하지 않으면 세이브 파일을 신규 생성한다
+		check_data_invalid();
+		// 세이브 파일의 버전이 현재 버전보다 낮을 경우 현재 버전에 맞는 세이브 파일로 업데이트 한다.
+		check_data_version();
+
+		reset_data();
 
 		load_sound_file();
 		set_shader();
