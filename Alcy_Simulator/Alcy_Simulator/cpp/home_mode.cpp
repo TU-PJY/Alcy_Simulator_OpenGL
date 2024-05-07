@@ -5,7 +5,7 @@
 #include "../object/main_object/BackGround_home.h"
 #include "../object/main_object/Shadow.h"
 #include "../object/main_object/Front.h"
-#include "../object/main_object/Tip.h"
+#include "../object/main_object/Tip_home.h"
 
 #include "../header/sound.h"
 #include "../header/Camera.h"
@@ -17,7 +17,7 @@ void home_mode() {
 
 	fw.add_object(new Alcy_home(alcy_layer, "alcy_home"), alcy_layer);
 
-	fw.add_object(new Tip(ui_layer, "tip"), ui_layer);
+	fw.add_object(new Tip_home(ui_layer, "tip_home"), ui_layer);
 
 	fw.add_object(new Front(ui_layer, "front_home"), ui_layer);
 

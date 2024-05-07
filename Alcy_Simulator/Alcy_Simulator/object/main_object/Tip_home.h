@@ -4,7 +4,7 @@
 #include "../../header/view.h"
 
 
-class Tip : public FUNCTION {
+class Tip_home : public FUNCTION {
 private:
 	GLuint VAO{};
 	unsigned int tex{};
@@ -12,6 +12,7 @@ private:
 	int layer{};
 	std::string tag{};
 
+	GLfloat size = 3.0;
 	GLfloat transparent = 1.0;
 
 	bool visible = true;
@@ -23,15 +24,21 @@ public:
 				visible = false;
 			else
 				visible = true;
+
+			ssys_ui->playSound(tip_click, 0, false, &ch_ui);
 		}
 	}
 
 
 	void update() {
-		if (visible)
+		if (visible) {
 			transparent = std::lerp(transparent, 1.0, fw.calc_ft(15));
-		else
+			size = std::lerp(size, 3.0, fw.calc_ft(15));
+		}
+		else {
 			transparent = std::lerp(transparent, 0.0, fw.calc_ft(15));
+			size = std::lerp(size, 4.0, fw.calc_ft(15));
+		}
 	}
 
 
@@ -39,16 +46,18 @@ public:
 		init_transform();
 		alpha = transparent;
 
-		s_mat *= scale_image(3.0, 3.0);
-		set_object_static((-1.0 * ratio + 0.3) / cam.zoom, 0.7 / cam.zoom);
-		draw_image(tex, VAO);
+		s_mat *= scale_image(size, size);
+		set_object_static((1.0 * ratio - 0.3) / cam.zoom, -0.7 / cam.zoom);
+
+		if(fw.get_current_mode() == "home_mode")
+			draw_image(tex, VAO);
 	}
 
 	void check_collision() {}
 
 	void check_delete() {}
 
-	Tip(int l, std::string str) {
+	Tip_home(int l, std::string str) {
 		layer = l;
 		tag = str;
 

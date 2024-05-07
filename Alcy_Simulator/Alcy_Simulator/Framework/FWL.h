@@ -45,7 +45,6 @@ private:
 
 // frame time
 #ifdef USING_FRAME_TIME
-	clock_t start_time{}, end_time{};
 	double frame_time{};
 	double frame_time_mul_value = 1;
 #endif
@@ -70,6 +69,10 @@ public:
 
 
 
+	// set frame time from gl_main
+	void set_frame_time(double time) { frame_time = time; }
+
+
 
 	// multiply movement with frame time
 	double calc_ft(double movement, double additional_value = 1) { 
@@ -88,10 +91,6 @@ public:
 
 	void routine() {
 		if (framework_initialization) {
-#ifdef USING_FRAME_TIME
-			start_time = clock();
-#endif
-
 			for (int i = 0; i < NUMBER_OF_LAYER; ++i) {
 				for (auto it = main_cont[i].begin(); it != main_cont[i].end();) {
 					auto ptr = *it;
@@ -136,11 +135,6 @@ public:
 				}
 			}
 #endif
-#endif
-
-#ifdef USING_FRAME_TIME
-			end_time = clock();
-			frame_time = (double)(end_time - start_time) / 1000;
 #endif
 		}
 	}
