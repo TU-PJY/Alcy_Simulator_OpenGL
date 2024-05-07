@@ -10,12 +10,12 @@ private:
 	GLuint VAO{};
 	std::array<unsigned int, 6> tex{};
 	std::array<const char*, 6> directory = {
-		"res//prop//welcome_messege_first.png",
-		"res//prop//welcome_messege_again_1.png",
-		"res//prop//welcome_messege_again_2.png",
-		"res//prop//welcome_messege_again_3.png",
-		"res//prop//welcome_messege_again_4.png",
-		"res//prop//welcome_messege_again_5.png",
+		"res//prop//welcome_messege//welcome_messege_first.png",
+		"res//prop//welcome_messege//welcome_messege_again_1.png",
+		"res//prop//welcome_messege//welcome_messege_again_2.png",
+		"res//prop//welcome_messege//welcome_messege_again_3.png",
+		"res//prop//welcome_messege//welcome_messege_again_4.png",
+		"res//prop//welcome_messege//welcome_messege_again_5.png",
 	};
 
 	int number{};

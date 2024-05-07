@@ -25,12 +25,12 @@ public:
 	// 카메라 움직임 잠금 상태
 	bool camera_lock_state{};
 
-
 	// 카메라 줌 결과값
 	GLfloat zoom = 1.0;
 
 	// 카메라 줌 목표 값
 	GLfloat zoom_value = 1.0;
+
 
 
 	// 키 조작
@@ -59,11 +59,13 @@ public:
 	}
 
 
+
 	// 키 조작 상태 초기화
 	void reset_key_state() {
 		key_state_left = false;
 		key_state_right = false;
 	}
+
 
 
 	// 스크롤 조작
@@ -81,8 +83,26 @@ public:
 			}
 	}
 
+
+	// 카메라 초기화
+	void reset_camera() {
+		rotate_dir = rotate_none;
+		angle = 0;
+
+		x = 0;
+		y = 0;
+
+		zoom = 1.0;
+		zoom_value = 1.0;
+
+		camera_lock_state = false;
+
+		reset_key_state();
+	}
+
+
 	// 카메라 회전 조작
-	void rotate_camera_home_mode() {
+	void rotate_camera() {
 		if (rotate_dir == rotate_right && angle > -8.0)
 			angle = std::lerp(angle, -8.0, fw.calc_ft(4));
 
@@ -93,20 +113,27 @@ public:
 			angle = std::lerp(angle, 0.0, fw.calc_ft(4));
 	}
 
-	// 카메라 이동
-	void move_camera_home_mode() {
+
+
+	// 카메라 상하좌우 이동
+	void move_camera_xy() {
 		x = std::lerp(x, -mx * ratio / 8, fw.calc_ft(15));
 		y = std::lerp(y, -my / 8, fw.calc_ft(15));
 	}
 
+
+
 	// 카메라 줌
-	void zoom_camera_home_mode() {
+	void zoom_camera() {
 		zoom = std::lerp(zoom, zoom_value, fw.calc_ft(5));
 	}
+
+
 
 	// 카메라 잠금 상태 업데이트
 	void update_camera_lock() {
 		auto ptr = fw.get_ptr(cursor_layer, 0);
+
 		if (ptr != nullptr) {
 			if (ptr->get_touch_state())
 				camera_lock_state = true;
@@ -115,8 +142,10 @@ public:
 		}
 	}
 
-	// 키 누름 상태 업데이트
-	void update_key_state() {
+
+
+	// 카메라 회전 키 누름 상태 업데이트
+	void update_key_rotate() {
 		if (key_state_right)
 			rotate_dir = rotate_right;
 
@@ -127,20 +156,19 @@ public:
 			rotate_dir = rotate_none;
 	}
 
-	//홈 모드 카메라 업데이트
-	void update_home_mode() {
-		rotate_camera_home_mode();
-		zoom_camera_home_mode();
 
-		if (!camera_lock_state) {
-			update_key_state();
-			move_camera_home_mode();
-		}
-	}
 
 	void update_camera() {
+		rotate_camera();
+		zoom_camera();
+
 		update_camera_lock();
-		update_home_mode();
+
+		// lock state가 true가 되면 카메라 무빙과 조작을 하지 않는다
+		if (!camera_lock_state) {
+			update_key_rotate();
+			move_camera_xy();
+		}
 	}
 };
 

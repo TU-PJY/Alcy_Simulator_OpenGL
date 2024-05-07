@@ -32,6 +32,6 @@ public:
 		tag = str;
 
 		set_canvas(VAO);
-		set_texture(tex, "res//prop//shadow.png", 256, 256, 1);
+		set_texture(tex, "res//prop//object//shadow.png", 256, 256, 1);
 	}
 };

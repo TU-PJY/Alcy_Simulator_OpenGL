@@ -18,10 +18,19 @@ private:
 
 
 public:
+	void mouse_left_button_down(int button, int state) {
+		auto ptr = fw.get_popup_ptr(popup_menu_layer, 1);
+
+		if (ptr != nullptr)
+			ptr->tell_icon_click();
+	}
+
+
 	void update() {
 		x = mx * ratio / cam.zoom;
 		y = my / cam.zoom;
 	}
+
 
 	void render() {
 		init_transform();
@@ -29,10 +38,12 @@ public:
 		draw_image(tex, VAO);
 	}
 
+
 	void check_collision() {
 		// 커서를 아이콘 위에 올리면 표시된다.
 		// 커서가 아이콘을 벗어나면 아이콘 위치가 다시 복구된다.
-		auto ptr = fw.get_popup_ptr(layer1, 1);
+		auto ptr = fw.get_popup_ptr(popup_menu_layer, 1);
+
 		if (ptr != nullptr) {
 			for (int i = 0; i < ptr->get_icon_number(); ++i) {
 				if ((ptr->get_icon_zone()[0] + 0.25 * i) / cam.zoom < x && x < (ptr->get_icon_zone()[1] + 0.25 * i) / cam.zoom &&
@@ -46,7 +57,10 @@ public:
 		}
 	}
 
+
 	void check_delete() {};
+
+
 
 	Cursor_menu(int l, std::string str) {
 		layer = l;

@@ -37,6 +37,12 @@ public:
 	// 커서가 아이콘 위를 벗어낫음을 알림
 	void tell_not_on_cursor(int idx) { icon.tell_not_on_cursor(idx); }
 
+	// 커서가 아이콘을 눌렀음을 알림
+	void tell_icon_click() { icon.tell_icon_click(); }
+
+	// 태그 리턴
+	std::string get_tag() const { return tag; }
+
 
 	void update() {
 		icon.tell_position(position);

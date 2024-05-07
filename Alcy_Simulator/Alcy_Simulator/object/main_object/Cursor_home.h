@@ -42,6 +42,7 @@ public:
 	void set_cursor_invisible() { visible = false; }
 	void set_cursor_visible() { visible = true; }
 
+
 	// 커서 타입 업데이트
 	void update_cursor_type() {
 		// 홈 모드 동작
@@ -108,6 +109,7 @@ public:
 		}
 	}
 
+
 	// 마우스 왼쪽 버튼 릴리즈
 	void mouse_left_button_up(int button, int state) {
 		auto ptr = fw.get_ptr(alcy_layer, 0);
@@ -122,6 +124,7 @@ public:
 			}
 		}
 	}
+
 
 	// 알키 쓰다듬기 커서 움직임 업데이트
 	void move_cursor_touch_state() {
@@ -147,9 +150,11 @@ public:
 		}
 	}
 
+
 	void check_collision() {
 		update_cursor_type();
 	}
+
 
 	void render() {
 		init_transform();
@@ -159,9 +164,11 @@ public:
 			draw_image(tex[tex_number], VAO);
 	}
 
+
 	void check_delete() {
 
 	}
+
 
 	Cursor_home(int l, std::string str) {
 		layer = 1;

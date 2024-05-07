@@ -5,7 +5,7 @@
 #include "../object/popup_object/Back.h"
 
 void menu_mode() {
-	fw.add_popup_object(new Back(layer1, "back"), layer1);
-	fw.add_popup_object(new Menu(layer1, "menu"), layer1);
-	fw.add_popup_object(new Cursor_menu(layer3, "cursor_menu"), layer3);
+	fw.add_popup_object(new Back(popup_menu_layer, "back"), popup_menu_layer);
+	fw.add_popup_object(new Menu(popup_menu_layer, "menu"), popup_menu_layer);
+	fw.add_popup_object(new Cursor_menu(popup_cursor_layer, "cursor_menu"), popup_cursor_layer);
 }

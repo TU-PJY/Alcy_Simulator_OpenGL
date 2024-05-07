@@ -20,9 +20,10 @@ private:
 
 	// 커서가 아이콘 위에 있는지 여부
 	std::array<bool, ICON_NUMBER> on_cursor{};
+	std::array<bool, ICON_NUMBER> on_click{};
 
 	// 아이콘 커서 인식 영역
-	std::array<GLfloat, ICON_NUMBER> icon_zone{};
+	std::array<GLfloat, 4> icon_zone{};
 
 	// 아이콘 투명도
 	GLfloat transparent{};
@@ -37,11 +38,25 @@ public:
 	void tell_position(GLfloat pos) { position = pos; }
 
 	// 아이콘 개수 리턴
-	size_t get_icon_number() const { return tex.size(); }
+	size_t get_icon_number() const { return ICON_NUMBER; }
 
 	// 아이콘 위에 커서가 있음을 알림
 	void tell_on_cursor(int idx) { on_cursor[idx] = true; }
+
+	// 커서가 아이콘을 벗어났음을 알림
 	void tell_not_on_cursor(int idx) { on_cursor[idx] = false; }
+
+	// 마우스가 아이콘을 클릭했음을 알림
+	void tell_icon_click() { 
+		for (int i = 0; i < ICON_NUMBER; ++i) {
+			if (on_cursor[i]) {
+				on_click[i] = true;
+
+				// 테스트용
+				fw.end_popup();
+			}
+		}
+	}
 
 	// 아이콘 커서 인식 범위 리턴
 	std::array<GLfloat, 4> get_icon_zone() const { return icon_zone; }
@@ -54,9 +69,7 @@ public:
 		GLfloat y_min = position - 0.1 + 0.01;
 		GLfloat y_max = position + 0.1 - 0.01;
 
-		icon_zone = {
-			x_min, x_max, y_min, y_max
-		};
+		icon_zone = { x_min, x_max, y_min, y_max };
 	}
 
 
@@ -74,21 +87,25 @@ public:
 		}
 	}
 
+
+
 	void render() {
-		for (int i = 0; i < tex.size(); ++i) {
+		for (int i = 0; i < ICON_NUMBER; ++i) {
 			init_transform();
 
 			alpha = transparent;
 			set_object_static((- 1.0 * ratio + 0.15 + 0.25 * i) / cam.zoom, (position + position2[i]) / cam.zoom);
+
 			draw_image(tex[i], VAO);
 		}
 	}
 
-	Icon() {
 
+
+	Icon() {
 		set_canvas(VAO);
 
-		for (int i = 0; i < tex.size(); ++i)
+		for (int i = 0; i < ICON_NUMBER; ++i)
 			set_texture(tex[i], directory[i], 256, 256, 1);
 	}
 };

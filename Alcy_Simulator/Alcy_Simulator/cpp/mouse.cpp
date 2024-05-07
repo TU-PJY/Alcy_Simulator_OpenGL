@@ -12,7 +12,8 @@ void convert_cursor_position(int x, int y) {  //GL좌표계로 변환
 
 
 void mouse_button(int button, int state, int x, int y) {  // 마우스 클릭
-	// 홈 모드 마우스 조작
+
+	// 홈 모드 마우스 클릭
 	if (fw.get_current_mode() == "home_mode") {
 		auto ptr = fw.get_ptr(cursor_layer, 0);
 
@@ -25,7 +26,18 @@ void mouse_button(int button, int state, int x, int y) {  // 마우스 클릭
 		}
 	}
 
-	// 메뉴 열기
+
+	// 메뉴 모드 마우스 클릭
+	if (fw.get_current_mode() == "menu_mode") {
+		auto ptr = fw.get_popup_ptr(popup_cursor_layer, 0);
+		if (ptr != nullptr) {
+			if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+				ptr->mouse_left_button_down(button, state);
+		}
+	}
+
+
+	// 메뉴 열기 / 닫기
 	if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN) {
 		if (fw.get_current_mode() == "menu_mode")
 			fw.end_popup();
@@ -62,7 +74,6 @@ void mouse_motion(int x, int y) {
 
 // 마우스 휠
 void mouse_wheel(int button, int dir, int x, int y) { 
-
 	if (fw.get_current_mode() == "home_mode")
 		cam.scroll(dir);
 }

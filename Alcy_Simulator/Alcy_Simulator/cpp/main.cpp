@@ -22,6 +22,7 @@ std::string vendor;
 int WIDTH = GetSystemMetrics(SM_CXSCREEN);
 int HEIGHT = GetSystemMetrics(SM_CYSCREEN);
 
+
 GLvoid gl_main() {
 	glClearColor(0.39f, 0.40f, 0.5f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  
@@ -69,6 +70,7 @@ void main(int argc, char** argv) {
 
 		else std::cout << "GLEW Initialized" << std::endl;
 
+
 		// get vendor info from GPU
 		const GLubyte* vendor_info = glGetString(GL_VENDOR);
 		if (vendor_info) {
@@ -76,22 +78,29 @@ void main(int argc, char** argv) {
 			//std::cout << "vendor: " << vendor << std::endl;
 		}
 
+
 		glEnable(GL_MULTISAMPLE);
 		glEnable(GL_ALPHA_TEST);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
+		// 이미지 로드 방향 반전 옵션
 		stbi_set_flip_vertically_on_load(true);
 
 		// 세이브 파일이 존재하지 않으면 세이브 파일을 신규 생성한다
 		check_data_invalid();
-		// 세이브 파일의 버전이 현재 버전보다 낮을 경우 현재 버전에 맞는 세이브 파일로 업데이트 한다.
+
+		// 세이브 파일의 버전이 현재 버전보다 낮을 경우 현재 버전에 맞는 세이브 파일로 업데이트 한다
 		check_data_version();
 
+		// 사운드 파일 로드
 		load_sound_file();
-		set_shader();
-		fw.init(home_mode, "home_mode");
 
+		// 셰이더 세팅
+		set_shader();
+
+		// 프레임워크 세팅
+		fw.init(home_mode, "home_mode");
 	}
 	
 	glutDisplayFunc(gl_main);

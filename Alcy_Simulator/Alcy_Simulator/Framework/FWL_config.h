@@ -49,7 +49,7 @@ public:
 	virtual void render() {}
 	virtual void check_delete() {}
 
-	virtual std::string get_tag() { return {}; }
+	virtual std::string get_tag() const { return {}; }
 
 	////////////////// home mode
 	// 
@@ -91,13 +91,17 @@ public:
 	virtual void render() {}
 	virtual void check_delete() {}
 
-	virtual std::string get_tag() { return {}; }
+	virtual std::string get_tag() const { return {}; }
 
 	//menu mode
 	virtual size_t get_icon_number() const { return {}; }
 	virtual std::array<GLfloat, 4> get_icon_zone() const { return {}; }
 	virtual void tell_on_cursor(int idx) {}
 	virtual void tell_not_on_cursor(int idx) {}
+	virtual void tell_icon_click() {}
+
+	// cursor
+	virtual void mouse_left_button_down(int button, int state) {};
 
 	virtual     ~POPUP_FUNCTION() {}
 };

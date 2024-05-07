@@ -60,8 +60,8 @@ enum main_layers {
 };
 
 enum popup_layers {
-	layer1,
-	layer2,
-	layer3,
-	layer4,
+	popup_menu_layer,
+	popup_layer2,
+	popup_layer3,
+	popup_cursor_layer,
 };
