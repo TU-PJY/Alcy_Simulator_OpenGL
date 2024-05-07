@@ -17,6 +17,16 @@ private:
 	bool visible = true;
 
 public:
+	void update_tip_visible (unsigned char KEY) {
+		if (KEY == 9) {
+			if (visible)
+				visible = false;
+			else
+				visible = true;
+		}
+	}
+
+
 	void update() {
 		if (visible)
 			transparent = std::lerp(transparent, 1.0, fw.calc_ft(15));
@@ -27,6 +37,7 @@ public:
 
 	void render() {
 		init_transform();
+		alpha = transparent;
 
 		s_mat *= scale_image(3.0, 3.0);
 		set_object_static((-1.0 * ratio + 0.3) / cam.zoom, 0.7 / cam.zoom);

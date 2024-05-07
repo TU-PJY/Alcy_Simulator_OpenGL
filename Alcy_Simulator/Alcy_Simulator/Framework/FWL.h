@@ -45,7 +45,7 @@ private:
 
 // frame time
 #ifdef USING_FRAME_TIME
-	clock_t   start_time{}, end_time{};
+	clock_t start_time{}, end_time{};
 	double frame_time{};
 	double frame_time_mul_value = 1;
 #endif

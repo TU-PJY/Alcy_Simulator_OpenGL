@@ -142,6 +142,7 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Framework\FWL.h" />
     <ClInclude Include="Framework\FWL_config.h" />
     <ClInclude Include="header\Camera.h" />
     <ClInclude Include="header\data_util.h" />

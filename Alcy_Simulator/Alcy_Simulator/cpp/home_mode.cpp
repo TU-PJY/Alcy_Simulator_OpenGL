@@ -27,5 +27,4 @@ void home_mode() {
 
 	cam.zoom = 2.4;
 	cam.zoom_value = 0.8;
-
 }

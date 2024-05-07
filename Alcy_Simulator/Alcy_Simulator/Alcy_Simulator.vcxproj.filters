@@ -136,6 +136,9 @@
     <ClInclude Include="object\main_object\Tip.h">
       <Filter>[8]__________OBJ_main\[2]------UI</Filter>
     </ClInclude>
+    <ClInclude Include="Framework\FWL.h">
+      <Filter>[1]__________FrameWork</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cpp\mouse.cpp">

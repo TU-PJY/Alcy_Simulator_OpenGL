@@ -23,6 +23,8 @@ int WIDTH = GetSystemMetrics(SM_CXSCREEN);
 int HEIGHT = GetSystemMetrics(SM_CYSCREEN);
 
 
+double delta_time, ft, last_delta_time;
+
 GLvoid gl_main() {
 	glClearColor(0.39f, 0.40f, 0.5f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  
