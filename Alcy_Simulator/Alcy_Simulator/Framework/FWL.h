@@ -286,6 +286,31 @@ public:
 
 
 
+	// find object ptr
+	FUNCTION* find_object(int layer, std::string tag) {
+		FUNCTION* obj{};
+
+		bool obj_find{};
+
+		for (int i = 0; i < main_cont[layer].size(); ++i) {
+			auto ptr = get_ptr(layer, i);
+
+			if (ptr != nullptr && ptr->get_tag() == tag) {
+				obj = ptr;
+				obj_find = true;
+				break;
+			}
+		}
+
+		if (obj_find)
+			return obj;
+		else
+			return nullptr;
+	}
+
+
+
+
 	// return number of objects of specific layer
 	size_t get_layer_size(int layer) {
 		if (!framework_initialization)
@@ -535,6 +560,31 @@ public:
 			return nullptr;
 		else
 			return popup_cont[layer][index];
+	}
+
+
+
+
+	// find popup object ptr
+	POPUP_FUNCTION* find_popup_object(int layer, std::string tag) {
+		POPUP_FUNCTION* obj{};
+
+		bool obj_find{};
+
+		for (int i = 0; i < popup_cont[layer].size(); ++i) {
+			auto ptr = get_popup_ptr(layer, i);
+
+			if (ptr != nullptr && ptr->get_tag() == tag) {
+				obj = ptr;
+				obj_find = true;
+				break;
+			}
+		}
+
+		if (obj_find)
+			return obj;
+		else
+			return nullptr;
 	}
 
 

@@ -165,6 +165,7 @@
     <ClInclude Include="object\popup_object\Back.h" />
     <ClInclude Include="object\popup_object\Cursor_menu.h" />
     <ClInclude Include="object\popup_object\Icon.h" />
+    <ClInclude Include="object\popup_object\Info.h" />
     <ClInclude Include="object\popup_object\Menu.h" />
   </ItemGroup>
   <ItemGroup>

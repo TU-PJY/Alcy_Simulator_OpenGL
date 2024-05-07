@@ -18,6 +18,8 @@ private:
 	bool visible = true;
 
 public:
+	std::string get_tag() const { return tag; }
+
 	void update_tip_visible (unsigned char KEY) {
 		if (KEY == 9) {
 			if (visible)

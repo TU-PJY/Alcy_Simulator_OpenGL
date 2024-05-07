@@ -83,6 +83,8 @@ private:
 
 
 public:
+	std::string get_tag() const { return tag; }
+
 	// 쓰다듬기 활성화 영역 리턴
 	std::array<GLfloat, 4> get_touch_zone() const { return touch_zone; }
 	
@@ -230,7 +232,7 @@ public:
 			face.enable_state_static();
 			face.tell_blink_state(true);
 
-			auto ptr = fw.get_ptr(cursor_layer, 0);
+			auto ptr = fw.find_object(cursor_layer, "cursor_home");
 			if (ptr != nullptr) {
 				touch_angle = -ptr->get_cursor_touch_x() * 20;
 

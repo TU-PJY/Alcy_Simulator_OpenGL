@@ -42,11 +42,13 @@ public:
 	void set_cursor_invisible() { visible = false; }
 	void set_cursor_visible() { visible = true; }
 
+	std::string get_tag() const { return tag; }
+
 
 	// 커서 타입 업데이트
 	void update_cursor_type() {
 		// 홈 모드 동작
-		auto ptr = fw.get_ptr(alcy_layer, 0);
+		auto ptr = fw.find_object(alcy_layer, "alcy_home");
 
 		if (touch_state) {
 			tex_number = 1;
@@ -79,7 +81,7 @@ public:
 
 	// 마우스 클릭 초기화
 	void reset_mouse_state() {
-		auto ptr = fw.get_ptr(alcy_layer, 0);
+		auto ptr = fw.find_object(alcy_layer, "alcy_home");
 
 		if (ptr != nullptr && touch_state) {
 			touch_state = false;
@@ -93,7 +95,7 @@ public:
 
 	// 마우스 왼쪽 버튼 클릭
 	void mouse_left_button_down(int button, int state) {
-		auto ptr = fw.get_ptr(alcy_layer, 0);
+		auto ptr = fw.find_object(alcy_layer, "alcy_home");
 
 		if (ptr != nullptr) {
 			if(ptr->get_interaction_available_state()) {
@@ -112,7 +114,7 @@ public:
 
 	// 마우스 왼쪽 버튼 릴리즈
 	void mouse_left_button_up(int button, int state) {
-		auto ptr = fw.get_ptr(alcy_layer, 0);
+		auto ptr = fw.find_object(alcy_layer, "alcy_home");
 
 		if (ptr != nullptr) {
 			if (touch_state) {

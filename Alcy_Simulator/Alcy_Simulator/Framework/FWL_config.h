@@ -97,11 +97,25 @@ public:
 	virtual std::string get_tag() const { return {}; }
 
 	//menu mode
+	// icon
 	virtual size_t get_icon_number() const { return {}; }
-	virtual std::array<GLfloat, 4> get_icon_zone() const { return {}; }
 	virtual void tell_on_cursor(int idx) {}
 	virtual void tell_not_on_cursor(int idx) {}
 	virtual void tell_icon_click() {}
+	virtual std::array<GLfloat, 4> get_icon_zone() const { return {}; }
+
+	// button
+	virtual void tell_on_cursor_button(int idx) {}
+	virtual void tell_not_on_cursor_button(int idx) {}
+	virtual size_t get_button_number() {return {};}
+	virtual void tell_button_click() {}
+	virtual std::array<GLfloat, 4> get_button_zone() { return {}; }
+
+	//info
+	virtual void close_info() {}
+	virtual void tell_info_is_open() {}
+	virtual void tell_info_is_close() {}
+	virtual bool get_info_visible_state() { return {}; }
 
 	// cursor
 	virtual void mouse_left_button_down(int button, int state) {};

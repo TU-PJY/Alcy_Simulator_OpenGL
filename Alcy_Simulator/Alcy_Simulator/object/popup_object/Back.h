@@ -27,8 +27,8 @@ private:
 public:
 	void update() {
 		// 완전히 투명해지면 스스로 삭제
-		transparent = std::lerp(transparent, 0.0, fw.calc_ft(25));
-		text_transparent = std::lerp(text_transparent, 0.0, fw.calc_ft(25));
+		transparent = std::lerp(transparent, 0.0, fw.calc_ft(15));
+		text_transparent = std::lerp(text_transparent, 0.0, fw.calc_ft(15));
 		text_x = std::lerp(text_x, ratio * -1.0 + 0.5, fw.calc_ft(10));
 
 		if (transparent <= 0.0001)

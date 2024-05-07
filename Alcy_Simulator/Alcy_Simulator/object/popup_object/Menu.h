@@ -23,6 +23,9 @@ private:
 	// 아이콘
 	Icon icon;
 
+	// 버튼
+	Button button;
+
 
 public:
 	// 메뉴 아이콘 개수 리턴
@@ -40,6 +43,23 @@ public:
 	// 커서가 아이콘을 눌렀음을 알림
 	void tell_icon_click() { icon.tell_icon_click(); }
 
+
+	// 버튼 관련 함수
+	void tell_on_cursor_button(int idx) { button.tell_on_cursor(idx); }
+
+	void tell_not_on_cursor_button(int idx) { button.tell_not_on_cursor(idx); }
+
+	size_t get_button_number() { return button.get_button_number(); }
+
+	void tell_button_click() { button.tell_button_click(); }
+
+	std::array<GLfloat, 4> get_button_zone() { return button.get_button_zone(); }
+
+	// info 관련 함수
+	void tell_info_is_open() { button.tell_info_is_open(); }
+	void tell_info_is_close() { button.tell_info_is_close(); }
+
+
 	// 태그 리턴
 	std::string get_tag() const { return tag; }
 
@@ -47,6 +67,9 @@ public:
 	void update() {
 		icon.tell_position(position);
 		icon.update();
+
+		button.tell_position(position);
+		button.update();
 
 		position = std::lerp(position, -1.0 + 0.15, fw.calc_ft(10));
 		transparent = std::lerp(transparent, 0.7, fw.calc_ft(7));
@@ -61,6 +84,7 @@ public:
 		draw_image(tex, VAO);
 
 		icon.render();
+		button.render();
 	}
 
 	void check_collision() {}

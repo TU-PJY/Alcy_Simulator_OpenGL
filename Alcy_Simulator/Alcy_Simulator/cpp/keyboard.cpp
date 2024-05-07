@@ -7,7 +7,18 @@
 void key_down(unsigned char KEY, int x, int y) {
 	switch (KEY) {
 	case 27:
-		glutDestroyWindow(1);
+		if (fw.get_current_mode() == "menu_mode")
+			fw.end_popup();
+
+		else {
+			fw.init_popup(menu_mode, "menu_mode");
+			cam.reset_key_state();  // 카메라 조작 상태를 초기화한다 
+
+			auto ptr = fw.find_object(cursor_layer, "cursor_home");
+			if (ptr != nullptr)
+				ptr->reset_mouse_state();
+		}
+
 		break;
 	}
 
@@ -15,7 +26,7 @@ void key_down(unsigned char KEY, int x, int y) {
 	if (fw.get_current_mode() == "home_mode") {
 		cam.key_down(KEY);
 
-		auto ptr = fw.get_ptr(ui_layer, 0);
+		auto ptr = fw.find_object(ui_layer, "tip_home");
 		if (ptr != nullptr)
 			ptr->update_tip_visible(KEY);
 	}
