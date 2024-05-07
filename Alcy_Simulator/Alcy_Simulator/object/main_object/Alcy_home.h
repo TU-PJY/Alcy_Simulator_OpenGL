@@ -161,10 +161,10 @@ public:
 			if (cam.key_state_left || cam.key_state_right || head_rotate_state != head_rotate_none)
 				face.enable_state_static();
 
-			if (cam.key_state_right && !cam.key_state_left && cam.angle < -7.0)
+			if (cam.key_state_right && !cam.key_state_left && cam.angle < -6.0)
 				head_rotate_state = head_rotate_right;
 
-			else if (!cam.key_state_right && cam.key_state_left && cam.angle > 7.0)
+			else if (!cam.key_state_right && cam.key_state_left && cam.angle > 6.0)
 				head_rotate_state = head_rotate_left;
 
 			else if (!cam.key_state_right && !cam.key_state_left && cam.angle < 2.0 && cam.angle > -2.0) {
