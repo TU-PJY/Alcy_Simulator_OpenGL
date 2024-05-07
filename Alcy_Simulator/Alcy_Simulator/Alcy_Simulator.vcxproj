@@ -158,6 +158,7 @@
     <ClInclude Include="object\main_object\Background_home.h" />
     <ClInclude Include="object\main_object\Cursor_home.h" />
     <ClInclude Include="object\main_object\Shadow.h" />
+    <ClInclude Include="object\main_object\Tip.h" />
     <ClInclude Include="object\main_object\Welcome_messege.h" />
     <ClInclude Include="object\main_object\Front.h" />
     <ClInclude Include="object\popup_object\Back.h" />
