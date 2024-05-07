@@ -18,10 +18,6 @@ void key_down(unsigned char KEY, int x, int y) {
 		if (ptr != nullptr)
 			ptr->update_tip_visible(KEY);
 	}
-
-	
-	if (glutGetWindow() != 0)
-		glutPostRedisplay();
 }
 
 
@@ -30,7 +26,4 @@ void key_up(unsigned char KEY, int x, int y) {
 	// 홈 모드 카메라 조작
 	if (fw.get_current_mode() == "home_mode")
 		cam.key_up(KEY);
-
-	if (glutGetWindow() != 0)
-		glutPostRedisplay();
 }

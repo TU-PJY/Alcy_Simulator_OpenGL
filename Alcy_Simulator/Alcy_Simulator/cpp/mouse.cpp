@@ -51,24 +51,18 @@ void mouse_button(int button, int state, int x, int y) {  // 마우스 클릭
 				ptr->reset_mouse_state();
 		}
 	}
-
-	glutPostRedisplay();
 }
 
 
 // 클릭 안할 때의 모션
 void mouse_passive_motion(int x, int y) { 
 	convert_cursor_position(x, y);
-
-	glutPostRedisplay();
 }
 
 
 // 클릭 할 때의 모션
 void mouse_motion(int x, int y) {  
 	convert_cursor_position(x, y);
-
-	glutPostRedisplay();
 }
 
 
