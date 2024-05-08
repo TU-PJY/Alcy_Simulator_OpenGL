@@ -14,7 +14,7 @@ void key_down(unsigned char KEY, int x, int y) {
 			fw.init_popup(menu_mode, "menu_mode");
 			cam.reset_key_state();  // 카메라 조작 상태를 초기화한다 
 
-			auto ptr = fw.find_object(cursor_layer, "cursor_home");
+			auto ptr = fw.find_object(layer7, "cursor_home");
 			if (ptr != nullptr)
 				ptr->reset_mouse_state();
 		}
@@ -26,7 +26,7 @@ void key_down(unsigned char KEY, int x, int y) {
 	if (fw.get_current_mode() == "home_mode") {
 		cam.key_down(KEY);
 
-		auto ptr = fw.find_object(ui_layer, "tip_home");
+		auto ptr = fw.find_object(layer3, "tip_home");
 		if (ptr != nullptr)
 			ptr->update_tip_visible(KEY);
 	}

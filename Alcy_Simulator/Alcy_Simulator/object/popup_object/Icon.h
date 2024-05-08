@@ -170,7 +170,7 @@ public:
 				
 				case 1: // info
 					if(!info_is_open)
-						fw.add_popup_object(new Info(popup_layer2, "info"), popup_layer2);
+						fw.add_popup_object(new Info(popup_layer1, "info"), popup_layer1);
 					break;
 				}
 

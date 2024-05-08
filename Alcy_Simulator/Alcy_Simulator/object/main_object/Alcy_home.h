@@ -232,7 +232,7 @@ public:
 			face.enable_state_static();
 			face.tell_blink_state(true);
 
-			auto ptr = fw.find_object(cursor_layer, "cursor_home");
+			auto ptr = fw.find_object(layer7, "cursor_home");
 			if (ptr != nullptr) {
 				touch_angle = -ptr->get_cursor_touch_x() * 20;
 
@@ -273,7 +273,7 @@ public:
 		if (!welcome_state) {
 			welcome_timer += fw.calc_ft(1);
 			if (welcome_timer > 1.0) {
-				fw.add_object(new Welcome_messege(prop_layer2, "welcome_messege"), prop_layer2);
+				fw.add_object(new Welcome_messege(layer2, "welcome_messege"), layer2);
 				welcome_state = true;
 			}
 		}

@@ -15,7 +15,7 @@ void mouse_button(int button, int state, int x, int y) {  // 마우스 클릭
 
 	// 홈 모드 마우스 클릭
 	if (fw.get_current_mode() == "home_mode") {
-		auto ptr = fw.find_object(cursor_layer, "cursor_home");
+		auto ptr = fw.find_object(layer7, "cursor_home");
 
 		if (ptr != nullptr) {
 			if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
@@ -29,7 +29,7 @@ void mouse_button(int button, int state, int x, int y) {  // 마우스 클릭
 
 	// 메뉴 모드 마우스 클릭
 	if (fw.get_current_mode() == "menu_mode") {
-		auto ptr = fw.find_popup_object(popup_cursor_layer, "cursor_menu");
+		auto ptr = fw.find_popup_object(popup_layer4, "cursor_menu");
 
 		if (ptr != nullptr) {
 			if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
@@ -47,7 +47,7 @@ void mouse_button(int button, int state, int x, int y) {  // 마우스 클릭
 			fw.init_popup(menu_mode, "menu_mode");
 			cam.reset_key_state();  // 카메라 조작 상태를 초기화한다 
 
-			auto ptr = fw.find_object(cursor_layer, "cursor_home");
+			auto ptr = fw.find_object(layer7, "cursor_home");
 			if (ptr != nullptr)
 				ptr->reset_mouse_state();
 		}

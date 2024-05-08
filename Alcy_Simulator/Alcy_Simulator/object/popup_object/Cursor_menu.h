@@ -22,12 +22,12 @@ public:
 
 	void mouse_left_button_down(int button, int state) {
 		// info 닫기
-		auto ptr2 = fw.find_popup_object(popup_layer2, "info");
+		auto ptr2 = fw.find_popup_object(popup_layer1, "info");
 		if (ptr2 != nullptr && ptr2->get_info_visible_state())
 			ptr2->close_info();
 
 		// button, icon 클릭
-		auto ptr = fw.find_popup_object(popup_menu_layer, "menu");
+		auto ptr = fw.find_popup_object(popup_layer1, "menu");
 		if (ptr != nullptr) {
 			ptr->tell_icon_click();
 			ptr->tell_button_click();
@@ -51,7 +51,7 @@ public:
 	void check_collision() {
 		// 커서를 아이콘 위에 올리면 표시된다.
 		// 커서가 아이콘을 벗어나면 아이콘 위치가 다시 복구된다.
-		auto ptr = fw.find_popup_object(popup_menu_layer, "menu");
+		auto ptr = fw.find_popup_object(popup_layer1, "menu");
 
 		if (ptr != nullptr) {
 			// icon
@@ -94,14 +94,14 @@ public:
 
 		// 메뉴를 연 동안에는 메인 모드에 존재하는 커서를 보이지 않게한다.
 		// 메인 모드의 커서와 다른 객체임
-		auto ptr = fw.find_object(cursor_layer, "cursor_home");
+		auto ptr = fw.find_object(layer7, "cursor_home");
 		if (ptr != nullptr)
 			ptr->set_cursor_invisible();
 	}
 
 	~Cursor_menu() {
 		// 메뉴를 종료하면 다시 메인 모드의 커서를 보이게 한다.
-		auto ptr = fw.find_object(cursor_layer, "cursor_home");
+		auto ptr = fw.find_object(layer7, "cursor_home");
 		if (ptr != nullptr)
 			ptr->set_cursor_visible();
 	}

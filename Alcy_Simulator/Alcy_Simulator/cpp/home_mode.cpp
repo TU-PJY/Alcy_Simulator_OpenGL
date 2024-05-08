@@ -11,17 +11,17 @@
 #include "../header/Camera.h"
 
 void home_mode() {
-	fw.add_object(new BackGround_home(background_layer, "background_home"), background_layer);
+	fw.add_object(new BackGround_home(layer1, "background_home"), layer1);
 
-	fw.add_object(new Shadow(prop_layer1, "shadow_home"), prop_layer1);
+	fw.add_object(new Shadow(layer1, "shadow_home"), layer1);
 
-	fw.add_object(new Alcy_home(alcy_layer, "alcy_home"), alcy_layer);
+	fw.add_object(new Alcy_home(layer2, "alcy_home"), layer2);
 
-	fw.add_object(new Tip_home(ui_layer, "tip_home"), ui_layer);
+	fw.add_object(new Tip_home(layer3, "tip_home"), layer3);
 
-	fw.add_object(new Front(ui_layer, "front_home"), ui_layer);
+	fw.add_object(new Front(layer3, "front_home"), layer3);
 
-	fw.add_object(new Cursor_home(cursor_layer, "cursor_home"), cursor_layer);
+	fw.add_object(new Cursor_home(layer7, "cursor_home"), layer7);
 
 	ssys->playSound(home_music, 0, false, &ch_bgm);
 

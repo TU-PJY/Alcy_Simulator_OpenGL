@@ -136,13 +136,11 @@ int set_font(const char* font_name, int size, int type, GLuint& base, HDC& hDC) 
 GLvoid kill_text(GLuint base) { glDeleteLists(base, 96); }
 
 
-GLvoid draw_text(unsigned int tex, GLuint VAO, GLuint base, const char* fmt, ...) { // Custom GL "Print" Routin
+GLvoid draw_text(unsigned int tex, GLuint base, const char* fmt, ...) { // Custom GL "Print" Routin
 	transmit_translation();
 
 	// 화면 좌표로 변환된 모델 중심 좌표 계산
 	glm::vec4 modelCenterScreen = projection * view * result * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
-
-	glBindVertexArray(VAO);
 	glBindTexture(GL_TEXTURE_2D, tex);
 
 	// Nvidia GPU 코드

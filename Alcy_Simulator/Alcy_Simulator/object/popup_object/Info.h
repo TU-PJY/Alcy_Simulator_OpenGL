@@ -65,14 +65,14 @@ public:
 		set_canvas(VAO);
 		set_texture(tex, "res//ui//info.png", 512, 512, 1);
 
-		auto ptr = fw.find_popup_object(popup_menu_layer, "menu");
+		auto ptr = fw.find_popup_object(popup_layer1, "menu");
 		if (ptr != nullptr)
 			ptr->tell_info_is_open();
 	}
 
 
 	~Info() {
-		auto ptr = fw.find_popup_object(popup_menu_layer, "menu");
+		auto ptr = fw.find_popup_object(popup_layer1, "menu");
 		if (ptr != nullptr)
 			ptr->tell_info_is_close();
 	}

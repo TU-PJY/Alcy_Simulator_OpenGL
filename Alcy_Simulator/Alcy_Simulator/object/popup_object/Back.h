@@ -48,7 +48,7 @@ public:
 		set_object_static(text_x / cam.zoom, 0.8 / cam.zoom);
 		alpha = text_transparent;
 
-		draw_text(text_tex, VAO, base, "MENU");
+		draw_text(text_tex, base, "MENU");
 	}
 
 	void check_collision() {}
@@ -116,7 +116,7 @@ public:
 		set_object_static(text_x / cam.zoom, 0.8 / cam.zoom);
 		alpha = text_transparent;
 
-		draw_text(text_tex, VAO, base, "MENU");
+		draw_text(text_tex, base, "MENU");
 	}
 
 	void check_collision() {}
@@ -137,6 +137,6 @@ public:
 	// 메뉴 종료 시 같은 투명 배경을 추가한 후 삭제된다.
 	~Back() {
 		kill_text(base);
-		fw.add_object(new Back2(ui_layer, "back2"), ui_layer);
+		fw.add_object(new Back2(layer6, "back2"), layer6);
 	}
 };
