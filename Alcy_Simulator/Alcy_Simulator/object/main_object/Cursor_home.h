@@ -50,6 +50,13 @@ public:
 		// 홈 모드 동작
 		auto ptr = fw.find_object(layer2, "alcy_home");
 
+		if (!touch_state) {
+			if (cam.key_state_left || cam.key_state_right) {
+				tex_number = 0;
+				return;
+			}
+		}
+
 		if (touch_state) {
 			tex_number = 1;
 			return;

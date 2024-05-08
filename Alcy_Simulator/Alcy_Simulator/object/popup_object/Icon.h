@@ -117,11 +117,18 @@ public:
 class Button {
 private:
 	GLuint VAO;
+	std::array<unsigned int, 2> text_tex{};
+	std::array<const char*, 2> text_directory = {
+		"res//ui//text//text_quit.png",
+		"res//ui//text//text_info.png",
+	};
+
 	std::array<unsigned int, 2> tex{};
 	std::array<const char*, 2> directory = {
 		"res//ui//icon_off.png",
 		"res//ui//icon_info.png",
 	};
+
 
 	std::array<GLfloat, 4> button_zone{};
 
@@ -220,6 +227,13 @@ public:
 			set_object_static((-1.0 * ratio + 0.1 + position2[i]) / cam.zoom, (position + 0.25 + 0.16 * i) / cam.zoom);
 
 			draw_image(tex[i], VAO);
+
+			init_transform();
+			s_mat *= scale_image(1.5, 1.5);
+			set_object_static((-1.0 * ratio + 0.5) / cam.zoom, (position + 0.235) / cam.zoom);
+
+			if (on_cursor[i])
+				draw_image(text_tex[i], VAO);
 		}
 	}
 
@@ -228,6 +242,9 @@ public:
 		set_canvas(VAO);
 		for (int i = 0; i < tex.size(); ++i)
 			set_texture(tex[i], directory[i], 512, 512, 1);
+
+		for (int i = 0; i < text_tex.size(); ++i)
+			set_texture(text_tex[i], text_directory[i], 512, 512, 1);
 	}
 
 };

@@ -63,7 +63,7 @@ public:
 		tag = str;
 
 		set_canvas(VAO);
-		set_texture(tex, "res//ui//info.png", 512, 512, 1);
+		set_texture(tex, "res//ui//info.png", 1024, 1024, 1);
 
 		auto ptr = fw.find_popup_object(popup_layer1, "menu");
 		if (ptr != nullptr)

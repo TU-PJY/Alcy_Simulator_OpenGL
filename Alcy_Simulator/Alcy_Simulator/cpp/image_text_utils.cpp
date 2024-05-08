@@ -99,7 +99,7 @@ GLvoid build_font(const char* fontName, int fontSize, int type, GLuint& base, HD
 	float scale = static_cast<float>(dpiX) / 96.0f;
 	int result_size = static_cast<int>(fontSize * scale);
 
-	base = glGenLists(256);  // Storage For 96 Characters
+	base = glGenLists(96);  // Storage For 96 Characters
 
 	font = CreateFont(-result_size, // Height Of Fonts
 		0,              // Width Of Font
@@ -117,7 +117,7 @@ GLvoid build_font(const char* fontName, int fontSize, int type, GLuint& base, HD
 		fontName);         // Font Name
 
 	oldfont = (HFONT)SelectObject(hDC, font); // Selects The Font We Want
-	wglUseFontBitmaps(hDC, 0, 255, base);     // Builds 96 Characters Starting At Character 32
+	wglUseFontBitmaps(hDC, 32, 96, base);     // Builds 96 Characters Starting At Character 32
 	SelectObject(hDC, oldfont);               // Selects The Font We Want
 	DeleteObject(font);                       // Delete The Font
 }
@@ -173,7 +173,7 @@ GLvoid draw_text(unsigned int tex, GLuint base, const char* fmt, ...) { // Custo
 	va_end(ap);                     // Results Are Stored In Text
 
 	glPushAttrib(GL_LIST_BIT);              // Pushes The Display List Bits
-	glListBase(base);                  // Sets The Base Character to 32
+	glListBase(base - 32);                  // Sets The Base Character to 32
 
 	glCallLists(strlen(text), GL_UNSIGNED_BYTE, text);  // Draws The Display List Text
 	glPopAttrib();                      // Pops The Display List Bits

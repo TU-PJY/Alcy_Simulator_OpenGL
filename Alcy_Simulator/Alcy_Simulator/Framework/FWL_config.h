@@ -118,7 +118,8 @@ public:
 	virtual bool get_info_visible_state() { return {}; }
 
 	// cursor
-	virtual void mouse_left_button_down(int button, int state) {};
+	virtual void mouse_left_button_down(int button, int state) {}
+
 
 	virtual     ~POPUP_FUNCTION() {}
 };
