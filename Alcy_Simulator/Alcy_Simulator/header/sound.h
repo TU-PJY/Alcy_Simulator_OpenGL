@@ -21,6 +21,7 @@ extern FMOD::Channel* ch_ui;
 extern FMOD::Sound* scroll_sound;
 extern FMOD::Sound* menu_open, * menu_close;
 extern FMOD::Sound* tip_click;
+extern FMOD::Sound* menu_click;
 
 
 

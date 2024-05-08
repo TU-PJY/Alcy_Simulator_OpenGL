@@ -52,6 +52,7 @@ public:
 		for (int i = 0; i < ICON_NUMBER; ++i) {
 			if (on_cursor[i]) {
 				on_click[i] = true;
+				ssys_ui->playSound(menu_click, 0, false, &ch_ui);
 
 				
 				on_click[i] = false;
@@ -112,6 +113,7 @@ public:
 };
 
 
+
 class Button {
 private:
 	GLuint VAO;
@@ -159,6 +161,7 @@ public:
 		for (int i = 0; i < tex.size(); ++i) {
 			if (on_cursor[i]) {
 				on_click[i] = true;
+				ssys_ui->playSound(menu_click, 0, false, &ch_ui);
 
 				switch (i) {
 				case 0:  // exit game

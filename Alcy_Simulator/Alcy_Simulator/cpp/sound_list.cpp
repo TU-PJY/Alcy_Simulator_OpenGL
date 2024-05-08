@@ -20,6 +20,7 @@ FMOD::Channel* ch_ui{};
 FMOD::Sound* scroll_sound;
 FMOD::Sound* menu_open, * menu_close;
 FMOD::Sound* tip_click;
+FMOD::Sound* menu_click;
 
 
 FMOD_RESULT f_result;
@@ -48,4 +49,5 @@ void load_sound_file() {
 	ssys_ui->createSound("res//sound//UI//menu_open.ogg", FMOD_DEFAULT, 0, &menu_open);
 	ssys_ui->createSound("res//sound//UI//menu_close.ogg", FMOD_DEFAULT, 0, &menu_close);
 	ssys_ui->createSound("res//sound//UI//button_click.ogg", FMOD_DEFAULT, 0, &tip_click);
+	ssys_ui->createSound("res//sound//UI//menu_click.ogg", FMOD_DEFAULT, 0, &menu_click);
 }
