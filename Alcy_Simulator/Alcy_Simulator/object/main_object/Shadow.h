@@ -8,7 +8,6 @@ private:
 	int layer{};
 	std::string tag;
 
-	GLuint VAO;
 	unsigned int tex;
 
 public:
@@ -19,7 +18,7 @@ public:
 
 		s_mat *= scale_image(5.0, 4.0);
 		t_mat *= move_image(0.0, -0.97);
-		draw_image(tex, VAO);
+		draw_image(tex);
 	}
 
 	void check_collision(){}
@@ -31,7 +30,6 @@ public:
 		layer = l;
 		tag = str;
 
-		set_canvas(VAO);
 		set_texture(tex, "res//prop//object//shadow.png", 256, 256, 1);
 	}
 };

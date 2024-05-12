@@ -6,7 +6,6 @@
 // 메뉴 종료 후 추가하는 배경
 class Front : public FUNCTION {
 private:
-	GLuint VAO{};
 	unsigned int tex{};
 
 	int layer{};
@@ -33,7 +32,7 @@ public:
 		set_object_static(0.0, 0.0);
 		alpha = transparent;
 
-		draw_image(tex, VAO);
+		draw_image(tex);
 	}
 
 	void check_collision() {}
@@ -49,7 +48,6 @@ public:
 		layer = l;
 		tag = str;
 
-		set_canvas(VAO);
 		set_texture(tex, "res//ui//black.png", 100, 100, 1);
 	}
 };

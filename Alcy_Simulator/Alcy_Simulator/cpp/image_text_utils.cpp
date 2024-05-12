@@ -60,7 +60,7 @@ void transmit_translation() {
 }
 
 
-void draw_image(unsigned int tex, GLuint VAO) {
+void draw_image(unsigned int tex) {
 	transmit_translation();
 
 	glBindVertexArray(VAO);

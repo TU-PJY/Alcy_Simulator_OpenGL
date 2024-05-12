@@ -20,7 +20,6 @@ enum head_rotate {
 
 class Face {
 private:
-	GLuint VAO{};
 	std::array<unsigned int, 3> tex_eye{};
 	std::array<unsigned int, 3> tex_blink{};
 	std::array<unsigned int, 3> tex_dot{};
@@ -115,7 +114,7 @@ public:
 
 		if(!head_rotate_state)
 			t_mat *= move_image(x, y);
-		draw_image(tex_eye[head_state], VAO);
+		draw_image(tex_eye[head_state]);
 	}
 
 	// ÄÚ ´©¸§ »óÅÂÀÇ ´«
@@ -136,7 +135,7 @@ public:
 		if (!head_rotate_state)
 			t_mat *= move_image(x, y);
 
-		draw_image(tex_eye_squeak, VAO);
+		draw_image(tex_eye_squeak);
 	}
 
 	// ´« ±ôºıÀÓ
@@ -156,7 +155,7 @@ public:
 
 		if (!head_rotate_state)
 			t_mat *= move_image(x, y);
-		draw_image(tex_blink[head_state], VAO);
+		draw_image(tex_blink[head_state]);
 	}
 
 	// ´«µ¿ÀÚ
@@ -186,7 +185,7 @@ public:
 		
 		if (!head_rotate_state)
 			t_mat *= move_image(x, y);
-		draw_image(tex_dot[head_state], VAO);
+		draw_image(tex_dot[head_state]);
 	}
 	
 	// ´«½ç
@@ -206,7 +205,7 @@ public:
 
 		if (!head_rotate_state)
 			t_mat *= move_image(x, y);
-		draw_image(tex_brow[head_state], VAO);
+		draw_image(tex_brow[head_state]);
 	}
 
 
@@ -228,8 +227,6 @@ public:
 	}
 
 	Face() {
-		set_canvas(VAO);
-
 		for (int i = 0; i < directory_eye.size(); ++i) 
 			set_texture(tex_eye[i], directory_eye[i], 1500, 1500, 1);
 
@@ -297,7 +294,7 @@ public:
 		t_mat *= move_image(0.0, 0.5);
 
 		t_mat *= move_image(position, 0.2);
-		draw_image(tex[head_state], VAO);
+		draw_image(tex[head_state]);
 	}
 
 	Head() {
@@ -333,7 +330,7 @@ public:
 		init_transform();
 		s_mat *= scale_image(7.0, 7.0);
 		t_mat *= move_image(0.0, -0.55);
-		draw_image(tex[0], VAO);
+		draw_image(tex[0]);
 	}
 
 	Body() {
@@ -373,7 +370,7 @@ public:
 
 		s_mat *= scale_image(7.0, 7.0);
 		t_mat *= move_image(0.0, -0.55 - angle / 200);
-		draw_image(tex[0], VAO);
+		draw_image(tex[0]);
 	}
 
 	Hair() {
@@ -414,7 +411,7 @@ public:
 		s_mat *= scale_image(7.0, 7.0);
 		t_mat *= move_image(-0.19, -0.55);
 		t_mat *= rotate_image(angle / 2);
-		draw_image(tex[0], VAO);
+		draw_image(tex[0]);
 	}
 
 	Tail() {

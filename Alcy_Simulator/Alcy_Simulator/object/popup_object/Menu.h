@@ -7,7 +7,6 @@
 
 class Menu : public POPUP_FUNCTION {
 private:
-	GLuint VAO{};
 	unsigned int tex;
 
 	std::string tag{};
@@ -81,7 +80,7 @@ public:
 		set_object_static(0.0, position / cam.zoom);
 		alpha = transparent;
 
-		draw_image(tex, VAO);
+		draw_image(tex);
 
 		icon.render();
 		button.render();
@@ -96,7 +95,6 @@ public:
 		layer = l;
 		tag = str;
 
-		set_canvas(VAO);
 		set_texture(tex, "res//ui//menu_back.png", 100, 100, 1);
 
 		ssys_ui->playSound(menu_open, 0, false, &ch_ui);

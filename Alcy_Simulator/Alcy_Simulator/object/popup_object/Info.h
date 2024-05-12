@@ -6,7 +6,6 @@
 
 class Info : public POPUP_FUNCTION {
 private:
-	GLuint VAO{};
 	unsigned int tex{};
 
 	int layer{};
@@ -47,7 +46,7 @@ public:
 		alpha = transparent;
 		set_object_static(0.0, 0.0);
 
-		draw_image(tex, VAO);
+		draw_image(tex);
 	}
 
 	void check_collision() {
@@ -62,7 +61,6 @@ public:
 		layer = l;
 		tag = str;
 
-		set_canvas(VAO);
 		set_texture(tex, "res//ui//info.png", 1024, 1024, 1);
 
 		auto ptr = fw.find_popup_object(popup_layer1, "menu");

@@ -18,6 +18,8 @@ Camera cam;
 // GPU vendor
 std::string vendor;
 
+GLuint VAO;
+
 // display size
 int WIDTH = GetSystemMetrics(SM_CXSCREEN);
 int HEIGHT = GetSystemMetrics(SM_CYSCREEN);
@@ -96,6 +98,9 @@ void main(int argc, char** argv) {
 
 		// 이미지 로드 방향 반전 옵션
 		stbi_set_flip_vertically_on_load(true);
+
+		// 공유 버텍스 설정
+		set_canvas(VAO);
 
 		// 세이브 파일이 존재하지 않으면 세이브 파일을 신규 생성한다
 		check_data_invalid();

@@ -9,7 +9,6 @@ private:
 	int layer{};
 	std::string tag{};
 
-	GLuint VAO{};
 	std::array<unsigned int, 3> tex{};
 	std::array<const char*, 3> directory = {
 		"res//ui//cursor.png",
@@ -170,7 +169,7 @@ public:
 		set_object_static(x, y);
 
 		if(visible)
-			draw_image(tex[tex_number], VAO);
+			draw_image(tex[tex_number]);
 	}
 
 
@@ -183,7 +182,6 @@ public:
 		layer = 1;
 		tag = str;
 
-		set_canvas(VAO);
 		for (int i = 0; i < directory.size(); ++i)
 			set_texture(tex[i], directory[i], 200, 200, 1);
 	}

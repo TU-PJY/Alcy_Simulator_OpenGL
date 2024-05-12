@@ -10,7 +10,6 @@
 
 class Icon {
 private:
-	GLuint VAO{};
 	std::array<unsigned int, ICON_NUMBER> tex{};
 	std::array<const char*, ICON_NUMBER> directory = {
 		"res//ui//menu//icon1.png",
@@ -98,7 +97,7 @@ public:
 			alpha = transparent;
 			set_object_static((- 1.0 * ratio + 0.15 + 0.25 * i) / cam.zoom, (position + position2[i]) / cam.zoom);
 
-			draw_image(tex[i], VAO);
+			draw_image(tex[i]);
 		}
 	}
 
@@ -116,7 +115,6 @@ public:
 
 class Button {
 private:
-	GLuint VAO;
 	std::array<unsigned int, 2> text_tex{};
 	std::array<const char*, 2> text_directory = {
 		"res//ui//text//text_quit.png",
@@ -226,20 +224,19 @@ public:
 			alpha = transparent;
 			set_object_static((-1.0 * ratio + 0.1 + position2[i]) / cam.zoom, (position + 0.25 + 0.16 * i) / cam.zoom);
 
-			draw_image(tex[i], VAO);
+			draw_image(tex[i]);
 
 			init_transform();
 			s_mat *= scale_image(1.5, 1.5);
 			set_object_static((-1.0 * ratio + 0.5) / cam.zoom, (position + 0.235) / cam.zoom);
 
 			if (on_cursor[i])
-				draw_image(text_tex[i], VAO);
+				draw_image(text_tex[i]);
 		}
 	}
 
 
 	Button() {
-		set_canvas(VAO);
 		for (int i = 0; i < tex.size(); ++i)
 			set_texture(tex[i], directory[i], 512, 512, 1);
 

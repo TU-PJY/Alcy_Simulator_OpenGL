@@ -6,7 +6,6 @@
 
 class Cursor_menu : public POPUP_FUNCTION {
 private:
-	GLuint VAO{};
 	unsigned int tex;
 
 	int layer{};
@@ -44,7 +43,7 @@ public:
 	void render() {
 		init_transform();
 		set_object_static(x, y);
-		draw_image(tex, VAO);
+		draw_image(tex);
 	}
 
 
@@ -89,7 +88,6 @@ public:
 		layer = l;
 		tag = str;
 
-		set_canvas(VAO);
 		set_texture(tex, "res//ui//cursor.png", 200, 200, 1);
 
 		// 메뉴를 연 동안에는 메인 모드에 존재하는 커서를 보이지 않게한다.

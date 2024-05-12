@@ -7,7 +7,6 @@
 // 환영 메시지
 class Welcome_messege : public FUNCTION {
 private:
-	GLuint VAO{};
 	std::array<unsigned int, 6> tex{};
 	std::array<const char*, 6> directory = {
 		"res//prop//welcome_messege//welcome_messege_first.png",
@@ -70,7 +69,7 @@ public:
 		t_mat *= move_image(0.75, 0.5);
 		alpha = transparent;
 
-		draw_image(tex[number], VAO);
+		draw_image(tex[number]);
 	}
 
 	void check_collision(){}
@@ -83,8 +82,6 @@ public:
 	Welcome_messege(int l, std::string str) {
 		layer = l;
 		tag = str;
-
-		set_canvas(VAO);
 
 		// 처음 게임을 실행할 때와 나중에 실행 할 때의 말풍선이 다르다
 		if (load_data("play count") == 0) {

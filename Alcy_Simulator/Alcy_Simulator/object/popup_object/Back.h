@@ -6,7 +6,6 @@
 // 메뉴 종료 후 추가하는 배경
 class Back2 : public FUNCTION {
 private:
-	GLuint VAO{};
 	std::array<unsigned int, 2> tex{};
 
 	int layer{};
@@ -36,7 +35,7 @@ public:
 		set_object_static(0.0, 0.0);
 		alpha = transparent;
 
-		draw_image(tex[0], VAO);
+		draw_image(tex[0]);
 
 
 
@@ -45,7 +44,7 @@ public:
 		set_object_static(text_x / cam.zoom, 0.8 / cam.zoom);
 		alpha = text_transparent;
 
-		draw_image(tex[1], VAO);
+		draw_image(tex[1]);
 	}
 
 	void check_collision() {}
@@ -61,7 +60,6 @@ public:
 		layer = l;
 		tag = str;
 
-		set_canvas(VAO);
 		set_texture(tex[0], "res//ui//black.png", 100, 100, 1);
 		set_texture(tex[1], "res//ui//text//text_menu.png", 512, 512, 1);
 	}
@@ -97,7 +95,7 @@ public:
 		set_object_static(0.0, 0.0);
 		alpha = transparent;
 
-		draw_image(tex[0], VAO);
+		draw_image(tex[0]);
 
 
 		init_transform();
@@ -105,7 +103,7 @@ public:
 		set_object_static(text_x / cam.zoom, 0.8 / cam.zoom);
 		alpha = text_transparent;
 
-		draw_image(tex[1], VAO);
+		draw_image(tex[1]);
 	}
 
 	void check_collision() {}

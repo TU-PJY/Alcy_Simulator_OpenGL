@@ -5,7 +5,6 @@
 
 class BackGround_home : public FUNCTION{
 private:
-	GLuint VAO;
 	unsigned int tex;
 
 	int layer{};
@@ -19,7 +18,7 @@ public:
 		
 		s_mat *= scale_image(25.0 * ratio, 25.0);
 		t_mat *= move_image(-cam.x / 2, -cam.y / 2);
-		draw_image(tex, VAO);
+		draw_image(tex);
 	}
 
 	void check_collision() {}
@@ -31,7 +30,6 @@ public:
 		layer = l;
 		tag = str;
 
-		set_canvas(VAO);
 		set_texture(tex, "res//background//default.png", 1440, 1440, 1);
 	}
 };

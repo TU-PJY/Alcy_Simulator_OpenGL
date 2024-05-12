@@ -6,7 +6,6 @@
 
 class Tip_home : public FUNCTION {
 private:
-	GLuint VAO{};
 	unsigned int tex{};
 
 	int layer{};
@@ -52,7 +51,7 @@ public:
 		set_object_static((1.0 * ratio - 0.3) / cam.zoom, -0.7 / cam.zoom);
 
 		if(fw.get_current_mode() == "home_mode")
-			draw_image(tex, VAO);
+			draw_image(tex);
 	}
 
 	void check_collision() {}
@@ -63,7 +62,6 @@ public:
 		layer = l;
 		tag = str;
 
-		set_canvas(VAO);
 		set_texture(tex, "res//ui//tip.png", 500, 500, 1);
 	}
 };
