@@ -123,7 +123,7 @@ public:
 #ifdef USING_DEBUG_MESSEGE
 		cout << endl << "==========[ERROR OCCURED]==========" << endl << endl;
 
-		switch (ERRTYPE) {
+		switch (ERR_TYPE) {
 		case INV_M_INIT:
 			cout << "FWL main mode init error::Invalid FWL initialization" << endl;
 			cout << "FWL main mode is not initialized yet." << endl;
@@ -231,7 +231,7 @@ public:
 #ifdef USING_DEBUG_MESSEGE
 		cout << endl << "==========[ERROR OCCURED]==========" << endl << endl;
 
-		switch (ERRTYPE) {
+		switch (ERR_TYPE) {
 		case INV_S_INIT:
 			cout << "FWL sub mode init error::Invalid Sub mode initialization" << endl;
 			cout << "Sub mode is not initialized yet." << endl;
