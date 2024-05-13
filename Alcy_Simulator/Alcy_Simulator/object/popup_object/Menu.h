@@ -31,7 +31,7 @@ public:
 	size_t get_icon_number() const { return icon.get_icon_number(); }
 
 	// 아이콘 영역 리턴
-	std::array<GLfloat, 4> get_icon_zone() const { return icon.get_icon_zone(); }
+	std::array<GLfloat, 4> get_icon_zone(int i) const { return icon.get_icon_zone(i); }
 
 	// 아이콘 위에 커서가 있음을 알림
 	void tell_on_cursor(int idx) { icon.tell_on_cursor(idx); }
@@ -52,7 +52,7 @@ public:
 
 	void tell_button_click() { button.tell_button_click(); }
 
-	std::array<GLfloat, 4> get_button_zone() { return button.get_button_zone(); }
+	std::array<GLfloat, 4> get_button_zone(int i) { return button.get_button_zone(i); }
 
 	// info 관련 함수
 	void tell_info_is_open() { button.tell_info_is_open(); }
@@ -77,7 +77,7 @@ public:
 	void render() {
 		init_transform();
 		s_mat *= scale_image(10.0 * ratio, 1.5);
-		set_object_static(0.0, position / cam.zoom);
+		set_object_static(0.0, set_dy(position));
 		alpha = transparent;
 
 		draw_image(tex);

@@ -62,16 +62,13 @@ public:
 		}
 
 		if (ptr != nullptr) {
-			std::array<GLfloat, 4> touch_zone = ptr->get_touch_zone();
-			std::array<GLfloat, 4> squeak_zone = ptr->get_squeak_zone();
-
 			// 특정 영역에 커서가 위치하면 커서가 바뀐다.
 			// 알키 쓰다듬기 영역
 			if (ptr->get_interaction_available_state()) {
-				if (touch_zone[0] < x && x < touch_zone[1] && touch_zone[2] < y && y < touch_zone[3])
+				if(check_dot_box_collision(x, y, ptr->get_touch_zone()))
 					tex_number = 1;
 
-				else if (squeak_zone[0] < x && x < squeak_zone[1] && squeak_zone[2] < y && y < squeak_zone[3])
+				else if (check_dot_box_collision(x, y, ptr->get_squeak_zone()))
 					tex_number = 2;
 
 				else
@@ -153,8 +150,8 @@ public:
 		}
 
 		else {
-			x = mx * ratio / cam.zoom;
-			y = my / cam.zoom;
+			x = set_dy(mx * ratio);
+			y = set_dy(my);
 		}
 	}
 

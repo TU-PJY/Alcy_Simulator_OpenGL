@@ -77,6 +77,16 @@ GLfloat set_dy(GLfloat value) {
     return value / cam.zoom;
 }
 
+// check collision dot to squear zone
+bool check_dot_box_collision(GLfloat x, GLfloat y, std::array<GLfloat, 4> box) {
+    if (box[0] < x && x < box[1] &&
+        box[2] < y && y < box[3])
+        return true;
+
+    else
+        return false;
+}
+
 
 void init_transform() {  // 변환 초기화
     using namespace glm;

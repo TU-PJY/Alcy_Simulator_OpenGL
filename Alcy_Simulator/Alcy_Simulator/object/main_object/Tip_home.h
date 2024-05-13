@@ -48,7 +48,7 @@ public:
 		alpha = transparent;
 
 		s_mat *= scale_image(size, size);
-		set_object_static((1.0 * ratio - 0.3) / cam.zoom, -0.7 / cam.zoom);
+		set_object_static(set_dy(1.0 * ratio - 0.3), set_dy(-0.7));
 
 		if(fw.get_current_mode() == "home_mode")
 			draw_image(tex);

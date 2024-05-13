@@ -102,14 +102,14 @@ public:
 	virtual void tell_on_cursor(int idx) {}
 	virtual void tell_not_on_cursor(int idx) {}
 	virtual void tell_icon_click() {}
-	virtual std::array<GLfloat, 4> get_icon_zone() const { return {}; }
+	virtual std::array<GLfloat, 4> get_icon_zone(int i) const { return {}; }
 
 	// button
 	virtual void tell_on_cursor_button(int idx) {}
 	virtual void tell_not_on_cursor_button(int idx) {}
 	virtual size_t get_button_number() {return {};}
 	virtual void tell_button_click() {}
-	virtual std::array<GLfloat, 4> get_button_zone() { return {}; }
+	virtual std::array<GLfloat, 4> get_button_zone(int i) { return {}; }
 
 	//info
 	virtual void close_info() {}

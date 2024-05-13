@@ -23,7 +23,7 @@ private:
 	std::array<bool, ICON_NUMBER> on_click{};
 
 	// 아이콘 커서 인식 영역
-	std::array<GLfloat, 4> icon_zone{};
+	std::array< std::array<GLfloat, 4>, ICON_NUMBER> icon_zone{};
 
 	// 아이콘 투명도
 	GLfloat transparent{};
@@ -60,27 +60,28 @@ public:
 	}
 
 	// 아이콘 커서 인식 범위 리턴
-	std::array<GLfloat, 4> get_icon_zone() const { return icon_zone; }
+	std::array<GLfloat, 4> get_icon_zone(int i) const { return icon_zone[i]; }
 	
 
 	// 아이콘 커서 인식 범위 업데이트
-	void update_icon_zone() {
-		GLfloat x_min = -1.0 * ratio + 0.05 + 0.01;
-		GLfloat x_max = -1.0 * ratio + 0.25 - 0.01;
+	void update_icon_zone(int i) {
+		GLfloat x_min = -1.0 * ratio + 0.05 + 0.01 + 0.25 * i;
+		GLfloat x_max = -1.0 * ratio + 0.25 - 0.01 + 0.25 * i;
 		GLfloat y_min = position - 0.1 + 0.01;
 		GLfloat y_max = position + 0.1 - 0.01;
 
-		icon_zone = { x_min, x_max, y_min, y_max };
+		icon_zone[i] = {set_dy(x_min), set_dy(x_max), set_dy(y_min), set_dy(y_max)};
 	}
 
 
 	void update() {
-		update_icon_zone();
 
 		transparent = std::lerp(transparent, 1.0, fw.calc_ft(7));
 
 		// 커서를 마우스 위에 올리면 아이콘이 위로 올라오며 표시된다
 		for (int i = 0; i < tex.size(); ++i) {
+			update_icon_zone(i);
+
 			if (on_cursor[i])
 				position2[i] = std::lerp(position2[i], 0.03, fw.calc_ft(35));
 			else
@@ -95,7 +96,7 @@ public:
 			init_transform();
 
 			alpha = transparent;
-			set_object_static((- 1.0 * ratio + 0.15 + 0.25 * i) / cam.zoom, (position + position2[i]) / cam.zoom);
+			set_object_static(set_dy(- 1.0 * ratio + 0.15 + 0.25 * i), set_dy(position + position2[i]));
 
 			draw_image(tex[i]);
 		}
@@ -111,28 +112,28 @@ public:
 	}
 };
 
-
+#define BUTTON_NUMBER 2
 
 class Button {
 private:
-	std::array<unsigned int, 2> text_tex{};
-	std::array<const char*, 2> text_directory = {
+	std::array<unsigned int, BUTTON_NUMBER> text_tex{};
+	std::array<const char*, BUTTON_NUMBER> text_directory = {
 		"res//ui//text//text_quit.png",
 		"res//ui//text//text_info.png",
 	};
 
-	std::array<unsigned int, 2> tex{};
-	std::array<const char*, 2> directory = {
+	std::array<unsigned int, BUTTON_NUMBER> tex{};
+	std::array<const char*, BUTTON_NUMBER> directory = {
 		"res//ui//icon_off.png",
 		"res//ui//icon_info.png",
 	};
 
 
-	std::array<GLfloat, 4> button_zone{};
+	std::array< std::array<GLfloat, 4>, BUTTON_NUMBER> button_zone{};
 
 
-	std::array<bool, 2> on_cursor{};
-	std::array<bool, 2> on_click{};
+	std::array<bool, BUTTON_NUMBER> on_cursor{};
+	std::array<bool, BUTTON_NUMBER> on_click{};
 
 
 	// 아이콘 투명도
@@ -140,7 +141,7 @@ private:
 
 	// 아이콘 위치
 	GLfloat position{};
-	GLfloat position2[2]{};
+	GLfloat position2[BUTTON_NUMBER]{};
 
 	bool info_is_open{};
 
@@ -161,9 +162,12 @@ public:
 	void tell_info_is_open() { info_is_open = true; }
 	void tell_info_is_close() { info_is_open = false; }
 
+	// 아이콘 커서 인식 범위 리턴
+	std::array<GLfloat, 4> get_button_zone(int i) const { return button_zone[i]; }
+
 	// 마우스가 아이콘을 클릭했음을 알림
 	void tell_button_click() {
-		for (int i = 0; i < tex.size(); ++i) {
+		for (int i = 0; i < BUTTON_NUMBER; ++i) {
 			if (on_cursor[i]) {
 				on_click[i] = true;
 				ssys_ui->playSound(menu_click, 0, false, &ch_ui);
@@ -184,28 +188,26 @@ public:
 		}
 	}
 
-	// 아이콘 커서 인식 범위 리턴
-	std::array<GLfloat, 4> get_button_zone() const { return button_zone; }
-
 
 	// 아이콘 커서 인식 범위 업데이트
-	void update_icon_zone() {
+	void update_button_zone(int i) {
 		GLfloat x_min = -1.0 * ratio + 0.1 - 0.08 + 0.01;
 		GLfloat x_max = -1.0 * ratio + 0.1 + 0.08 - 0.01;
-		GLfloat y_min = position + 0.25 - 0.08 + 0.01;
-		GLfloat y_max = position + 0.25 + 0.08 - 0.01;
+		GLfloat y_min = position + 0.25 - 0.08 + 0.01 + 0.16 * i;
+		GLfloat y_max = position + 0.25 + 0.08 - 0.01 + 0.16 * i;
 
-		button_zone = { x_min, x_max, y_min, y_max };
+		button_zone[i] = {set_dy(x_min), set_dy(x_max), set_dy(y_min), set_dy(y_max)};
 	}
 
 
 	void update() {
-		update_icon_zone();
 
 		transparent = std::lerp(transparent, 1.0, fw.calc_ft(7));
 
 		// 커서를 마우스 위에 올리면 아이콘이 위로 올라오며 표시된다
-		for (int i = 0; i < tex.size(); ++i) {
+		for (int i = 0; i < BUTTON_NUMBER; ++i) {
+			update_button_zone(i);
+
 			if (on_cursor[i])
 				position2[i] = std::lerp(position2[i], 0.03, fw.calc_ft(35));
 			else
@@ -216,19 +218,19 @@ public:
 
 
 	void render() {
-		for (int i = 0; i < tex.size(); ++i) {
+		for (int i = 0; i < BUTTON_NUMBER; ++i) {
 			init_transform();
 
 			s_mat *= scale_image(0.8, 0.8);
 
 			alpha = transparent;
-			set_object_static((-1.0 * ratio + 0.1 + position2[i]) / cam.zoom, (position + 0.25 + 0.16 * i) / cam.zoom);
+			set_object_static(set_dy(-1.0 * ratio + 0.1 + position2[i]), set_dy(position + 0.25 + 0.16 * i));
 
 			draw_image(tex[i]);
 
 			init_transform();
 			s_mat *= scale_image(1.5, 1.5);
-			set_object_static((-1.0 * ratio + 0.5) / cam.zoom, (position + 0.235) / cam.zoom);
+			set_object_static(set_dy(-1.0 * ratio + 0.5), set_dy(position + 0.235));
 
 			if (on_cursor[i])
 				draw_image(text_tex[i]);
@@ -237,10 +239,10 @@ public:
 
 
 	Button() {
-		for (int i = 0; i < tex.size(); ++i)
+		for (int i = 0; i < BUTTON_NUMBER; ++i)
 			set_texture(tex[i], directory[i], 512, 512, 1);
 
-		for (int i = 0; i < text_tex.size(); ++i)
+		for (int i = 0; i < BUTTON_NUMBER; ++i)
 			set_texture(text_tex[i], text_directory[i], 512, 512, 1);
 	}
 

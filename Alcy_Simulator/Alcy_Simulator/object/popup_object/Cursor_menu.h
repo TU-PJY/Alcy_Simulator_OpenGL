@@ -35,8 +35,8 @@ public:
 
 
 	void update() {
-		x = mx * ratio / cam.zoom;
-		y = my / cam.zoom;
+		x = set_dy(mx * ratio);
+		y = set_dy(my);
 	}
 
 
@@ -55,11 +55,7 @@ public:
 		if (ptr != nullptr) {
 			// icon
 			for (int i = 0; i < ptr->get_icon_number(); ++i) {
-				GLfloat cx = 0.25 * i;
-				if (set_dy(ptr->get_icon_zone()[0]+cx) < x && 
-					set_dy(ptr->get_icon_zone()[1]+cx) > x &&
-					set_dy(ptr->get_icon_zone()[2]) < y && 
-					set_dy(ptr->get_icon_zone()[3]) > y)
+				if(check_dot_box_collision(x, y, ptr->get_icon_zone(i)))
 
 					ptr->tell_on_cursor(i);
 
@@ -70,11 +66,7 @@ public:
 
 			// button
 			for (int i = 0; i < ptr->get_button_number(); ++i) {
-				GLfloat cy = 0.16 * i;
-				if (set_dy(ptr->get_button_zone()[0]) < x && 
-					set_dy(ptr->get_button_zone()[1]) > x &&
-					set_dy(ptr->get_button_zone()[2]+cy) < y && 
-					set_dy(ptr->get_button_zone()[3]+cy) > y)
+				if (check_dot_box_collision(x, y, ptr->get_button_zone(i)))
 
 					ptr->tell_on_cursor_button(i);
 

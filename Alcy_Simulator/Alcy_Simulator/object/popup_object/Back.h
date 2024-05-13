@@ -41,7 +41,7 @@ public:
 
 		init_transform();
 		s_mat *= scale_image(3.0, 3.0);
-		set_object_static(text_x / cam.zoom, 0.8 / cam.zoom);
+		set_object_static(set_dy(text_x),set_dy(0.8));
 		alpha = text_transparent;
 
 		draw_image(tex[1]);
@@ -100,7 +100,7 @@ public:
 
 		init_transform();
 		s_mat *= scale_image(3.0, 3.0);
-		set_object_static(text_x / cam.zoom, 0.8 / cam.zoom);
+		set_object_static(set_dy(text_x), set_dy(0.8));
 		alpha = text_transparent;
 
 		draw_image(tex[1]);

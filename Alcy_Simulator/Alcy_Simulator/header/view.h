@@ -15,5 +15,6 @@ glm::mat4 rotate_image(GLfloat rad);
 glm::mat4 scale_image(GLfloat x, GLfloat y);
 void set_object_static(GLfloat x, GLfloat y);
 GLfloat set_dy(GLfloat value);
+bool check_dot_box_collision(GLfloat x, GLfloat y, std::array<GLfloat, 4> arr);
 
 void init_transform();
