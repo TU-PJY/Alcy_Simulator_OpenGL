@@ -31,11 +31,7 @@ void set_view() {  // 시점 세팅using namespace glm;
     view = translate(view, vec3(0.0, 1.0, 0.0));
     view = translate(view, vec3(cam.x, cam.y, 0.0));
 
-    projection = ortho(-1.0 * ratio / cam.zoom, 
-                        1.0 * ratio / cam.zoom, 
-                        -1.0 / cam.zoom, 
-                        1.0 / cam.zoom, 
-                        -100.0, 100.0);
+    projection = ortho(set_dy(-1.0 * ratio), set_dy(1.0 * ratio), set_dy(-1.0), set_dy(1.0), -100.0f, 100.0f);
 }
 
 
