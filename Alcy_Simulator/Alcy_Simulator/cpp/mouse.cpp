@@ -44,7 +44,7 @@ void mouse_button(int button, int state, int x, int y) {  // 마우스 클릭
 			fw.end_popup();
 
 		else {
-			fw.init_popup(menu_mode, "menu_mode"z);
+			fw.init_popup(menu_mode, "menu_mode");
 			cam.reset_key_state();  // 카메라 조작 상태를 초기화한다 
 
 			auto ptr = fw.find_object(layer7, "cursor_home");
