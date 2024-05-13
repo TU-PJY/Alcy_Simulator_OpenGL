@@ -16,7 +16,7 @@ public:
 	void render() {
 		init_transform();
 		
-		s_mat *= scale_image(25.0 * ratio, 25.0);
+		s_mat *= scale_image(rt(25.0), 25.0);
 		t_mat *= move_image(-cam.x / 2, -cam.y / 2);
 		draw_image(tex);
 	}

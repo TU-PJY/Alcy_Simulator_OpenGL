@@ -31,7 +31,7 @@ void set_view() {  // 시점 세팅using namespace glm;
     view = translate(view, vec3(0.0, 1.0, 0.0));
     view = translate(view, vec3(cam.x, cam.y, 0.0));
 
-    projection = ortho(set_dy(-1.0 * ratio), set_dy(1.0 * ratio), set_dy(-1.0), set_dy(1.0), -100.0f, 100.0f);
+    projection = ortho(dy(rt(-1.0)), dy(rt(1.0)), dy(-1.0), dy(1.0), -100.0f, 100.0f);
 }
 
 
@@ -69,8 +69,13 @@ void set_object_static(GLfloat x, GLfloat y) {
 }
 
 // set value dynamic with zoom
-GLfloat set_dy(GLfloat value) {
+GLfloat dy(GLfloat value) {
     return value / cam.zoom;
+}
+
+// mul value with display ratio
+GLfloat rt(GLfloat value) {
+    return value * ratio;
 }
 
 // check collision dot to squear zone

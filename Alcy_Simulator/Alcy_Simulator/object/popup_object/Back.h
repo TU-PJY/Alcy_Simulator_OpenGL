@@ -16,14 +16,14 @@ private:
 	GLfloat transparent = 0.7;
 	GLfloat text_transparent = 1.0;
 
-	GLfloat text_x = -1.0 * ratio + 0.35;
+	GLfloat text_x = rt(-1.0) + 0.35;
 
 public:
 	void update() {
 		// 완전히 투명해지면 스스로 삭제
 		transparent = std::lerp(transparent, 0.0, fw.calc_ft(15));
 		text_transparent = std::lerp(text_transparent, 0.0, fw.calc_ft(15));
-		text_x = std::lerp(text_x, ratio * -1.0 + 0.8, fw.calc_ft(10));
+		text_x = std::lerp(text_x, rt(-1.0) + 0.8, fw.calc_ft(10));
 
 		if (transparent <= 0.0001)
 			delete_flag = true;
@@ -31,7 +31,7 @@ public:
 
 	void render() {
 		init_transform();
-		s_mat *= scale_image(10.0 * ratio, 10.0);
+		s_mat *= scale_image(rt(10.0), 10.0);
 		set_object_static(0.0, 0.0);
 		alpha = transparent;
 
@@ -41,7 +41,7 @@ public:
 
 		init_transform();
 		s_mat *= scale_image(3.0, 3.0);
-		set_object_static(set_dy(text_x),set_dy(0.8));
+		set_object_static(dy(text_x),dy(0.8));
 		alpha = text_transparent;
 
 		draw_image(tex[1]);
@@ -86,12 +86,12 @@ public:
 	void update() {
 		transparent = std::lerp(transparent, 0.7, fw.calc_ft(10));
 		text_transparent = std::lerp(text_transparent, 1.0, fw.calc_ft(10));
-		text_x = std::lerp(text_x, -1.0 * ratio + 0.35, fw.calc_ft(10));
+		text_x = std::lerp(text_x, rt(-1.0) + 0.35, fw.calc_ft(10));
 	}
 
 	void render() {
 		init_transform();
-		s_mat *= scale_image(10.0 * ratio, 10.0);
+		s_mat *= scale_image(rt(10.0), 10.0);
 		set_object_static(0.0, 0.0);
 		alpha = transparent;
 
@@ -100,7 +100,7 @@ public:
 
 		init_transform();
 		s_mat *= scale_image(3.0, 3.0);
-		set_object_static(set_dy(text_x), set_dy(0.8));
+		set_object_static(dy(text_x), dy(0.8));
 		alpha = text_transparent;
 
 		draw_image(tex[1]);

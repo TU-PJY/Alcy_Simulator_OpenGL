@@ -76,8 +76,8 @@ public:
 
 	void render() {
 		init_transform();
-		s_mat *= scale_image(10.0 * ratio, 1.5);
-		set_object_static(0.0, set_dy(position));
+		s_mat *= scale_image(rt(10.0), 1.5);
+		set_object_static(0.0, dy(position));
 		alpha = transparent;
 
 		draw_image(tex);

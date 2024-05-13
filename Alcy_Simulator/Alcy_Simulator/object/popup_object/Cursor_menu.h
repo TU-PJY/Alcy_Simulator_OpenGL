@@ -35,8 +35,8 @@ public:
 
 
 	void update() {
-		x = set_dy(mx * ratio);
-		y = set_dy(my);
+		x = dy(rt(mx));
+		y = dy(my);
 	}
 
 

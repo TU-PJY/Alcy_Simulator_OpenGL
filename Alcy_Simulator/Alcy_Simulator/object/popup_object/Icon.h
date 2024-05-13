@@ -65,12 +65,12 @@ public:
 
 	// 아이콘 커서 인식 범위 업데이트
 	void update_icon_zone(int i) {
-		GLfloat x_min = -1.0 * ratio + 0.05 + 0.01 + 0.25 * i;
-		GLfloat x_max = -1.0 * ratio + 0.25 - 0.01 + 0.25 * i;
+		GLfloat x_min = rt(-1.0) + 0.05 + 0.01 + 0.25 * i;
+		GLfloat x_max = rt(-1.0) + 0.25 - 0.01 + 0.25 * i;
 		GLfloat y_min = position - 0.1 + 0.01;
 		GLfloat y_max = position + 0.1 - 0.01;
 
-		icon_zone[i] = {set_dy(x_min), set_dy(x_max), set_dy(y_min), set_dy(y_max)};
+		icon_zone[i] = {dy(x_min), dy(x_max), dy(y_min), dy(y_max)};
 	}
 
 
@@ -79,7 +79,7 @@ public:
 		transparent = std::lerp(transparent, 1.0, fw.calc_ft(7));
 
 		// 커서를 마우스 위에 올리면 아이콘이 위로 올라오며 표시된다
-		for (int i = 0; i < tex.size(); ++i) {
+		for (int i = 0; i < ICON_NUMBER; ++i) {
 			update_icon_zone(i);
 
 			if (on_cursor[i])
@@ -96,7 +96,7 @@ public:
 			init_transform();
 
 			alpha = transparent;
-			set_object_static(set_dy(- 1.0 * ratio + 0.15 + 0.25 * i), set_dy(position + position2[i]));
+			set_object_static(dy(rt(-1.0) + 0.15 + 0.25 * i), dy(position + position2[i]));
 
 			draw_image(tex[i]);
 		}
@@ -191,12 +191,12 @@ public:
 
 	// 아이콘 커서 인식 범위 업데이트
 	void update_button_zone(int i) {
-		GLfloat x_min = -1.0 * ratio + 0.1 - 0.08 + 0.01;
-		GLfloat x_max = -1.0 * ratio + 0.1 + 0.08 - 0.01;
+		GLfloat x_min = rt(-1.0) + 0.1 - 0.08 + 0.01;
+		GLfloat x_max = rt(-1.0) + 0.1 + 0.08 - 0.01;
 		GLfloat y_min = position + 0.25 - 0.08 + 0.01 + 0.16 * i;
 		GLfloat y_max = position + 0.25 + 0.08 - 0.01 + 0.16 * i;
 
-		button_zone[i] = {set_dy(x_min), set_dy(x_max), set_dy(y_min), set_dy(y_max)};
+		button_zone[i] = {dy(x_min), dy(x_max), dy(y_min), dy(y_max)};
 	}
 
 
@@ -224,13 +224,13 @@ public:
 			s_mat *= scale_image(0.8, 0.8);
 
 			alpha = transparent;
-			set_object_static(set_dy(-1.0 * ratio + 0.1 + position2[i]), set_dy(position + 0.25 + 0.16 * i));
+			set_object_static(dy(rt(-1.0) + 0.1 + position2[i]), dy(position + 0.25 + 0.16 * i));
 
 			draw_image(tex[i]);
 
 			init_transform();
 			s_mat *= scale_image(1.5, 1.5);
-			set_object_static(set_dy(-1.0 * ratio + 0.5), set_dy(position + 0.235));
+			set_object_static(dy(rt(-1.0) + 0.5), dy(position + 0.235));
 
 			if (on_cursor[i])
 				draw_image(text_tex[i]);

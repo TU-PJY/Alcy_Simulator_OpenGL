@@ -28,7 +28,7 @@ public:
 
 	void render() {
 		init_transform();
-		s_mat *= scale_image(10.0 * ratio, 10.0);
+		s_mat *= scale_image(rt(10.0), 10.0);
 		set_object_static(0.0, 0.0);
 		alpha = transparent;
 
