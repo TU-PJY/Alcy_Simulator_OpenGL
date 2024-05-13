@@ -55,8 +55,11 @@ public:
 		if (ptr != nullptr) {
 			// icon
 			for (int i = 0; i < ptr->get_icon_number(); ++i) {
-				if ((ptr->get_icon_zone()[0] + 0.25 * i) / cam.zoom < x && x < (ptr->get_icon_zone()[1] + 0.25 * i) / cam.zoom &&
-					ptr->get_icon_zone()[2] / cam.zoom < y && y < ptr->get_icon_zone()[3] / cam.zoom)
+				GLfloat cx = 0.25 * i;
+				if (set_dy(ptr->get_icon_zone()[0]+cx) < x && 
+					set_dy(ptr->get_icon_zone()[1]+cx) > x &&
+					set_dy(ptr->get_icon_zone()[2]) < y && 
+					set_dy(ptr->get_icon_zone()[3]) > y)
 
 					ptr->tell_on_cursor(i);
 
@@ -67,8 +70,11 @@ public:
 
 			// button
 			for (int i = 0; i < ptr->get_button_number(); ++i) {
-				if ((ptr->get_button_zone()[0]) / cam.zoom < x && x < (ptr->get_button_zone()[1]) / cam.zoom &&
-					(ptr->get_button_zone()[2] + 0.16 * i) / cam.zoom < y && y < (ptr->get_button_zone()[3] + 0.16 * i) / cam.zoom)
+				GLfloat cy = 0.16 * i;
+				if (set_dy(ptr->get_button_zone()[0]) < x && 
+					set_dy(ptr->get_button_zone()[1]) > x &&
+					set_dy(ptr->get_button_zone()[2]+cy) < y && 
+					set_dy(ptr->get_button_zone()[3]+cy) > y)
 
 					ptr->tell_on_cursor_button(i);
 

@@ -72,6 +72,11 @@ void set_object_static(GLfloat x, GLfloat y) {
     t_mat *= move_image(x, y);
 }
 
+// set value dynamic with zoom
+GLfloat set_dy(GLfloat value) {
+    return value / cam.zoom;
+}
+
 
 void init_transform() {  // 변환 초기화
     using namespace glm;

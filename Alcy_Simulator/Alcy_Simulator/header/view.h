@@ -14,5 +14,6 @@ glm::mat4 move_image(GLfloat x, GLfloat y);
 glm::mat4 rotate_image(GLfloat rad);
 glm::mat4 scale_image(GLfloat x, GLfloat y);
 void set_object_static(GLfloat x, GLfloat y);
+GLfloat set_dy(GLfloat value);
 
 void init_transform();
