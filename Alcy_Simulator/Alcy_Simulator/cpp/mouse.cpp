@@ -14,8 +14,8 @@ void convert_cursor_position(int x, int y) {  //GL좌표계로 변환
 void mouse_button(int button, int state, int x, int y) {  // 마우스 클릭
 
 	// 홈 모드 마우스 클릭
-	if (fw.get_current_mode() == "home_mode") {
-		auto ptr = fw.find_object(layer7, "cursor_home");
+	if (fw.CurrentMode() == "home_mode") {
+		auto ptr = fw.FindMainObj(main_layer7, "cursor_home");
 
 		if (ptr != nullptr) {
 			if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
@@ -28,8 +28,8 @@ void mouse_button(int button, int state, int x, int y) {  // 마우스 클릭
 
 
 	// 메뉴 모드 마우스 클릭
-	if (fw.get_current_mode() == "menu_mode") {
-		auto ptr = fw.find_popup_object(popup_layer4, "cursor_menu");
+	if (fw.CurrentMode() == "menu_mode") {
+		auto ptr = fw.FindSubObj(sub_layer4, "cursor_menu");
 
 		if (ptr != nullptr) {
 			if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
@@ -40,14 +40,14 @@ void mouse_button(int button, int state, int x, int y) {  // 마우스 클릭
 
 	// 메뉴 열기 / 닫기
 	if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN) {
-		if (fw.get_current_mode() == "menu_mode")
-			fw.end_popup();
+		if (fw.CurrentMode() == "menu_mode")
+			fw.EndSubMode();
 
 		else {
-			fw.init_popup(menu_mode, "menu_mode");
+			fw.InitSubMode(menu_mode, "menu_mode");
 			cam.reset_key_state();  // 카메라 조작 상태를 초기화한다 
 
-			auto ptr = fw.find_object(layer7, "cursor_home");
+			auto ptr = fw.FindMainObj(main_layer7, "cursor_home");
 			if (ptr != nullptr)
 				ptr->reset_mouse_state();
 		}
@@ -69,7 +69,7 @@ void mouse_motion(int x, int y) {
 
 // 마우스 휠
 void mouse_wheel(int button, int dir, int x, int y) { 
-	if (fw.get_current_mode() == "home_mode")
+	if (fw.CurrentMode() == "home_mode")
 		cam.scroll(dir);
 }
 

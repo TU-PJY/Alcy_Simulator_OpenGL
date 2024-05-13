@@ -104,35 +104,35 @@ public:
 	// 카메라 회전 조작
 	void rotate_camera() {
 		if (rotate_dir == rotate_right && angle > -8.0)
-			angle = std::lerp(angle, -8.0, fw.calc_ft(4));
+			angle = std::lerp(angle, -8.0, fw.FT(4));
 
 		else if(rotate_dir == rotate_left && angle < 8.0)
-			angle = std::lerp(angle, 8.0, fw.calc_ft(4));
+			angle = std::lerp(angle, 8.0, fw.FT(4));
 
 		else if(rotate_dir == rotate_none && angle != 0)
-			angle = std::lerp(angle, 0.0, fw.calc_ft(4));
+			angle = std::lerp(angle, 0.0, fw.FT(4));
 	}
 
 
 
 	// 카메라 상하좌우 이동
 	void move_camera_xy() {
-		x = std::lerp(x, -mx * ratio / 8, fw.calc_ft(15));
-		y = std::lerp(y, -my / 8, fw.calc_ft(15));
+		x = std::lerp(x, -mx * ratio / 8, fw.FT(15));
+		y = std::lerp(y, -my / 8, fw.FT(15));
 	}
 
 
 
 	// 카메라 줌
 	void zoom_camera() {
-		zoom = std::lerp(zoom, zoom_value, fw.calc_ft(5));
+		zoom = std::lerp(zoom, zoom_value, fw.FT(5));
 	}
 
 
 
 	// 카메라 잠금 상태 업데이트
 	void update_camera_lock() {
-		auto ptr = fw.find_object(layer7, "cursor_home");
+		auto ptr = fw.FindMainObj(main_layer7, "cursor_home");
 
 		if (ptr != nullptr) {
 			if (ptr->get_touch_state())

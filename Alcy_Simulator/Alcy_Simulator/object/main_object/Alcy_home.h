@@ -5,7 +5,7 @@
 #include "Welcome_messege.h"
 
 
-class Alcy_home : public FUNCTION {
+class Alcy_home : public MAIN_CLS {
 private:
 	int layer{};
 	std::string tag{};
@@ -83,7 +83,7 @@ private:
 
 
 public:
-	std::string get_tag() const { return tag; }
+	std::string GetTag() const { return tag; }
 
 	// 쓰다듬기 활성화 영역 리턴
 	std::array<GLfloat, 4> get_touch_zone() const { return touch_zone; }
@@ -147,13 +147,13 @@ public:
 	// 머리 위치 업데이트
 	void update_move_head() {
 		if (head_state == head_right)
-			head_position = std::lerp(head_position, 0.1, fw.calc_ft(6));
+			head_position = std::lerp(head_position, 0.1, fw.FT(6));
 
 		else if (head_state == head_left)
-			head_position = std::lerp(head_position, -0.1, fw.calc_ft(6));
+			head_position = std::lerp(head_position, -0.1, fw.FT(6));
 
 		else if (head_state == head_middle)
-			head_position = std::lerp(head_position, 0.0, fw.calc_ft(6));
+			head_position = std::lerp(head_position, 0.0, fw.FT(6));
 	}
 
 	// 머리 회전 상태 업데이트
@@ -184,13 +184,13 @@ public:
 	// 머리 회전 업데이트
 	void update_rotate_head() {
 		if (head_rotate_state == head_rotate_right)
-			head_angle = std::lerp(head_angle, -10.0, fw.calc_ft(3));
+			head_angle = std::lerp(head_angle, -10.0, fw.FT(3));
 
 		else if (head_rotate_state == head_rotate_left)
-			head_angle = std::lerp(head_angle, 10.0, fw.calc_ft(3));
+			head_angle = std::lerp(head_angle, 10.0, fw.FT(3));
 
 		if (head_rotate_state == head_rotate_none)
-			head_angle = std::lerp(head_angle, 0.0, fw.calc_ft(3));
+			head_angle = std::lerp(head_angle, 0.0, fw.FT(3));
 	}
 
 	// 눈 깜빡임 업데이트
@@ -205,7 +205,7 @@ public:
 		}
 
 		else {
-			blink_time += fw.calc_ft(1);  // 아주 짧은 시간 동안 눈 감은 상태를 유지하다가 다시 눈을 뜬다.
+			blink_time += fw.FT(1);  // 아주 짧은 시간 동안 눈 감은 상태를 유지하다가 다시 눈을 뜬다.
 
 			if (blink_time > 0.2) {
 				start_time = time(NULL);
@@ -232,7 +232,7 @@ public:
 			face.enable_state_static();
 			face.tell_blink_state(true);
 
-			auto ptr = fw.find_object(layer7, "cursor_home");
+			auto ptr = fw.FindMainObj(main_layer7, "cursor_home");
 			if (ptr != nullptr) {
 				touch_angle = -ptr->get_cursor_touch_x() * 20;
 
@@ -245,7 +245,7 @@ public:
 
 		// 쓰다듬기를 멈추면 머리 각도를 다시 되돌린다
 		else {
-			touch_angle = std::lerp(touch_angle, 0, fw.calc_ft(10));
+			touch_angle = std::lerp(touch_angle, 0, fw.FT(10));
 
 			face.tell_touch_angle(touch_angle);
 			head.tell_touch_angle(touch_angle);
@@ -259,7 +259,7 @@ public:
 		if (squeak_state) {  // 일정시간동안 알키는 자기 코를 바라본다
 			face.enable_state_static();
 			face.tell_squeak_state(squeak_state);
-			squeak_time += fw.calc_ft(1);
+			squeak_time += fw.FT(1);
 
 			if (squeak_time > 1.5) {  // 1.5초 후 해제
 				squeak_state = false;
@@ -271,16 +271,16 @@ public:
 
 	void update_welcome_timer() {
 		if (!welcome_state) {
-			welcome_timer += fw.calc_ft(1);
+			welcome_timer += fw.FT(1);
 			if (welcome_timer > 1.0) {
-				fw.add_object(new Welcome_messege(layer2, "welcome_messege"), layer2);
+				fw.AddMainObj(new Welcome_messege(main_layer2, "welcome_messege"), main_layer2);
 				welcome_state = true;
 			}
 		}
 	}
 
 
-	void update() {
+	void Update() {
 		// 환영 메시지 타이머 업데이트
 		update_welcome_timer();
 
@@ -324,20 +324,20 @@ public:
 		update_squeak_state();
 	}
 
-	void check_collision() {
+	void CheckCollision() {
 		
 	}
 
-	void render() {
-		tail.render();
-		body.render();
-		hair.render();
-		head.render();
-		face.render();
+	void Render() {
+		tail.Render();
+		body.Render();
+		hair.Render();
+		head.Render();
+		face.Render();
 	}
 
 
-	void check_delete() {
+	void CheckDelete() {
 
 	}
 

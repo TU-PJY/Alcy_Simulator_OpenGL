@@ -4,7 +4,7 @@
 #include "../../header/view.h"
 
 
-class Tip_home : public FUNCTION {
+class Tip_home : public MAIN_CLS {
 private:
 	unsigned int tex{};
 
@@ -17,7 +17,7 @@ private:
 	bool visible = true;
 
 public:
-	std::string get_tag() const { return tag; }
+	std::string GetTag() const { return tag; }
 
 	void update_tip_visible (unsigned char KEY) {
 		if (KEY == 9) {
@@ -31,32 +31,32 @@ public:
 	}
 
 
-	void update() {
+	void Update() {
 		if (visible) {
-			transparent = std::lerp(transparent, 1.0, fw.calc_ft(15));
-			size = std::lerp(size, 3.0, fw.calc_ft(15));
+			transparent = std::lerp(transparent, 1.0, fw.FT(15));
+			size = std::lerp(size, 3.0, fw.FT(15));
 		}
 		else {
-			transparent = std::lerp(transparent, 0.0, fw.calc_ft(15));
-			size = std::lerp(size, 4.0, fw.calc_ft(15));
+			transparent = std::lerp(transparent, 0.0, fw.FT(15));
+			size = std::lerp(size, 4.0, fw.FT(15));
 		}
 	}
 
 
-	void render() {
+	void Render() {
 		init_transform();
 		alpha = transparent;
 
 		s_mat *= scale_image(size, size);
 		set_object_static(dy(rt(1.0) - 0.3), dy(-0.7));
 
-		if(fw.get_current_mode() == "home_mode")
+		if(fw.CurrentMode() == "home_mode")
 			draw_image(tex);
 	}
 
-	void check_collision() {}
+	void CheckCollision() {}
 
-	void check_delete() {}
+	void CheckDelete() {}
 
 	Tip_home(int l, std::string str) {
 		layer = l;

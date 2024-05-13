@@ -3,7 +3,7 @@
 #include "../../header/view.h"
 
 
-class BackGround_home : public FUNCTION{
+class BackGround_home : public MAIN_CLS{
 private:
 	unsigned int tex;
 
@@ -11,9 +11,9 @@ private:
 	std::string tag;
 
 public:
-	void update() {}
+	void Update() {}
 
-	void render() {
+	void Render() {
 		init_transform();
 		
 		s_mat *= scale_image(rt(25.0), 25.0);
@@ -21,9 +21,9 @@ public:
 		draw_image(tex);
 	}
 
-	void check_collision() {}
+	void CheckCollision() {}
 
-	void check_delete() {}
+	void CheckDelete() {}
 
 
 	BackGround_home(int l, std::string str) {

@@ -4,7 +4,7 @@
 #include "../header/Camera.h"
 
 
-class Cursor_home : public FUNCTION {
+class Cursor_home : public MAIN_CLS {
 private:
 	int layer{};
 	std::string tag{};
@@ -41,13 +41,13 @@ public:
 	void set_cursor_invisible() { visible = false; }
 	void set_cursor_visible() { visible = true; }
 
-	std::string get_tag() const { return tag; }
+	std::string GetTag() const { return tag; }
 
 
 	// 커서 타입 업데이트
 	void update_cursor_type() {
 		// 홈 모드 동작
-		auto ptr = fw.find_object(layer2, "alcy_home");
+		auto ptr = fw.FindMainObj(main_layer2, "alcy_home");
 
 		if (!touch_state) {
 			if (cam.key_state_left || cam.key_state_right) {
@@ -84,7 +84,7 @@ public:
 
 	// 마우스 클릭 초기화
 	void reset_mouse_state() {
-		auto ptr = fw.find_object(layer2, "alcy_home");
+		auto ptr = fw.FindMainObj(main_layer2, "alcy_home");
 
 		if (ptr != nullptr && touch_state) {
 			touch_state = false;
@@ -98,7 +98,7 @@ public:
 
 	// 마우스 왼쪽 버튼 클릭
 	void mouse_left_button_down(int button, int state) {
-		auto ptr = fw.find_object(layer2, "alcy_home");
+		auto ptr = fw.FindMainObj(main_layer2, "alcy_home");
 
 		if (ptr != nullptr) {
 			if(ptr->get_interaction_available_state()) {
@@ -117,7 +117,7 @@ public:
 
 	// 마우스 왼쪽 버튼 릴리즈
 	void mouse_left_button_up(int button, int state) {
-		auto ptr = fw.find_object(layer2, "alcy_home");
+		auto ptr = fw.FindMainObj(main_layer2, "alcy_home");
 
 		if (ptr != nullptr) {
 			if (touch_state) {
@@ -134,13 +134,13 @@ public:
 	// 알키 쓰다듬기 커서 움직임 업데이트
 	void move_cursor_touch_state() {
 		if (touch_state) {
-			touch_number += fw.calc_ft(2.5);
+			touch_number += fw.FT(2.5);
 			touch_x = sin(touch_number) / 4;
 		}
 	}
 
 
-	void update() {
+	void Update() {
 		update_cursor_type();
 		move_cursor_touch_state();
 
@@ -156,12 +156,12 @@ public:
 	}
 
 
-	void check_collision() {
+	void CheckCollision() {
 		update_cursor_type();
 	}
 
 
-	void render() {
+	void Render() {
 		init_transform();
 		set_object_static(x, y);
 
@@ -170,7 +170,7 @@ public:
 	}
 
 
-	void check_delete() {
+	void CheckDelete() {
 
 	}
 

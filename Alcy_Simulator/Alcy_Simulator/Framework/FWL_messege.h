@@ -5,280 +5,343 @@
 #include "FWL_config.h"
 
 #ifdef USING_FWL
-#if NUMBER_OF_LAYER
+#if N_MAIN_LAYER
+
+
+enum MainErrorTypes {
+	INV_M_INIT,
+	RPT_M_INIT,
+	INV_M_MODE_IN_M_INIT,
+	LOB_M_IN_M_INIT,
+	INV_M_MODE_IN_SWITCH,
+	SAME_M_MODE_IN_SWITCH,
+	LOB_M_IN_SWITCH,
+	INC_FUNC_IN_M_SWITCH,
+	LOB_M_IN_ADD,
+	LOB_M_IN_DELETE,
+	UKN_M_IN_DELETE,
+	LOB_M_IN_PTR,
+	LOB_M_IN_FIND,
+	LOB_M_IN_SIZE,
+	LOB_M_IN_CLEAR_LYR
+};
+
+
+enum SubErrorTypes {
+	INV_S_INIT,
+	RPT_S_INIT,
+	INV_S_MODE_IN_S_INIT,
+	LOB_S_IN_S_INIT,
+	INV_S_MODE_IN_SWITCH,
+	SAME_S_MODE_IN_SWITCH,
+	LOB_S_IN_SWITCH,
+	INC_FUNC_IN_S_SWITCH,
+	LOB_S_IN_ADD,
+	LOB_S_IN_DELETE,
+	UKN_S_IN_DELETE,
+	LOB_S_IN_PTR,
+	LOB_S_IN_FIND,
+	LOB_S_IN_SIZE,
+	LOB_S_IN_CLEAR_LYR
+};
+
 
 class FWL_MESSEGE {
 private:
-	std::vector<std::string> mode_list;
-	std::string next_mode_name{};
-	std::string current_mode_name{};
-	std::string prev_mode_name{};
-	bool is_pause{};
+	std::vector<std::string>  MainModeList;
+	std::string				  PrevMainModeName{};
+	std::string				  CurrentMainModeName{};
+	std::string				  NextMainModeName{};
 
-	#ifdef USING_POPUP_MODE
-	#if NUMBER_OF_POPUP_LAYER
-	std::vector<std::string> popup_mode_list; 
-	std::string next_popup_mode_name{};
-	std::string current_popup_mode_name{};
-	std::string prev_popup_mode_name{};
-	#endif
-	#endif
+	bool					  PauseState{};
+
+#ifdef USING_SUB_MODE
+#if N_SUB_LAYER
+	std::vector<std::string> SubModeList; 
+	std::string				 PrevSubModeName{};
+	std::string				 CurrentSubModeName{};
+	std::string				 NextSubModeName{};
+#endif
+#endif
 
 
 public:
-	void save_next_name(std::string name) { next_mode_name = name; }
-	void save_curr_name(std::string name) { current_mode_name = name; }
-	void save_prev_mode_name(std::string name) { prev_mode_name = name; }
+	void SV_NXT_M_MODE_NAME(std::string name) { NextMainModeName = name; }
+	void SV_CURR_M_MODE_NAME(std::string name) { CurrentMainModeName = name; }
+	void SV_PREV_M_MODE_NAME(std::string name) { PrevMainModeName = name; }
 
-	void save_next_popup_name(std::string name) { next_popup_mode_name = name; }
-	void save_curr_popup_name(std::string name) { current_popup_mode_name = name; }
-	void save_prev_popup_mode_name(std::string name) { prev_popup_mode_name = name; }
+#ifdef USING_SUB_MODE
+#if N_SUB_LAYER
+	void SV_NXT_S_MODE_NAME(std::string name) { NextSubModeName = name; }
+	void SV_CURR_S_MODE_NAME(std::string name) { CurrentSubModeName = name; }
+	void SV_PREV_S_MODE_NAME(std::string name) { PrevSubModeName = name; }
+#endif
+#endif
 
-	void save_is_pause(bool b) { is_pause = b; }
+	void SV_PAUSE_STATE(bool b) { PauseState = b; }
 
-
-	void process_popup_init_messege() {
+	void FWL_INIT_MSG() {
 #ifdef USING_DEBUG_MESSEGE
 		std::cout << std::endl << "==========[MESSEGE]==========" << std::endl;
-		if (is_pause)
-			std::cout << "Main mode is paused." << std::endl;
-		std::cout << "Popup is prepared." << std::endl << std::endl;
+		std::cout << "FWL main mode initialized" << std::endl << std::endl;
 #endif
 	}
 
-	void process_popup_close_messege() {
+	void SUB_INIT_MSG() {
 #ifdef USING_DEBUG_MESSEGE
 		std::cout << std::endl << "==========[MESSEGE]==========" << std::endl;
-		std::cout << "Popup is end." << std::endl << std::endl;
+		if (PauseState)
+			std::cout << "Main mode paused" << std::endl;
+		std::cout << "Sub mode initialized" << std::endl << std::endl;
 #endif
 	}
 
-	void process_FWL_init_messege() {
+	void SUB_END_MSG() {
 #ifdef USING_DEBUG_MESSEGE
 		std::cout << std::endl << "==========[MESSEGE]==========" << std::endl;
-		std::cout << "FWL is prepared." << std::endl << std::endl;
+		std::cout << "Sub mode end" << std::endl << std::endl;
 #endif
 	}
 
-	void process_mode_change_messege() {
+	void MAIN_MODE_SWITCH_MSG() {
 #ifdef USING_DEBUG_MESSEGE
 		std::cout << std::endl << "==========[MESSEGE]==========" << std::endl;
-		std::cout << "Mode changed '" << prev_mode_name << "' -> '" << current_mode_name << "'." << std::endl << std::endl;
+		std::cout << "Main mode switched '" << PrevMainModeName << "' -> '" << CurrentMainModeName << "'." << std::endl << std::endl;
 #endif
 	}
 
-	void process_popup_mode_change_messege() {
+	void SUB_MODE_SWITCH_MSG() {
 #ifdef USING_DEBUG_MESSEGE
 		std::cout << std::endl << "==========[MESSEGE]==========" << std::endl;
-		std::cout << "Popup mode changed '" << prev_popup_mode_name << "' -> '" << current_popup_mode_name << "'." << std::endl << std::endl;
+		std::cout << "Sub mode switched '" << PrevSubModeName << "' -> '" << CurrentSubModeName << "'." << std::endl << std::endl;
 #endif
 	}
 
 
-
-
-	void process_err(std::string err_type, std::string invalid_mode = "") {
+	void MAIN_ERROR(int ERR_TYPE, std::string INV_MODE = "") {
+		using namespace std;
 #ifdef USING_DEBUG_MESSEGE
+		cout << endl << "==========[ERROR OCCURED]==========" << endl << endl;
 
-		std::cout << std::endl << "==========[ERROR OCCURED]==========" << std::endl << std::endl;
-		std::cout << "Error type: " << err_type << std::endl << std::endl;
+		switch (ERRTYPE) {
+		case INV_M_INIT:
+			cout << "FWL main mode init error::Invalid FWL initialization" << endl;
+			cout << "FWL main mode is not initialized yet." << endl;
+			cout << "Execute FWL's function 'Init(func StartMode, std::string ModeName)' first." << endl;
+			break;
 
-		// init error
-		if (err_type == "FWL init error::Reapeted init")
-			std::cout << "Repeated FWL initialization attempt has been detected." << std::endl << std::endl;
+		case RPT_M_INIT:
+			cout << "FWL main mode init error::Reapeted init" << endl;
+			cout << "Repeated FWL main mode initialization has been detected." << endl;
+			break;
 
-		else if (err_type == "FWL init error::Invalid mode") {
-			std::cout << "Invalid mode initialization attempt has been detected." << std::endl << std::endl;
-			std::cout << "Invalid mode: '" << invalid_mode << "'" << std::endl << std::endl;
-			std::cout << "[List of valid modes]" << std::endl;
+		case INV_M_MODE_IN_M_INIT:
+			cout << "FWL main mode init error::Invalid main mode" << endl;
+			cout << "Invalid main mode initialization has been detected." << endl << endl;
+			cout << "Invalid main mode: '" << INV_MODE << "'" << endl << endl;
+			cout << "[List of valid main modes]" << endl;
 
-			for (auto& s : mode_list)
-				std::cout << "" << s << "" << std::endl;
+			for (auto& L : MainModeList)
+				std::cout << "" << L << "" << std::endl;
+			break;
+
+		case LOB_M_IN_M_INIT:
+			cout << "FWL main mode init error::Add objects outside of layer bounds" << endl;
+			cout << "Addition of object out of layer bounds has been detected." << endl << endl;
+			cout << "At main mode start: '" << NextMainModeName << "'" << endl;
+			break;
+
+		case INV_M_MODE_IN_SWITCH:
+			cout << "FWL main mode switch error::Invalid main mode" << endl;
+			cout << "Invalid main mode switch has been detected." << endl << endl;
+			cout << "At main mode switch: '" << CurrentMainModeName << "' -> invalid main mode '" << INV_MODE << "'" << endl << endl;
+			cout << "[List of valid main modes]" << endl;
+
+			for (auto& L : MainModeList)
+				cout << "" << L << "" << endl;
+			break;
+
+		case SAME_M_MODE_IN_SWITCH:
+			cout << "FWL main mode switch error::Same main mode as current main mode" << endl;
+			cout << "Switch to the same main mode as the current main mode has been detected." << endl << endl;
+			cout << "At main mode: '" << CurrentMainModeName << "'" << endl;
+			break;
+
+		case LOB_M_IN_SWITCH:
+			cout << "FWL main mode switch error::Add objects outside of layer bounds" << endl;
+			cout << "Addition of object out of layer bounds has been detected." << endl << endl;
+			cout << "At main mode switch: '" << CurrentMainModeName << "' -> '" << NextMainModeName << "'" << endl;
+			break;
+
+		case INC_FUNC_IN_M_SWITCH:
+			cout << "FWL main mode switch error::Incorrect function usage" << endl;
+			cout << "Incorrect function use [AddSubObj()] has been detected." << endl << endl;
+			cout << "At main mode switch: '" << CurrentMainModeName << "' -> '" << NextMainModeName << "'" << endl;
+			break;
+
+		case LOB_M_IN_ADD:
+			cout << "FWL main mode object addition error::Layer out of bounds" << endl;
+			cout << "Addition of object out of layer bounds has been detected." << endl << endl;
+			cout << "At main mode: '" << CurrentMainModeName << "'" << endl;
+			break;
+
+		case LOB_M_IN_DELETE:
+			cout << "FWL main mode object deletion error::Layer out of bounds" << endl;
+			cout << "Deletion of object out of layer bounds has been detected." << endl << endl;
+			cout << "At main mode: '" << CurrentMainModeName << "'" << endl;
+			break;
+
+		case UKN_M_IN_DELETE:
+			cout << "FWL main mode object deletion error::Unknown object" << endl;
+			cout << "Deletion of unknown object has been detected." << endl << endl;
+			cout << "At main mode: '" << CurrentMainModeName << "'" << endl;
+			break;
+
+		case LOB_M_IN_PTR:
+			cout << "FWL main mode ptr error::Layer out of bounds" << endl;
+			cout << "Getting ptr out of layer bounds has been detected." << endl << endl;
+			cout << "At main mode: '" << CurrentMainModeName << "'" << endl;
+			break;
+
+		case LOB_M_IN_FIND:
+			cout << "FWL main mode find error::Layer out of bounds" << endl;
+			cout << "Finding object out of layer bounds has been detected." << endl << endl;
+			cout << "At main mode: '" << CurrentMainModeName << "'" << endl;
+			break;
+
+		case LOB_M_IN_SIZE:
+			cout << "FWL main mode layer size error::Layer out of bounds" << endl;
+			cout << "Getting layer size out of layer bounds has been detected." << endl << endl;
+			cout << "At main mode: '" << CurrentMainModeName << "'" << endl;
+			break;
+
+		case LOB_M_IN_CLEAR_LYR:
+			cout << "FWL main mode layer clear error::Layer out of bounds" << endl;
+			cout << "Clearing layer out of layer bounds has been detected." << endl << endl;
+			cout << "At main mode: '" << CurrentMainModeName << "'" << endl;
+			break;
 		}
-
-		else if (err_type == "FWL init error::Layer out of bounds::main container") {
-			std::cout << "Addition of object attempt out of layer bounds has been detected." << std::endl << std::endl;
-			std::cout << "At mode start: '" << next_mode_name << "'" << std::endl;
-		}
-
-		else if (err_type == "FWL init error::Invalid initialization") {
-			std::cout << "FWL is not prepared yet." << std::endl;
-			std::cout << "Execute FWL's function 'init(func startmode, std::string modename)' first." << std::endl;
-		}
-
-
-		// mode error
-		else if (err_type == "FWL mode error::Invalid mode") {
-			std::cout << "Invalid mode change attempt has been detected." << std::endl << std::endl;
-			std::cout << "At mode change: '" << current_mode_name << "' -> invalid mode '" << invalid_mode << "'" << std::endl << std::endl;
-			std::cout << "[List of valid modes]" << std::endl;
-
-			for (auto& s : mode_list)
-				std::cout << "" << s << "" << std::endl;
-		}
-
-		else if (err_type == "FWL mode error::Same mode as current mode") {
-			std::cout << "An attempt to change to the same mode as the current mode has been detected." << std::endl << std::endl;
-			std::cout << "At mode: '" << current_mode_name << "'" << std::endl;
-		}
-
-
-		// object addition error
-		else if (err_type == "FWL object addition error::Layer out of bounds::temp container") {
-			std::cout << "Addition of object attempt out of layer bounds has been detected." << std::endl << std::endl;
-			std::cout << "At mode change: '" << current_mode_name << "' -> '" << next_mode_name << "'" << std::endl;
-		}
-
-		else if (err_type == "FWL object addition error::Layer out of bounds::main container") {
-			std::cout << "Addition of object attempt out of layer bounds has been detected." << std::endl << std::endl;
-			std::cout << "At mode: '" << current_mode_name << "'" << std::endl;
-		}
-
-
-		// object deletion error
-		else if (err_type == "FWL object deletion error::Layer out of bounds") {
-			std::cout << "Deletion of object attempt out of layer bounds has been detected." << std::endl << std::endl;
-			std::cout << "At mode: '" << current_mode_name << "'" << std::endl;
-		}
-
-		else if (err_type == "FWL object deletion error::Can not find object") {
-			std::cout << "Deletion of unknown object attempt has been detected." << std::endl << std::endl;
-			std::cout << "At mode: '" << current_mode_name << "'" << std::endl;
-		}
-
-
-		// ptr error
-		else if (err_type == "FWL ptr error::Layer out of bounds") {
-			std::cout << "Connection of ptr attempt out of layer bounds has been detected." << std::endl << std::endl;
-			std::cout << "At mode: '" << current_mode_name << "'" << std::endl;
-		}
-
-
-		// layer size errpr
-		else if (err_type == "FWL layer size error::Layer out of bounds") {
-			std::cout << "Obtaining layer size attempt out of layer bounds has been detected." << std::endl << std::endl;
-			std::cout << "At mode: '" << current_mode_name << "'" << std::endl;
-		}
-
-
-		// sweep layer error
-		else if (err_type == "FWL layer sweep error::Layer out of bounds") {
-			std::cout << "Layer sweep attempt out of layer bounds has been detected." << std::endl << std::endl;
-			std::cout << "At mode: '" << current_mode_name << "'" << std::endl;
-		}
-
 #endif
 		exit(1);
 	}
 
 
-
-
-	void process_popup_err(std::string err_type, std::string invalid_mode = "") {
+	void SUB_ERROR(int ERR_TYPE, std::string INV_MODE = "") {
+		using namespace std;
 #ifdef USING_DEBUG_MESSEGE
+		cout << endl << "==========[ERROR OCCURED]==========" << endl << endl;
 
-		std::cout << std::endl << "==========[ERROR OCCURED]==========" << std::endl << std::endl;
-		std::cout << "Error type: " << err_type << std::endl << std::endl;
+		switch (ERRTYPE) {
+		case INV_S_INIT:
+			cout << "FWL sub mode init error::Invalid Sub mode initialization" << endl;
+			cout << "Sub mode is not initialized yet." << endl;
+			cout << "Execute FWL's function 'InitSubMode(func StartModeFunc, std::string SubModeName, bool MainModePauseOption = 1)' first." << endl;
+			break;
 
-		// init error
-		if (err_type == "FWL popup init error::Reapeted init")
-			std::cout << "Repeated popup initialization attempt has been detected." << std::endl << std::endl;
+		case RPT_S_INIT:
+			cout << "FWL sub mode init error::Reapeted init" << endl;
+			cout << "Repeated Sub mode initialization has been detected." << endl;
+			break;
 
-		else if (err_type == "FWL popup init error::Invalid mode") {
-			std::cout << "Invalid mode initialization attempt has been detected." << std::endl << std::endl;
-			std::cout << "Invalid popup mode: '" << invalid_mode << "'" << std::endl << std::endl;
-			std::cout << "[List of valid popup modes]" << std::endl;
+		case INV_S_MODE_IN_S_INIT:
+			cout << "FWL sub mode init error::Invalid sub mode" << endl;
+			cout << "Invalid sub mode initialization has been detected." << endl << endl;
+			cout << "Invalid sub mode: '" << INV_MODE << "'" << endl << endl;
+			cout << "[List of valid sub modes]" << endl;
 
-			for (auto& s : popup_mode_list)
-				std::cout << "" << s << "" << std::endl;
+			for (auto& L : SubModeList)
+				std::cout << "" << L << "" << std::endl;
+			break;
+
+		case LOB_S_IN_S_INIT:
+			cout << "FWL sub mode init error::Add objects outside of layer bounds" << endl;
+			cout << "Addition of object out of layer bounds has been detected." << endl << endl;
+			cout << "At sub mode start: '" << NextSubModeName << "'" << endl;
+			break;
+
+		case INV_S_MODE_IN_SWITCH:
+			cout << "FWL sub mode mode switch error::Invalid sub mode" << endl;
+			cout << "Invalid sub mode switch has been detected." << endl << endl;
+			cout << "At sub mode switch: '" << CurrentSubModeName << "' -> invalid sub mode '" << INV_MODE << "'" << endl << endl;
+			cout << "[List of valid sub modes]" << endl;
+
+			for (auto& L : SubModeList)
+				cout << "" << L << "" << endl;
+			break;
+
+		case SAME_S_MODE_IN_SWITCH:
+			cout << "FWL sub mode switch error::Same main mode as current main mode" << endl;
+			cout << "Switch to the same sub mode as the current sub mode has been detected." << endl << endl;
+			cout << "At sub mode: '" << CurrentSubModeName << "'" << endl;
+			break;
+
+		case LOB_S_IN_SWITCH:
+			cout << "FWL sub mode switch error::Add objects outside of layer bounds" << endl;
+			cout << "Addition of object out of layer bounds has been detected." << endl << endl;
+			cout << "At sub mode switch: '" << CurrentSubModeName << "' -> '" << NextSubModeName << "'" << endl;
+			break;
+
+		case INC_FUNC_IN_S_SWITCH:
+			cout << "FWL sub mode switch error::Incorrect function usage" << endl;
+			cout << "Incorrect function use [AddMainObj()] has been detected." << endl << endl;
+			cout << "At sub mode switch: '" << CurrentSubModeName << "' -> '" << NextSubModeName << "'" << endl;
+			break;
+
+		case LOB_S_IN_ADD:
+			cout << "FWL sub mode object addition error::Layer out of bounds" << endl;
+			cout << "Addition of object out of layer bounds has been detected." << endl << endl;
+			cout << "At sub mode: '" << CurrentSubModeName << "'" << endl;
+			break;
+
+		case LOB_S_IN_DELETE:
+			cout << "FWL sub mode object deletion error::Layer out of bounds" << endl;
+			cout << "Deletion of object out of layer bounds has been detected." << endl << endl;
+			cout << "At sub mode: '" << CurrentSubModeName << "'" << endl;
+			break;
+
+		case UKN_S_IN_DELETE:
+			cout << "FWL sub mode object deletion error::Unknown object" << endl;
+			cout << "Deletion of unknown object has been detected." << endl << endl;
+			cout << "At sub mode: '" << CurrentSubModeName << "'" << endl;
+			break;
+
+		case LOB_S_IN_PTR:
+			cout << "FWL sub mode ptr error::Layer out of bounds" << endl;
+			cout << "Getting ptr out of layer bounds has been detected." << endl << endl;
+			cout << "At sub mode: '" << CurrentSubModeName << "'" << endl;
+			break;
+
+		case LOB_S_IN_FIND:
+			cout << "FWL sub mode find error::Layer out of bounds" << endl;
+			cout << "Finding object out of layer bounds has been detected." << endl << endl;
+			cout << "At sub mode: '" << CurrentMainModeName << "'" << endl;
+			break;
+
+		case LOB_S_IN_SIZE:
+			cout << "FWL sub mode layer size error::Layer out of bounds" << endl;
+			cout << "Getting layer size out of layer bounds has been detected." << endl << endl;
+			cout << "At sub mode: '" << CurrentSubModeName << "'" << endl;
+			break;
+
+		case LOB_S_IN_CLEAR_LYR:
+			cout << "FWL sub mode layer clear error::Layer out of bounds" << endl;
+			cout << "Clearing layer out of layer bounds has been detected." << endl << endl;
+			cout << "At sub mode: '" << CurrentSubModeName << "'" << endl;
+			break;
 		}
-
-		else if (err_type == "FWL popup init error::Layer out of bounds::main container") {
-			std::cout << "Addition of popup object attempt out of layer bounds has been detected." << std::endl << std::endl;
-			std::cout << "At popup mode start: '" << next_popup_mode_name << "'" << std::endl;
-		}
-
-		else if (err_type == "FWL popup init error::Invalid initialization") {
-			std::cout << "Popup is not prepared yet." << std::endl;
-			std::cout << "Execute popup initialization function 'init_popup(func startmode, std::string modename)' first." << std::endl;
-		}
-
-
-		// mode error
-		else if (err_type == "FWL popup mode error::Invalid mode") {
-			std::cout << "Invalid mode change attempt has been detected." << std::endl << std::endl;
-			std::cout << "At popup mode change: '" << current_popup_mode_name << "' -> invalid mode '" << invalid_mode << "'" << std::endl << std::endl;
-			std::cout << "[List of valid popup modes]" << std::endl;
-
-			for (auto& s : popup_mode_list)
-				std::cout << "" << s << "" << std::endl;
-		}
-
-		else if (err_type == "FWL popup mode error::Same mode as current mode") {
-			std::cout << "An attempt to change to the same mode as the current mode has been detected." << std::endl << std::endl;
-			std::cout << "At popup mode: '" << current_popup_mode_name << "'" << std::endl;
-		}
-
-
-		// object addition error
-		else if (err_type == "FWL popup object addition error::Layer out of bounds::temp popup container") {
-			std::cout << "Addition of object attempt out of layer bounds has been detected." << std::endl << std::endl;
-			std::cout << "At popup mode change: '" << current_popup_mode_name << "' -> '" << next_popup_mode_name << "'" << std::endl;
-		}
-
-		else if (err_type == "FWL popup object addition error::Layer out of bounds::main popup container") {
-			std::cout << "Addition of object attempt out of layer bounds has been detected." << std::endl << std::endl;
-			std::cout << "At popup mode: '" << current_popup_mode_name << "'" << std::endl;
-		}
-
-
-		// object deletion error
-		else if (err_type == "FWL popup object deletion error::Layer out of bounds") {
-			std::cout << "Deletion of object attempt out of layer bounds has been detected." << std::endl << std::endl;
-			std::cout << "At popup mode: '" << current_popup_mode_name << "'" << std::endl;
-		}
-
-		else if (err_type == "FWL popup object deletion error::Can not find object") {
-			std::cout << "Deletion of unknown object attempt has been detected." << std::endl << std::endl;
-			std::cout << "At popup mode: '" << current_popup_mode_name << "'" << std::endl;
-		}
-
-
-		// ptr error
-		else if (err_type == "FWL popup ptr error::Layer out of bounds") {
-			std::cout << "Connection of ptr attempt out of layer bounds has been detected." << std::endl << std::endl;
-			std::cout << "At popup mode: '" << current_popup_mode_name << "'" << std::endl;
-		}
-
-
-		// layer size errpr
-		else if (err_type == "FWL popup layer size error::Layer out of bounds") {
-			std::cout << "Obtaining layer size attempt out of layer bounds has been detected." << std::endl << std::endl;
-			std::cout << "At popup mode: '" << current_popup_mode_name << "'" << std::endl;
-		}
-
-
-		// sweep layer error
-		else if (err_type == "FWL popup layer sweep error::Layer out of bounds") {
-			std::cout << "Layer sweep attempt out of layer bounds has been detected." << std::endl << std::endl;
-			std::cout << "At popup mode: '" << current_popup_mode_name << "'" << std::endl;
-		}
-
 #endif
 		exit(1);
 	}
-
-
 
 
 	FWL_MESSEGE() {
-		MODELIST m;
+		MODELIST M;
 
-		mode_list = m.mode_list;
+		MainModeList = M.MainModeList;
 
-#ifdef USING_POPUP_MODE
-#if NUMBER_OF_POPUP_LAYER
-		popup_mode_list = m.popup_mode_list;
+#ifdef USING_SUB_MODE
+#if N_SUB_LAYER
+		SubModeList = M.SubModeList;
 #endif
 #endif
 	}

@@ -4,7 +4,7 @@
 #include "../../header/Camera.h"
 
 
-class Cursor_menu : public POPUP_FUNCTION {
+class Cursor_menu : public SUB_CLS {
 private:
 	unsigned int tex;
 
@@ -17,16 +17,16 @@ private:
 
 
 public:
-	std::string get_tag() const { return tag; }
+	std::string GetTag() const { return tag; }
 
 	void mouse_left_button_down(int button, int state) {
 		// info 닫기
-		auto ptr2 = fw.find_popup_object(popup_layer1, "info");
+		auto ptr2 = fw.FindSubObj(sub_layer1, "info");
 		if (ptr2 != nullptr && ptr2->get_info_visible_state())
 			ptr2->close_info();
 
 		// button, icon 클릭
-		auto ptr = fw.find_popup_object(popup_layer1, "menu");
+		auto ptr = fw.FindSubObj(sub_layer1, "menu");
 		if (ptr != nullptr) {
 			ptr->tell_icon_click();
 			ptr->tell_button_click();
@@ -34,23 +34,23 @@ public:
 	}
 
 
-	void update() {
+	void Update() {
 		x = dy(rt(mx));
 		y = dy(my);
 	}
 
 
-	void render() {
+	void Render() {
 		init_transform();
 		set_object_static(x, y);
 		draw_image(tex);
 	}
 
 
-	void check_collision() {
+	void CheckCollision() {
 		// 커서를 아이콘 위에 올리면 표시된다.
 		// 커서가 아이콘을 벗어나면 아이콘 위치가 다시 복구된다.
-		auto ptr = fw.find_popup_object(popup_layer1, "menu");
+		auto ptr = fw.FindSubObj(sub_layer1, "menu");
 
 		if (ptr != nullptr) {
 			// icon
@@ -78,7 +78,7 @@ public:
 	}
 
 
-	void check_delete() {};
+	void CheckDelete() {};
 
 
 
@@ -90,14 +90,14 @@ public:
 
 		// 메뉴를 연 동안에는 메인 모드에 존재하는 커서를 보이지 않게한다.
 		// 메인 모드의 커서와 다른 객체임
-		auto ptr = fw.find_object(layer7, "cursor_home");
+		auto ptr = fw.FindMainObj(main_layer7, "cursor_home");
 		if (ptr != nullptr)
 			ptr->set_cursor_invisible();
 	}
 
 	~Cursor_menu() {
 		// 메뉴를 종료하면 다시 메인 모드의 커서를 보이게 한다.
-		auto ptr = fw.find_object(layer7, "cursor_home");
+		auto ptr = fw.FindMainObj(main_layer7, "cursor_home");
 		if (ptr != nullptr)
 			ptr->set_cursor_visible();
 	}

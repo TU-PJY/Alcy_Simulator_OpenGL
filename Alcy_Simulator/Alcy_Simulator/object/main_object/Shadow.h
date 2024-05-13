@@ -3,7 +3,7 @@
 #include "../../header/view.h"
 
 
-class Shadow : public FUNCTION {
+class Shadow : public MAIN_CLS {
 private:
 	int layer{};
 	std::string tag;
@@ -11,9 +11,9 @@ private:
 	unsigned int tex;
 
 public:
-	void update(){}
+	void Update(){}
 
-	void render() {
+	void Render() {
 		init_transform();
 
 		s_mat *= scale_image(5.0, 4.0);
@@ -21,9 +21,9 @@ public:
 		draw_image(tex);
 	}
 
-	void check_collision(){}
+	void CheckCollision(){}
 
-	void check_delete(){}
+	void CheckDelete(){}
 
 
 	Shadow(int l, std::string str) {

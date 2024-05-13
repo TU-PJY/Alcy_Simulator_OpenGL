@@ -39,14 +39,14 @@ GLvoid gl_main() {
 	cam.update_camera();
 	set_view();
 
-	fw.routine();
+	fw.Routine();
 
 	glutPostRedisplay();
 	glutSwapBuffers();
 
 
 	end_time = clock();
-	fw.set_frame_time(double(end_time - start_time) / 1000);
+	fw.InputFrameTime(double(end_time - start_time) / 1000);
 }
 
 
@@ -115,7 +115,7 @@ void main(int argc, char** argv) {
 		set_shader();
 
 		// 프레임워크 세팅
-		fw.init(home_mode, "home_mode");
+		fw.InitMainMode(home_mode, "home_mode");
 	}
 	
 	glutDisplayFunc(gl_main);

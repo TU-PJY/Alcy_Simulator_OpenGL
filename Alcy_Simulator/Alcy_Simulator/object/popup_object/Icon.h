@@ -74,24 +74,24 @@ public:
 	}
 
 
-	void update() {
+	void Update() {
 
-		transparent = std::lerp(transparent, 1.0, fw.calc_ft(7));
+		transparent = std::lerp(transparent, 1.0, fw.FT(7));
 
 		// 커서를 마우스 위에 올리면 아이콘이 위로 올라오며 표시된다
 		for (int i = 0; i < ICON_NUMBER; ++i) {
 			update_icon_zone(i);
 
 			if (on_cursor[i])
-				position2[i] = std::lerp(position2[i], 0.03, fw.calc_ft(35));
+				position2[i] = std::lerp(position2[i], 0.03, fw.FT(35));
 			else
-				position2[i] = std::lerp(position2[i], 0.0, fw.calc_ft(35));
+				position2[i] = std::lerp(position2[i], 0.0, fw.FT(35));
 		}
 	}
 
 
 
-	void render() {
+	void Render() {
 		for (int i = 0; i < ICON_NUMBER; ++i) {
 			init_transform();
 
@@ -179,7 +179,7 @@ public:
 				
 				case 1: // info
 					if(!info_is_open)
-						fw.add_popup_object(new Info(popup_layer1, "info"), popup_layer1);
+						fw.AddSubObj(new Info(sub_layer1, "info"), sub_layer1);
 					break;
 				}
 
@@ -200,24 +200,24 @@ public:
 	}
 
 
-	void update() {
+	void Update() {
 
-		transparent = std::lerp(transparent, 1.0, fw.calc_ft(7));
+		transparent = std::lerp(transparent, 1.0, fw.FT(7));
 
 		// 커서를 마우스 위에 올리면 아이콘이 위로 올라오며 표시된다
 		for (int i = 0; i < BUTTON_NUMBER; ++i) {
 			update_button_zone(i);
 
 			if (on_cursor[i])
-				position2[i] = std::lerp(position2[i], 0.03, fw.calc_ft(35));
+				position2[i] = std::lerp(position2[i], 0.03, fw.FT(35));
 			else
-				position2[i] = std::lerp(position2[i], 0.0, fw.calc_ft(35));
+				position2[i] = std::lerp(position2[i], 0.0, fw.FT(35));
 		}
 	}
 
 
 
-	void render() {
+	void Render() {
 		for (int i = 0; i < BUTTON_NUMBER; ++i) {
 			init_transform();
 

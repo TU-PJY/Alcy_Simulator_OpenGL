@@ -5,7 +5,7 @@
 #include "../../header/view.h"
 #include "Icon.h"
 
-class Menu : public POPUP_FUNCTION {
+class Menu : public SUB_CLS {
 private:
 	unsigned int tex;
 
@@ -60,21 +60,21 @@ public:
 
 
 	// 태그 리턴
-	std::string get_tag() const { return tag; }
+	std::string GetTag() const { return tag; }
 
 
-	void update() {
+	void Update() {
 		icon.tell_position(position);
-		icon.update();
+		icon.Update();
 
 		button.tell_position(position);
-		button.update();
+		button.Update();
 
-		position = std::lerp(position, -1.0 + 0.15, fw.calc_ft(10));
-		transparent = std::lerp(transparent, 0.7, fw.calc_ft(7));
+		position = std::lerp(position, -1.0 + 0.15, fw.FT(10));
+		transparent = std::lerp(transparent, 0.7, fw.FT(7));
 	}
 
-	void render() {
+	void Render() {
 		init_transform();
 		s_mat *= scale_image(rt(10.0), 1.5);
 		set_object_static(0.0, dy(position));
@@ -82,13 +82,13 @@ public:
 
 		draw_image(tex);
 
-		icon.render();
-		button.render();
+		icon.Render();
+		button.Render();
 	}
 
-	void check_collision() {}
+	void CheckCollision() {}
 
-	void check_delete() {}
+	void CheckDelete() {}
 
 
 	Menu(int l, std::string str) {

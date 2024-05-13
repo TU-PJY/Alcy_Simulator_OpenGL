@@ -4,7 +4,7 @@
 #include "../../header/Camera.h"
 
 // 메뉴 종료 후 추가하는 배경
-class Front : public FUNCTION {
+class Front : public MAIN_CLS {
 private:
 	unsigned int tex{};
 
@@ -18,15 +18,15 @@ private:
 	GLfloat transparent = 1.0;
 
 public:
-	void update() {
+	void Update() {
 		// 완전히 투명해지면 스스로 삭제
-		transparent = std::lerp(transparent, 0.0, fw.calc_ft(3));
+		transparent = std::lerp(transparent, 0.0, fw.FT(3));
 
 		if (transparent <= 0.0001)
 			delete_flag = true;
 	}
 
-	void render() {
+	void Render() {
 		init_transform();
 		s_mat *= scale_image(rt(10.0), 10.0);
 		set_object_static(0.0, 0.0);
@@ -35,12 +35,12 @@ public:
 		draw_image(tex);
 	}
 
-	void check_collision() {}
+	void CheckCollision() {}
 
 
-	void check_delete() {
+	void CheckDelete() {
 		if (delete_flag)
-			fw.delete_object(this, layer);
+			fw.DeleteMainObj(this, layer);
 	}
 
 

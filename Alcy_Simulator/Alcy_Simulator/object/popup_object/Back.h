@@ -4,7 +4,7 @@
 #include "../../header/Camera.h"
 
 // 메뉴 종료 후 추가하는 배경
-class Back2 : public FUNCTION {
+class Back2 : public MAIN_CLS {
 private:
 	std::array<unsigned int, 2> tex{};
 
@@ -19,17 +19,17 @@ private:
 	GLfloat text_x = rt(-1.0) + 0.35;
 
 public:
-	void update() {
+	void Update() {
 		// 완전히 투명해지면 스스로 삭제
-		transparent = std::lerp(transparent, 0.0, fw.calc_ft(15));
-		text_transparent = std::lerp(text_transparent, 0.0, fw.calc_ft(15));
-		text_x = std::lerp(text_x, rt(-1.0) + 0.8, fw.calc_ft(10));
+		transparent = std::lerp(transparent, 0.0, fw.FT(15));
+		text_transparent = std::lerp(text_transparent, 0.0, fw.FT(15));
+		text_x = std::lerp(text_x, rt(-1.0) + 0.8, fw.FT(10));
 
 		if (transparent <= 0.0001)
 			delete_flag = true;
 	}
 
-	void render() {
+	void Render() {
 		init_transform();
 		s_mat *= scale_image(rt(10.0), 10.0);
 		set_object_static(0.0, 0.0);
@@ -47,12 +47,12 @@ public:
 		draw_image(tex[1]);
 	}
 
-	void check_collision() {}
+	void CheckCollision() {}
 
 
-	void check_delete() {
+	void CheckDelete() {
 		if (delete_flag)
-			fw.delete_object(this, layer);
+			fw.DeleteMainObj(this, layer);
 	}
 
 
@@ -67,7 +67,7 @@ public:
 
 
 // 메뉴 실행 시 추가하는 배경
-class Back : public POPUP_FUNCTION {
+class Back : public SUB_CLS {
 private:
 	GLuint VAO{};
 	std::array<unsigned int, 2> tex{};
@@ -83,13 +83,13 @@ private:
 
 
 public:
-	void update() {
-		transparent = std::lerp(transparent, 0.7, fw.calc_ft(10));
-		text_transparent = std::lerp(text_transparent, 1.0, fw.calc_ft(10));
-		text_x = std::lerp(text_x, rt(-1.0) + 0.35, fw.calc_ft(10));
+	void Update() {
+		transparent = std::lerp(transparent, 0.7, fw.FT(10));
+		text_transparent = std::lerp(text_transparent, 1.0, fw.FT(10));
+		text_x = std::lerp(text_x, rt(-1.0) + 0.35, fw.FT(10));
 	}
 
-	void render() {
+	void Render() {
 		init_transform();
 		s_mat *= scale_image(rt(10.0), 10.0);
 		set_object_static(0.0, 0.0);
@@ -106,9 +106,9 @@ public:
 		draw_image(tex[1]);
 	}
 
-	void check_collision() {}
+	void CheckCollision() {}
 
-	void check_delete() {}
+	void CheckDelete() {}
 
 	Back(int l, std::string str) {
 		layer = l;
@@ -121,6 +121,6 @@ public:
 
 	// 메뉴 종료 시 같은 투명 배경을 추가한 후 삭제된다.
 	~Back() {
-		fw.add_object(new Back2(layer3, "back2"), layer3);
+		fw.AddMainObj(new Back2(main_layer3, "back2"), main_layer3);
 	}
 };

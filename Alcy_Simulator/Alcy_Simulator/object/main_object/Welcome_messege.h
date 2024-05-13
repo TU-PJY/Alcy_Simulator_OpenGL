@@ -5,7 +5,7 @@
 #include "../../header/data_util.h"
 
 // 환영 메시지
-class Welcome_messege : public FUNCTION {
+class Welcome_messege : public MAIN_CLS {
 private:
 	std::array<unsigned int, 6> tex{};
 	std::array<const char*, 6> directory = {
@@ -36,25 +36,25 @@ private:
 
 
 public:
-	void update() {
+	void Update() {
 		if (num2 != 0) {
-			num3 += fw.calc_ft(20);
+			num3 += fw.FT(20);
 
 			if (num3 > 2.5) {
 				num3 = 2.5;
 
-				num += fw.calc_ft(20);
-				num2 -= fw.calc_ft(2);
+				num += fw.FT(20);
+				num2 -= fw.FT(2);
 
 				if (num2 < 0)  num2 = 0;
 			}
 		}
 
 		if (num2 == 0) {
-			timer += fw.calc_ft(1);
+			timer += fw.FT(1);
 			if (timer > 2.0) {
-				num3 = std::lerp(num3, 0.0, fw.calc_ft(10));
-				transparent = std::lerp(transparent, 0.0, fw.calc_ft(10));
+				num3 = std::lerp(num3, 0.0, fw.FT(10));
+				transparent = std::lerp(transparent, 0.0, fw.FT(10));
 
 				if (num3 <= 0.001)  delete_flag = true;
 			}
@@ -63,7 +63,7 @@ public:
 		size = num3 + sin(num) * num2;
 	}
 
-	void render() {
+	void Render() {
 		init_transform();
 		s_mat *= scale_image(size, size);
 		t_mat *= move_image(0.75, 0.5);
@@ -72,11 +72,11 @@ public:
 		draw_image(tex[number]);
 	}
 
-	void check_collision(){}
+	void CheckCollision(){}
 
-	void check_delete() {
+	void CheckDelete() {
 		if (delete_flag)
-			fw.delete_object(this, layer);
+			fw.DeleteMainObj(this, layer);
 	}
 
 	Welcome_messege(int l, std::string str) {

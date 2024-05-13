@@ -7,33 +7,31 @@
 #include "../header/HEADER.h"
 
 #define          USING_FWL
-#define          NUMBER_OF_LAYER 7
+#define          N_MAIN_LAYER 7
 
-#define          USING_POPUP_MODE
-#define          NUMBER_OF_POPUP_LAYER 4
+#define          USING_SUB_MODE
+#define          N_SUB_LAYER 4
 
 //#define          USING_DEBUG_MESSEGE
 #define          USING_FRAME_TIME
+#define          USING_FRAME_TIME_OUTSIDE
 
 
 
 class MODELIST {
 public:
 	// add mode list here...
-	std::vector<std::string> mode_list = 
-	{
-	"home_mode",
+	std::vector<std::string> MainModeList = 
+	{ "home_mode",
 	"music_mode1",
 	"music_mode2",
-	"game_mode",
+	"game_mode", };
 
-	};
-
-#ifdef USING_POPUP_MODE
-#if NUMBER_OF_POPUP_LAYER
+#ifdef USING_SUB_MODE
+#if N_SUB_LAYER
 
 	// add popup mode list here...
-	std::vector<std::string> popup_mode_list =
+	std::vector<std::string> SubModeList =
 	{ "menu_mode", };
 
 #endif
@@ -42,17 +40,15 @@ public:
 
 
 
-class FUNCTION {
+class MAIN_CLS {
 public:
-	virtual void update() {}
-	virtual void check_collision() {}
-	virtual void render() {}
-	virtual void check_delete() {}
-
-	virtual std::string get_tag() const { return {}; }
+	virtual void Update() {}
+	virtual void CheckCollision() {}
+	virtual void Render() {}
+	virtual void CheckDelete() {}
+	virtual std::string GetTag() const { return {}; }
 
 	////////////////// home mode
-	// 
 	// cursor
 	virtual GLfloat get_cursor_x() const { return {}; }
 	virtual GLfloat get_cursor_y() const { return {}; }
@@ -79,22 +75,21 @@ public:
 
 	////////////////////
 
-	virtual     ~FUNCTION() {}
+	virtual     ~MAIN_CLS() {}
 };
 
 
 
-#ifdef USING_POPUP_MODE
-#if NUMBER_OF_POPUP_LAYER
+#ifdef USING_SUB_MODE
+#if N_SUB_LAYER
 
-class POPUP_FUNCTION {
+class SUB_CLS {
 public:
-	virtual void update() {}
-	virtual void check_collision() {}
-	virtual void render() {}
-	virtual void check_delete() {}
-
-	virtual std::string get_tag() const { return {}; }
+	virtual void Update() {}
+	virtual void CheckCollision() {}
+	virtual void Render() {}
+	virtual void CheckDelete() {}
+	virtual std::string GetTag() const { return {}; }
 
 	//menu mode
 	// icon
@@ -107,7 +102,7 @@ public:
 	// button
 	virtual void tell_on_cursor_button(int idx) {}
 	virtual void tell_not_on_cursor_button(int idx) {}
-	virtual size_t get_button_number() {return {};}
+	virtual size_t get_button_number() { return {}; }
 	virtual void tell_button_click() {}
 	virtual std::array<GLfloat, 4> get_button_zone(int i) { return {}; }
 
@@ -120,8 +115,7 @@ public:
 	// cursor
 	virtual void mouse_left_button_down(int button, int state) {}
 
-
-	virtual     ~POPUP_FUNCTION() {}
+	virtual     ~SUB_CLS() {}
 };
 
 #endif

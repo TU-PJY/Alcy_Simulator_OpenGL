@@ -29,9 +29,6 @@
     <Filter Include="[5]__________main_mode">
       <UniqueIdentifier>{46b11d49-c673-4526-8dbb-78c6243976fc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[6]__________opoup_mode">
-      <UniqueIdentifier>{58c6b24d-3a53-4d42-8573-ec2fa258b21f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="[8]__________OBJ_main\[2]------UI">
       <UniqueIdentifier>{d36476a1-b0c3-4d25-b37f-6ffe155e285c}</UniqueIdentifier>
     </Filter>
@@ -64,6 +61,9 @@
     </Filter>
     <Filter Include="[8]__________OBJ_main\[3]------Prop">
       <UniqueIdentifier>{51b93134-93e6-4408-81f8-1ffb053f0b19}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[6]__________sub_mode">
+      <UniqueIdentifier>{58c6b24d-3a53-4d42-8573-ec2fa258b21f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -169,7 +169,7 @@
       <Filter>[5]__________main_mode</Filter>
     </ClCompile>
     <ClCompile Include="cpp\menu_mode.cpp">
-      <Filter>[6]__________opoup_mode</Filter>
+      <Filter>[6]__________sub_mode</Filter>
     </ClCompile>
     <ClCompile Include="cpp\sound_list.cpp">
       <Filter>[12]__________sound</Filter>

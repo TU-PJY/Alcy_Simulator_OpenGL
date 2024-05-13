@@ -50,18 +50,18 @@ extern GLfloat mx, my;
 
 // layer names
 enum main_layers {
-	layer1,
-	layer2,
-	layer3,
-	layer4,
-	layer5,
-	layer6,
-	layer7,
+	main_layer1,
+	main_layer2,
+	main_layer3,
+	main_layer4,
+	main_layer5,
+	main_layer6,
+	main_layer7,
 };
 
 enum popup_layers {
-	popup_layer1,
-	popup_layer2,
-	popup_layer3,
-	popup_layer4,
+	sub_layer1,
+	sub_layer2,
+	sub_layer3,
+	sub_layer4,
 };

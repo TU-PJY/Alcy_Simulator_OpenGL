@@ -4,7 +4,7 @@
 #include "../../header/Camera.h"
 
 
-class Info : public POPUP_FUNCTION {
+class Info : public SUB_CLS {
 private:
 	unsigned int tex{};
 
@@ -22,24 +22,24 @@ public:
 
 	void close_info() {visible = false;}
 
-	std::string get_tag() const { return tag; }
+	std::string GetTag() const { return tag; }
 
-	void update() {
+	void Update() {
 		if (visible) {
-			size = std::lerp(size, 7.0, fw.calc_ft(20));
-			transparent = std::lerp(transparent, 1.0, fw.calc_ft(20));
+			size = std::lerp(size, 7.0, fw.FT(20));
+			transparent = std::lerp(transparent, 1.0, fw.FT(20));
 		}
 
 		else {
-			size = std::lerp(size, 10.0, fw.calc_ft(20));
-			transparent = std::lerp(transparent, 0.0, fw.calc_ft(20));
+			size = std::lerp(size, 10.0, fw.FT(20));
+			transparent = std::lerp(transparent, 0.0, fw.FT(20));
 
 			if (transparent <= 0.001)
-				fw.delete_popup_object(this, layer);
+				fw.DeleteSubObj(this, layer);
 		}
 	}
 
-	void render() {
+	void Render() {
 		init_transform();
 
 		s_mat *= scale_image(size, size);
@@ -49,11 +49,11 @@ public:
 		draw_image(tex);
 	}
 
-	void check_collision() {
+	void CheckCollision() {
 
 	}
 
-	void check_delete() {
+	void CheckDelete() {
 
 	}
 
@@ -63,14 +63,14 @@ public:
 
 		set_texture(tex, "res//ui//info.png", 1024, 1024, 1);
 
-		auto ptr = fw.find_popup_object(popup_layer1, "menu");
+		auto ptr = fw.FindSubObj(sub_layer1, "menu");
 		if (ptr != nullptr)
 			ptr->tell_info_is_open();
 	}
 
 
 	~Info() {
-		auto ptr = fw.find_popup_object(popup_layer1, "menu");
+		auto ptr = fw.FindSubObj(sub_layer1, "menu");
 		if (ptr != nullptr)
 			ptr->tell_info_is_close();
 	}

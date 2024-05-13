@@ -209,7 +209,7 @@ public:
 	}
 
 
-	void render() {
+	void Render() {
 		// blink state°¡ trueÀÌ¸é ´«À» ±ôºýÀÌ´Â °Í
 		if (!blink_state) {
 			if (!squeak_state) {
@@ -282,7 +282,7 @@ public:
 	}
 
 
-	void render() {
+	void Render() {
 		init_transform();
 
 		GLfloat angle = touch_angle + tilt_angle;
@@ -326,7 +326,7 @@ public:
 		position = pos;
 	}
 
-	void render() {
+	void Render() {
 		init_transform();
 		s_mat *= scale_image(7.0, 7.0);
 		t_mat *= move_image(0.0, -0.55);
@@ -363,7 +363,7 @@ public:
 		touch_angle = a;
 	}
 
-	void render() {
+	void Render() {
 		init_transform();
 
 		GLfloat angle = touch_angle + tilt_angle;
@@ -403,7 +403,7 @@ public:
 	}
 
 
-	void render() {
+	void Render() {
 		init_transform();
 		
 		GLfloat angle = tilt_angle + touch_angle;
