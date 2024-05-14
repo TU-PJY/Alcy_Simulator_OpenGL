@@ -105,8 +105,6 @@ public:
 
 
 	Icon() {
-		set_vertex(VAO);
-
 		for (int i = 0; i < ICON_NUMBER; ++i)
 			set_texture(tex[i], directory[i], 256, 256, 1);
 	}

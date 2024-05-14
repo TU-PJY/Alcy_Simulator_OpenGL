@@ -18,6 +18,7 @@ Camera cam;
 // GPU vendor
 std::string vendor;
 
+// shared vertex
 GLuint VAO;
 
 // display size
@@ -25,12 +26,10 @@ int WIDTH = GetSystemMetrics(SM_CXSCREEN);
 int HEIGHT = GetSystemMetrics(SM_CYSCREEN);
 
 clock_t start_time, end_time;
-double frame_time;
 
 
 GLvoid gl_main() {
 	start_time = clock();
-
 
 	glClearColor(0.39f, 0.40f, 0.5f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  

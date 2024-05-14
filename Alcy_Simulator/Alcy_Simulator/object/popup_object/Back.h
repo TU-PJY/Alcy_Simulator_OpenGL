@@ -69,7 +69,6 @@ public:
 // 메뉴 실행 시 추가하는 배경
 class Back : public SUB_CLS {
 private:
-	GLuint VAO{};
 	std::array<unsigned int, 2> tex{};
 
 	int layer{};
@@ -114,7 +113,6 @@ public:
 		layer = l;
 		tag = str;
 
-		set_vertex(VAO);
 		set_texture(tex[0], "res//ui//black.png", 100, 100, 1);
 		set_texture(tex[1], "res//ui//text//text_menu.png", 512, 512, 1);
 	}
