@@ -6,7 +6,7 @@ extern GLuint VBO, VAO;
 extern unsigned char* texture_data;
 
 
-void set_canvas(GLuint &VAO);
+void set_vertex(GLuint &VAO);
 
 void set_texture(unsigned int &tex, const char* directory, int width, int height, int channel);
 

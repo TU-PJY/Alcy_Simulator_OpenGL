@@ -247,7 +247,6 @@ public:
 
 class Head {
 private:
-	GLuint VAO{};
 	std::array <unsigned int, 3> tex{};
 	std::array<const char*, 3> directory = {
 		"res//alcy//head_left.png",
@@ -298,7 +297,6 @@ public:
 	}
 
 	Head() {
-		set_canvas(VAO);
 		for (int i = 0; i < directory.size(); ++i)
 			set_texture(tex[i], directory[i], 1500, 1500, 1);
 	}
@@ -308,7 +306,6 @@ public:
 
 class Body {
 private:
-	GLuint VAO{};
 	std::array<unsigned int, 1> tex{};
 	std::array<const char*, 1> directory = {
 		"res//alcy//body.png"
@@ -334,7 +331,6 @@ public:
 	}
 
 	Body() {
-		set_canvas(VAO);
 		for (int i = 0; i < directory.size(); ++i)
 			set_texture(tex[i], directory[i], 1500, 1500, 1);
 	}
@@ -344,7 +340,6 @@ public:
 
 class Hair {
 private:
-	GLuint VAO{};
 	std::array<unsigned int, 1> tex{};
 	std::array<const char*, 1> directory = {
 		"res//alcy//hair.png"
@@ -374,7 +369,6 @@ public:
 	}
 
 	Hair() {
-		set_canvas(VAO);
 		for (int i = 0; i < directory.size(); ++i)
 			set_texture(tex[i], directory[i], 1500, 1500, 1);
 	}
@@ -383,7 +377,6 @@ public:
 
 class Tail {
 private:
-	GLuint VAO{};
 	std::array<unsigned int, 1> tex{};
 	std::array<const char*, 1> directory = {
 		"res//alcy//tail.png"
@@ -415,7 +408,6 @@ public:
 	}
 
 	Tail() {
-		set_canvas(VAO);
 		for (int i = 0; i < directory.size(); ++i)
 			set_texture(tex[i], directory[i], 1500, 1500, 1);
 	}

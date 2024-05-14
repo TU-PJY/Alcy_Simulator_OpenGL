@@ -100,7 +100,7 @@ void main(int argc, char** argv) {
 		stbi_set_flip_vertically_on_load(true);
 
 		// 공유 버텍스 설정
-		set_canvas(VAO);
+		set_vertex(VAO);
 
 		// 세이브 파일이 존재하지 않으면 세이브 파일을 신규 생성한다
 		check_data_invalid();
@@ -120,14 +120,5 @@ void main(int argc, char** argv) {
 	
 	glutDisplayFunc(gl_main);
 	glutReshapeFunc(display_reshape);
-
-	glutKeyboardFunc(key_down);
-	glutKeyboardUpFunc(key_up);
-
-	glutMouseFunc(mouse_button);
-	glutMotionFunc(mouse_motion);
-	glutPassiveMotionFunc(mouse_passive_motion);
-	glutMouseWheelFunc(mouse_wheel);
-
 	glutMainLoop();
 }

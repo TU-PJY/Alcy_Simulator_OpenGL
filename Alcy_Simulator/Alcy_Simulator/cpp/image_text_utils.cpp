@@ -15,7 +15,7 @@ GLfloat canvas[][48] = {  // 이미지 출력에 사용할 canvas
 };
 
 
-void set_canvas(GLuint &VAO) {
+void set_vertex(GLuint &VAO) {
 	glGenVertexArrays(1, &VAO);
 	glBindVertexArray(VAO);
 	glGenBuffers(1, &VBO);

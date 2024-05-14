@@ -114,7 +114,7 @@ public:
 		layer = l;
 		tag = str;
 
-		set_canvas(VAO);
+		set_vertex(VAO);
 		set_texture(tex[0], "res//ui//black.png", 100, 100, 1);
 		set_texture(tex[1], "res//ui//text//text_menu.png", 512, 512, 1);
 	}

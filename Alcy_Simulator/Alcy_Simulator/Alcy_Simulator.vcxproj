@@ -172,7 +172,6 @@
     <ClCompile Include="cpp\data_util.cpp" />
     <ClCompile Include="cpp\home_mode.cpp" />
     <ClCompile Include="cpp\image_text_utils.cpp" />
-    <ClCompile Include="cpp\keyboard.cpp" />
     <ClCompile Include="cpp\main.cpp" />
     <ClCompile Include="cpp\math_utils.cpp" />
     <ClCompile Include="cpp\menu_mode.cpp" />

@@ -161,7 +161,6 @@ public:
 	void update_camera() {
 		rotate_camera();
 		zoom_camera();
-
 		update_camera_lock();
 
 		// lock state가 true가 되면 카메라 무빙과 조작을 하지 않는다

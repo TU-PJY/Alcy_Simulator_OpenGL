@@ -7,9 +7,6 @@
     <Filter Include="[3]__________mouse">
       <UniqueIdentifier>{21dd3a3c-5ca8-47e4-97d4-8f7d7e04bd0c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[4]__________keyboard">
-      <UniqueIdentifier>{e086e961-ed60-4268-81a7-3922e7f67d2b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="[2]__________main">
       <UniqueIdentifier>{4213f66f-1787-4cc8-99d2-0bb7a8e2ed2e}</UniqueIdentifier>
     </Filter>
@@ -146,9 +143,6 @@
   <ItemGroup>
     <ClCompile Include="cpp\mouse.cpp">
       <Filter>[3]__________mouse</Filter>
-    </ClCompile>
-    <ClCompile Include="cpp\keyboard.cpp">
-      <Filter>[4]__________keyboard</Filter>
     </ClCompile>
     <ClCompile Include="cpp\main.cpp">
       <Filter>[2]__________main</Filter>
