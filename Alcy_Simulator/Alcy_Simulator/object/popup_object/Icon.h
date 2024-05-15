@@ -103,7 +103,6 @@ public:
 	}
 
 
-
 	Icon() {
 		for (int i = 0; i < ICON_NUMBER; ++i)
 			set_texture(tex[i], directory[i], 256, 256, 1);
@@ -114,12 +113,6 @@ public:
 
 class Button {
 private:
-	std::array<unsigned int, BUTTON_NUMBER> text_tex{};
-	std::array<const char*, BUTTON_NUMBER> text_directory = {
-		"res//ui//text//text_quit.png",
-		"res//ui//text//text_info.png",
-	};
-
 	std::array<unsigned int, BUTTON_NUMBER> tex{};
 	std::array<const char*, BUTTON_NUMBER> directory = {
 		"res//ui//icon_off.png",
@@ -142,6 +135,9 @@ private:
 	GLfloat position2[BUTTON_NUMBER]{};
 
 	bool info_is_open{};
+
+	Text text_back = Text("Maniac", 60, FW_BOLD);
+	Text text_front = Text("Maniac Outline", 60, FW_BOLD);
 
 
 public:
@@ -227,11 +223,20 @@ public:
 			draw_image(tex[i]);
 
 			init_transform();
-			s_mat *= scale_image(1.5, 1.5);
-			set_object_static(dy(rt(-1.0) + 0.5), dy(position + 0.235));
 
-			if (on_cursor[i])
-				draw_image(text_tex[i]);
+			if (on_cursor[i]) {
+				switch (i) {
+				case 1:
+					text_back.out_static(-0.8, position + 0.2, 1.0, 1.0, 1.0, "INFO");
+					text_front.out_static(-0.8, position + 0.2, 0.0, 0.0, 0.0, "INFO");
+					break;
+
+				case 0:
+					text_back.out_static(-0.8, position + 0.2, 1.0, 1.0, 1.0, "EXIT");
+					text_front.out_static(-0.8, position + 0.2, 0.0, 0.0, 0.0, "EXIT");
+					break;
+				}
+			}
 		}
 	}
 
@@ -239,9 +244,5 @@ public:
 	Button() {
 		for (int i = 0; i < BUTTON_NUMBER; ++i)
 			set_texture(tex[i], directory[i], 512, 512, 1);
-
-		for (int i = 0; i < BUTTON_NUMBER; ++i)
-			set_texture(text_tex[i], text_directory[i], 512, 512, 1);
 	}
-
 };

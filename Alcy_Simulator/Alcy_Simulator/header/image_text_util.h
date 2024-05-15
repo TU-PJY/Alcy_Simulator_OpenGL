@@ -26,6 +26,7 @@ class Text {
 private:
 	GLuint base{};
 	HDC hDC{};
+	HFONT font{};
 
 	const char* fmt{};
 
@@ -60,12 +61,15 @@ public:
 
 
 	GLvoid build_font(const char* fontName, int fontSize, int type, GLuint& base, HDC& hDC) {
-		HFONT   font;     // Windows Font ID
-		HFONT   oldfont;  // Used For Good House Keeping
+		HFONT font;
+		HFONT oldfont;
 
 		// calculate font size scale
 		int dpiX = GetDeviceCaps(hDC, LOGPIXELSX);
-		float scale = static_cast<float>(dpiX) / 96.0f;
+		float windowScale = static_cast<float>(HEIGHT) / FHEIGHT;
+		float dpi_scale = static_cast<float>(dpiX) / 96.0f;
+		float scale = windowScale * dpi_scale;
+
 		int result_size = static_cast<int>(fontSize * scale);
 
 		base = glGenLists(96);  // Storage For 96 Characters
@@ -110,6 +114,7 @@ public:
 				// 텍스트가 화면 모서리에 있는 경우 그리지 않음
 				return;
 			}
+
 			glRasterPos2f(0.0, 0.0);
 		}
 
@@ -173,15 +178,14 @@ public:
 	}
 
 
-	GLvoid kill_text(GLuint base) { glDeleteLists(base, 96); }
-
-
 	Text(const char* fontName, int fontSize, int type) {
 		set_font(fontName, fontSize, type, base, hDC);
 	}
 
+	Text() {}
+
 
 	~Text() {
-		kill_text(base);
+		glDeleteLists(base, 96);
 	}
 };

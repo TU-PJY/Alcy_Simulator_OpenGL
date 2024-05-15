@@ -22,10 +22,20 @@ std::string vendor;
 GLuint VAO;
 
 // display size
-int WIDTH = GetSystemMetrics(SM_CXSCREEN);
-int HEIGHT = GetSystemMetrics(SM_CYSCREEN);
+int WIDTH = 800;
+int HEIGHT = 600;
+
+int FWIDTH = GetSystemMetrics(SM_CXSCREEN);
+int FHEIGHT = GetSystemMetrics(SM_CYSCREEN);
 
 clock_t start_time, end_time;
+
+
+GLvoid display_reshape(int w, int h) {
+	glViewport(0, 0, w, h);
+	WIDTH = w;
+	HEIGHT = h;
+}
 
 
 GLvoid gl_main() {
@@ -49,21 +59,12 @@ GLvoid gl_main() {
 }
 
 
-GLvoid display_reshape(int w, int h) {
-	glViewport(0, 0, w, h);
-}
-
-
 void main(int argc, char** argv) {
 	{  // fold here
 		// 게임에 필요한 폰트 설치
-		install_font("res//font//Somatic-Rounded.otf");
 		install_font("res//font//joystix monospace.otf");
-		install_font("res//font//gomarice_no_continue.ttf");
-		install_font("res//font//overload.burn-regular.otf");
-		install_font("res//font//UASQUARE.ttf");
 		install_font("res//font//maniac.regular.ttf");
-		install_font("res//font//maniac.outlinr-regular.ttf");
+		install_font("res//font//maniac.outline-regular.ttf");
 
 		glutInit(&argc, argv);
 		glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GL_MULTISAMPLE);

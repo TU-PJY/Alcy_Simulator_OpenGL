@@ -110,7 +110,7 @@ public:
 					}
 
 					else
-						It = MainCont[i].erase(remove(MainCont[i].begin(), MainCont[i].end(), Ptr));
+						It = MainCont[i].erase(It);
 				}
 			}
 
@@ -133,7 +133,7 @@ public:
 						}
 
 						else
-							It = SubCont[i].erase(remove(SubCont[i].begin(), SubCont[i].end(), Ptr));
+							It = SubCont[i].erase(It);
 					}
 				}
 			}
@@ -738,7 +738,7 @@ public:
 			F_Messege.SUB_ERROR(INV_S_INIT);
 
 
-		for (int i = 0; i < N_MAIN_LAYER; ++i) {
+		for (int i = 0; i < N_SUB_LAYER; ++i) {
 			for (auto It = SubCont[i].begin(); It != SubCont[i].end();) {
 				auto Target = std::find(SubCont[i].begin(), SubCont[i].end(), *It);
 
