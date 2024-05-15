@@ -59,7 +59,11 @@ void main(int argc, char** argv) {
 		// 게임에 필요한 폰트 설치
 		install_font("res//font//Somatic-Rounded.otf");
 		install_font("res//font//joystix monospace.otf");
-
+		install_font("res//font//gomarice_no_continue.ttf");
+		install_font("res//font//overload.burn-regular.otf");
+		install_font("res//font//UASQUARE.ttf");
+		install_font("res//font//maniac.regular.ttf");
+		install_font("res//font//maniac.outlinr-regular.ttf");
 
 		glutInit(&argc, argv);
 		glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GL_MULTISAMPLE);
@@ -70,6 +74,7 @@ void main(int argc, char** argv) {
 		glutCreateWindow("Totally Smoll Alcy Simulator V2");
 
 		glutSetCursor(GLUT_CURSOR_NONE);
+
 		// convert to fullscreen
 		glutFullScreen();
 

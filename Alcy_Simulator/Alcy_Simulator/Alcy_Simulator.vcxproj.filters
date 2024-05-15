@@ -35,9 +35,6 @@
     <Filter Include="[8]__________OBJ_main\[0]------Background">
       <UniqueIdentifier>{3d8dddb0-b1b8-420e-bdae-3621c518bcea}</UniqueIdentifier>
     </Filter>
-    <Filter Include="[9]__________OBJ_popup">
-      <UniqueIdentifier>{d628f5b4-cce2-4bb9-b651-2b79cfcf8ad2}</UniqueIdentifier>
-    </Filter>
     <Filter Include="[13]__________math">
       <UniqueIdentifier>{8183e576-462b-451b-be9e-9e2e6ab332f2}</UniqueIdentifier>
     </Filter>
@@ -46,9 +43,6 @@
     </Filter>
     <Filter Include="[15]_________GLSL">
       <UniqueIdentifier>{3d8c6262-a099-4cf3-aa9f-f0224eb7e91e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="[9]__________OBJ_popup\[0]-----UI">
-      <UniqueIdentifier>{af715378-ad6b-4b11-aebd-0761b1893948}</UniqueIdentifier>
     </Filter>
     <Filter Include="[12]__________sound">
       <UniqueIdentifier>{26f0f726-4811-4f22-aba7-92c1fc38e395}</UniqueIdentifier>
@@ -61,6 +55,12 @@
     </Filter>
     <Filter Include="[6]__________sub_mode">
       <UniqueIdentifier>{58c6b24d-3a53-4d42-8573-ec2fa258b21f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[9]__________OBJ_sub">
+      <UniqueIdentifier>{d628f5b4-cce2-4bb9-b651-2b79cfcf8ad2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[9]__________OBJ_sub\[0]-----UI">
+      <UniqueIdentifier>{af715378-ad6b-4b11-aebd-0761b1893948}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -107,16 +107,16 @@
       <Filter>[12]__________sound</Filter>
     </ClInclude>
     <ClInclude Include="object\popup_object\Menu.h">
-      <Filter>[9]__________OBJ_popup\[0]-----UI</Filter>
+      <Filter>[9]__________OBJ_sub\[0]-----UI</Filter>
     </ClInclude>
     <ClInclude Include="object\popup_object\Cursor_menu.h">
-      <Filter>[9]__________OBJ_popup\[0]-----UI</Filter>
+      <Filter>[9]__________OBJ_sub\[0]-----UI</Filter>
     </ClInclude>
     <ClInclude Include="object\popup_object\Icon.h">
-      <Filter>[9]__________OBJ_popup\[0]-----UI</Filter>
+      <Filter>[9]__________OBJ_sub\[0]-----UI</Filter>
     </ClInclude>
     <ClInclude Include="object\popup_object\Back.h">
-      <Filter>[9]__________OBJ_popup\[0]-----UI</Filter>
+      <Filter>[9]__________OBJ_sub\[0]-----UI</Filter>
     </ClInclude>
     <ClInclude Include="object\main_object\Welcome_messege.h">
       <Filter>[8]__________OBJ_main\[1]------Alcy</Filter>
@@ -137,7 +137,7 @@
       <Filter>[1]__________FrameWork</Filter>
     </ClInclude>
     <ClInclude Include="object\popup_object\Info.h">
-      <Filter>[9]__________OBJ_popup\[0]-----UI</Filter>
+      <Filter>[9]__________OBJ_sub\[0]-----UI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

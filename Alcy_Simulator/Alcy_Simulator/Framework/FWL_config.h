@@ -73,6 +73,11 @@ public:
 	// tip
 	virtual void update_tip_visible(unsigned char KEY) {}
 
+	//text
+	virtual void text_set(GLfloat x, GLfloat y, GLfloat tp) {}
+	virtual void text_out(const char* fmt, ...) {}
+	virtual void delete_text(bool flag) {}
+
 	////////////////////
 
 	virtual     ~MAIN_CLS() {}
@@ -115,7 +120,13 @@ public:
 	// cursor
 	virtual void mouse_left_button_down(int button, int state) {}
 
+	//text
+	virtual void text_set(GLfloat x, GLfloat y, GLfloat tp) {}
+	virtual void text_out(const char* fmt, ...) {}
+	virtual void delete_text(bool flag) {}
+
 	virtual     ~SUB_CLS() {}
+
 };
 
 #endif

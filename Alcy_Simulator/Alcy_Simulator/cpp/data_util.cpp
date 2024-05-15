@@ -21,7 +21,7 @@ std::vector<std::string> data_list = {
 
 
 // data file ppath
-std::filesystem::path folder_path = std::filesystem::path(getenv("USERPROFILE")) / "Documents" / "Alcy Simulator data";
+std::filesystem::path folder_path = std::filesystem::path(getenv("USERPROFILE")) / "Alcy Simulator data";
 std::filesystem::path file_path = folder_path / "data.txt";
 
 

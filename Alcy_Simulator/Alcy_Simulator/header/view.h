@@ -5,7 +5,7 @@ extern glm::vec3 camera_pos, camera_direction, camera_up;
 extern glm::mat4 result, view, projection, s_mat, r_mat, t_mat;
 extern GLfloat alpha;
 
-extern unsigned int projection_location, view_location, model_location, viewpos_location, transperancy_location;
+extern unsigned int projection_location, view_location, model_location, viewpos_location, transperancy_location, obj_color_location, text_transperancy_location;
 
 
 void set_view();

@@ -2,6 +2,7 @@
 #include "../../header/Camera.h"
 #include "Alcy_home_parts.h"
 #include "../../header/sound.h"
+#include "../../header/image_text_util.h"
 #include "Welcome_messege.h"
 
 

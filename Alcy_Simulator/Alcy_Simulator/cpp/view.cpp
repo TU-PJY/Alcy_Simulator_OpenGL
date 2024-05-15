@@ -9,7 +9,7 @@ GLfloat alpha;
 
 GLfloat ratio;
 
-unsigned int projection_location, view_location, model_location, viewpos_location, transperancy_location;
+unsigned int projection_location, view_location, model_location, viewpos_location, transperancy_location, obj_color_location, text_transperancy_location;
 
 
 void set_view() {  // 시점 세팅using namespace glm;
