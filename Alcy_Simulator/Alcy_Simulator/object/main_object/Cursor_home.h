@@ -32,6 +32,8 @@ private:
 	// 마우스 커서 보이는 상태
 	bool visible = true;
 
+	GLfloat transparent = 1.0;
+
 
 public:
 	GLfloat get_cursor_x() const { return x; }
@@ -153,6 +155,15 @@ public:
 			x = dy(rt(mx));
 			y = dy(my);
 		}
+
+		// 카메라를 기울이는 동안에는 커서를 표시하지 않는다.
+		auto ptr = fw.FindMainObj_Layer_Single(main_layer2, "alcy_home");
+		if (cam.key_state_left || cam.key_state_right || (ptr && ptr->get_head_rotate_state() != 2)) {
+			transparent = std::lerp(transparent, 0.0, fw.FT(15));
+		}
+
+		else 
+			transparent = std::lerp(transparent, 1.0, fw.FT(15));
 	}
 
 
@@ -164,6 +175,8 @@ public:
 	void Render() {
 		init_transform();
 		set_object_static(x, y);
+
+		alpha = transparent;
 
 		if(visible)
 			draw_image(tex[tex_number]);

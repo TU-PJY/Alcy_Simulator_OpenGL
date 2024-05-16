@@ -95,6 +95,9 @@ public:
 	// 커서 - 알키 상호작용 가능 상태 리턴
 	bool get_interaction_available_state() const { return interaction_available_state; }
 
+	// 머리 회전 상태 얻기
+	int get_head_rotate_state() const { return head_rotate_state; }
+
 
 	// 쓰다듬기 상태 알림
 	void tell_touch_state(bool state) { 

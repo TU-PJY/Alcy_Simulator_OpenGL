@@ -136,9 +136,7 @@ private:
 
 	bool info_is_open{};
 
-	Text text_back = Text("Maniac", 60, FW_BOLD);
-	Text text_front = Text("Maniac Outline", 60, FW_BOLD);
-
+	Text text = Text("Maniac", 60, FW_DONTCARE);
 
 public:
 	// 메뉴 배경의 위치를 아이콘에게 주기
@@ -225,19 +223,13 @@ public:
 			if (on_cursor[i]) {
 				switch (i) {
 				case 1:
-					init_transform();
-					text_back.out_static(rt(-1.0) + 0.4 + 0.002, position + 0.2, 1.0, 1.0, 1.0, "INFO");
-
-					init_transform();
-					text_front.out_static(rt(-1.0) + 0.4, position + 0.2, 0.0, 0.0, 0.0, "INFO");
+					init_transform(); 
+					text.out_static(rt(-1.0) + 0.4, position + 0.2, 1.0, 1.0, 1.0, "INFO");
 					break;
 
 				case 0:
 					init_transform();
-					text_back.out_static(rt(-1.0) + 0.4 + 0.002, position + 0.2, 1.0, 1.0, 1.0, "EXIT");
-
-					init_transform();
-					text_front.out_static(rt(-1.0) + 0.4, position + 0.2, 0.0, 0.0, 0.0, "EXIT");
+					text.out_static(rt(-1.0) + 0.4, position + 0.2, 1.0, 1.0, 1.0, "EXIT");
 					break;
 				}
 			}

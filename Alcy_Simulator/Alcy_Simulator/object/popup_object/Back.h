@@ -13,13 +13,12 @@ private:
 
 	bool delete_flag{};
 
-	GLfloat transparent = 0.7;
+	GLfloat transparent = 0.8;
 	GLfloat text_transparent = 1.0;
 
 	GLfloat text_x = rt(-1.0) + 0.1;
 
-	Text text_back = Text("Maniac", 80, FW_BOLD);
-	Text text_front = Text("Maniac Outline", 80, FW_BOLD);
+	Text text = Text("Maniac", 80, FW_DONTCARE);
 
 public:
 	void Update() {
@@ -43,11 +42,7 @@ public:
 
 		init_transform();
 		alpha = text_transparent;
-		text_back.out_static(text_x + 0.002, 0.8, 1.0, 1.0, 1.0, "MENU");
-
-		init_transform();
-		alpha = text_transparent;
-		text_front.out_static(text_x, 0.8, 0.0, 0.0, 0.0, "MENU");
+		text.out_static(text_x, 0.8, 1.0, 1.0, 1.0, "MENU");
 	}
 
 	void CheckCollision() {}
@@ -81,12 +76,11 @@ private:
 
 	GLfloat text_x = rt(-1.0) + 0.4;
 
-	Text text_back = Text("Maniac", 80, FW_BOLD);
-	Text text_front = Text("Maniac Outline", 80, FW_BOLD);
+	Text text = Text("Maniac", 80, FW_DONTCARE);
 
 public:
 	void Update() {
-		transparent = std::lerp(transparent, 0.7, fw.FT(10));
+		transparent = std::lerp(transparent, 0.8, fw.FT(10));
 		text_transparent = std::lerp(text_transparent, 1.0, fw.FT(10));
 		text_x = std::lerp(text_x, rt(-1.0) + 0.1, fw.FT(10));
 	}
@@ -102,11 +96,7 @@ public:
 
 		init_transform();
 		alpha = text_transparent;
-		text_back.out_static(text_x + 0.002, 0.8, 1.0, 1.0, 1.0, "MENU");
-
-		init_transform();
-		alpha = text_transparent;
-		text_front.out_static(text_x, 0.8, 0.0, 0.0, 0.0, "MENU");
+		text.out_static(text_x, 0.8, 1.0, 1.0, 1.0, "MENU");
 	}
 
 	void CheckCollision() {}

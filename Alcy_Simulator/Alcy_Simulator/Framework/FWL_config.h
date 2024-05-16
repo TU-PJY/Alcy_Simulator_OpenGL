@@ -71,6 +71,7 @@ public:
 	virtual bool get_interaction_available_state() const { return {}; }
 	virtual void tell_touch_state(bool state) {}
 	virtual void tell_squeak_state(bool state) {}
+	virtual int get_head_rotate_state() const { return {}; }
 
 
 	// tip
