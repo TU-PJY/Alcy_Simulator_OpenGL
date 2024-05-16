@@ -22,15 +22,22 @@ private:
 
 	int height = HEIGHT;
 
+	GLfloat update_delay{};
+
 public:
 	std::string GetTag() const { return tag; }
 
 	void Update() {
 		if (height != HEIGHT) {
-			delete text;
-			text = new Text("Maniac", 80, FW_DONTCARE);
+			if (update_delay <= 0) {
+				delete text;
+				text = new Text("Maniac", 80, FW_DONTCARE);
 
-			height = HEIGHT;
+				height = HEIGHT;
+				update_delay = 10;
+			}
+			else if(update_delay > 0)
+				update_delay -= fw.FT(1000);
 		}
 
 		// 완전히 투명해지면 스스로 삭제
@@ -96,15 +103,22 @@ private:
 
 	int height = HEIGHT;
 
+	GLfloat update_delay;
+
 public:
 	std::string GetTag() const { return tag; }
 
 	void Update() {
 		if (height != HEIGHT) {
-			delete text;
-			text = new Text("Maniac", 80, FW_DONTCARE);
+			if (update_delay <= 0) {
+				delete text;
+				text = new Text("Maniac", 80, FW_DONTCARE);
 
-			height = HEIGHT;
+				height = HEIGHT;
+				update_delay = 10;
+			}
+			else if (update_delay > 0)
+				update_delay -= fw.FT(1000);
 		}
 
 		transparent = std::lerp(transparent, 0.8, fw.FT(10));

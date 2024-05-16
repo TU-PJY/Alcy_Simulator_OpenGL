@@ -140,6 +140,8 @@ private:
 
 	int height = HEIGHT;
 
+	GLfloat update_delay{};
+
 
 public:
 	// 메뉴 배경의 위치를 아이콘에게 주기
@@ -197,10 +199,15 @@ public:
 
 	void Update() {
 		if (height != HEIGHT) {
-			delete text;
-			text = new Text("Maniac", 60, FW_DONTCARE);
+			if (update_delay <= 0) {
+				delete text;
+				text = new Text("Maniac", 60, FW_DONTCARE);
 
-			height = HEIGHT;
+				height = HEIGHT;
+				update_delay = 10;
+			}
+			else if (update_delay > 0)
+				update_delay -= fw.FT(1000);
 		}
 
 		transparent = std::lerp(transparent, 1.0, fw.FT(7));

@@ -18,16 +18,23 @@ private:
 
 	int height = HEIGHT;
 
+	GLfloat update_delay{};
+
 
 public:
 	std::string GetTag() const { return tag; }
 
 	void Update() {
 		if (height != HEIGHT) {
-			delete text;
-			text = new Text("Maniac", 100, FW_DONTCARE);
+			if (update_delay <= 0) {
+				delete text;
+				text = new Text("Maniac", 100, FW_DONTCARE);
 
-			height = HEIGHT;
+				height = HEIGHT;
+				update_delay = 10;
+			}
+			else if (update_delay > 0)
+				update_delay -= fw.FT(1000);
 		}
 
 		if (count != cam.zoom_count) {
