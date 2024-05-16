@@ -63,14 +63,14 @@ public:
 
 		set_texture(tex, "res//ui//info.png", 1024, 1024, 1);
 
-		auto ptr = fw.FindSubObj(sub_layer1, "menu");
+		auto ptr = fw.FindSubObj_Layer_Single(sub_layer1, "menu");
 		if (ptr != nullptr)
 			ptr->tell_info_is_open();
 	}
 
 
 	~Info() {
-		auto ptr = fw.FindSubObj(sub_layer1, "menu");
+		auto ptr = fw.FindSubObj_Layer_Single(sub_layer1, "menu");
 		if (ptr != nullptr)
 			ptr->tell_info_is_close();
 	}

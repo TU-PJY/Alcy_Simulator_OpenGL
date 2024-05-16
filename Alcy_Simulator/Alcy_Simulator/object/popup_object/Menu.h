@@ -71,7 +71,7 @@ public:
 		button.Update();
 
 		position = std::lerp(position, -1.0 + 0.15, fw.FT(10));
-		transparent = std::lerp(transparent, 0.7, fw.FT(7));
+		transparent = std::lerp(transparent, 1.0, fw.FT(10));
 	}
 
 	void Render() {

@@ -41,13 +41,13 @@ void home_mode() {
 
 void home_mode_mouse_button(int button, int state, int x, int y) {
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-		auto ptr = fw.FindMainObj(main_layer7, "cursor_home");
+		auto ptr = fw.FindMainObj_Layer_Single(main_layer7, "cursor_home");
 		if (ptr != nullptr)
 			ptr->mouse_left_button_down(button, state);
 	}
 
 	else if (button == GLUT_LEFT_BUTTON && state == GLUT_UP) {
-		auto ptr = fw.FindMainObj(main_layer7, "cursor_home");
+		auto ptr = fw.FindMainObj_Layer_Single(main_layer7, "cursor_home");
 		if (ptr != nullptr)
 			ptr->mouse_left_button_up(button, state);
 	}
@@ -58,7 +58,7 @@ void home_mode_mouse_button(int button, int state, int x, int y) {
 		fw.InitSubMode(menu_mode, "menu_mode");
 		cam.reset_key_state();  // 카메라 조작 상태를 초기화한다 
 
-		auto ptr = fw.FindMainObj(main_layer7, "cursor_home");
+		auto ptr = fw.FindMainObj_Layer_Single(main_layer7, "cursor_home");
 		if (ptr != nullptr)
 			ptr->reset_mouse_state();
 	}
@@ -86,7 +86,7 @@ void home_mode_key_down(unsigned char KEY, int x, int y) {
 		fw.InitSubMode(menu_mode, "menu_mode");
 		cam.reset_key_state();  // 카메라 조작 상태를 초기화한다 
 
-		auto ptr = fw.FindMainObj(main_layer7, "cursor_home");
+		auto ptr = fw.FindMainObj_Layer_Single(main_layer7, "cursor_home");
 		if (ptr != nullptr)
 			ptr->reset_mouse_state();
 		break;
@@ -96,7 +96,7 @@ void home_mode_key_down(unsigned char KEY, int x, int y) {
 	cam.key_down(KEY);
 
 	// 팁 on/off
-	auto ptr = fw.FindMainObj(main_layer3, "tip_home");
+	auto ptr = fw.FindMainObj_Layer_Single(main_layer3, "tip_home");
 	if (ptr != nullptr)
 		ptr->update_tip_visible(KEY);
 }

@@ -310,7 +310,7 @@ public:
 
 
 	// find single object ptr on layer
-	MAIN_CLS* FindMainObj(int Layer, std::string Tag) {
+	MAIN_CLS* FindMainObj_Layer_Single(int Layer, std::string Tag) {
 		if (!MainModeInitState)
 			F_Messege.MAIN_ERROR(INV_M_INIT);
 
@@ -625,7 +625,7 @@ public:
 
 
 	// find popup object ptr on layer
-	SUB_CLS* FindSubObj(int Layer, std::string Tag) {
+	SUB_CLS* FindSubObj_Layer_Single(int Layer, std::string Tag) {
 		if (!SubModeInitState)
 			F_Messege.SUB_ERROR(INV_S_INIT);
 

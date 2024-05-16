@@ -80,9 +80,6 @@ public:
 
 
 
-#ifdef USING_SUB_MODE
-#if N_SUB_LAYER
-
 class SUB_CLS {
 public:
 	virtual void Update() {}
@@ -117,8 +114,5 @@ public:
 
 	virtual     ~SUB_CLS() {}
 };
-
-#endif
-#endif
 
 #endif

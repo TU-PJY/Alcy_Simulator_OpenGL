@@ -233,7 +233,7 @@ public:
 			face.enable_state_static();
 			face.tell_blink_state(true);
 
-			auto ptr = fw.FindMainObj(main_layer7, "cursor_home");
+			auto ptr = fw.FindMainObj_Layer_Single(main_layer7, "cursor_home");
 			if (ptr != nullptr) {
 				touch_angle = -ptr->get_cursor_touch_x() * 20;
 

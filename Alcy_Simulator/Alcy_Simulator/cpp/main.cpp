@@ -22,8 +22,8 @@ std::string vendor;
 GLuint VAO;
 
 // display size
-int WIDTH = 800;
-int HEIGHT = 600;
+int WIDTH = 1600;
+int HEIGHT = 900;
 
 int FWIDTH = GetSystemMetrics(SM_CXSCREEN);
 int FHEIGHT = GetSystemMetrics(SM_CYSCREEN);
@@ -69,7 +69,7 @@ void main(int argc, char** argv) {
 		glutInit(&argc, argv);
 		glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GL_MULTISAMPLE);
 
-		glutInitWindowPosition(0, 0);
+		glutInitWindowPosition(FWIDTH / 2 - 800, FHEIGHT / 2 - 450);
 		glutInitWindowSize(WIDTH, HEIGHT);
 
 		glutCreateWindow("Totally Smoll Alcy Simulator V2");
@@ -77,7 +77,7 @@ void main(int argc, char** argv) {
 		glutSetCursor(GLUT_CURSOR_NONE);
 
 		// convert to fullscreen
-		glutFullScreen();
+		//glutFullScreen();
 
 		glewExperimental = GL_TRUE;
 		if (glewInit() != GLEW_OK) {

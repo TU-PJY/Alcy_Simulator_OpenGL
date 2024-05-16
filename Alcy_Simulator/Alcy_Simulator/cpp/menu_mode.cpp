@@ -23,7 +23,7 @@ void menu_mode() {
 
 void menu_mode_mouse_button(int button, int state, int x, int y) {
 	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN) {
-		auto ptr = fw.FindSubObj(sub_layer4, "cursor_menu");
+		auto ptr = fw.FindSubObj_Layer_Single(sub_layer4, "cursor_menu");
 		if (ptr != nullptr)
 			ptr->mouse_left_button_down(button, state);
 	}

@@ -29,13 +29,16 @@ private:
 	HFONT font{};
 
 	const char* fmt{};
+	bool transmit_static{};
+	bool transmit_dynamic{};
 
 public:
 	void out_dynamic(GLfloat r, GLfloat g, GLfloat b, const char* fmt, ...) {
 		va_list args{};
 		va_start(args, fmt);
 
-		draw_text_dynamic(0.0, 0.0, 0.0, base, " ", args);
+		if(vendor != "NVIDIA Corporation")
+			draw_text_dynamic(0, 0, 0, base, " ", args);
 		draw_text_dynamic(r, g, b, base, fmt, args);
 
 		va_end(args);
@@ -45,7 +48,8 @@ public:
 		va_list args{};
 		va_start(args, fmt);
 
-		draw_text_static(0.0, 0.0, 0.0, 0.0, 0.0, base, " ", args);
+		if (vendor != "NVIDIA Corporation")
+			draw_text_static(0, 0, 0, 0, 0, base, " ", args);
 		draw_text_static(x, y, r, g, b, base, fmt, args);
 
 		va_end(args);
@@ -53,10 +57,10 @@ public:
 
 
 	int set_font(const char* font_name, int size, int type, GLuint& base, HDC& hDC) {                     // All Setup For OpenGL Goes Here
-		hDC = wglGetCurrentDC();            // 현재 openGL 윈도우의 hDC를 가져온다.
+		hDC = wglGetCurrentDC();
 		build_font(font_name, size, type, base, hDC);
 
-		return TRUE;                        // Initialization Went OK
+		return TRUE;
 	}
 
 
@@ -78,7 +82,7 @@ public:
 			0,              // Width Of Font
 			0,              // Angle Of Escapement
 			0,              // Orientation Angle
-			type,        // Font Weight
+			type,			// Font Weight
 			FALSE,          // Italic    
 			FALSE,          // Underline
 			FALSE,          // Strikeout
@@ -102,7 +106,7 @@ public:
 		if (vendor == "NVIDIA Corporation") {
 			transmit_translation();
 			obj_color_location = glGetUniformLocation(ID, "objectColor");
-			glUniform3f(obj_color_location, r, g, b);
+			glUniform4f(obj_color_location, r, g, b, 1.0);
 
 			glm::vec4 position = projection * view * result * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 
@@ -116,15 +120,15 @@ public:
 			}
 
 			glRasterPos2f(0.0, 0.0);
+			
 		}
 
 		else {
 			transmit_translation();
-
 			glm::vec4 position = projection * view * result * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 
 			glColor4f(r, g, b, alpha);
-			glRasterPos2f(position.x, position.y);
+			glRasterPos2f(position.x / ratio, position.y);
 		}
 
 
@@ -146,12 +150,22 @@ public:
 		glBindTexture(GL_TEXTURE_2D, 0);
 
 		if (vendor == "NVIDIA Corporation") {
-			init_transform();
 			set_object_static(dy(x), dy(y));
 
 			transmit_translation();
 			obj_color_location = glGetUniformLocation(ID, "objectColor");
-			glUniform3f(obj_color_location, r, g, b);
+			glUniform4f(obj_color_location, r, g, b, 1.0);
+			
+			glm::vec4 position = projection * view * result * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
+
+			if (position.x < -1.0f ||
+				position.x > 1.0 ||
+				position.y < -1.0 ||
+				position.y > 1.0) {
+
+				// 텍스트가 화면 모서리에 있는 경우 그리지 않음
+				return;
+			}
 
 			glRasterPos2f(0.0, 0.0);
 		}
@@ -160,7 +174,7 @@ public:
 			transmit_translation();
 
 			glColor4f(r, g, b, alpha);
-			glRasterPos2f(x, y);
+			glRasterPos2f(x / ratio, y);
 		}
 
 

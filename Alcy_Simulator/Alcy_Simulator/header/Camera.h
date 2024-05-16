@@ -132,7 +132,7 @@ public:
 
 	// 카메라 잠금 상태 업데이트
 	void update_camera_lock() {
-		auto ptr = fw.FindMainObj(main_layer7, "cursor_home");
+		auto ptr = fw.FindMainObj_Layer_Single(main_layer7, "cursor_home");
 
 		if (ptr != nullptr) {
 			if (ptr->get_touch_state())

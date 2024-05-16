@@ -222,18 +222,22 @@ public:
 
 			draw_image(tex[i]);
 
-			init_transform();
-
 			if (on_cursor[i]) {
 				switch (i) {
 				case 1:
-					text_back.out_static(-0.8, position + 0.2, 1.0, 1.0, 1.0, "INFO");
-					text_front.out_static(-0.8, position + 0.2, 0.0, 0.0, 0.0, "INFO");
+					init_transform();
+					text_back.out_static(rt(-1.0) + 0.4, position + 0.2, 1.0, 1.0, 1.0, "INFO");
+
+					init_transform();
+					text_front.out_static(rt(-1.0) + 0.4, position + 0.2, 0.0, 0.0, 0.0, "INFO");
 					break;
 
 				case 0:
-					text_back.out_static(-0.8, position + 0.2, 1.0, 1.0, 1.0, "EXIT");
-					text_front.out_static(-0.8, position + 0.2, 0.0, 0.0, 0.0, "EXIT");
+					init_transform();
+					text_back.out_static(rt(-1.0) + 0.4, position + 0.2, 1.0, 1.0, 1.0, "EXIT");
+
+					init_transform();
+					text_front.out_static(rt(-1.0) + 0.4, position + 0.2, 0.0, 0.0, 0.0, "EXIT");
 					break;
 				}
 			}
