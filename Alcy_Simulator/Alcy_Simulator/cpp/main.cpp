@@ -30,13 +30,11 @@ int FHEIGHT = GetSystemMetrics(SM_CYSCREEN);
 
 clock_t start_time, end_time;
 
-
 GLvoid display_reshape(int w, int h) {
 	glViewport(0, 0, w, h);
 	WIDTH = w;
 	HEIGHT = h;
 }
-
 
 GLvoid gl_main() {
 	start_time = clock();
@@ -76,7 +74,7 @@ void main(int argc, char** argv) {
 		glutSetCursor(GLUT_CURSOR_NONE);
 
 		// convert to fullscreen
-		glutFullScreen();
+		//glutFullScreen();
 
 		glewExperimental = GL_TRUE;
 		if (glewInit() != GLEW_OK) {

@@ -1,6 +1,7 @@
 #pragma once
 #include "HEADER.h"
 #include "sound.h"
+#include "view.h"
 
 enum rotate_dir {
 	rotate_left,
@@ -31,6 +32,7 @@ public:
 	// 카메라 줌 목표 값
 	GLfloat zoom_value = 1.0;
 
+	int zoom_count = 3;
 
 
 	// 키 조작
@@ -71,15 +73,19 @@ public:
 	// 스크롤 조작
 	void scroll(int dir) {
 		if (dir > 0)
-			if (zoom_value <= 2.2) {
+			if (zoom_count < 7) {
+				float new_zoom = zoom_value / (1.0 - 0.2);
 				ssys_ui->playSound(scroll_sound, 0, false, &ch_ui);
-				zoom_value += 0.2;
+				zoom_value = new_zoom;
+				++zoom_count;
 			}
 
 		if (dir < 0)
-			if (zoom_value >= 0.8) {
+			if (zoom_count > 0) {
+				float new_zoom = zoom_value * (1.0 - 0.2);
 				ssys_ui->playSound(scroll_sound, 0, false, &ch_ui);
-				zoom_value -= 0.2;
+				zoom_value = new_zoom;
+				--zoom_count;
 			}
 	}
 
@@ -117,7 +123,7 @@ public:
 
 	// 카메라 상하좌우 이동
 	void move_camera_xy() {
-		x = std::lerp(x, -mx * ratio / 8, fw.FT(15));
+		x = std::lerp(x, rt(-mx) / 8, fw.FT(15));
 		y = std::lerp(y, -my / 8, fw.FT(15));
 	}
 

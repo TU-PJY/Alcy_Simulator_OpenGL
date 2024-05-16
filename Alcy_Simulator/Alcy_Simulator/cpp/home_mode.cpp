@@ -6,6 +6,7 @@
 #include "../object/main_object/Shadow.h"
 #include "../object/main_object/Front.h"
 #include "../object/main_object/Tip_home.h"
+#include "../object/main_object/Zoom_ind.h"
 
 #include "../header/sound.h"
 #include "../header/Camera.h"
@@ -28,7 +29,10 @@ void home_mode() {
 
 	fw.AddMainObj(new Tip_home(main_layer3, "tip_home"), main_layer3);
 
+	fw.AddMainObj(new Zoom_ind(main_layer3, "zoom_ind"), main_layer3);
+
 	fw.AddMainObj(new Front(main_layer3, "front_home"), main_layer3);
+
 
 	fw.AddMainObj(new Cursor_home(main_layer7, "cursor_home"), main_layer7);
 
@@ -36,6 +40,7 @@ void home_mode() {
 
 	cam.zoom = 2.4;
 	cam.zoom_value = 0.8;
+	cam.zoom_count = 3;
 }
 
 

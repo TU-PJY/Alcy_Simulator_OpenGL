@@ -136,7 +136,10 @@ private:
 
 	bool info_is_open{};
 
-	Text text = Text("Maniac", 60, FW_DONTCARE);
+	Text* text;
+
+	int height = HEIGHT;
+
 
 public:
 	// 메뉴 배경의 위치를 아이콘에게 주기
@@ -193,6 +196,12 @@ public:
 
 
 	void Update() {
+		if (height != HEIGHT) {
+			delete text;
+			text = new Text("Maniac", 60, FW_DONTCARE);
+
+			height = HEIGHT;
+		}
 
 		transparent = std::lerp(transparent, 1.0, fw.FT(7));
 
@@ -224,12 +233,12 @@ public:
 				switch (i) {
 				case 1:
 					init_transform(); 
-					text.out_static(rt(-1.0) + 0.4, position + 0.2, 1.0, 1.0, 1.0, "INFO");
+					text->out_static(rt(-1.0) + 0.4, position + 0.2, 1.0, 1.0, 1.0, "INFO");
 					break;
 
 				case 0:
 					init_transform();
-					text.out_static(rt(-1.0) + 0.4, position + 0.2, 1.0, 1.0, 1.0, "EXIT");
+					text->out_static(rt(-1.0) + 0.4, position + 0.2, 1.0, 1.0, 1.0, "EXIT");
 					break;
 				}
 			}
@@ -240,5 +249,11 @@ public:
 	Button() {
 		for (int i = 0; i < BUTTON_NUMBER; ++i)
 			set_texture(tex[i], directory[i], 512, 512, 1);
+
+		text = new Text("Maniac", 60, FW_DONTCARE);
+	}
+
+	~Button() {
+		delete text;
 	}
 };

@@ -1,7 +1,7 @@
 #pragma once
 #include "../../header/image_text_util.h"
 #include "../../header/view.h"
-#include "../header/Camera.h"
+#include "../../header/Camera.h"
 
 
 class Cursor_home : public MAIN_CLS {

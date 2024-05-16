@@ -38,6 +38,7 @@ extern FWL fw;
 // 화면 크기
 extern int WIDTH, HEIGHT;
 
+// 전체화면 크기
 extern int FWIDTH, FHEIGHT;
 
 // GPU 제조사

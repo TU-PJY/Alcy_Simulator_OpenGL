@@ -73,7 +73,6 @@ public:
 	virtual void tell_squeak_state(bool state) {}
 	virtual int get_head_rotate_state() const { return {}; }
 
-
 	// tip
 	virtual void update_tip_visible(unsigned char KEY) {}
 

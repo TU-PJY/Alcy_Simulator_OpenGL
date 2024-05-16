@@ -190,7 +190,6 @@ public:
 		glPopAttrib();                      // Pops The Display List Bits
 	}
 
-
 	Text(const char* fontName, int fontSize, int type) {
 		set_font(fontName, fontSize, type, base, hDC);
 	}
