@@ -43,7 +43,7 @@ public:
 
 		init_transform();
 		alpha = text_transparent;
-		text_back.out_static(text_x, 0.8, 1.0, 1.0, 1.0, "MENU");
+		text_back.out_static(text_x + 0.002, 0.8, 1.0, 1.0, 1.0, "MENU");
 
 		init_transform();
 		alpha = text_transparent;
@@ -102,7 +102,7 @@ public:
 
 		init_transform();
 		alpha = text_transparent;
-		text_back.out_static(text_x, 0.8, 1.0, 1.0, 1.0, "MENU");
+		text_back.out_static(text_x + 0.002, 0.8, 1.0, 1.0, 1.0, "MENU");
 
 		init_transform();
 		alpha = text_transparent;

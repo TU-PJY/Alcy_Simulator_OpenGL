@@ -29,8 +29,6 @@ private:
 	HFONT font{};
 
 	const char* fmt{};
-	bool transmit_static{};
-	bool transmit_dynamic{};
 
 public:
 	void out_dynamic(GLfloat r, GLfloat g, GLfloat b, const char* fmt, ...) {
@@ -70,9 +68,10 @@ public:
 
 		// calculate font size scale
 		int dpiX = GetDeviceCaps(hDC, LOGPIXELSX);
-		float windowScale = static_cast<float>(HEIGHT) / FHEIGHT;
-		float dpi_scale = static_cast<float>(dpiX) / 96.0f;
-		float scale = windowScale * dpi_scale;
+
+		double windowScale = static_cast<double>(HEIGHT) / FHEIGHT;
+		double dpi_scale = static_cast<double>(dpiX) / 96.0f;
+		double scale = windowScale * dpi_scale;
 
 		int result_size = static_cast<int>(fontSize * scale);
 

@@ -47,6 +47,8 @@ public:
 	virtual void Render() {}
 	virtual void CheckDelete() {}
 	virtual std::string GetTag() const { return {}; }
+	virtual void ActivateDeleteFlag(bool Flag) {}
+
 
 	////////////////// home mode
 	// cursor
@@ -70,6 +72,7 @@ public:
 	virtual void tell_touch_state(bool state) {}
 	virtual void tell_squeak_state(bool state) {}
 
+
 	// tip
 	virtual void update_tip_visible(unsigned char KEY) {}
 
@@ -87,6 +90,8 @@ public:
 	virtual void Render() {}
 	virtual void CheckDelete() {}
 	virtual std::string GetTag() const { return {}; }
+	virtual void ActivateDeleteFlag(bool Flag) {}
+
 
 	//menu mode
 	// icon

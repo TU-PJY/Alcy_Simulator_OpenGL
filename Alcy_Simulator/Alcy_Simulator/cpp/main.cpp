@@ -77,7 +77,7 @@ void main(int argc, char** argv) {
 		glutSetCursor(GLUT_CURSOR_NONE);
 
 		// convert to fullscreen
-		//glutFullScreen();
+		glutFullScreen();
 
 		glewExperimental = GL_TRUE;
 		if (glewInit() != GLEW_OK) {

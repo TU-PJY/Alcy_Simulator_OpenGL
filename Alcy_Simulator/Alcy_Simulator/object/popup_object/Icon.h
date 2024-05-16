@@ -145,7 +145,7 @@ public:
 	void tell_position(GLfloat pos) { position = pos; }
 
 	// 아이콘 개수 리턴
-	size_t get_button_number() const { return tex.size(); }
+	size_t get_button_number() const { return BUTTON_NUMBER; }
 
 	// 아이콘 위에 커서가 있음을 알림
 	void tell_on_cursor(int idx) { on_cursor[idx] = true; }
@@ -226,7 +226,7 @@ public:
 				switch (i) {
 				case 1:
 					init_transform();
-					text_back.out_static(rt(-1.0) + 0.4, position + 0.2, 1.0, 1.0, 1.0, "INFO");
+					text_back.out_static(rt(-1.0) + 0.4 + 0.002, position + 0.2, 1.0, 1.0, 1.0, "INFO");
 
 					init_transform();
 					text_front.out_static(rt(-1.0) + 0.4, position + 0.2, 0.0, 0.0, 0.0, "INFO");
@@ -234,7 +234,7 @@ public:
 
 				case 0:
 					init_transform();
-					text_back.out_static(rt(-1.0) + 0.4, position + 0.2, 1.0, 1.0, 1.0, "EXIT");
+					text_back.out_static(rt(-1.0) + 0.4 + 0.002, position + 0.2, 1.0, 1.0, 1.0, "EXIT");
 
 					init_transform();
 					text_front.out_static(rt(-1.0) + 0.4, position + 0.2, 0.0, 0.0, 0.0, "EXIT");
