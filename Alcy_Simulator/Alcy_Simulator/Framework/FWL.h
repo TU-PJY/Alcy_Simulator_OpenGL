@@ -132,7 +132,6 @@ public:
 				for (int i = 0; i < N_SUB_LAYER; ++i) {
 					for (auto It = SubCont[i].begin(); It != SubCont[i].end();) {
 						auto Ptr = *It;
-
 						if (Ptr != nullptr) {
 							if (!ModeSwitchState) {
 								Ptr->Update();
@@ -348,6 +347,9 @@ public:
 
 
 	void DeleteMainObj_Entire_Single(std::string Tag) {
+		if (!MainModeInitState)
+			F_Messege.MAIN_ERROR(INV_M_INIT);
+
 		bool ObjFind{};
 
 		for (int i = 0; i < N_MAIN_LAYER; ++i) {
@@ -371,6 +373,9 @@ public:
 
 
 	void DeleteMainObj_Entire_All(std::string Tag) {
+		if (!MainModeInitState)
+			F_Messege.MAIN_ERROR(INV_M_INIT);
+
 		for (int i = 0; i < N_MAIN_LAYER; ++i) {
 			size_t num = MainCont[i].size();
 
