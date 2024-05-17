@@ -4,7 +4,7 @@
 #include "../../header/Camera.h"
 
 
-class Cursor_menu : public SUB_CLS {
+class CursorHomeMenu : public SUB_CLS {
 private:
 	unsigned int tex;
 
@@ -82,7 +82,7 @@ public:
 
 
 
-	Cursor_menu(int l, std::string str) {
+	CursorHomeMenu(int l, std::string str) {
 		layer = l;
 		tag = str;
 
@@ -95,7 +95,7 @@ public:
 			ptr->set_cursor_invisible();
 	}
 
-	~Cursor_menu() {
+	~CursorHomeMenu() {
 		// 메뉴를 종료하면 다시 메인 모드의 커서를 보이게 한다.
 		auto ptr = fw.FindMainObj_Layer_Single(main_layer7, "cursor_home");
 		if (ptr != nullptr)

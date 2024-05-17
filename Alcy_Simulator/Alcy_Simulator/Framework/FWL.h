@@ -88,15 +88,16 @@ public:
 #endif
 
 	// get current mode name
-	std::string CurrentMode() const { return CurrentModeName; }
+	std::string CurrentMode() { return CurrentModeName; }
 
 	// get current main mode name
-	std::string CurrentMainMode() const { return CurrentMainModeName; }
+	std::string CurrentMainMode() { return CurrentMainModeName; }
+
 
 #ifdef USING_SUB_MODE
 #if N_SUB_LAYER
 	// get current sub mode name
-	std::string CurrentSubMode() const { return CurrentSubModeName; }
+	std::string CurrentSubMode() { return CurrentSubModeName; }
 #endif
 #endif
 
@@ -210,6 +211,7 @@ public:
 
 		F_Messege.SV_PREV_M_MODE_NAME(CurrentModeName);
 
+
 		auto Target = std::find(MainModeList.begin(), MainModeList.end(), MainModeName);
 		if (Target == MainModeList.end())
 			F_Messege.MAIN_ERROR(INV_M_MODE_IN_SWITCH, MainModeName);
@@ -230,8 +232,9 @@ public:
 
 		MainModeFunc();
 
+		ClearMainAll();
+
 		for (int i = 0; i < N_MAIN_LAYER; ++i) {
-			ClearMainLayer(i);
 			MainCont[i] = MainTempCont[i];
 			MainTempCont[i].clear();
 		}
@@ -580,8 +583,9 @@ public:
 
 		SubModeFunc();
 
+		ClearSubAll();
+
 		for (int i = 0; i < N_SUB_LAYER; ++i) {
-			ClearSubLayer(i);
 			SubCont[i] = SubTempCont[i];
 			SubTempCont[i].clear();
 		}

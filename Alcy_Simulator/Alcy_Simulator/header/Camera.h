@@ -33,6 +33,21 @@ public:
 	GLfloat zoom_value = 1.0;
 
 	int zoom_count = 3;
+	
+
+	void reset_camera() {
+		zoom_count = 3;
+		zoom = 1.0;
+		zoom_value = 1.0;
+		x = 0;
+		y = 0;
+		rotate_dir = rotate_none;
+		angle = 0;
+
+		camera_lock_state = false;
+
+		reset_key_state();
+	}
 
 
 	// 키 조작
@@ -87,23 +102,6 @@ public:
 				zoom_value = new_zoom;
 				--zoom_count;
 			}
-	}
-
-
-	// 카메라 초기화
-	void reset_camera() {
-		rotate_dir = rotate_none;
-		angle = 0;
-
-		x = 0;
-		y = 0;
-
-		zoom = 1.0;
-		zoom_value = 1.0;
-
-		camera_lock_state = false;
-
-		reset_key_state();
 	}
 
 

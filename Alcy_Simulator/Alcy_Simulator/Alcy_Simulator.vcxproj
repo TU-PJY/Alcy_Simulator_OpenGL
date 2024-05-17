@@ -163,20 +163,26 @@
     <ClInclude Include="object\main_object\Welcome_messege.h" />
     <ClInclude Include="object\main_object\Front.h" />
     <ClInclude Include="object\main_object\Zoom_ind.h" />
+    <ClInclude Include="object\main_object\Gameboy.h" />
     <ClInclude Include="object\popup_object\Back.h" />
-    <ClInclude Include="object\popup_object\Cursor_menu.h" />
-    <ClInclude Include="object\popup_object\Icon.h" />
+    <ClInclude Include="object\popup_object\Cursor_HomeMenu.h" />
+    <ClInclude Include="object\popup_object\Cursor_ReturnMenu.h" />
+    <ClInclude Include="object\popup_object\Icon_HomeMenu.h" />
     <ClInclude Include="object\popup_object\Info.h" />
-    <ClInclude Include="object\popup_object\Menu.h" />
+    <ClInclude Include="object\popup_object\ReturnIcon.h" />
+    <ClInclude Include="object\popup_object\ReturnMenu.h" />
+    <ClInclude Include="object\popup_object\HomeMenu.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cpp\data_util.cpp" />
+    <ClCompile Include="cpp\game_mode.cpp" />
     <ClCompile Include="cpp\home_mode.cpp" />
     <ClCompile Include="cpp\image_text_utils.cpp" />
     <ClCompile Include="cpp\main.cpp" />
     <ClCompile Include="cpp\math_utils.cpp" />
     <ClCompile Include="cpp\menu_mode.cpp" />
     <ClCompile Include="cpp\mouse.cpp" />
+    <ClCompile Include="cpp\return_menu_mode.cpp" />
     <ClCompile Include="cpp\shader_conf.cpp" />
     <ClCompile Include="cpp\sound_list.cpp" />
     <ClCompile Include="cpp\view.cpp" />

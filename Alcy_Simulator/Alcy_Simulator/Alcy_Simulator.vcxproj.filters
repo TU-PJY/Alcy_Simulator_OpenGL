@@ -62,6 +62,12 @@
     <Filter Include="[9]__________OBJ_sub\[0]-----UI">
       <UniqueIdentifier>{af715378-ad6b-4b11-aebd-0761b1893948}</UniqueIdentifier>
     </Filter>
+    <Filter Include="[9]__________OBJ_sub\[0]-----UI\Home_Menu">
+      <UniqueIdentifier>{88dcea1b-56fc-4ec0-ae27-1d555fdc835a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="[9]__________OBJ_sub\[0]-----UI\Return_Menu">
+      <UniqueIdentifier>{8cd8f2fc-7fd3-4fb4-854c-c6a33d891f8b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\FWL_config.h">
@@ -106,15 +112,6 @@
     <ClInclude Include="header\sound.h">
       <Filter>[12]__________sound</Filter>
     </ClInclude>
-    <ClInclude Include="object\popup_object\Menu.h">
-      <Filter>[9]__________OBJ_sub\[0]-----UI</Filter>
-    </ClInclude>
-    <ClInclude Include="object\popup_object\Cursor_menu.h">
-      <Filter>[9]__________OBJ_sub\[0]-----UI</Filter>
-    </ClInclude>
-    <ClInclude Include="object\popup_object\Icon.h">
-      <Filter>[9]__________OBJ_sub\[0]-----UI</Filter>
-    </ClInclude>
     <ClInclude Include="object\popup_object\Back.h">
       <Filter>[9]__________OBJ_sub\[0]-----UI</Filter>
     </ClInclude>
@@ -136,11 +133,32 @@
     <ClInclude Include="Framework\FWL.h">
       <Filter>[1]__________FrameWork</Filter>
     </ClInclude>
-    <ClInclude Include="object\popup_object\Info.h">
-      <Filter>[9]__________OBJ_sub\[0]-----UI</Filter>
-    </ClInclude>
     <ClInclude Include="object\main_object\Zoom_ind.h">
       <Filter>[8]__________OBJ_main\[2]------UI</Filter>
+    </ClInclude>
+    <ClInclude Include="object\main_object\Gameboy.h">
+      <Filter>[8]__________OBJ_main\[3]------Prop</Filter>
+    </ClInclude>
+    <ClInclude Include="object\popup_object\Cursor_HomeMenu.h">
+      <Filter>[9]__________OBJ_sub\[0]-----UI\Home_Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="object\popup_object\Icon_HomeMenu.h">
+      <Filter>[9]__________OBJ_sub\[0]-----UI\Home_Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="object\popup_object\Info.h">
+      <Filter>[9]__________OBJ_sub\[0]-----UI\Home_Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="object\popup_object\ReturnIcon.h">
+      <Filter>[9]__________OBJ_sub\[0]-----UI\Return_Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="object\popup_object\ReturnMenu.h">
+      <Filter>[9]__________OBJ_sub\[0]-----UI\Return_Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="object\popup_object\HomeMenu.h">
+      <Filter>[9]__________OBJ_sub\[0]-----UI\Home_Menu</Filter>
+    </ClInclude>
+    <ClInclude Include="object\popup_object\Cursor_ReturnMenu.h">
+      <Filter>[9]__________OBJ_sub\[0]-----UI\Return_Menu</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -173,6 +191,12 @@
     </ClCompile>
     <ClCompile Include="cpp\data_util.cpp">
       <Filter>[16]_________data</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\game_mode.cpp">
+      <Filter>[5]__________main_mode</Filter>
+    </ClCompile>
+    <ClCompile Include="cpp\return_menu_mode.cpp">
+      <Filter>[6]__________sub_mode</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

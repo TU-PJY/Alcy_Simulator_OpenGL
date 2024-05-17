@@ -12,7 +12,7 @@
 #define          USING_SUB_MODE
 #define          N_SUB_LAYER 4
 
-//#define          USING_DEBUG_MESSEGE
+#define          USING_DEBUG_MESSEGE
 #define          USING_FRAME_TIME
 #define          USING_FRAME_TIME_OUTSIDE
 
@@ -22,17 +22,22 @@ class MODELIST {
 public:
 	// add mode list here...
 	std::vector<std::string> MainModeList = 
-	{ "home_mode",
-	"music_mode1",
-	"music_mode2",
-	"game_mode", };
+	{ 
+		"home_mode",
+		"game_mode", 
+		"music_mode1",
+		"music_mode2", 
+	};
 
 #ifdef USING_SUB_MODE
 #if N_SUB_LAYER
 
 	// add popup mode list here...
 	std::vector<std::string> SubModeList =
-	{ "menu_mode", };
+	{ 
+		"menu_mode", 
+		"return_menu_mode",
+	};
 
 #endif
 #endif
@@ -116,6 +121,13 @@ public:
 
 	// cursor
 	virtual void mouse_left_button_down(int button, int state) {}
+
+
+	// return menu
+	virtual std::array<GLfloat, 4> get_icon_zone_return_menu() const { return{}; }
+	virtual void tell_on_cursor_return_menu() {}
+	virtual void tell_not_on_cursor_return_menu() {}
+	virtual void tell_icon_click_return_menu() {}
 
 	virtual     ~SUB_CLS() {}
 };

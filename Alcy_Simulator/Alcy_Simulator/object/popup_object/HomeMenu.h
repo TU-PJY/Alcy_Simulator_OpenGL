@@ -3,9 +3,9 @@
 #include "../../header/image_text_util.h"
 #include "../../header/sound.h"
 #include "../../header/view.h"
-#include "Icon.h"
+#include "Icon_HomeMenu.h"
 
-class Menu : public SUB_CLS {
+class HomeMenu : public SUB_CLS {
 private:
 	unsigned int tex;
 
@@ -20,7 +20,7 @@ private:
 	GLfloat transparent{};
 
 	// 아이콘
-	Icon icon;
+	IconHomeMenu icon;
 
 	// 버튼
 	Button button;
@@ -74,6 +74,7 @@ public:
 		transparent = std::lerp(transparent, 1.0, fw.FT(10));
 	}
 
+
 	void Render() {
 		init_transform();
 		s_mat *= scale_image(rt(10.0), 1.5);
@@ -86,12 +87,12 @@ public:
 		button.Render();
 	}
 
-	void CheckCollision() {}
 
+	void CheckCollision() {}
 	void CheckDelete() {}
 
 
-	Menu(int l, std::string str) {
+	HomeMenu(int l, std::string str) {
 		layer = l;
 		tag = str;
 
@@ -100,7 +101,8 @@ public:
 		ssys_ui->playSound(menu_open, 0, false, &ch_ui);
 	}
 
-	~Menu() {
+
+	~HomeMenu() {
 		ssys_ui->playSound(menu_close, 0, false, &ch_ui);
 	}
 };

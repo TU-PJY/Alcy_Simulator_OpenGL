@@ -3,20 +3,25 @@
 #include "../../header/image_text_util.h"
 #include "../../header/sound.h"
 #include "../../header/view.h"
+#include "../../header/mode_header.h"
 #include "Info.h"
 
 // 아이콘 개수
-#define ICON_NUMBER 4
+#define ICON_NUMBER 5
 
-class Icon {
+class IconHomeMenu {
 private:
 	std::array<unsigned int, ICON_NUMBER> tex{};
+	std::array<unsigned int, ICON_NUMBER> tex_stop{};
+
 	std::array<const char*, ICON_NUMBER> directory = {
+		"res//ui//menu//icon5.png",
 		"res//ui//menu//icon1.png",
 		"res//ui//menu//icon2.png",
 		"res//ui//menu//icon3.png",
 		"res//ui//menu//icon4.png",
 	};
+
 
 	// 커서가 아이콘 위에 있는지 여부
 	std::array<bool, ICON_NUMBER> on_cursor{};
@@ -46,21 +51,27 @@ public:
 	// 커서가 아이콘을 벗어났음을 알림
 	void tell_not_on_cursor(int idx) { on_cursor[idx] = false; }
 
+	// 아이콘 커서 인식 범위 리턴
+	std::array<GLfloat, 4> get_icon_zone(int i) const { return icon_zone[i]; }
+
 	// 마우스가 아이콘을 클릭했음을 알림
 	void tell_icon_click() { 
 		for (int i = 0; i < ICON_NUMBER; ++i) {
 			if (on_cursor[i]) {
 				on_click[i] = true;
-				ssys_ui->playSound(menu_click, 0, false, &ch_ui);
 
+				switch (i) {
+				case 0:
+					ch_bgm->stop();
+					fw.SwitchMainMode(game_mode, "game_mode");
+					break;
+				}
 				
 				on_click[i] = false;
 			}
 		}
 	}
 
-	// 아이콘 커서 인식 범위 리턴
-	std::array<GLfloat, 4> get_icon_zone(int i) const { return icon_zone[i]; }
 	
 
 	// 아이콘 커서 인식 범위 업데이트
@@ -75,7 +86,6 @@ public:
 
 
 	void Update() {
-
 		transparent = std::lerp(transparent, 1.0, fw.FT(7));
 
 		// 커서를 마우스 위에 올리면 아이콘이 위로 올라오며 표시된다
@@ -103,11 +113,14 @@ public:
 	}
 
 
-	Icon() {
-		for (int i = 0; i < ICON_NUMBER; ++i)
+	IconHomeMenu() {
+		for (int i = 0; i < ICON_NUMBER; ++i) {
 			set_texture(tex[i], directory[i], 256, 256, 1);
+		}
 	}
 };
+
+
 
 #define BUTTON_NUMBER 2
 

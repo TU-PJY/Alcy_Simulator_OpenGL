@@ -117,7 +117,7 @@ void main(int argc, char** argv) {
 		set_shader();
 
 		// 프레임워크 세팅
-		fw.InitMainMode(home_mode, "home_mode");
+		fw.InitMainMode(game_mode, "game_mode");
 	}
 	
 	glutDisplayFunc(gl_main);

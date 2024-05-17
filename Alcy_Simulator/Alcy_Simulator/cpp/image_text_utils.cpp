@@ -2,8 +2,7 @@
 #include "../header/view.h"
 #include "../header/shader.h"
 
-GLuint VBO;
-unsigned char* texture_data;  // 텍스처 저장에 사용되는 임시 변수
+GLuint VBO;  // 텍스처 저장에 사용되는 임시 변수
 
 GLfloat vertex[][48] = {  // 이미지 출력에 사용할 vertex
 	-0.1f, -0.1f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0, 0.0,
@@ -29,6 +28,8 @@ void set_vertex(GLuint &VAO) {
 
 
 void set_texture(unsigned int& tex, const char* directory, int width, int height, int channel) {
+	unsigned char* texture_data;
+
 	glGenTextures(1, &tex);
 	glBindTexture(GL_TEXTURE_2D, tex);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);

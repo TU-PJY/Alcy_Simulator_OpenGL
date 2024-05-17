@@ -1,7 +1,7 @@
 #include "../header/mode_header.h"
 
-#include "../object/popup_object/Menu.h"
-#include "../object/popup_object/Cursor_menu.h"
+#include "../object/popup_object/HomeMenu.h"
+#include "../object/popup_object/Cursor_HomeMenu.h"
 #include "../object/popup_object/Back.h"
 
 #include "../header/gl_func.h"
@@ -9,8 +9,8 @@
 
 void menu_mode() {
 	fw.AddSubObj(new Back(sub_layer1, "back"), sub_layer1);
-	fw.AddSubObj(new Menu(sub_layer1, "menu"), sub_layer1);
-	fw.AddSubObj(new Cursor_menu(sub_layer4, "cursor_menu"), sub_layer4);
+	fw.AddSubObj(new HomeMenu(sub_layer1, "menu"), sub_layer1);
+	fw.AddSubObj(new CursorHomeMenu(sub_layer4, "cursor_menu"), sub_layer4);
 
 	glutMouseFunc(menu_mode_mouse_button);
 	glutMotionFunc(menu_mode_mouse_motion);
@@ -66,6 +66,7 @@ void menu_mode_key_down(unsigned char KEY, int x, int y) {
 		glutMouseWheelFunc(home_mode_wheel);
 		glutKeyboardFunc(home_mode_key_down);
 		glutKeyboardUpFunc(home_mode_key_up);
+		
 
 		fw.EndSubMode();
 		break;
