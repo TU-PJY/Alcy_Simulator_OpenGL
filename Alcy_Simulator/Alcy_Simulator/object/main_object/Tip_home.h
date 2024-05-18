@@ -56,12 +56,14 @@ public:
 
 	void CheckCollision() {}
 
-	void CheckDelete() {}
-
 	Tip_home(int l, std::string str) {
 		layer = l;
 		tag = str;
 
 		set_texture(tex, "res//ui//tip.png", 500, 500, 1);
+	}
+
+	~Tip_home() {
+		glDeleteTextures(1, &tex);
 	}
 };

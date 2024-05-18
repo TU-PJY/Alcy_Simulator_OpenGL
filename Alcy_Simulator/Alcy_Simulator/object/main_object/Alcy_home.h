@@ -328,9 +328,6 @@ public:
 		update_squeak_state();
 	}
 
-	void CheckCollision() {
-		
-	}
 
 	void Render() {
 		tail.Render();
@@ -340,10 +337,6 @@ public:
 		face.Render();
 	}
 
-
-	void CheckDelete() {
-
-	}
 
 	Alcy_home(int l, std::string str) {
 		layer = l;

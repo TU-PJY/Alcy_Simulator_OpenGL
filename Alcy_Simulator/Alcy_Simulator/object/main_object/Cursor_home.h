@@ -183,16 +183,16 @@ public:
 	}
 
 
-	void CheckDelete() {
-
-	}
-
-
 	Cursor_home(int l, std::string str) {
 		layer = 1;
 		tag = str;
 
 		for (int i = 0; i < directory.size(); ++i)
 			set_texture(tex[i], directory[i], 200, 200, 1);
+	}
+
+	~Cursor_home() {
+		for(int i = 0; i < 3; ++i)
+			glDeleteTextures(1, &tex[i]);
 	}
 };

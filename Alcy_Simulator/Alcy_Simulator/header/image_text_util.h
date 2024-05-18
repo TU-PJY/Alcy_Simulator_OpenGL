@@ -16,12 +16,6 @@ bool install_font(const std::string& fontFilePath);
 
 
 
-enum text_mode {
-	dynamic_out,
-	static_out
-};
-
-
 class Text {
 private:
 	GLuint base{};
@@ -199,5 +193,6 @@ public:
 
 	~Text() {
 		glDeleteLists(base, 96);
+		base = 0;
 	}
 };

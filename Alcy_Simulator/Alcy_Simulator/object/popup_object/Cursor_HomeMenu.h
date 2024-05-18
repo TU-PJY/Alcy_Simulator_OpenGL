@@ -28,8 +28,8 @@ public:
 		// button, icon Å¬¸¯
 		auto ptr = fw.FindSubObj_Layer_Single(sub_layer1, "menu");
 		if (ptr != nullptr) {
-			ptr->tell_icon_click();
 			ptr->tell_button_click();
+			ptr->tell_icon_click();
 		}
 	}
 
@@ -78,10 +78,6 @@ public:
 	}
 
 
-	void CheckDelete() {};
-
-
-
 	CursorHomeMenu(int l, std::string str) {
 		layer = l;
 		tag = str;
@@ -100,5 +96,7 @@ public:
 		auto ptr = fw.FindMainObj_Layer_Single(main_layer7, "cursor_home");
 		if (ptr != nullptr)
 			ptr->set_cursor_visible();
+
+		glDeleteTextures(1, &tex);
 	}
 };

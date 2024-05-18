@@ -15,7 +15,7 @@ private:
 	bool delete_flag{};
 
 
-	GLfloat transparent = 1.0;
+	GLfloat transparent = 1.5;
 
 public:
 	void Update() {
@@ -23,7 +23,7 @@ public:
 		transparent = std::lerp(transparent, 0.0, fw.FT(3));
 
 		if (transparent <= 0.0001)
-			delete_flag = true;
+			fw.DeleteMainObj(this, layer);
 	}
 
 	void Render() {
@@ -38,16 +38,14 @@ public:
 	void CheckCollision() {}
 
 
-	void CheckDelete() {
-		if (delete_flag)
-			fw.DeleteMainObj(this, layer);
-	}
-
-
 	Front (int l, std::string str) {
 		layer = l;
 		tag = str;
 
 		set_texture(tex, "res//ui//black.png", 100, 100, 1);
+	}
+
+	~Front() {
+		glDeleteTextures(1, &tex);
 	}
 };

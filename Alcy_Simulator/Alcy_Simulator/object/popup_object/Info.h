@@ -53,10 +53,6 @@ public:
 
 	}
 
-	void CheckDelete() {
-
-	}
-
 	Info(int l, std::string str) {
 		layer = l;
 		tag = str;
@@ -73,5 +69,7 @@ public:
 		auto ptr = fw.FindSubObj_Layer_Single(sub_layer1, "menu");
 		if (ptr != nullptr)
 			ptr->tell_info_is_close();
+
+		glDeleteTextures(1, &tex);
 	}
 };

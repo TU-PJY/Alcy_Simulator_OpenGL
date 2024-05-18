@@ -7,7 +7,7 @@
 // 환영 메시지
 class Welcome_messege : public MAIN_CLS {
 private:
-	std::array<unsigned int, 6> tex{};
+	unsigned int tex{};
 	std::array<const char*, 6> directory = {
 		"res//prop//welcome_messege//welcome_messege_first.png",
 		"res//prop//welcome_messege//welcome_messege_again_1.png",
@@ -56,7 +56,8 @@ public:
 				num3 = std::lerp(num3, 0.0, fw.FT(10));
 				transparent = std::lerp(transparent, 0.0, fw.FT(10));
 
-				if (num3 <= 0.001)  delete_flag = true;
+				if (num3 <= 0.001) 
+					fw.DeleteMainObj(this, layer);
 			}
 		}
 
@@ -69,15 +70,11 @@ public:
 		t_mat *= move_image(0.75, 0.5);
 		alpha = transparent;
 
-		draw_image(tex[number]);
+		draw_image(tex);
 	}
 
 	void CheckCollision(){}
 
-	void CheckDelete() {
-		if (delete_flag)
-			fw.DeleteMainObj(this, layer);
-	}
 
 	Welcome_messege(int l, std::string str) {
 		layer = l;
@@ -85,7 +82,7 @@ public:
 
 		// 처음 게임을 실행할 때와 나중에 실행 할 때의 말풍선이 다르다
 		if (load_data("play count") == 0) {
-			set_texture(tex[0], directory[0], 256, 256, 1);
+			set_texture(tex, directory[0], 256, 256, 1);
 			update_data("play count", 1);
 		}
 
@@ -95,9 +92,13 @@ public:
 			std::uniform_int_distribution <int> dis(1, 5);
 
 			number = dis(gen);
-			set_texture(tex[number], directory[number], 256, 256, 1);
+			set_texture(tex, directory[number], 256, 256, 1);
 		}
 
 		ssys->playSound(welcome, 0, false, &ch_alcy);
+	}
+
+	~Welcome_messege() {
+		glDeleteTextures(1, &tex);
 	}
 };

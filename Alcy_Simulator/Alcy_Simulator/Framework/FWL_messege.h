@@ -229,6 +229,7 @@ public:
 	void SUB_ERROR(int ERR_TYPE, std::string INV_MODE = "") {
 		using namespace std;
 #ifdef USING_DEBUG_MESSEGE
+#ifdef USING_SUB_MODE
 		cout << endl << "==========[ERROR OCCURED]==========" << endl << endl;
 
 		switch (ERR_TYPE) {
@@ -329,6 +330,7 @@ public:
 			cout << "At sub mode: '" << CurrentSubModeName << "'" << endl;
 			break;
 		}
+#endif
 #endif
 		exit(1);
 	}

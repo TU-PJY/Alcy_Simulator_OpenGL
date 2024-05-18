@@ -89,5 +89,9 @@ public:
 	ReturnIcon() {
 		set_texture(tex, "res//ui//menu//icon_return.png", 256, 256, 1);
 	}
+
+	~ReturnIcon() {
+		glDeleteTextures(1, &tex);
+	}
 };
 

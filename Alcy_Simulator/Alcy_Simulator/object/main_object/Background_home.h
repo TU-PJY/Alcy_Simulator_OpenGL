@@ -21,15 +21,14 @@ public:
 		draw_image(tex);
 	}
 
-	void CheckCollision() {}
-
-	void CheckDelete() {}
-
-
 	BackGround_home(int l, std::string str) {
 		layer = l;
 		tag = str;
 
 		set_texture(tex, "res//background//default.png", 1440, 1440, 1);
+	}
+
+	~BackGround_home() {
+		glDeleteTextures(1, &tex);
 	}
 };

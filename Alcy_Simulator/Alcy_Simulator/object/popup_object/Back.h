@@ -31,6 +31,7 @@ public:
 		if (height != HEIGHT) {
 			if (update_delay <= 0) {
 				delete text;
+				text = nullptr;
 				text = new Text("Maniac", 80, FW_DONTCARE);
 
 				height = HEIGHT;
@@ -46,7 +47,7 @@ public:
 		text_x = std::lerp(text_x, rt(-1.0) + 0.4, fw.FT(10));
 
 		if (transparent <= 0.0001)
-			delete_flag = true;
+			fw.DeleteMainObj(this, layer);
 	}
 
 	void Render() {
@@ -66,12 +67,6 @@ public:
 	void CheckCollision() {}
 
 
-	void CheckDelete() {
-		if (delete_flag)
-			fw.DeleteMainObj(this, layer);
-	}
-
-
 	Back2(int l, std::string str) {
 		layer = l;
 		tag = str;
@@ -82,6 +77,9 @@ public:
 
 	~Back2() {
 		delete text;
+		text = nullptr;
+
+		glDeleteTextures(1, &tex);
 	}
 };
 
@@ -103,7 +101,7 @@ private:
 
 	int height = HEIGHT;
 
-	GLfloat update_delay;
+	GLfloat update_delay{};
 
 public:
 	std::string GetTag() const { return tag; }
@@ -112,6 +110,7 @@ public:
 		if (height != HEIGHT) {
 			if (update_delay <= 0) {
 				delete text;
+				text = nullptr;
 				text = new Text("Maniac", 80, FW_DONTCARE);
 
 				height = HEIGHT;
@@ -142,8 +141,6 @@ public:
 
 	void CheckCollision() {}
 
-	void CheckDelete() {}
-
 	Back(int l, std::string str) {
 		layer = l;
 		tag = str;
@@ -156,5 +153,8 @@ public:
 	~Back() {
 		fw.AddMainObj(new Back2(main_layer3, "back2"), main_layer3);
 		delete text;
+		text = nullptr;
+
+		glDeleteTextures(1, &tex);
 	}
 };

@@ -89,7 +89,6 @@ public:
 
 
 	void CheckCollision() {}
-	void CheckDelete() {}
 
 
 	HomeMenu(int l, std::string str) {
@@ -104,5 +103,7 @@ public:
 
 	~HomeMenu() {
 		ssys_ui->playSound(menu_close, 0, false, &ch_ui);
+
+		glDeleteTextures(1, &tex);
 	}
 };

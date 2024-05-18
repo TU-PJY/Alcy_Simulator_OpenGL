@@ -22,8 +22,8 @@ std::string vendor;
 GLuint VAO;
 
 // display size
-int WIDTH = 1600;
-int HEIGHT = 900;
+int WIDTH = 1200;
+int HEIGHT = 800;
 
 int FWIDTH = GetSystemMetrics(SM_CXSCREEN);
 int FHEIGHT = GetSystemMetrics(SM_CYSCREEN);

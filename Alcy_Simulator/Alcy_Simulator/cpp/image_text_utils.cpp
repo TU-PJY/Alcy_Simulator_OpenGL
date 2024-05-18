@@ -28,15 +28,13 @@ void set_vertex(GLuint &VAO) {
 
 
 void set_texture(unsigned int& tex, const char* directory, int width, int height, int channel) {
-	unsigned char* texture_data;
-
 	glGenTextures(1, &tex);
 	glBindTexture(GL_TEXTURE_2D, tex);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	texture_data = stbi_load(directory, &width, &height, &channel, 4);
+	unsigned char* texture_data = stbi_load(directory, &width, &height, &channel, 4);
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, texture_data);
 	stbi_image_free(texture_data);
 }

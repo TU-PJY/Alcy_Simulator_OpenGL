@@ -23,13 +23,14 @@ public:
 
 	void CheckCollision(){}
 
-	void CheckDelete(){}
-
-
 	Shadow(int l, std::string str) {
 		layer = l;
 		tag = str;
 
 		set_texture(tex, "res//prop//object//shadow.png", 256, 256, 1);
+	}
+
+	~Shadow() {
+		glDeleteTextures(1, &tex);
 	}
 };

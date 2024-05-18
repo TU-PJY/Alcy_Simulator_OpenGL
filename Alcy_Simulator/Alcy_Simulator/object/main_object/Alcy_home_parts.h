@@ -241,6 +241,15 @@ public:
 
 		set_texture(tex_eye_squeak, directory_eye_squeak, 1500, 1500, 1);
 	}
+
+	~Face() {
+		for (int i = 0; i < 3; ++i) {
+			glDeleteTextures(1, &tex_eye[i]);
+			glDeleteTextures(1, &tex_dot[i]);
+			glDeleteTextures(1, &tex_brow[i]);
+			glDeleteTextures(1, &tex_blink[i]);
+		}
+	}
 };
 
 
@@ -300,6 +309,11 @@ public:
 		for (int i = 0; i < directory.size(); ++i)
 			set_texture(tex[i], directory[i], 1500, 1500, 1);
 	}
+
+	~Head() {
+		for(int i = 0; i < 3; ++i)
+			glDeleteTextures(1, &tex[i]);
+	}
 };
 
 
@@ -333,6 +347,10 @@ public:
 	Body() {
 		for (int i = 0; i < directory.size(); ++i)
 			set_texture(tex[i], directory[i], 1500, 1500, 1);
+	}
+
+	~Body() {
+		glDeleteTextures(1, &tex[0]);
 	}
 };
 
@@ -372,6 +390,10 @@ public:
 		for (int i = 0; i < directory.size(); ++i)
 			set_texture(tex[i], directory[i], 1500, 1500, 1);
 	}
+
+	~Hair() {
+		glDeleteTextures(1, &tex[0]);
+	}
 };
 
 
@@ -409,6 +431,10 @@ public:
 
 	Tail() {
 		for (int i = 0; i < directory.size(); ++i)
-			set_texture(tex[i], directory[i], 1500, 1500, 1);
+			set_texture(tex[i], directory[i], 512, 512, 1);
+	}
+
+	~Tail() {
+		glDeleteTextures(1, &tex[0]);
 	}
 };

@@ -4,10 +4,15 @@
 #include "../header/gl_func.h"
 
 #include "../object/main_object/Gameboy.h"
+#include "../object/main_object/Front.h"
 
 void game_mode() {
 	cam.reset_camera();
 	cam.camera_lock_state = true;
+
+	fw.AddMainObj(new Gameboy(main_layer3, "gameboy"), main_layer3);
+	fw.AddMainObj(new Front(main_layer3, "front_home"), main_layer3);
+
 
 	glutMouseFunc(game_mode_mouse_button);
 	glutMotionFunc(game_mode_mouse_motion);
@@ -15,8 +20,6 @@ void game_mode() {
 	glutMouseWheelFunc(game_mode_wheel);
 	glutKeyboardFunc(game_mode_key_down);
 	glutKeyboardUpFunc(game_mode_key_up);
-
-	fw.AddMainObj(new Gameboy(main_layer3, "gameboy"), main_layer3);
 }
 
 

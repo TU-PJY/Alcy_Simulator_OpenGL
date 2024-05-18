@@ -6,7 +6,6 @@
 
 class Zoom_ind : public MAIN_CLS {
 private:
-	unsigned int tex{};
 	GLfloat transparent{};
 
 	int layer{};
@@ -28,6 +27,7 @@ public:
 		if (height != HEIGHT) {
 			if (update_delay <= 0) {
 				delete text;
+				text = nullptr;
 				text = new Text("Maniac", 100, FW_DONTCARE);
 
 				height = HEIGHT;
@@ -56,7 +56,6 @@ public:
 	}
 
 	void CheckCollision(){}
-	void CheckDelete(){}
 
 	Zoom_ind(int l, std::string str) {
 		layer = l;
@@ -66,5 +65,6 @@ public:
 
 	~Zoom_ind() {
 		delete text;
+		text = nullptr;
 	}
 };

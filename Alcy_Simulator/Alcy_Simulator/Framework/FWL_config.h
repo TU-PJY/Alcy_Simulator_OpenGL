@@ -12,7 +12,7 @@
 #define          USING_SUB_MODE
 #define          N_SUB_LAYER 4
 
-#define          USING_DEBUG_MESSEGE
+//#define          USING_DEBUG_MESSEGE
 #define          USING_FRAME_TIME
 #define          USING_FRAME_TIME_OUTSIDE
 
@@ -50,7 +50,6 @@ public:
 	virtual void Update() {}
 	virtual void CheckCollision() {}
 	virtual void Render() {}
-	virtual void CheckDelete() {}
 	virtual std::string GetTag() const { return {}; }
 	virtual void ActivateDeleteFlag(bool Flag) {}
 
@@ -93,7 +92,6 @@ public:
 	virtual void Update() {}
 	virtual void CheckCollision() {}
 	virtual void Render() {}
-	virtual void CheckDelete() {}
 	virtual std::string GetTag() const { return {}; }
 	virtual void ActivateDeleteFlag(bool Flag) {}
 

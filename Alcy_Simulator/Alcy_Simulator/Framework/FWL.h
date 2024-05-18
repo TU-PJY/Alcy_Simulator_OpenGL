@@ -11,13 +11,13 @@
 #include "FWL_config.h"
 #include "FWL_messege.h"
 
+
 #ifdef USING_FWL
 #if N_MAIN_LAYER
 
 class FWL {
 private:
 	std::array<std::deque<MAIN_CLS*>, N_MAIN_LAYER> MainCont{};
-	std::array<std::deque<MAIN_CLS*>, N_MAIN_LAYER> MainTempCont{};
 
 	std::vector<std::string> MainModeList;
 
@@ -32,7 +32,6 @@ private:
 #ifdef USING_SUB_MODE
 #if N_SUB_LAYER
 	std::array<std::deque<SUB_CLS*>, N_SUB_LAYER> SubCont{};
-	std::array<std::deque<SUB_CLS*>, N_SUB_LAYER> SubTempCont{};
 
 	std::vector<std::string> SubModeList;
 
@@ -116,11 +115,11 @@ public:
 							Ptr->Update();
 							Ptr->CheckCollision();
 						}
-						Ptr->Render();
-						Ptr->CheckDelete();
 
-						++It; 
+						Ptr->Render();
 					}
+					if (Ptr != nullptr)
+						++It; 
 
 					else
 						It = MainCont[i].erase(remove(MainCont[i].begin(), MainCont[i].end(), Ptr));
@@ -139,10 +138,10 @@ public:
 								Ptr->CheckCollision();
 							}
 							Ptr->Render();
-							Ptr->CheckDelete();
-
-							++It;
 						}
+
+						if (Ptr != nullptr)
+							++It;
 
 						else
 							It = SubCont[i].erase(remove(SubCont[i].begin(), SubCont[i].end(), Ptr));
@@ -230,14 +229,10 @@ public:
 #endif
 #endif
 
-		MainModeFunc();
-
 		ClearMainAll();
 
-		for (int i = 0; i < N_MAIN_LAYER; ++i) {
-			MainCont[i] = MainTempCont[i];
-			MainTempCont[i].clear();
-		}
+		MainModeFunc();
+		
 
 		CurrentModeName = MainModeName;
 		CurrentMainModeName = MainModeName;
@@ -266,8 +261,6 @@ public:
 		if (ModeSwitchState) {
 			if (Layer >= N_MAIN_LAYER || Layer < 0)
 				F_Messege.MAIN_ERROR(LOB_M_IN_SWITCH);
-
-			MainTempCont[Layer].push_back(Object);
 		}
 
 		else {
@@ -278,8 +271,9 @@ public:
 					F_Messege.MAIN_ERROR(LOB_M_IN_M_INIT);
 			}
 
-			MainCont[Layer].push_back(Object);
 		}
+
+		MainCont[Layer].push_back(Object);
 	}
 
 
@@ -581,14 +575,11 @@ public:
 		// debug value
 		DBG_SWITCH_SUB_MODE = true;
 
-		SubModeFunc();
 
 		ClearSubAll();
 
-		for (int i = 0; i < N_SUB_LAYER; ++i) {
-			SubCont[i] = SubTempCont[i];
-			SubTempCont[i].clear();
-		}
+		SubModeFunc();
+
 
 		CurrentModeName = SubModeName;
 		CurrentSubModeName = SubModeName;
@@ -646,8 +637,6 @@ public:
 		if (ModeSwitchState) {
 			if (Layer >= N_SUB_LAYER || Layer < 0)
 				F_Messege.SUB_ERROR(LOB_S_IN_SWITCH);
-
-			SubTempCont[Layer].push_back(Object);
 		}
 
 		else {
@@ -658,8 +647,9 @@ public:
 					F_Messege.SUB_ERROR(LOB_S_IN_S_INIT);
 			}
 			
-			SubCont[Layer].push_back(Object);
 		}
+
+		SubCont[Layer].push_back(Object);
 	}
 
 
@@ -941,14 +931,12 @@ private:
 
 	// delete objects of specific layer
 	void ClearMainLayer(int Layer) {
-		for (auto It = MainCont[Layer].begin(); It != MainCont[Layer].end();) {
-			auto Target = std::find(MainCont[Layer].begin(), MainCont[Layer].end(), *It);
-
-			delete* Target;
-			*Target = nullptr;
-
-			++It;
+		for (auto It = MainCont[Layer].rbegin(); It != MainCont[Layer].rend(); ++ It) {
+			delete* It;
+			*It = nullptr;
 		}
+		MainCont[Layer].clear();
+		MainCont[Layer] = std::deque<MAIN_CLS*>();
 	}
 
 
@@ -957,14 +945,12 @@ private:
 	// delete all object
 	void ClearMainAll() {
 		for (int i = 0; i < N_MAIN_LAYER; ++i) {
-			for (auto It = MainCont[i].begin(); It != MainCont[i].end();) {
-				auto Target = std::find(MainCont[i].begin(), MainCont[i].end(), *It);
-
-				delete* Target;
-				*Target = nullptr;
-
-				++It;
+			for (auto It = MainCont[i].rbegin(); It != MainCont[i].rend(); ++ It) {
+				delete* It; // 객체 삭제
+				*It = nullptr; // 포인터를 nullptr로 설정
 			}
+			MainCont[i].clear(); // 컨테이너 비우기
+			MainCont[i] = std::deque<MAIN_CLS*>();
 		}
 	}
 
@@ -986,17 +972,12 @@ private:
 
 	// delete popup objects of specific popup layer
 	void ClearSubLayer(int Layer) {
-		for (auto It = SubCont[Layer].begin(); It != SubCont[Layer].end();) {
-			auto Target = std::find(SubCont[Layer].begin(), SubCont[Layer].end(), *It);
-
-			delete* Target;
-			*Target = nullptr;
-
-			++It;
+		for (auto It = SubCont[Layer].rbegin(); It != SubCont[Layer].rend(); ++It) {
+			delete *It;
+			*It = nullptr;
 		}
-
-		if (InEndSubMode)
-			SubCont[Layer].clear();
+		SubCont[Layer].clear();
+		SubCont[Layer] = std::deque<SUB_CLS*>();
 	}
 
 
@@ -1005,19 +986,13 @@ private:
 	// delete popup object all
 	void ClearSubAll() {
 		for (int i = 0; i < N_SUB_LAYER; ++i) {
-			for (auto It = SubCont[i].begin(); It != SubCont[i].end();) {
-				auto Target = std::find(SubCont[i].begin(), SubCont[i].end(), *It);
-
-				delete* Target;
-				*Target = nullptr;
-
-				++It;
+			for (auto It = SubCont[i].rbegin(); It != SubCont[i].rend(); ++ It) {
+				delete* It;
+				*It = nullptr;
 			}
+			SubCont[i].clear();
+			SubCont[i] = std::deque<SUB_CLS*>();
 		}
-
-		if (InEndSubMode)
-			for (int i = 0; i < N_SUB_LAYER; ++i)
-				SubCont[i].clear();
 	}
 
 #endif

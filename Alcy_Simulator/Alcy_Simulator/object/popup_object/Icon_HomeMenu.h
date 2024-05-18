@@ -56,6 +56,8 @@ public:
 
 	// 마우스가 아이콘을 클릭했음을 알림
 	void tell_icon_click() { 
+		bool click{};
+
 		for (int i = 0; i < ICON_NUMBER; ++i) {
 			if (on_cursor[i]) {
 				on_click[i] = true;
@@ -67,7 +69,7 @@ public:
 					break;
 				}
 				
-				on_click[i] = false;
+				break;
 			}
 		}
 	}
@@ -117,6 +119,11 @@ public:
 		for (int i = 0; i < ICON_NUMBER; ++i) {
 			set_texture(tex[i], directory[i], 256, 256, 1);
 		}
+	}
+
+	~IconHomeMenu() {
+		for (int i = 0; i < ICON_NUMBER; ++i)
+			glDeleteTextures(1, &tex[i]);
 	}
 };
 
@@ -193,7 +200,7 @@ public:
 					break;
 				}
 
-				on_click[i] = false;
+				break;
 			}
 		}
 	}
@@ -214,6 +221,7 @@ public:
 		if (height != HEIGHT) {
 			if (update_delay <= 0) {
 				delete text;
+				text = nullptr;
 				text = new Text("Maniac", 60, FW_DONTCARE);
 
 				height = HEIGHT;
@@ -275,5 +283,9 @@ public:
 
 	~Button() {
 		delete text;
+		text = nullptr;
+
+		for(int i = 0; i < BUTTON_NUMBER; ++i)
+			glDeleteTextures(1, &tex[i]);
 	}
 };

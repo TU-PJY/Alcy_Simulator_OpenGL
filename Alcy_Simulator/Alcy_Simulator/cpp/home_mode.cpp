@@ -14,13 +14,6 @@
 
 
 void home_mode() {
-	glutMouseFunc(home_mode_mouse_button);
-	glutMotionFunc(home_mode_mouse_motion);
-	glutPassiveMotionFunc(home_mode_mouse_passive_motion);
-	glutMouseWheelFunc(home_mode_wheel);
-	glutKeyboardFunc(home_mode_key_down);
-	glutKeyboardUpFunc(home_mode_key_up);
-
 	fw.AddMainObj(new BackGround_home(main_layer1, "background_home"), main_layer1);
 
 	fw.AddMainObj(new Shadow(main_layer1, "shadow_home"), main_layer1);
@@ -33,14 +26,21 @@ void home_mode() {
 
 	fw.AddMainObj(new Front(main_layer3, "front_home"), main_layer3);
 
-
 	fw.AddMainObj(new Cursor_home(main_layer7, "cursor_home"), main_layer7);
 
 	ssys->playSound(home_music, 0, false, &ch_bgm);
 
+	cam.reset_camera();
 	cam.zoom = 2.4;
 	cam.zoom_value = 0.8;
 	cam.zoom_count = 3;
+
+	glutMouseFunc(home_mode_mouse_button);
+	glutMotionFunc(home_mode_mouse_motion);
+	glutPassiveMotionFunc(home_mode_mouse_passive_motion);
+	glutMouseWheelFunc(home_mode_wheel);
+	glutKeyboardFunc(home_mode_key_down);
+	glutKeyboardUpFunc(home_mode_key_up);
 }
 
 
