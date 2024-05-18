@@ -18,6 +18,7 @@ void return_menu_mode() {
 	fw.AddSubObj(new CursorReturnMenu(sub_layer4, "cursor_return_menu"), sub_layer4);
 
 	set_func_to_return_menu_mode();
+
 }
 
 
@@ -69,8 +70,8 @@ void close_return_menu() {
 
 void set_func_to_game_mode() {
 	glutMouseFunc(game_mode_mouse_button);
-	glutMotionFunc(game_mode_mouse_motion);
-	glutPassiveMotionFunc(game_mode_mouse_passive_motion);
+	glutMotionFunc(NULL);
+	glutPassiveMotionFunc(NULL);
 	glutMouseWheelFunc(game_mode_wheel);
 	glutKeyboardFunc(game_mode_key_down);
 	glutKeyboardUpFunc(game_mode_key_up);

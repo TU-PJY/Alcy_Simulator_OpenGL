@@ -2,6 +2,7 @@
 
 FMOD::System* ssys;
 FMOD::System* ssys_ui;
+FMOD::System* ssys_game;
 
 
 // bgm sounds
@@ -22,6 +23,10 @@ FMOD::Sound* menu_open, * menu_close;
 FMOD::Sound* tip_click;
 FMOD::Sound* menu_click;
 
+// game effect sounds
+FMOD::Channel* ch_game_ef;
+FMOD::Sound* boot_sound;
+
 
 FMOD_RESULT f_result;
 void* extdvdata{};
@@ -34,6 +39,10 @@ void load_sound_file() {
 	f_result = FMOD::System_Create(&ssys_ui);
 	if (f_result != FMOD_OK)	exit(0);
 	ssys_ui->init(32, FMOD_INIT_NORMAL, extdvdata);
+
+	f_result = FMOD::System_Create(&ssys_game);
+	if (f_result != FMOD_OK)	exit(0);
+	ssys_game->init(32, FMOD_INIT_NORMAL, extdvdata);
 
 
 	ssys->createSound("res//sound//music//home_music.ogg", FMOD_LOOP_NORMAL, 0, &home_music);
@@ -50,4 +59,6 @@ void load_sound_file() {
 	ssys_ui->createSound("res//sound//UI//menu_close.ogg", FMOD_DEFAULT, 0, &menu_close);
 	ssys_ui->createSound("res//sound//UI//button_click.ogg", FMOD_DEFAULT, 0, &tip_click);
 	ssys_ui->createSound("res//sound//UI//menu_click.ogg", FMOD_DEFAULT, 0, &menu_click);
+
+	ssys_game->createSound("res//sound//game//boot.ogg", FMOD_DEFAULT, 0, &boot_sound);
 }

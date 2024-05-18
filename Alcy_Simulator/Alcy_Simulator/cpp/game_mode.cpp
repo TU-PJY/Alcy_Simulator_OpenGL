@@ -11,13 +11,16 @@ void game_mode() {
 	cam.camera_lock_state = true;
 	cam.y = -1.0;
 
+	fw.AddMainObj(new GameboyBack(main_layer1, "gameboy_back"), main_layer1);
+
 	fw.AddMainObj(new Gameboy(main_layer3, "gameboy"), main_layer3);
+
 	fw.AddMainObj(new Front(main_layer3, "front_home"), main_layer3);
 
 
 	glutMouseFunc(game_mode_mouse_button);
-	glutMotionFunc(game_mode_mouse_motion);
-	glutPassiveMotionFunc(game_mode_mouse_passive_motion);
+	glutMotionFunc(NULL);
+	glutPassiveMotionFunc(NULL);
 	glutMouseWheelFunc(game_mode_wheel);
 	glutKeyboardFunc(game_mode_key_down);
 	glutKeyboardUpFunc(game_mode_key_up);
@@ -34,18 +37,19 @@ void game_mode_mouse_button(int button, int state, int x, int y) {
 
 	// 메뉴 열기
 	if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN) {
+		glutWarpPointer(WIDTH / 2, HEIGHT / 2);
 		fw.InitSubMode(return_menu_mode, "return_menu_mode");
 	}
 }
 
 
 void game_mode_mouse_motion(int x, int y) {
-	convert_cursor_position(x, y);
+	//convert_cursor_position(x, y);
 }
 
 
 void game_mode_mouse_passive_motion(int x, int y) {
-	convert_cursor_position(x, y);
+	//convert_cursor_position(x, y);
 }
 
 

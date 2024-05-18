@@ -108,6 +108,7 @@ public:
 #endif
 #endif
 			for (int i = 0; i < N_MAIN_LAYER; ++i) {
+				size_t num = MainCont[i].size();
 				for (auto It = MainCont[i].begin(); It != MainCont[i].end();) {
 					auto Ptr = *It;
 					if (Ptr != nullptr) {
@@ -115,14 +116,13 @@ public:
 							Ptr->Update();
 							Ptr->CheckCollision();
 						}
-
 						Ptr->Render();
 					}
 					if (Ptr != nullptr)
 						++It; 
 
 					else
-						It = MainCont[i].erase(remove(MainCont[i].begin(), MainCont[i].end(), Ptr));
+						It = MainCont[i].erase(It);
 				}
 			}
 
@@ -139,12 +139,11 @@ public:
 							}
 							Ptr->Render();
 						}
-
 						if (Ptr != nullptr)
 							++It;
 
 						else
-							It = SubCont[i].erase(remove(SubCont[i].begin(), SubCont[i].end(), Ptr));
+							It = SubCont[i].erase(It);
 					}
 				}
 			}
@@ -295,110 +294,6 @@ public:
 		}
 		else 
 			F_Messege.MAIN_ERROR(UKN_M_IN_DELETE);
-	}
-
-
-
-
-	// delete main object outside of object class
-	void DeleteMainObj_Layer_Single(int Layer, std::string Tag) {
-		if (!MainModeInitState)
-			F_Messege.MAIN_ERROR(INV_M_INIT);
-
-		if (Layer >= N_MAIN_LAYER || Layer < 0)
-			F_Messege.MAIN_ERROR(LOB_M_IN_DELETE);
-
-
-		size_t num = MainCont[Layer].size();
-
-		for (int i = 0; i < num; ++i) {
-			auto Target = MainObjPtr(Layer, i);
-			if (Target != nullptr && Target->GetTag() == Tag) {
-				Target->ActivateDeleteFlag(true);
-				break;
-			}
-		}
-	}
-
-
-
-
-	void DeleteMainObj_Layer_All(int Layer, std::string Tag) {
-		if (!MainModeInitState)
-			F_Messege.MAIN_ERROR(INV_M_INIT);
-
-		if (Layer >= N_MAIN_LAYER || Layer < 0)
-			F_Messege.MAIN_ERROR(LOB_M_IN_DELETE);
-
-
-		size_t num = MainCont[Layer].size();
-
-		for (int i = 0; i < num; ++i) {
-			auto Target = MainObjPtr(Layer, i);
-			if (Target != nullptr && Target->GetTag() == Tag)
-				Target->ActivateDeleteFlag(true);
-		}
-	}
-
-
-
-
-	void DeleteMainObj_Entire_Single(std::string Tag) {
-		if (!MainModeInitState)
-			F_Messege.MAIN_ERROR(INV_M_INIT);
-
-		bool ObjFind{};
-
-		for (int i = 0; i < N_MAIN_LAYER; ++i) {
-			if (ObjFind)
-				break;
-
-			size_t num = MainCont[i].size();
-
-			for (int j = 0; j < num; ++j) {
-				auto Target = MainObjPtr(i, j);
-				if (Target != nullptr && Target->GetTag() == Tag) {
-					Target->ActivateDeleteFlag(true);
-					ObjFind = true;
-					break;
-				}
-			}
-		}
-	}
-
-
-
-
-	void DeleteMainObj_Entire_All(std::string Tag) {
-		if (!MainModeInitState)
-			F_Messege.MAIN_ERROR(INV_M_INIT);
-
-		for (int i = 0; i < N_MAIN_LAYER; ++i) {
-			size_t num = MainCont[i].size();
-
-			for (int j = 0; j < num; ++j) {
-				auto Target = MainObjPtr(i, j);
-				if (Target != nullptr && Target->GetTag() == Tag)
-					Target->ActivateDeleteFlag(true);
-			}
-		}
-	}
-
-
-
-
-	void DeleteMainObj_Layer_Index(int Layer, int Index, std::string Tag) {
-		if (!MainModeInitState)
-			F_Messege.MAIN_ERROR(INV_M_INIT);
-
-		if (Layer >= N_MAIN_LAYER || Layer < 0)
-			F_Messege.MAIN_ERROR(LOB_M_IN_FIND);
-
-
-		auto Target = MainObjPtr(Layer, Index);
-
-		if (Target != nullptr && Target->GetTag() == Tag)
-			Target->ActivateDeleteFlag(true);
 	}
 
 
@@ -680,128 +575,6 @@ public:
 
 
 
-	// delete main object outside of object class
-	void DeleteSubObj_Layer_Single(int Layer, std::string Tag) {
-		if (!MainModeInitState)
-			F_Messege.MAIN_ERROR(INV_M_INIT);
-
-		if (!SubModeInitState)
-			F_Messege.SUB_ERROR(INV_S_INIT);
-
-		if (Layer >= N_SUB_LAYER || Layer < 0)
-			F_Messege.SUB_ERROR(LOB_S_IN_DELETE);
-
-
-		size_t num = SubCont[Layer].size();
-
-		for (int i = 0; i < num; ++i) {
-			auto Target = SubObjPtr(Layer, i);
-			if (Target != nullptr && Target->GetTag() == Tag) {
-				Target->ActivateDeleteFlag(true);
-				break;
-			}
-		}
-	}
-
-
-
-
-	void DeleteSubObj_Layer_All(int Layer, std::string Tag) {
-		if (!MainModeInitState)
-			F_Messege.MAIN_ERROR(INV_M_INIT);
-
-		if (!SubModeInitState)
-			F_Messege.SUB_ERROR(INV_S_INIT);
-
-		if (Layer >= N_SUB_LAYER || Layer < 0)
-			F_Messege.SUB_ERROR(LOB_S_IN_DELETE);
-
-
-		size_t num = SubCont[Layer].size();
-
-		for (int i = 0; i < num; ++i) {
-			auto Target = SubObjPtr(Layer, i);
-			if (Target != nullptr && Target->GetTag() == Tag)
-				Target->ActivateDeleteFlag(true);
-		}
-	}
-
-
-
-
-	void DeleteSubObj_Entire_Single(std::string Tag) {
-		if (!MainModeInitState)
-			F_Messege.MAIN_ERROR(INV_M_INIT);
-
-		if (!SubModeInitState)
-			F_Messege.SUB_ERROR(INV_S_INIT);
-
-
-		bool ObjFind{};
-
-		for (int i = 0; i < N_SUB_LAYER; ++i) {
-			if (ObjFind)
-				break;
-
-			size_t num = SubCont[i].size();
-
-			for (int j = 0; j < num; ++j) {
-				auto Target = SubObjPtr(i, j);
-				if (Target != nullptr && Target->GetTag() == Tag) {
-					Target->ActivateDeleteFlag(true);
-					ObjFind = true;
-					break;
-				}
-			}
-		}
-	}
-
-
-
-
-
-	void DeleteSubObj_Entire_All(std::string Tag) {
-		if (!MainModeInitState)
-			F_Messege.MAIN_ERROR(INV_M_INIT);
-
-		if (!SubModeInitState)
-			F_Messege.SUB_ERROR(INV_S_INIT);
-
-
-		for (int i = 0; i < N_SUB_LAYER; ++i) {
-			size_t num = SubCont[i].size();
-
-			for (int j = 0; j < num; ++j) {
-				auto Target = SubObjPtr(i, j);
-				if (Target != nullptr && Target->GetTag() == Tag)
-					Target->ActivateDeleteFlag(true);
-			}
-		}
-	}
-
-
-
-
-	void DeleteSubObj_Layer_Index(int Layer, int Index, std::string Tag) {
-		if (!MainModeInitState)
-			F_Messege.MAIN_ERROR(INV_M_INIT);
-
-		if (!SubModeInitState)
-			F_Messege.SUB_ERROR(INV_S_INIT);
-
-		if (Layer >= N_SUB_LAYER || Layer < 0)
-			F_Messege.SUB_ERROR(LOB_S_IN_DELETE);
-
-
-		auto Target = SubObjPtr(Layer, Index);
-
-		if (Target != nullptr && Target->GetTag() == Tag)
-			Target->ActivateDeleteFlag(true);
-	}
-
-
-
-
 	// return number of popup objects of specific popup layer
 	size_t SubLayerSize(int Layer) {
 		if (!MainModeInitState)
@@ -931,11 +704,11 @@ private:
 
 	// delete objects of specific layer
 	void ClearMainLayer(int Layer) {
-		for (auto It = MainCont[Layer].rbegin(); It != MainCont[Layer].rend(); ++ It) {
+		for (auto It = MainCont[Layer].begin(); It != MainCont[Layer].end();) {
 			delete* It;
 			*It = nullptr;
+			It = MainCont[Layer].erase(It);
 		}
-		MainCont[Layer].clear();
 	}
 
 
@@ -944,11 +717,11 @@ private:
 	// delete all object
 	void ClearMainAll() {
 		for (int i = 0; i < N_MAIN_LAYER; ++i) {
-			for (auto It = MainCont[i].rbegin(); It != MainCont[i].rend(); ++ It) {
+			for (auto It = MainCont[i].begin(); It != MainCont[i].end();) {
 				delete* It; // 객체 삭제
-				*It = nullptr; // 포인터를 nullptr로 설정
+				*It = nullptr; 
+				It = MainCont[i].erase(It);
 			}
-			MainCont[i].clear(); // 컨테이너 비우기
 		}
 	}
 
@@ -970,12 +743,11 @@ private:
 
 	// delete popup objects of specific popup layer
 	void ClearSubLayer(int Layer) {
-		for (auto It = SubCont[Layer].rbegin(); It != SubCont[Layer].rend(); ++It) {
+		for (auto It = SubCont[Layer].begin(); It != SubCont[Layer].end();) {
 			delete *It;
 			*It = nullptr;
+			It = SubCont[Layer].erase(It);
 		}
-		SubCont[Layer].clear();
-		SubCont[Layer] = std::deque<SUB_CLS*>();
 	}
 
 
@@ -984,11 +756,11 @@ private:
 	// delete popup object all
 	void ClearSubAll() {
 		for (int i = 0; i < N_SUB_LAYER; ++i) {
-			for (auto It = SubCont[i].rbegin(); It != SubCont[i].rend(); ++ It) {
+			for (auto It = SubCont[i].begin(); It != SubCont[i].end();) {
 				delete* It;
 				*It = nullptr;
+				It = SubCont[i].erase(It);
 			}
-			SubCont[i].clear();
 		}
 	}
 

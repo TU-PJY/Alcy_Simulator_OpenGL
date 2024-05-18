@@ -51,7 +51,6 @@ public:
 	virtual void CheckCollision() {}
 	virtual void Render() {}
 	virtual std::string GetTag() const { return {}; }
-	virtual void ActivateDeleteFlag(bool Flag) {}
 
 
 	////////////////// home mode
@@ -80,6 +79,14 @@ public:
 	// tip
 	virtual void update_tip_visible(unsigned char KEY) {}
 
+
+	/////////////////game mode
+	// gameboy back
+	virtual void set_power_on(bool flag) {}
+
+
+
+
 	////////////////////
 
 	virtual     ~MAIN_CLS() {}
@@ -93,7 +100,6 @@ public:
 	virtual void CheckCollision() {}
 	virtual void Render() {}
 	virtual std::string GetTag() const { return {}; }
-	virtual void ActivateDeleteFlag(bool Flag) {}
 
 
 	//menu mode

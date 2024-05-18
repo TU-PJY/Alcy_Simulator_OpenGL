@@ -3,6 +3,7 @@
 
 extern FMOD::System* ssys;
 extern FMOD::System* ssys_ui;
+extern FMOD::System* ssys_game;
 
 
 // bgm sounds
@@ -22,6 +23,10 @@ extern FMOD::Sound* scroll_sound;
 extern FMOD::Sound* menu_open, * menu_close;
 extern FMOD::Sound* tip_click;
 extern FMOD::Sound* menu_click;
+
+//game effect sounds
+extern FMOD::Channel* ch_game_ef;
+extern FMOD::Sound* boot_sound;
 
 
 

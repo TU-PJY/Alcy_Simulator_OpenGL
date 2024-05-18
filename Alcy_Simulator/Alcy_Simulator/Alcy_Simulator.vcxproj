@@ -157,6 +157,7 @@
     <ClInclude Include="object\main_object\Alcy_home.h" />
     <ClInclude Include="object\main_object\Alcy_home_parts.h" />
     <ClInclude Include="object\main_object\Background_home.h" />
+    <ClInclude Include="object\main_object\Cactus.h" />
     <ClInclude Include="object\main_object\Cursor_home.h" />
     <ClInclude Include="object\main_object\Shadow.h" />
     <ClInclude Include="object\main_object\Tip_home.h" />

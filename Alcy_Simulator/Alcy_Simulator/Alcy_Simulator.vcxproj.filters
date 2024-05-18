@@ -160,6 +160,9 @@
     <ClInclude Include="object\popup_object\Cursor_ReturnMenu.h">
       <Filter>[9]__________OBJ_sub\[0]-----UI\Return_Menu</Filter>
     </ClInclude>
+    <ClInclude Include="object\main_object\Cactus.h">
+      <Filter>[8]__________OBJ_main\[3]------Prop</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cpp\mouse.cpp">

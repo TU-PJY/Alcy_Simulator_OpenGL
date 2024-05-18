@@ -41,7 +41,7 @@ GLvoid gl_main() {
 	start_time = clock();
 
 	glClearColor(0.39f, 0.40f, 0.5f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);  
+	glClear(GL_COLOR_BUFFER_BIT);  
 	glUseProgram(ID);
 	
 	cam.update_camera();
@@ -51,7 +51,6 @@ GLvoid gl_main() {
 
 	glutPostRedisplay();
 	glutSwapBuffers();
-
 
 	end_time = clock();
 	fw.InputFrameTime(double(end_time - start_time) / 1000);
@@ -97,6 +96,7 @@ void main(int argc, char** argv) {
 		glEnable(GL_MULTISAMPLE);
 		glEnable(GL_ALPHA_TEST);
 		glEnable(GL_BLEND);
+		glEnable(GL_SMOOTH);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 		// 이미지 로드 방향 반전 옵션
