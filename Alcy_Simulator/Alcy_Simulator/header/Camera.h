@@ -32,6 +32,10 @@ public:
 	// 카메라 줌 목표 값
 	GLfloat zoom_value = 1.0;
 
+	// 카메라 위치 목표 값
+	GLfloat target_pos_y{};
+
+	// 줌 횟수 카운트
 	int zoom_count = 3;
 	
 
@@ -43,6 +47,7 @@ public:
 		y = 0;
 		rotate_dir = rotate_none;
 		angle = 0;
+		target_pos_y = 0.0;
 
 		camera_lock_state = false;
 
@@ -117,6 +122,11 @@ public:
 			angle = std::lerp(angle, 0.0, fw.FT(4));
 	}
 
+	
+	void move_camera_to_target_pos() {
+		y = std::lerp(y, target_pos_y, fw.FT(4));
+	}
+
 
 
 	// 카메라 상하좌우 이동
@@ -166,6 +176,7 @@ public:
 		rotate_camera();
 		zoom_camera();
 		update_camera_lock();
+		move_camera_to_target_pos();
 
 		// lock state가 true가 되면 카메라 무빙과 조작을 하지 않는다
 		if (!camera_lock_state) {

@@ -13,10 +13,21 @@ private:
 
 	bool power_on{};
 
+	GLfloat power_on_delay{};
+
 public:
 	std::string GetTag() const { return tag; }
 
-	void Update() {}
+	void Update() {
+		if (power_on_delay < 1500)
+			power_on_delay += fw.FT(1000);
+
+		else {
+			cam.zoom_value = 1.8;
+			cam.target_pos_y = -0.45;
+			power_on = true;
+		}
+	}
 
 	void Render() {
 		init_transform();
@@ -26,18 +37,18 @@ public:
 		else
 			draw_image(tex_back[0]);
 
-
 		init_transform();
+		r_mat *= rotate_image(-15);
 		s_mat *= scale_image(15.0, 15.0);
-		t_mat *= move_image(-1.3, -1.2);
+		t_mat *= move_image(-1.3, -1.5);
 		draw_image(tex_hand[0]);
 
 
 		init_transform();
+		r_mat *= rotate_image(15);
 		s_mat *= scale_image(15.0, 15.0);
-		t_mat *= move_image(1.3, -1.2);
+		t_mat *= move_image(1.3, -1.5);
 		draw_image(tex_hand[1]);
-
 
 		init_transform();
 		s_mat *= scale_image(10.0, 10.0);

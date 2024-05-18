@@ -20,7 +20,6 @@ class Text {
 private:
 	GLuint base{};
 	HDC hDC{};
-	HFONT font{};
 
 	const char* fmt{};
 
@@ -45,51 +44,6 @@ public:
 		draw_text_static(x, y, r, g, b, base, fmt, args);
 
 		va_end(args);
-	}
-
-
-	int set_font(const char* font_name, int size, int type, GLuint& base, HDC& hDC) {                     // All Setup For OpenGL Goes Here
-		hDC = wglGetCurrentDC();
-		build_font(font_name, size, type, base, hDC);
-
-		return TRUE;
-	}
-
-
-	GLvoid build_font(const char* fontName, int fontSize, int type, GLuint& base, HDC& hDC) {
-		HFONT font;
-		HFONT oldfont;
-
-		// calculate font size scale
-		int dpiX = GetDeviceCaps(hDC, LOGPIXELSX);
-
-		double windowScale = static_cast<double>(HEIGHT) / FHEIGHT;
-		double dpi_scale = static_cast<double>(dpiX) / 96.0f;
-		double scale = windowScale * dpi_scale;
-
-		int result_size = static_cast<int>(fontSize * scale);
-
-		base = glGenLists(96);  // Storage For 96 Characters
-
-		font = CreateFont(-result_size, // Height Of Fonts
-			0,              // Width Of Font
-			0,              // Angle Of Escapement
-			0,              // Orientation Angle
-			type,			// Font Weight
-			FALSE,          // Italic    
-			FALSE,          // Underline
-			FALSE,          // Strikeout
-			ANSI_CHARSET,   // Character Set Identifier
-			OUT_TT_PRECIS,  // Output Precision
-			CLIP_DEFAULT_PRECIS,        // Clipping Precision
-			ANTIALIASED_QUALITY,        // Output Quality
-			FF_DONTCARE | VARIABLE_PITCH,  // Family And Pitch
-			fontName);         // Font Name
-
-		oldfont = (HFONT)SelectObject(hDC, font); // Selects The Font We Want
-		wglUseFontBitmaps(hDC, 32, 96, base);     // Builds 96 Characters Starting At Character 32
-		SelectObject(hDC, oldfont);               // Selects The Font We Want
-		DeleteObject(font);                       // Delete The Font
 	}
 
 
@@ -144,7 +98,7 @@ public:
 
 		if (vendor == "NVIDIA Corporation") {
 			set_object_static(dy(x), dy(y));
-
+			
 			transmit_translation();
 			obj_color_location = glGetUniformLocation(ID, "objectColor");
 			glUniform4f(obj_color_location, r, g, b, 1.0);
@@ -184,8 +138,47 @@ public:
 		glPopAttrib();                      // Pops The Display List Bits
 	}
 
+
+	GLvoid build_font(const char* fontName, int fontSize, int type, GLuint& base, HDC& hDC) {
+		HFONT font;
+		HFONT oldfont;
+
+		// calculate font size scale
+		int dpiX = GetDeviceCaps(hDC, LOGPIXELSX);
+
+		double windowScale = static_cast<double>(HEIGHT) / FHEIGHT;
+		double dpi_scale = static_cast<double>(dpiX) / 96.0f;
+		double scale = windowScale * dpi_scale;
+
+		int result_size = static_cast<int>(fontSize * scale);
+
+		base = glGenLists(96);  // Storage For 96 Characters
+
+		font = CreateFont(-result_size, // Height Of Fonts
+			0,              // Width Of Font
+			0,              // Angle Of Escapement
+			0,              // Orientation Angle
+			type,			// Font Weight
+			FALSE,          // Italic    
+			FALSE,          // Underline
+			FALSE,          // Strikeout
+			ANSI_CHARSET,   // Character Set Identifier
+			OUT_TT_PRECIS,  // Output Precision
+			CLIP_DEFAULT_PRECIS,        // Clipping Precision
+			ANTIALIASED_QUALITY,        // Output Quality
+			FF_DONTCARE | VARIABLE_PITCH,  // Family And Pitch
+			fontName);         // Font Name
+
+		oldfont = (HFONT)SelectObject(hDC, font); // Selects The Font We Want
+		wglUseFontBitmaps(hDC, 32, 96, base);     // Builds 96 Characters Starting At Character 32
+		SelectObject(hDC, oldfont);               // Selects The Font We Want
+		DeleteObject(font);                       // Delete The Font
+	}
+
+
 	Text(const char* fontName, int fontSize, int type) {
-		set_font(fontName, fontSize, type, base, hDC);
+		hDC = wglGetCurrentDC();
+		build_font(fontName, fontSize, type, base, hDC);
 	}
 
 	Text() {}
@@ -193,6 +186,6 @@ public:
 
 	~Text() {
 		glDeleteLists(base, 96);
-		base = 0;
+		DeleteDC(hDC);
 	}
 };

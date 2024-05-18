@@ -936,7 +936,6 @@ private:
 			*It = nullptr;
 		}
 		MainCont[Layer].clear();
-		MainCont[Layer] = std::deque<MAIN_CLS*>();
 	}
 
 
@@ -950,7 +949,6 @@ private:
 				*It = nullptr; // 포인터를 nullptr로 설정
 			}
 			MainCont[i].clear(); // 컨테이너 비우기
-			MainCont[i] = std::deque<MAIN_CLS*>();
 		}
 	}
 
@@ -991,7 +989,6 @@ private:
 				*It = nullptr;
 			}
 			SubCont[i].clear();
-			SubCont[i] = std::deque<SUB_CLS*>();
 		}
 	}
 

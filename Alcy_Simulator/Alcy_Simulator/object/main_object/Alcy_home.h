@@ -61,7 +61,7 @@ private:
 	// 머리 쓰다듬기 활성화 영역
 	// x min, x max, y min, y max
 	std::array<GLfloat, 4> touch_zone = {
-		-0.15, 0.15, 0.25, 0.7
+		-0.15, 0.15, 0.25, 0.45
 	};
 
 	// 머리 쓰다듬기 상태

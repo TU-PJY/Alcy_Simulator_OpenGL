@@ -9,6 +9,7 @@
 void game_mode() {
 	cam.reset_camera();
 	cam.camera_lock_state = true;
+	cam.y = -1.0;
 
 	fw.AddMainObj(new Gameboy(main_layer3, "gameboy"), main_layer3);
 	fw.AddMainObj(new Front(main_layer3, "front_home"), main_layer3);
