@@ -51,6 +51,12 @@ public:
 				power_on = true;
 			}
 		}
+
+		if (power_on && power_on_delay < 3500) {
+			power_on_delay += fw.FT(1000);
+			if (power_on_delay >= 3500)
+				scene = main_screen;
+		}
 	}
 
 	void Render() {
