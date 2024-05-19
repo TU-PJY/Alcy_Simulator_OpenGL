@@ -80,8 +80,8 @@ public:
 
 			if (cactus_timer >= cactus_timer_value) {
 				std::random_device rd;  std::mt19937 gen(rd());
-				std::uniform_int_distribution <int> dis(1000, 2000);
-				cactus_timer_value = dis(gen);
+				std::uniform_int_distribution <int> dis(10, 20);
+				cactus_timer_value = dis(gen) * 100;
 
 				fw.AddMainObj(new Cactus(main_layer1, "cactus"), main_layer1);
 				cactus_timer = 0;

@@ -33,7 +33,7 @@ public:
 			x -= fw.FT(move_speed / 2);
 
 			// 자신의 위치가 -0.4 가 되면 새로운 구름을 생성한다
-			if (x <= -0.4 && !clone_state) {
+			if (x <= -0.2 && !clone_state) {
 				fw.AddMainObj(new CloudSprite(main_layer1, "cloud_sprite"), main_layer1);
 				clone_state = true;
 			}
