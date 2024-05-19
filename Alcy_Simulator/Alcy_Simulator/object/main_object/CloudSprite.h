@@ -15,6 +15,8 @@ private:
 
 	GLfloat move_speed{};
 
+	bool clone_state{};
+
 
 public:
 	std::string GetTag() const { return tag; }
@@ -28,7 +30,13 @@ public:
 			auto ptr2 = fw.FindMainObj_Layer_Single(main_layer2, "alcy_sprite");
 			if (ptr2) move_speed = ptr2->get_alcy_sprite_move_speed();
 
-			x -= fw.FT(move_speed);
+			x -= fw.FT(move_speed / 2);
+
+			// 자신의 위치가 -0.4 가 되면 새로운 구름을 생성한다
+			if (x <= -0.4 && !clone_state) {
+				fw.AddMainObj(new CloudSprite(main_layer1, "cloud_sprite"), main_layer1);
+				clone_state = true;
+			}
 
 			if (x <= -0.6)
 				fw.DeleteMainObj(this, layer);
@@ -47,7 +55,7 @@ public:
 		tag = str;
 
 		std::random_device rd;  std::mt19937 gen(rd());
-		std::uniform_real_distribution <GLfloat> dis(0.55, 0.65);
+		std::uniform_real_distribution <GLfloat> dis(0.45, 0.65);
 
 		GLfloat height = dis(gen);
 

@@ -3,6 +3,8 @@
 #include "../../header/HEADER.h"
 #include "AlcySprite.h"
 #include "CloudSprite.h"
+#include "Cactus.h"
+#include "GameScore.h"
 
 class Game1Controller : public MAIN_CLS {
 private:
@@ -13,11 +15,16 @@ private:
 
 	bool play_state{};
 
-	int score{};
+	GLfloat cactus_timer{};
+	GLfloat cactus_timer_value{};
 
-	GLfloat cloud_gen_timer{};
+	double score{};
+	
+	double beep_score{};
 
-	GLfloat cloud_gen_time = 1500;
+	GLfloat speed = 0.5;
+
+	bool faster{};
 
 
 public:	
@@ -27,8 +34,7 @@ public:
 
 	bool get_game1_play_state() { return play_state; }
 
-	// 게임 시작 및 게임 종료
-	void set_game1_play_state(bool flag) { play_state = flag; }
+	int get_score() { return int(score); }
 
 
 	void game1_key_down(unsigned int key, int x, int y) {
@@ -38,6 +44,8 @@ public:
 				// 게임 플레이 전
 				if (!play_state) {
 					play_state = true;
+					//ch_bgm->stop();
+					//ssys_game->playSound(game_music_1, 0, false, &ch_bgm);
 					break;
 				}
 
@@ -67,19 +75,41 @@ public:
 	}
 
 	void Update() {
-
-		// 랜덤 간격으로 구름을 생성한다
 		if (play_state) {
-			cloud_gen_timer += fw.FT(1000);
+			cactus_timer += fw.FT(1000);
 
-			if (cloud_gen_timer >= cloud_gen_time) {
-				fw.AddMainObj(new CloudSprite(main_layer1, "cloud_sprite"), main_layer1);
-				cloud_gen_timer = 0;
-
+			if (cactus_timer >= cactus_timer_value) {
 				std::random_device rd;  std::mt19937 gen(rd());
-				std::uniform_int_distribution <int> dis(1500, 3500);
-				 // 구름을 랜덤 간격으로 생성한다
-				cloud_gen_time = dis(gen);
+				std::uniform_int_distribution <int> dis(1000, 2000);
+				cactus_timer_value = dis(gen);
+
+				fw.AddMainObj(new Cactus(main_layer1, "cactus"), main_layer1);
+				cactus_timer = 0;
+			}
+
+
+			// level value가 100이 될때마다 알키의 속도를 조금씩 높인다
+			score += fw.FT(15 * speed);
+			beep_score += fw.FT(15 * speed);
+
+			if (int(beep_score) >= 100) {
+				beep_score = 0;
+
+				ch_game_ef2->stop();
+				ssys_game->playSound(level_up, 0, false, &ch_game_ef2);
+
+				if (!faster) {
+					speed += 0.3;
+					auto ptr = fw.FindMainObj_Layer_Single(main_layer2, "alcy_sprite");
+					if (ptr) ptr->increase_alcy_sprite_move_speed(speed);
+					faster = true;
+				}
+			}
+
+			if (int(score) >= 100) {
+				speed += fw.FT(0.01);
+				auto ptr = fw.FindMainObj_Layer_Single(main_layer2, "alcy_sprite");
+				if (ptr) ptr->increase_alcy_sprite_move_speed(speed);
 			}
 		}
 	}
@@ -91,5 +121,6 @@ public:
 		// 컨트롤러가 추가되면 스프라이트도 추가한다
 		fw.AddMainObj(new AlcySprite(main_layer2, "alcy_sprite"), main_layer2);
 		fw.AddMainObj(new CloudSprite(main_layer1, "cloud_sprite"), main_layer1);
+		fw.AddMainObj(new GameScore(main_layer3, "gamescore"), main_layer3);
 	}
 };

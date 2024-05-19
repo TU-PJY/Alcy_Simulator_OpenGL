@@ -10,8 +10,8 @@ void game_mode() {
 	cam.reset_camera();
 	cam.camera_lock_state = true;
 	cam.y = -1.0;
-	cam.target_pos_y = -0.45;
-	cam.zoom_value = 1.8;
+	//cam.target_pos_y = -0.45;
+	//cam.zoom_value = 1.8;
 
 	fw.AddMainObj(new GameboyBack(main_layer1, "gameboy_back"), main_layer1);
 

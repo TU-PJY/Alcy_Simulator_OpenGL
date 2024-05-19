@@ -45,8 +45,9 @@ public:
 
 			if (on_click) {
 				// 현재 모드가 무엇이냐에 따라 돌아가는 모드가 달라진다
-				if(fw.CurrentMainMode() == "game_mode")
+				if (fw.CurrentMainMode() == "game_mode") {
 					fw.SwitchMainMode(home_mode, "home_mode");
+				}
 			}
 		}
 	}

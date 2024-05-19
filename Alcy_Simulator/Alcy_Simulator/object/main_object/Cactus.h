@@ -7,13 +7,16 @@
 class Cactus : public MAIN_CLS {
 private:
 	unsigned int tex{};
-	std::array<const char*, 3> directory = {
+	std::array<const char*, 8> directory = {
 		"res//prop//object//game1_cactus_1.png",
 		"res//prop//object//game1_cactus_2.png",
 		"res//prop//object//game1_cactus_3.png",
+		"res//prop//object//game1_cactus_4.png",
+		"res//prop//object//game1_cactus_5.png",
+		"res//prop//object//game1_cactus_6.png",
+		"res//prop//object//game1_cactus_7.png",
+		"res//prop//object//game1_cactus_8.png",
 	};
-
-	std::array<int, 3> size = { 150, 128, 128 };
 
 	int layer{};
 	std::string tag{};
@@ -22,26 +25,28 @@ private:
 
 	int number{};
 
+	GLfloat move_speed{};
+
 public:
 	void Update() {
-		x -= fw.FT(0.3);
+		auto ptr = fw.FindMainObj_Layer_Single(main_layer1, "game1_controller");
 
-		if (x <= -0.6)
-			fw.DeleteMainObj(this, layer);
+		if (ptr && ptr->get_game1_play_state()) {
+			auto ptr = fw.FindMainObj_Layer_Single(main_layer2, "alcy_sprite");
+			if (ptr) move_speed = ptr->get_alcy_sprite_move_speed();
+			x -= fw.FT(move_speed);
+
+			if (x <= -0.6)
+				fw.DeleteMainObj(this, layer);
+		}
 	}
 
 	void Render() {
 		init_transform();
 
-		if (number == 0) {
-			t_mat *= move_image(x, 0.47);
-			s_mat *= scale_image(0.5, 0.5);
-		}
-
-		else {
-			t_mat *= move_image(x, 0.5);
-			s_mat *= scale_image(0.8, 0.8);
-		}
+		t_mat *= move_image(x, 0.33);
+		//s_mat *= scale_image(0.8, 0.8);
+		
 
 		draw_image(tex);
 	}
@@ -58,11 +63,11 @@ public:
 		x = 0.6;
 
 		std::random_device rd;  std::mt19937 gen(rd());
-		std::uniform_int_distribution <int> dis(0, 2);
+		std::uniform_int_distribution <int> dis(0, 7);
 
 		number = dis(gen);
 
-		set_texture(tex, directory[number], size[number], size[number], 1);
+		set_texture(tex, directory[number], 150, 150, 1);
 	}
 
 	~Cactus() {

@@ -25,8 +25,13 @@ FMOD::Sound* menu_click;
 
 // game effect sounds
 FMOD::Channel* ch_game_ef;
+FMOD::Channel* ch_game_ef2;
+
 FMOD::Sound* boot_sound;
 FMOD::Sound* selector_sound;
+FMOD::Sound* jump_sound;
+
+FMOD::Sound* level_up;
 
 
 FMOD_RESULT f_result;
@@ -60,7 +65,9 @@ void load_sound_file() {
 	ssys_ui->createSound("res//sound//UI//menu_close.ogg", FMOD_DEFAULT, 0, &menu_close);
 	ssys_ui->createSound("res//sound//UI//button_click.ogg", FMOD_DEFAULT, 0, &tip_click);
 	ssys_ui->createSound("res//sound//UI//menu_click.ogg", FMOD_DEFAULT, 0, &menu_click);
-
+	
 	ssys_game->createSound("res//sound//game//boot.ogg", FMOD_DEFAULT, 0, &boot_sound);
 	ssys_game->createSound("res//sound//game//select.ogg", FMOD_DEFAULT, 0, &selector_sound);
+	ssys_game->createSound("res//sound//game//jump.ogg", FMOD_DEFAULT, 0, &jump_sound);
+	ssys_game->createSound("res//sound//game//level_up.ogg", FMOD_DEFAULT, 0, &level_up);
 }

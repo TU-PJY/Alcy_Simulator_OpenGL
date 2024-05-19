@@ -93,11 +93,13 @@ public:
 	virtual void game1_key_down(unsigned int key, int x, int y) {}
 	virtual void game1_key_up(unsigned int key, int x, int y) {}
 	virtual bool get_game1_play_state() { return {}; }
+	virtual int get_score() { return {}; }
 
 	// alcy sprite(game1)
 	virtual void set_alcy_sprite_jump_state(bool flag) {}
 	virtual void set_alcy_sprite_jump_enable_state(bool flag) {}
 	virtual GLfloat get_alcy_sprite_move_speed() { return {}; }
+	virtual void increase_alcy_sprite_move_speed(GLfloat speed) {}
 
 
 	////////////////////

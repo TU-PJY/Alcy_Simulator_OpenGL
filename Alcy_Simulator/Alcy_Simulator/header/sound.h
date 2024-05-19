@@ -26,8 +26,13 @@ extern FMOD::Sound* menu_click;
 
 //game effect sounds
 extern FMOD::Channel* ch_game_ef;
+extern FMOD::Channel* ch_game_ef2;
+
 extern FMOD::Sound* boot_sound;
 extern FMOD::Sound* selector_sound;
+extern FMOD::Sound* jump_sound;
+extern FMOD::Sound* land_sound;
+extern FMOD::Sound* level_up;
 
 
 

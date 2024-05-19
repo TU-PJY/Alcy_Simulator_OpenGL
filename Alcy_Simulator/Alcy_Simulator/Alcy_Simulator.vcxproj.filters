@@ -175,6 +175,9 @@
     <ClInclude Include="object\main_object\Game1.h">
       <Filter>[8]__________OBJ_main\[4]------Invisible</Filter>
     </ClInclude>
+    <ClInclude Include="object\main_object\GameScore.h">
+      <Filter>[8]__________OBJ_main\[3]------Prop</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="cpp\mouse.cpp">

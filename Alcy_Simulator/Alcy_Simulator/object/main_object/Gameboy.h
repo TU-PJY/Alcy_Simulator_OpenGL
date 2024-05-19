@@ -32,8 +32,8 @@ private:
 	GLfloat power_on_delay{};
 	
 	//////
-	bool power_on = true;
-	int scene = main_screen;
+	bool power_on = false;
+	int scene = start_up;
 	//////
 
 	GLfloat arrow_pos = -0.2;

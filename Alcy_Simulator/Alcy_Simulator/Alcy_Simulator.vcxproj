@@ -168,6 +168,7 @@
     <ClInclude Include="object\main_object\Front.h" />
     <ClInclude Include="object\main_object\Zoom_ind.h" />
     <ClInclude Include="object\main_object\Gameboy.h" />
+    <ClInclude Include="object\main_object\GameScore.h" />
     <ClInclude Include="object\popup_object\Back.h" />
     <ClInclude Include="object\popup_object\Cursor_HomeMenu.h" />
     <ClInclude Include="object\popup_object\Cursor_ReturnMenu.h" />
