@@ -13,9 +13,9 @@ private:
 
 	int count = 3;
 
-	Text* text;
+	Text* text = nullptr;
 
-	int height = HEIGHT;
+	int height = HEIGHT - 1;
 
 	GLfloat update_delay{};
 
@@ -26,7 +26,8 @@ public:
 	void Update() {
 		if (height != HEIGHT) {
 			if (update_delay <= 0) {
-				delete text;
+				if (text != nullptr)
+					delete text;
 				text = nullptr;
 				text = new Text("Maniac", 100, FW_DONTCARE);
 
@@ -60,7 +61,6 @@ public:
 	Zoom_ind(int l, std::string str) {
 		layer = l;
 		tag = str;
-		text = new Text("Maniac", 100, FW_DONTCARE);
 	}
 
 	~Zoom_ind() {

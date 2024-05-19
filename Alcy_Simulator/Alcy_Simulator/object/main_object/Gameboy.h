@@ -17,6 +17,10 @@ private:
 	int layer{};
 	std::string tag{};
 
+	int height = HEIGHT - 1;
+	Text* text = nullptr;
+	GLfloat update_delay{};
+
 	unsigned int tex{};
 	std::array<unsigned int, 2> tex_hand{};
 	unsigned int tex_game_logo{};
@@ -27,8 +31,6 @@ private:
 	bool power_on{};
 
 	GLfloat power_on_delay{};
-
-	GLfloat cactus_timer{};
 
 	int scene = start_up;
 
@@ -59,17 +61,34 @@ public:
 		}
 	}
 
+
+	void update_text() {
+		if (height != HEIGHT) {
+			if (update_delay <= 0) {
+				if (text != nullptr)
+					delete text;
+				text = nullptr;
+				text = new Text("Joystix Monospace", 50, FW_DONTCARE);
+
+				height = HEIGHT;
+				update_delay = 10;
+			}
+			else if (update_delay > 0)
+				update_delay -= fw.FT(1000);
+		}
+	}
+
+
 	void Update() {
 		if (!power_on) {
-			if (power_on_delay < 1500)
-				power_on_delay += fw.FT(1000);
+			power_on_delay += fw.FT(1000);
 
-			if (power_on_delay >= 750) {
+			if (power_on_delay >= 950) {
 				cam.target_pos_y = -0.45;
 				cam.zoom_value = 1.8;
 			}
 
-			if (power_on_delay >= 1500) {
+			if (power_on_delay >= 2000) {
 				ssys_game->playSound(boot_sound, 0, false, &ch_game_ef);
 
 				auto ptr = fw.FindMainObj_Layer_Single(main_layer1, "gameboy_back");
@@ -79,12 +98,18 @@ public:
 			}
 		}
 
-		if (power_on && power_on_delay < 3500) {
-			power_on_delay += fw.FT(1000);
-			if (power_on_delay >= 3500)
-				scene = main_screen;
+		else if (power_on) {
+			if (scene == start_up) {
+				power_on_delay += fw.FT(1000);
+				if (power_on_delay >= 4000)
+					scene = main_screen;
+			}
+
+			else if(scene == main_screen)
+				update_text();
 		}
 	}
+
 
 	void Render() {
 		init_transform();
@@ -108,11 +133,16 @@ public:
 			case start_up:
 				init_transform();
 				t_mat *= move_image(0.0, 0.44);
-				s_mat *= scale_image(4.0, 4.0);
+				s_mat *= scale_image(2.0, 2.0);
 				draw_image(tex_game_logo);
 				break;
 
 			case main_screen:
+				// text
+				init_transform();
+				if(text != nullptr)
+					text->out_static(-0.69, 0.35, 0.235, 0.235, 0.235, "Select Game");
+
 				// game icon
 				init_transform();
 				t_mat *= move_image(-0.2, 0.45);
@@ -124,17 +154,20 @@ public:
 				draw_image(tex_arrow);
 				break;
 			}
+
 		}
 
 
 		///////////////
-
+		// gameboy body
 		init_transform();
 		s_mat *= scale_image(10.0, 10.0);
 		draw_image(tex);
 	}
 
+
 	void CheckCollision() {}
+
 
 	Gameboy(int l, std::string str) {
 		layer = l;
@@ -152,11 +185,16 @@ public:
 		set_texture(tex_arrow, "res//prop//object//game_arrow.png", 75, 75, 1);
 	}
 
+
 	~Gameboy() {
 		glDeleteTextures(1, &tex);
 
 		for (int i = 0; i < 2; ++i)
 			glDeleteTextures(1, &tex_hand[i]);
+
+		if(text != nullptr)
+			delete text;
+		text = nullptr;
 	}
 };
 

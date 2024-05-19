@@ -17,6 +17,14 @@ void game_mode() {
 
 	fw.AddMainObj(new Front(main_layer3, "front_home"), main_layer3);
 
+	// amd 드라이버 버그 회피용 코드
+	if (vendor != "NVIDIA Corporation") {
+		Text* text = new Text("Maniac", 10, FW_DONTCARE);
+		text->out_static(0.0, 0.0, 0.0, 0.0, 0.0, " ");
+		delete text;
+		text = nullptr;
+	}
+
 
 	glutMouseFunc(game_mode_mouse_button);
 	glutMotionFunc(NULL);

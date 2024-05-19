@@ -8,7 +8,6 @@
 #include "../header/mode_header.h"
 #include "../header/sound.h"
 #include "../header/image_text_util.h"
-#include "vld.h"
 
 // framework
 FWL fw;

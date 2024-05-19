@@ -18,9 +18,9 @@ private:
 
 	GLfloat text_x = rt(-1.0) + 0.1;
 
-	Text* text;
+	Text* text = nullptr;
 
-	int height = HEIGHT;
+	int height = HEIGHT - 1;
 
 	GLfloat update_delay{};
 
@@ -30,7 +30,8 @@ public:
 	void Update() {
 		if (height != HEIGHT) {
 			if (update_delay <= 0) {
-				delete text;
+				if (text != nullptr)
+					delete text;
 				text = nullptr;
 				text = new Text("Maniac", 80, FW_DONTCARE);
 
@@ -72,7 +73,6 @@ public:
 		tag = str;
 
 		set_texture(tex, "res//ui//black.png", 100, 100, 1);
-		text = new Text("Maniac", 80, FW_DONTCARE);
 	}
 
 	~Back2() {
@@ -97,9 +97,9 @@ private:
 
 	GLfloat text_x = rt(-1.0) + 0.4;
 
-	Text* text;
+	Text* text = nullptr;
 
-	int height = HEIGHT;
+	int height = HEIGHT - 1;
 
 	GLfloat update_delay{};
 
@@ -109,7 +109,8 @@ public:
 	void Update() {
 		if (height != HEIGHT) {
 			if (update_delay <= 0) {
-				delete text;
+				if(text != nullptr)
+					delete text;
 				text = nullptr;
 				text = new Text("Maniac", 80, FW_DONTCARE);
 
@@ -146,13 +147,14 @@ public:
 		tag = str;
 
 		set_texture(tex, "res//ui//black.png", 100, 100, 1);
-		text = new Text("Maniac", 80, FW_DONTCARE);
 	}
 
 	// 메뉴 종료 시 같은 투명 배경을 추가한 후 삭제된다.
 	~Back() {
 		fw.AddMainObj(new Back2(main_layer3, "back2"), main_layer3);
-		delete text;
+
+		if (text != nullptr)
+			delete text;
 		text = nullptr;
 
 		glDeleteTextures(1, &tex);
