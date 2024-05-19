@@ -76,7 +76,8 @@ public:
 	}
 
 	~Back2() {
-		delete text;
+		if(text != nullptr)
+			delete text;
 		text = nullptr;
 
 		glDeleteTextures(1, &tex);
@@ -152,7 +153,6 @@ public:
 	// 메뉴 종료 시 같은 투명 배경을 추가한 후 삭제된다.
 	~Back() {
 		fw.AddMainObj(new Back2(main_layer3, "back2"), main_layer3);
-
 		if (text != nullptr)
 			delete text;
 		text = nullptr;

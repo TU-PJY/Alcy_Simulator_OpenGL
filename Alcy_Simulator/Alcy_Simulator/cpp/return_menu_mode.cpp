@@ -73,7 +73,7 @@ void set_func_to_game_mode() {
 	glutPassiveMotionFunc(NULL);
 	glutMouseWheelFunc(NULL);
 	glutKeyboardFunc(game_mode_key_down);
-	glutKeyboardUpFunc(NULL);
+	glutKeyboardUpFunc(game_mode_key_up);
 	glutSpecialFunc(game_mode_special_key_down);
 	glutSpecialUpFunc(game_mode_special_key_up);
 }

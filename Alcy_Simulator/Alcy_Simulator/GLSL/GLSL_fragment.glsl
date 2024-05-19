@@ -14,7 +14,7 @@ uniform float transparency;
 void main() {
     vec4 texColor = texture(outTexture, TexCoord);
 
-    if (texColor.a < 0.1)
+    if (texColor.a < 0.01)
         discard;
 
     else

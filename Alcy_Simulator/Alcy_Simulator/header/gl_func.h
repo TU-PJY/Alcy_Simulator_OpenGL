@@ -15,6 +15,7 @@ void home_mode_key_up(unsigned char KEY, int x, int y);
 // game mode
 void game_mode_mouse_button(int button, int state, int x, int y);
 void game_mode_key_down(unsigned char KEY, int x, int y);
+void game_mode_key_up(unsigned char KEY, int x, int y);
 void game_mode_special_key_down(int KEY, int x, int y);
 void game_mode_special_key_up(int KEY, int x, int y);
 

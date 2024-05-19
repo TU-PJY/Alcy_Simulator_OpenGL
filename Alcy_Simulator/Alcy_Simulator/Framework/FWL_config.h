@@ -65,7 +65,6 @@ public:
 	virtual void set_cursor_invisible() {}
 	virtual void set_cursor_visible() {}
 
-
 	// alcy 
 	virtual std::array<GLfloat, 4> get_touch_zone() const { return {}; }
 	virtual std::array<GLfloat, 4> get_squeak_zone() const { return {}; }
@@ -81,17 +80,33 @@ public:
 	/////////////////game mode
 	// gameboy back
 	virtual void set_power_on(bool flag) {}
+	virtual bool get_power_state() { return {}; }
 
 	// gameboy
 	virtual void gameboy_special_key_down(int KEY, int x, int y) {}
 	virtual void gameboy_special_key_up(int KEY, int x, int y) {}
+	virtual void gameboy_key_down(unsigned int key, int x, int y) {}
+	virtual void gameboy_key_up(unsigned int key, int x, int y) {}
 
+	// game1 controller
+	virtual  void set_game1_control_state(bool flag) {}
+	virtual void game1_key_down(unsigned int key, int x, int y) {}
+	virtual void game1_key_up(unsigned int key, int x, int y) {}
+	virtual bool get_game1_play_state() { return {}; }
+
+	// alcy sprite(game1)
+	virtual void set_alcy_sprite_jump_state(bool flag) {}
+	virtual void set_alcy_sprite_jump_enable_state(bool flag) {}
+	virtual GLfloat get_alcy_sprite_move_speed() { return {}; }
 
 
 	////////////////////
 
 	virtual     ~MAIN_CLS() {}
 };
+
+
+
 
 
 
@@ -126,6 +141,7 @@ public:
 
 	// cursor
 	virtual void mouse_left_button_down(int button, int state) {}
+
 
 
 	// return menu

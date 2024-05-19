@@ -28,7 +28,7 @@ public:
 		va_list args{};
 		va_start(args, fmt);
 
-		if(vendor != "NVIDIA Corporation")
+		if(vendor == "ATI Technologies Inc.")
 			draw_text_dynamic(0, 0, 0, base, " ", args);
 		draw_text_dynamic(r, g, b, base, fmt, args);
 
@@ -39,7 +39,7 @@ public:
 		va_list args{};
 		va_start(args, fmt);
 
-		if (vendor != "NVIDIA Corporation")
+		if (vendor == "ATI Technologies Inc.")
 			draw_text_static(0, 0, 0, 0, 0, base, " ", args);
 		draw_text_static(x, y, r, g, b, base, fmt, args);
 
@@ -70,7 +70,7 @@ public:
 			
 		}
 
-		else {
+		else if(vendor == "ATI Technologies Inc.") {
 			transmit_translation();
 			glm::vec4 position = projection * view * result * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 
@@ -117,7 +117,7 @@ public:
 			glRasterPos2f(0.0, 0.0);
 		}
 		
-		else {
+		else if(vendor == "ATI Technologies Inc.") {
 			transmit_translation();
 			glColor4f(r, g, b, alpha);
 			glRasterPos2f(x / ratio, y);

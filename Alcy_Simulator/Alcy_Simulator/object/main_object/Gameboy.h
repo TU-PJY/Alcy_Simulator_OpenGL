@@ -1,7 +1,7 @@
 #pragma once
 #include "../../header/image_text_util.h"
 #include "../../header/view.h"
-#include "../../object/main_object/Cactus.h"
+#include "Game1.h"
 
 enum game_scene {
 	start_up,
@@ -28,11 +28,13 @@ private:
 	std::array<unsigned int, 2> tex_game_icon{};
 	unsigned int tex_arrow{};
 
-	bool power_on{};
 
 	GLfloat power_on_delay{};
-
-	int scene = start_up;
+	
+	//////
+	bool power_on = true;
+	int scene = main_screen;
+	//////
 
 	GLfloat arrow_pos = -0.2;
 
@@ -44,20 +46,59 @@ public:
 	void gameboy_special_key_down(int KEY, int x, int y) {
 		switch (KEY) {
 		case GLUT_KEY_RIGHT: case GLUT_KEY_LEFT:
-			if (!selector_moved) {
-				ssys_game->playSound(selector_sound, 0, false, &ch_game_ef);
-				arrow_pos *= -1;
-				selector_moved = true;
+			if (scene == main_screen) {
+				if (!selector_moved) {
+					ssys_game->playSound(selector_sound, 0, false, &ch_game_ef);
+					arrow_pos *= -1;
+					selector_moved = true;
+				}
 			}
 			break;
 		}
 	}
+
 
 	void gameboy_special_key_up(int KEY, int x, int y) {
 		switch (KEY) {
 		case GLUT_KEY_RIGHT: case GLUT_KEY_LEFT:
 			selector_moved = false;
 			break;
+		}
+	}
+
+
+	void gameboy_key_down(unsigned int key, int x, int y) {
+		// game1 컨트롤러로 키보드 입력을 보낸다
+		if (scene == game1_screen) {
+			auto ptr = fw.FindMainObj_Layer_Single(main_layer1, "game1_controller");
+			if (ptr) ptr->game1_key_down(key, x, y);
+		}
+
+
+		switch (key) {
+		case 32:
+			if (scene == main_screen) {
+				if (arrow_pos < 0) {
+					scene = game1_screen;
+
+					fw.AddMainObj(new Game1Controller(main_layer1, "game1_controller"), main_layer1);
+					auto ptr = fw.FindMainObj_Layer_Single(main_layer1, "game1_controller");
+					if (ptr) ptr->set_game1_control_state(true);
+				}
+				else if (arrow_pos > 0)
+					scene = game2_screen;
+			}
+
+			break;
+		}
+	}
+
+
+	void gameboy_key_up(unsigned int key, int x, int y) {
+		// game1 컨트롤러로 키보드 입력을 보낸다
+		if (scene == game1_screen) {
+			auto ptr = fw.FindMainObj_Layer_Single(main_layer1, "game1_controller");
+			if (ptr) ptr->game1_key_up(key, x, y);
 		}
 	}
 
@@ -91,18 +132,21 @@ public:
 			if (power_on_delay >= 2000) {
 				ssys_game->playSound(boot_sound, 0, false, &ch_game_ef);
 
-				auto ptr = fw.FindMainObj_Layer_Single(main_layer1, "gameboy_back");
-				if (ptr) ptr->set_power_on(true);
-
 				power_on = true;
 			}
 		}
 
 		else if (power_on) {
+			auto ptr = fw.FindMainObj_Layer_Single(main_layer1, "gameboy_back");
+			if (ptr && !ptr->get_power_state())
+				ptr->set_power_on(true);
+
 			if (scene == start_up) {
 				power_on_delay += fw.FT(1000);
-				if (power_on_delay >= 4000)
+				if (power_on_delay >= 4000) {
+					ssys_game->playSound(selector_sound, 0, false, &ch_game_ef);
 					scene = main_screen;
+				}
 			}
 
 			else if(scene == main_screen)
@@ -157,7 +201,6 @@ public:
 
 		}
 
-
 		///////////////
 		// gameboy body
 		init_transform();
@@ -180,14 +223,17 @@ public:
 
 		set_texture(tex_game_logo, "res//prop//object//game_logo.png", 512, 512, 1);
 
-		set_texture(tex_game_icon[0], "res//prop//object//game1_icon.png", 150, 150, 1);
+		set_texture(tex_game_icon[0], "res//prop//object//game1_icon.png", 300, 300, 1);
 
-		set_texture(tex_arrow, "res//prop//object//game_arrow.png", 75, 75, 1);
+		set_texture(tex_arrow, "res//prop//object//game_arrow.png", 300, 300, 1);
 	}
 
 
 	~Gameboy() {
 		glDeleteTextures(1, &tex);
+		glDeleteTextures(1, &tex_game_logo);
+		glDeleteTextures(1, &tex_game_icon[0]);
+		glDeleteTextures(1, &tex_arrow);
 
 		for (int i = 0; i < 2; ++i)
 			glDeleteTextures(1, &tex_hand[i]);
@@ -213,6 +259,8 @@ public:
 	std::string GetTag() const { return tag; }
 
 	void set_power_on(bool flag) {	power_on = flag; }
+
+	bool get_power_state() { return power_on; }
 
 	void Update() {
 

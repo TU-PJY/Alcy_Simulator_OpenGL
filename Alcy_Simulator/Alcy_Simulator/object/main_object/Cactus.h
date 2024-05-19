@@ -13,7 +13,7 @@ private:
 		"res//prop//object//game1_cactus_3.png",
 	};
 
-	std::array<int, 3> size = { 75, 128, 128 };
+	std::array<int, 3> size = { 150, 128, 128 };
 
 	int layer{};
 	std::string tag{};

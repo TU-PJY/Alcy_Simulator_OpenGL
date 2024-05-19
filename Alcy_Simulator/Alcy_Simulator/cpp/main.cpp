@@ -48,8 +48,8 @@ GLvoid gl_main() {
 
 	fw.Routine();
 
-	glutPostRedisplay();
 	glutSwapBuffers();
+	glutPostRedisplay();
 
 	end_time = clock();
 	fw.InputFrameTime(double(end_time - start_time) / 1000);
@@ -88,7 +88,7 @@ void main(int argc, char** argv) {
 		const GLubyte* vendor_info = glGetString(GL_VENDOR);
 		if (vendor_info) {
 			vendor = reinterpret_cast<const char*>(vendor_info);
-			//std::cout << "vendor: " << vendor << std::endl;
+			std::cout << "vendor: " << vendor << std::endl;
 		}
 
 

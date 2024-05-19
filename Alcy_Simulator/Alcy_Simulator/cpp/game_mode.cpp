@@ -10,6 +10,8 @@ void game_mode() {
 	cam.reset_camera();
 	cam.camera_lock_state = true;
 	cam.y = -1.0;
+	cam.target_pos_y = -0.45;
+	cam.zoom_value = 1.8;
 
 	fw.AddMainObj(new GameboyBack(main_layer1, "gameboy_back"), main_layer1);
 
@@ -18,20 +20,19 @@ void game_mode() {
 	fw.AddMainObj(new Front(main_layer3, "front_home"), main_layer3);
 
 	// amd 드라이버 버그 회피용 코드
-	if (vendor != "NVIDIA Corporation") {
+	if (vendor == "ATI Technologies Inc.") {
 		Text* text = new Text("Maniac", 10, FW_DONTCARE);
 		text->out_static(0.0, 0.0, 0.0, 0.0, 0.0, " ");
 		delete text;
 		text = nullptr;
 	}
 
-
 	glutMouseFunc(game_mode_mouse_button);
 	glutMotionFunc(NULL);
 	glutPassiveMotionFunc(NULL);
 	glutMouseWheelFunc(NULL);
 	glutKeyboardFunc(game_mode_key_down);
-	glutKeyboardUpFunc(NULL);
+	glutKeyboardUpFunc(game_mode_key_up);
 	glutSpecialFunc(game_mode_special_key_down);
 	glutSpecialUpFunc(game_mode_special_key_up);
 }
@@ -47,17 +48,30 @@ void game_mode_mouse_button(int button, int state, int x, int y) {
 
 	// 메뉴 열기
 	if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN) {
+		fw.DeleteMainObj_Layer_All(main_layer3, "back2");
+
 		glutWarpPointer(WIDTH / 2, HEIGHT / 2);
-		fw.InitSubMode(return_menu_mode, "return_menu_mode");
+		fw.InitSubMode(return_menu_mode, "return_menu_mode", true);
 	}
 }
 
 void game_mode_key_down(unsigned char KEY, int x, int y) {
 	switch (KEY) {
-	case 27:
-		fw.InitSubMode(return_menu_mode, "return_menu_mode");
+	case 27:	
+		fw.DeleteMainObj_Layer_All(main_layer3, "back2");
+
+		glutWarpPointer(WIDTH / 2, HEIGHT / 2);
+		fw.InitSubMode(return_menu_mode, "return_menu_mode", true);
 		break;
 	}
+
+	auto ptr = fw.FindMainObj_Layer_Single(main_layer3, "gameboy");
+	if (ptr) ptr->gameboy_key_down(KEY, x, y);
+}
+
+void game_mode_key_up(unsigned char KEY, int x, int y) {
+	auto ptr = fw.FindMainObj_Layer_Single(main_layer3, "gameboy");
+	if (ptr) ptr->gameboy_key_up(KEY, x, y);
 }
 
 void game_mode_special_key_down(int KEY, int x, int y) {

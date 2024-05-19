@@ -68,6 +68,9 @@
     <Filter Include="[9]__________OBJ_sub\[0]-----UI\Return_Menu">
       <UniqueIdentifier>{8cd8f2fc-7fd3-4fb4-854c-c6a33d891f8b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="[8]__________OBJ_main\[4]------Invisible">
+      <UniqueIdentifier>{2bf7e4dd-dfd2-4e32-b017-a626425698f6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Framework\FWL_config.h">
@@ -162,6 +165,15 @@
     </ClInclude>
     <ClInclude Include="object\main_object\Cactus.h">
       <Filter>[8]__________OBJ_main\[3]------Prop</Filter>
+    </ClInclude>
+    <ClInclude Include="object\main_object\AlcySprite.h">
+      <Filter>[8]__________OBJ_main\[3]------Prop</Filter>
+    </ClInclude>
+    <ClInclude Include="object\main_object\CloudSprite.h">
+      <Filter>[8]__________OBJ_main\[3]------Prop</Filter>
+    </ClInclude>
+    <ClInclude Include="object\main_object\Game1.h">
+      <Filter>[8]__________OBJ_main\[4]------Invisible</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
