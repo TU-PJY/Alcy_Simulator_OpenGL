@@ -12,14 +12,12 @@
 #define          USING_SUB_MODE
 #define          N_SUB_LAYER 4
 
-//#define          USING_DEBUG_MESSEGE
 #define          USING_FRAME_TIME
 #define          USING_FRAME_TIME_OUTSIDE
 
 
 
-class MODELIST {
-public:
+struct MODELIST {
 	// add mode list here...
 	std::vector<std::string> MainModeList = 
 	{ 
@@ -84,6 +82,9 @@ public:
 	// gameboy back
 	virtual void set_power_on(bool flag) {}
 
+	// gameboy
+	virtual void gameboy_special_key_down(int KEY, int x, int y) {}
+	virtual void gameboy_special_key_up(int KEY, int x, int y) {}
 
 
 

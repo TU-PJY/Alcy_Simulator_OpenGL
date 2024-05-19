@@ -41,6 +41,8 @@ void home_mode() {
 	glutMouseWheelFunc(home_mode_wheel);
 	glutKeyboardFunc(home_mode_key_down);
 	glutKeyboardUpFunc(home_mode_key_up);
+	glutSpecialFunc(NULL);
+	glutSpecialUpFunc(NULL);
 }
 
 

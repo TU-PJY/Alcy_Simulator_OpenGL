@@ -119,7 +119,6 @@ public:
 		
 		else {
 			transmit_translation();
-
 			glColor4f(r, g, b, alpha);
 			glRasterPos2f(x / ratio, y);
 		}

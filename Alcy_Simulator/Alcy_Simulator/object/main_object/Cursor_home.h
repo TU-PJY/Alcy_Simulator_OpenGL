@@ -128,6 +128,8 @@ public:
 
 				touch_x = 0;
 				touch_number = 0;
+
+				cam.camera_target_lock_state = false;
 			}
 		}
 	}
@@ -149,6 +151,8 @@ public:
 		if (touch_state) {
 			x = touch_x;
 			y = 0.4;
+
+			cam.camera_target_lock_state = true;
 		}
 
 		else {

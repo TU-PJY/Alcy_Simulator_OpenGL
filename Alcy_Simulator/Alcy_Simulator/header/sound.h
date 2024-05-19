@@ -27,6 +27,7 @@ extern FMOD::Sound* menu_click;
 //game effect sounds
 extern FMOD::Channel* ch_game_ef;
 extern FMOD::Sound* boot_sound;
+extern FMOD::Sound* selector_sound;
 
 
 

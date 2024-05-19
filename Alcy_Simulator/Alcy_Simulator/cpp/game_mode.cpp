@@ -21,9 +21,11 @@ void game_mode() {
 	glutMouseFunc(game_mode_mouse_button);
 	glutMotionFunc(NULL);
 	glutPassiveMotionFunc(NULL);
-	glutMouseWheelFunc(game_mode_wheel);
+	glutMouseWheelFunc(NULL);
 	glutKeyboardFunc(game_mode_key_down);
-	glutKeyboardUpFunc(game_mode_key_up);
+	glutKeyboardUpFunc(NULL);
+	glutSpecialFunc(game_mode_special_key_down);
+	glutSpecialUpFunc(game_mode_special_key_up);
 }
 
 
@@ -42,21 +44,6 @@ void game_mode_mouse_button(int button, int state, int x, int y) {
 	}
 }
 
-
-void game_mode_mouse_motion(int x, int y) {
-	//convert_cursor_position(x, y);
-}
-
-
-void game_mode_mouse_passive_motion(int x, int y) {
-	//convert_cursor_position(x, y);
-}
-
-
-void game_mode_wheel(int button, int dir, int x, int y) {
-}
-
-
 void game_mode_key_down(unsigned char KEY, int x, int y) {
 	switch (KEY) {
 	case 27:
@@ -65,7 +52,13 @@ void game_mode_key_down(unsigned char KEY, int x, int y) {
 	}
 }
 
+void game_mode_special_key_down(int KEY, int x, int y) {
+	auto ptr = fw.FindMainObj_Layer_Single(main_layer3, "gameboy");
+	if(ptr) ptr->gameboy_special_key_down(KEY, x, y);
+}
 
-void game_mode_key_up(unsigned char KEY, int x, int y) {
 
+void game_mode_special_key_up(int KEY, int x, int y) {
+	auto ptr = fw.FindMainObj_Layer_Single(main_layer3, "gameboy");
+	if(ptr) ptr->gameboy_special_key_up(KEY, x, y);
 }

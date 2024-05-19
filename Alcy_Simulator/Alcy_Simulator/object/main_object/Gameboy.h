@@ -21,6 +21,9 @@ private:
 	std::array<unsigned int, 2> tex_hand{};
 	unsigned int tex_game_logo{};
 
+	std::array<unsigned int, 2> tex_game_icon{};
+	unsigned int tex_arrow{};
+
 	bool power_on{};
 
 	GLfloat power_on_delay{};
@@ -29,8 +32,32 @@ private:
 
 	int scene = start_up;
 
+	GLfloat arrow_pos = -0.2;
+
+	bool selector_moved{};
+
 public:
 	std::string GetTag() const { return tag; }
+
+	void gameboy_special_key_down(int KEY, int x, int y) {
+		switch (KEY) {
+		case GLUT_KEY_RIGHT: case GLUT_KEY_LEFT:
+			if (!selector_moved) {
+				ssys_game->playSound(selector_sound, 0, false, &ch_game_ef);
+				arrow_pos *= -1;
+				selector_moved = true;
+			}
+			break;
+		}
+	}
+
+	void gameboy_special_key_up(int KEY, int x, int y) {
+		switch (KEY) {
+		case GLUT_KEY_RIGHT: case GLUT_KEY_LEFT:
+			selector_moved = false;
+			break;
+		}
+	}
 
 	void Update() {
 		if (!power_on) {
@@ -86,7 +113,15 @@ public:
 				break;
 
 			case main_screen:
+				// game icon
+				init_transform();
+				t_mat *= move_image(-0.2, 0.45);
+				draw_image(tex_game_icon[0]);
 
+				//arrow
+				init_transform();
+				t_mat *= move_image(arrow_pos, 0.25);
+				draw_image(tex_arrow);
 				break;
 			}
 		}
@@ -111,6 +146,10 @@ public:
 		set_texture(tex_hand[1], "res//prop//alcy//hand_gameboy_right.png", 512, 512, 1);
 
 		set_texture(tex_game_logo, "res//prop//object//game_logo.png", 512, 512, 1);
+
+		set_texture(tex_game_icon[0], "res//prop//object//game1_icon.png", 150, 150, 1);
+
+		set_texture(tex_arrow, "res//prop//object//game_arrow.png", 75, 75, 1);
 	}
 
 	~Gameboy() {

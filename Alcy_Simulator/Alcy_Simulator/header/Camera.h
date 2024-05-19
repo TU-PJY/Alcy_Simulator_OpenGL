@@ -26,6 +26,9 @@ public:
 	// 카메라 움직임 잠금 상태
 	bool camera_lock_state{};
 
+	// 카메라 목표 위치 이동 잠금 상태
+	bool camera_target_lock_state{};
+
 	// 카메라 줌 결과값
 	GLfloat zoom = 1.0;
 
@@ -50,6 +53,7 @@ public:
 		target_pos_y = 0.0;
 
 		camera_lock_state = false;
+		camera_target_lock_state = false;
 
 		reset_key_state();
 	}
@@ -176,7 +180,9 @@ public:
 		rotate_camera();
 		zoom_camera();
 		update_camera_lock();
-		move_camera_to_target_pos();
+
+		if(!camera_target_lock_state)
+			move_camera_to_target_pos();
 
 		// lock state가 true가 되면 카메라 무빙과 조작을 하지 않는다
 		if (!camera_lock_state) {
