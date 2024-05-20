@@ -161,7 +161,7 @@
     <ClInclude Include="object\main_object\Cactus.h" />
     <ClInclude Include="object\main_object\CloudSprite.h" />
     <ClInclude Include="object\main_object\Cursor_home.h" />
-    <ClInclude Include="object\main_object\Game1.h" />
+    <ClInclude Include="object\main_object\Game_1_controller.h" />
     <ClInclude Include="object\main_object\Shadow.h" />
     <ClInclude Include="object\main_object\Tip_home.h" />
     <ClInclude Include="object\main_object\Welcome_messege.h" />

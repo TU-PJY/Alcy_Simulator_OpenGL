@@ -1,7 +1,7 @@
 #pragma once
 #include "../../header/image_text_util.h"
 #include "../../header/view.h"
-#include "Game1.h"
+#include "Game_1_controller.h"
 
 enum game_scene {
 	start_up,

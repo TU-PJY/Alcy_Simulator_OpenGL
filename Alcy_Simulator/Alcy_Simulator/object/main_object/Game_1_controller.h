@@ -16,15 +16,13 @@ private:
 	bool play_state{};
 
 	GLfloat cactus_timer{};
-	GLfloat cactus_timer_value{};
+	GLfloat next_cactus_time = 4000;
 
 	double score{};
-	
 	double beep_score{};
 
 	GLfloat speed = 0.5;
-
-	bool faster{};
+	bool speed_up_state{};
 
 
 public:	
@@ -78,10 +76,10 @@ public:
 		if (play_state) {
 			cactus_timer += fw.FT(1000);
 
-			if (cactus_timer >= cactus_timer_value) {
+			if (cactus_timer >= next_cactus_time) {
 				std::random_device rd;  std::mt19937 gen(rd());
-				std::uniform_int_distribution <int> dis(10, 20);
-				cactus_timer_value = dis(gen) * 100;
+				std::uniform_int_distribution <int> dis(13, 20);
+				next_cactus_time = dis(gen) * 100;
 
 				fw.AddMainObj(new Cactus(main_layer1, "cactus"), main_layer1);
 				cactus_timer = 0;
@@ -97,16 +95,16 @@ public:
 
 				ch_game_ef2->stop();
 				ssys_game->playSound(level_up, 0, false, &ch_game_ef2);
+			}
 
-				if (!faster) {
+			if (int(score) >= 35 && int(score) < 4000) {
+				if (!speed_up_state) {
 					speed += 0.3;
 					auto ptr = fw.FindMainObj_Layer_Single(main_layer2, "alcy_sprite");
 					if (ptr) ptr->increase_alcy_sprite_move_speed(speed);
-					faster = true;
+					speed_up_state = true;
 				}
-			}
 
-			if (int(score) >= 100) {
 				speed += fw.FT(0.005);
 				auto ptr = fw.FindMainObj_Layer_Single(main_layer2, "alcy_sprite");
 				if (ptr) ptr->increase_alcy_sprite_move_speed(speed);
