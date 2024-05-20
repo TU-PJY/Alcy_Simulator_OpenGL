@@ -28,12 +28,14 @@ private:
 	std::array<unsigned int, 2> tex_game_icon{};
 	unsigned int tex_arrow{};
 
+	unsigned int tex_select_game{};
+
 
 	GLfloat power_on_delay{};
 	
 	//////
-	bool power_on = false;
-	int scene = start_up;
+	bool power_on = true;
+	int scene = main_screen;
 	//////
 
 	GLfloat arrow_pos = -0.2;
@@ -103,23 +105,6 @@ public:
 	}
 
 
-	void update_text() {
-		if (height != HEIGHT) {
-			if (update_delay <= 0) {
-				if (text != nullptr)
-					delete text;
-				text = nullptr;
-				text = new Text("Joystix Monospace", 50, FW_DONTCARE);
-
-				height = HEIGHT;
-				update_delay = 10;
-			}
-			else if (update_delay > 0)
-				update_delay -= fw.FT(1000);
-		}
-	}
-
-
 	void Update() {
 		if (!power_on) {
 			power_on_delay += fw.FT(1000);
@@ -148,9 +133,6 @@ public:
 					scene = main_screen;
 				}
 			}
-
-			else if(scene == main_screen)
-				update_text();
 		}
 	}
 
@@ -182,11 +164,6 @@ public:
 				break;
 
 			case main_screen:
-				// text
-				init_transform();
-				if(text != nullptr)
-					text->out_static(-0.69, 0.35, 0.235, 0.235, 0.235, "Select Game");
-
 				// game icon
 				init_transform();
 				t_mat *= move_image(-0.2, 0.45);
@@ -196,6 +173,12 @@ public:
 				init_transform();
 				t_mat *= move_image(arrow_pos, 0.25);
 				draw_image(tex_arrow);
+
+				// text
+				init_transform();
+				s_mat *= scale_image(2.0, 2.0);
+				t_mat *= move_image(-0.17, 0.65);
+				draw_image(tex_select_game);
 				break;
 			}
 
@@ -221,11 +204,12 @@ public:
 		set_texture(tex_hand[0], "res//prop//alcy//hand_gameboy_left.png", 512, 512, 1);
 		set_texture(tex_hand[1], "res//prop//alcy//hand_gameboy_right.png", 512, 512, 1);
 
-		set_texture(tex_game_logo, "res//prop//object//game_logo.png", 512, 512, 1);
+		set_texture(tex_game_logo, "res//prop//object//game_logo.png", 512, 512, 1, true);
 
 		set_texture(tex_game_icon[0], "res//prop//object//game1_icon.png", 300, 300, 1);
+		set_texture(tex_select_game, "res//prop//object//select_game.png", 512, 512, 1, true);
 
-		set_texture(tex_arrow, "res//prop//object//game_arrow.png", 300, 300, 1);
+		set_texture(tex_arrow, "res//prop//object//game_arrow.png", 75, 75, 1, true);
 	}
 
 

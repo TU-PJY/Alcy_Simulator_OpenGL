@@ -7,7 +7,7 @@ private:
 	int layer{};
 	std::string tag{};
 
-	int height = HEIGHT - 1;
+	int height = HEIGHT;
 
 	Text* text = nullptr;
 
@@ -31,12 +31,13 @@ public:
 
 	void Render() {
 		init_transform();
-		text->out_static(-0.69, 0.35, 0.235, 0.235, 0.235, "%d", score);
+		text->out_static(-0.69, 0.34, 0.235, 0.235, 0.235, "%d", score);
 	}
 
 	GameScore(int l, std::string str) {
 		layer = l;
 		tag = str;
+		text = new Text("Joystix Monospace", 60, FW_DONTCARE);
 	}
 
 	~GameScore() {

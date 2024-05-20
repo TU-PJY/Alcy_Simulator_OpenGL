@@ -20,26 +20,19 @@ private:
 
 	Text* text = nullptr;
 
-	int height = HEIGHT - 1;
-
-	GLfloat update_delay{};
+	int height = HEIGHT;
 
 public:
 	std::string GetTag() const { return tag; }
 
 	void Update() {
 		if (height != HEIGHT) {
-			if (update_delay <= 0) {
-				if (text != nullptr)
-					delete text;
-				text = nullptr;
-				text = new Text("Maniac", 80, FW_DONTCARE);
+			if (text != nullptr)
+				delete text;
+			text = nullptr;
+			text = new Text("Maniac", 80, FW_DONTCARE);
 
-				height = HEIGHT;
-				update_delay = 10;
-			}
-			else if(update_delay > 0)
-				update_delay -= fw.FT(1000);
+			height = HEIGHT;
 		}
 
 		// 완전히 투명해지면 스스로 삭제
@@ -72,6 +65,7 @@ public:
 		layer = l;
 		tag = str;
 
+		text = new Text("Maniac", 80, FW_DONTCARE);
 		set_texture(tex, "res//ui//black.png", 100, 100, 1);
 	}
 
@@ -100,7 +94,7 @@ private:
 
 	Text* text = nullptr;
 
-	int height = HEIGHT - 1;
+	int height = HEIGHT;
 
 	GLfloat update_delay{};
 
@@ -109,17 +103,12 @@ public:
 
 	void Update() {
 		if (height != HEIGHT) {
-			if (update_delay <= 0) {
-				if(text != nullptr)
-					delete text;
-				text = nullptr;
-				text = new Text("Maniac", 80, FW_DONTCARE);
+			if(text != nullptr)
+				delete text;
+			text = nullptr;
+			text = new Text("Maniac", 80, FW_DONTCARE);
 
-				height = HEIGHT;
-				update_delay = 10;
-			}
-			else if (update_delay > 0)
-				update_delay -= fw.FT(1000);
+			height = HEIGHT;
 		}
 
 		transparent = std::lerp(transparent, 0.8, fw.FT(10));
@@ -146,6 +135,10 @@ public:
 	Back(int l, std::string str) {
 		layer = l;
 		tag = str;
+
+		fw.DeleteMainObj_Layer_All(main_layer3, "back2");
+
+		text = new Text("Maniac", 80, FW_DONTCARE);
 
 		set_texture(tex, "res//ui//black.png", 100, 100, 1);
 	}

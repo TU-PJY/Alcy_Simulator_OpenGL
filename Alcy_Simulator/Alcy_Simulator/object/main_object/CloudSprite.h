@@ -62,7 +62,7 @@ public:
 		y = height;
 		x = 0.6;
 
-		set_texture(tex, "res//prop//object//cloud_sprite.png", 130, 130, 1);
+		set_texture(tex, "res//prop//object//cloud_sprite.png", 130, 130, 1, true);
 	}
 
 	~CloudSprite() {

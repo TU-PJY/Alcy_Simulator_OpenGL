@@ -107,7 +107,7 @@ public:
 			}
 
 			if (int(score) >= 100) {
-				speed += fw.FT(0.01);
+				speed += fw.FT(0.005);
 				auto ptr = fw.FindMainObj_Layer_Single(main_layer2, "alcy_sprite");
 				if (ptr) ptr->increase_alcy_sprite_move_speed(speed);
 			}

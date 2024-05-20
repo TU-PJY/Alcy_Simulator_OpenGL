@@ -15,9 +15,7 @@ private:
 
 	Text* text = nullptr;
 
-	int height = HEIGHT - 1;
-
-	GLfloat update_delay{};
+	int height = HEIGHT;
 
 
 public:
@@ -25,17 +23,12 @@ public:
 
 	void Update() {
 		if (height != HEIGHT) {
-			if (update_delay <= 0) {
-				if (text != nullptr)
-					delete text;
-				text = nullptr;
-				text = new Text("Maniac", 100, FW_DONTCARE);
+			if (text != nullptr)
+				delete text;
+			text = nullptr;
+			text = new Text("Maniac", 100, FW_DONTCARE);
 
-				height = HEIGHT;
-				update_delay = 10;
-			}
-			else if (update_delay > 0)
-				update_delay -= fw.FT(1000);
+			height = HEIGHT;
 		}
 
 		if (count != cam.zoom_count) {
@@ -61,10 +54,12 @@ public:
 	Zoom_ind(int l, std::string str) {
 		layer = l;
 		tag = str;
+		text = new Text("Maniac", 100, FW_DONTCARE);
 	}
 
 	~Zoom_ind() {
-		delete text;
+		if(text != nullptr)
+			delete text;
 		text = nullptr;
 	}
 };

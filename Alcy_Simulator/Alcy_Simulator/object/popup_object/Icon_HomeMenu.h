@@ -156,7 +156,7 @@ private:
 
 	bool info_is_open{};
 
-	Text* text;
+	Text* text = nullptr;
 
 	int height = HEIGHT;
 
@@ -219,16 +219,12 @@ public:
 
 	void Update() {
 		if (height != HEIGHT) {
-			if (update_delay <= 0) {
+			if(text != nullptr)
 				delete text;
-				text = nullptr;
-				text = new Text("Maniac", 60, FW_DONTCARE);
+			text = nullptr;
+			text = new Text("Maniac", 60, FW_DONTCARE);
 
-				height = HEIGHT;
-				update_delay = 10;
-			}
-			else if (update_delay > 0)
-				update_delay -= fw.FT(1000);
+			height = HEIGHT;
 		}
 
 		transparent = std::lerp(transparent, 1.0, fw.FT(7));
@@ -277,7 +273,6 @@ public:
 	Button() {
 		for (int i = 0; i < BUTTON_NUMBER; ++i)
 			set_texture(tex[i], directory[i], 512, 512, 1);
-
 		text = new Text("Maniac", 60, FW_DONTCARE);
 	}
 

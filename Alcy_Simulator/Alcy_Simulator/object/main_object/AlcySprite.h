@@ -25,7 +25,7 @@ private:
 
 	GLfloat frame = 1;
 
-	GLfloat height = 0.3;
+	GLfloat height = 0.28;
 
 	GLfloat acc = 1.2;
 
@@ -61,10 +61,10 @@ public:
 				height += fw.FT(acc);
 				acc -= fw.FT(4);
 
-				if (acc < 0 && height <= 0.3) {
+				if (acc < 0 && height <= 0.28) {
 					jump_sound_played = false;
 
-					height = 0.3;
+					height = 0.28;
 					acc = 1.2;
 
 					if (!jump_enable_state) 
@@ -83,8 +83,8 @@ public:
 	void Render() {
 		init_transform();
 
-		t_mat *= move_image(-0.33, height);
-		s_mat *= scale_image(0.8, 0.8);
+		t_mat *= move_image(-0.35, height);
+		s_mat *= scale_image(0.6, 0.6);
 
 		if(jump_state)
 			draw_image(tex[2]);
@@ -98,7 +98,7 @@ public:
 		tag = str;
 
 		for (int i = 0; i < 3; ++i)
-			set_texture(tex[i], directory[i], 300, 300, 1);
+			set_texture(tex[i], directory[i], 300, 300, 1, true);
 	}
 
 	~AlcySprite() {

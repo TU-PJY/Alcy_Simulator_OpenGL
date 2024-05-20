@@ -9,7 +9,7 @@ extern unsigned char* texture_data;
 
 
 void set_vertex(GLuint &VAO);
-void set_texture(unsigned int &tex, const char* directory, int width, int height, int channel);
+void set_texture(unsigned int &tex, const char* directory, int width, int height, int channel, bool nearest_opt = false);
 void draw_image(unsigned int tex);
 void transmit_translation();
 bool install_font(const std::string& fontFilePath);
